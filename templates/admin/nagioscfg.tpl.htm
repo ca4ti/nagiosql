@@ -1,0 +1,50 @@
+<!-- Version 1.00 -->
+<!-- Last modified 11.3.2005 -->
+<!-- Version 1.00 -->
+<!-- BEGIN header -->
+    <td class="main">
+      <h1>{TITLE}</h1>
+<!-- END header -->
+<!-- BEGIN naginsert -->
+<form name="frmNagiosConfig" method="post" action="{ACTION_INSERT}">
+  <script language="JavaScript" type="text/JavaScript">
+  <!--
+    function abort() {
+      this.location.href = "{MAINSITE}";
+    }
+    <!-- Formular absenden
+    function LockButton() {
+      if (checkForm() == false) {
+        return false;
+      } else {
+        document.frmNagiosConfig.submit();
+        document.frmNagiosConfig.subForm.disabled = true;
+      }
+    }
+    <!-- Formulareingaben überprüfen
+    function checkForm() {
+      if(document.frmNagiosConfig.taNagiosCfg.value == "")  {
+        alert("{FILL_FIELDEMPTY}");
+        document.frmNagiosConfig.taNagiosCfg.focus();
+        return false;
+      }
+    }
+    //-->
+  </script>
+  <table border="0"  class="inserttable">
+    <tr>
+      <td><textarea name="taNagiosCfg" cols="100" rows="20" wrap="OFF" id="taNagiosCfg">{DAT_NAGIOS_CONFIG}</textarea></td>
+      </tr>
+    <tr>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td><input name="subForm" type="button" id="subForm" value="{LANG_SAVE}" onClick="LockButton()">
+      &nbsp;<input name="subAbort" type="button" id="subAbort" onClick="abort()" value="{LANG_ABORT}">
+      <input name="modus" type="hidden" id="modus" value="{MODUS}"></td>
+      </tr>
+  </table>
+</form>
+<p><span class="dbmessage">{MESSAGE}</span></p>
+<br>
+<!-- END naginsert -->

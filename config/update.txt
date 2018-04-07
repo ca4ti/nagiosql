@@ -1,0 +1,47 @@
+*******************************************************************************
+*                                                                             *
+*                   NagiosQL 2005 - Upgrade Instructions                      *
+*                                                                             *
+*******************************************************************************
+
+Upgrade from RC1 to RC2
+=======================
+
+1. Save your settings.ini file
+
+2. Delete your old nagiosQL directory
+
+3. Unpack the new distribution to your web directory
+
+4. Restore the settings.ini file
+
+5. Add this two directives to the [path] section of your settings.ini file and
+   change the "physical" parameter to the correct value:
+; Absolute (physical) path to the software directory
+physical	= /path/to/your/nagiosQL/
+; Used web technology (http or https)
+protocol	= http
+
+6. Update the database using this sql commands:
+ALTER TABLE tbl_contact CHANGE contact_name contact_name VARCHAR(40) NOT NULL,
+  CHANGE alias alias VARCHAR(120) NOT NULL;
+ALTER TABLE tbl_contactgroup CHANGE contactgroup_name contactgroup_name VARCHAR(40) NOT NULL,
+  CHANGE alias alias VARCHAR(120) NOT NULL;
+ALTER TABLE tbl_host CHANGE host_name host_name VARCHAR(255) NOT NULL,
+  CHANGE alias alias VARCHAR(120) NOT NULL,
+  CHANGE address address VARCHAR(255) NOT NULL,
+  CHANGE parents parents TEXT DEFAULT NULL,
+  CHANGE hostgroups hostgroups TEXT DEFAULT NULL;
+ALTER TABLE tbl_hostextinfo CHANGE host_name host_name VARCHAR(255) NOT NULL;
+ALTER TABLE tbl_hostgroup CHANGE alias alias VARCHAR(120) NOT NULL,
+  CHANGE hostgroup_name hostgroup_name VARCHAR(120) NOT NULL,
+  CHANGE members members TEXT NOT NULL;
+ALTER TABLE tbl_serviceextinfo CHANGE host_name host_name VARCHAR(255) NOT NULL;
+ALTER TABLE tbl_servicegroup CHANGE servicegroup_name servicegroup_name VARCHAR(120) NOT NULL ,
+  CHANGE alias alias VARCHAR(120) NOT NULL ,
+  CHANGE members members TEXT NOT NULL;
+ALTER TABLE tbl_timeperiod CHANGE alias alias VARCHAR(120) NOT NULL; 
+INSERT INTO tbl_submenu (id_main,order_id,item,link,rights) VALUES (6,4,'item_admsub23','admin/cgicfg.php','admin2');
+UPDATE tbl_submenu SET order_id=5 WHERE item='item_admsub19';
+
+7. Use the new version :)

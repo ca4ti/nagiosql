@@ -1,0 +1,46 @@
+<!-- Version 1.00 -->
+<!-- Last modified 11.3.2005 -->
+<!-- BEGIN header -->
+    <td class="main">
+      <h1>{TITLE}</h1>
+<!-- END header -->
+<!-- BEGIN main -->
+{DESC}
+<br><br>
+<h2>{STATISTICS}</h2>
+<table width="300" border="0" class="admintable">
+  <tr>
+    <th>{TYPE}</th>
+    <th style="text-align: center">{ACTIVE}</th>
+    <th style="text-align: center">{INACTIVE}</th>
+  </tr>
+  <tr>
+    <td class="tdlb">{HOSTS}</td>
+    <td class="tdmb">{ACT_HOST}</td>
+    <td class="tdmb">{INACT_HOST}</td>
+  </tr>
+  <tr>
+    <td class="tdlb">{SERVICES}</td>
+    <td class="tdmb">{ACT_SERV}</td>
+    <td class="tdmb">{INACT_SERV}</td>
+  </tr>
+  <tr>
+    <td class="tdlb">{HOSTGROUPS}</td>
+    <td class="tdmb">{ACT_HGROUP}</td>
+    <td class="tdmb">{INACT_HGROUP}</td>
+  </tr>
+  <tr>
+    <td class="tdlb">{SERVICEGROUPS}</td>
+    <td class="tdmb">{ACT_SGROUP}</td>
+    <td class="tdmb">{INACT_SGROUP}</td>
+  </tr>
+</table>
+<br>
+<h2>{CONSISTENCY}</h2>
+<p><span class="{HOST_MSGCLASS}">{CONSUSAGE_HOSTS}</span><br><span class="greenmessage">{HOST_FREEDATA}</span></p>
+<p class="{SERV_MSGCLASS}">{CONSUSAGE_SERVICES}</p>
+<p class="{HOSTG_MSGCLASS}">{CONSUSAGE_HOSTG}</p>
+<p class="{SERVG_MSGCLASS}">{CONSUSAGE_SERVG}</p>
+<br>
+  	</td>
+<!-- END main -->

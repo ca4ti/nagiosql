@@ -1,0 +1,69 @@
+<!-- Version 1.00 -->
+<!-- Last modified 11.3.2005 -->
+<!-- BEGIN header -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+	<title>{PAGETITLE}</title>
+	<link href="{BASE_PATH}config/main.css" rel="stylesheet" type="text/css">
+	<link rel="SHORTCUT ICON" href="{BASE_PATH}favicon.ico">
+	<meta name="description" content="{META_DESCRIPTION}">
+	<meta name="keywords" content="{META_KEYWORDS}">
+	<meta name="robots" content="{ROBOTS}">
+	<meta name="revisit-after" content="{REVISIT}">
+	<meta name="author" content="{AUTHOR}">
+	<meta name="content-language" content="{LANGUAGE}">
+	<meta name="publisher" content="{PUBLISHER}">
+	<meta name="generator" content="{GENERATOR}">{SPECIALMETA}
+  </head>
+  <body>
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+	  <td class="headerleft">{ADMIN}{MONITOR}</td>
+	  <td class="headermiddle">&nbsp;</td>
+	  <td class="headerright"><img src="{IMAGEDIR}titel.png" alt="{PAGETITLE}" width="207" height="37"></td>
+    </tr>
+	<tr>
+	  <td class="infoleft">{POSITION}</td>
+	  <td class="infoleft">&nbsp;</td>
+	  <td class="inforight">{LOGIN_INFO} (<a href="{BASE_PATH}index.php?logout=yes">Logout</a>)</td>
+	</tr>
+  </table>
+  <table width="100%">
+    <tr>
+<!-- END header -->
+<!-- BEGIN footer -->
+    </tr>
+  </table>
+  <p class="version">{VERSION_INFO}</p>
+  </body>
+</html>
+<!-- END footer -->
+<!-- BEGIN menuheader -->
+  <td width="150" align="center" valign="top">
+    <table cellspacing="5" class="{MENUCLASS}">
+<!-- END menuheader -->
+<!-- BEGIN mainmenupoint -->
+      <tr>
+        <td class="{CLASS_MAINMENU}"><a href="{MAINMENUPATH}">{MAINMENUENTRY}</a></td>
+      </tr>
+<!-- END mainmenupoint -->
+<!-- BEGIN submenupoint -->
+      <tr>
+        <td class="{CLASS_SUBMENU}">
+<!-- BEGIN submenurow -->
+          <a class="menulink" href="{SUBMENUPATH}">{SUBMENUENTRY}</a><br>
+<!-- END submenurow -->
+        </td>
+      </tr>
+<!-- END submenupoint -->
+<!-- END menufooter -->
+    </table>
+    <br><a href="{PHP_SELF}" class="menulinksmall">[{HIDE_MENU}]</a>
+  </td>
+<!-- END menufooter -->
+<!-- BEGIN menuhidden -->
+  <td valign="top">
+    <a href="{PHP_SELF}"><img src="{IMAGE_PATH}images/menu.gif" alt="{ENABLE_MENU}" border="0"></a>
+  </td>
+<!-- END menuhidden -->

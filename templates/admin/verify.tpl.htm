@@ -1,0 +1,51 @@
+<!-- Version 1.01 -->
+<!-- Last modified 01.04.2005 -->
+<!-- BEGIN header -->
+<td class="main">
+      <h1>{TITLE}</h1>
+<!-- END header -->
+<!-- BEGIN main -->
+<form name="frmImport" method="post" action="{ACTION_INSERT}">
+  <script language="JavaScript" type="text/JavaScript">
+  <!--
+    function abort() {
+      this.location.href = "{ACTION_INSERT}";
+    }
+    //-->
+  </script>
+  <table border="0"  class="inserttable">
+    <tr>
+      <td>{CHECK_CONFIG}</td>
+      <td><input name="checkConfig" type="submit" id="checkConfig" value="{MAKE}"></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>	
+    <tr>
+      <td>{RESTART_NAGIOS}</td>
+      <td><input name="restartNagios" type="submit" id="restartNagios" value="{MAKE}"></td>
+    </tr>
+    <tr>
+      <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="200" height="1"></td>
+      <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="80" height="1"></td>
+    </tr>
+  </table>
+</form>
+<p><span class="dbmessage">{WARNING}</span></p>
+<p>
+<!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}</span><br><!-- END verifyline -->
+</p>
+<br>
+<h2>{CONSISTENCY}</h2>
+<p><span class="{HOST_MSGCLASS}">{CONSUSAGE_HOSTS}</span><br>
+<span class="{SERV_MSGCLASS}">{CONSUSAGE_SERVICES}</span><br>
+<span class="{HOSTG_MSGCLASS}">{CONSUSAGE_HOSTG}</span><br>
+<span class="{SERVG_MSGCLASS}">{CONSUSAGE_SERVG}</span><br>
+<span class="{CHECK_MSGCLASS}">{CONSUSAGE_CHECK}</span><br>
+<span class="{MISC_MSGCLASS}">{CONSUSAGE_MISC}</span><br>
+<span class="{CON_MSGCLASS}">{CONSUSAGE_CONTACTS}</span><br>
+<span class="{CGROUP_MSGCLASS}">{CONSUSAGE_CGROUPS}</span><br>
+<span class="{TIMEP_MSGCLASS}">{CONSUSAGE_TIMEP}</span><br></p>
+</td>
+<!-- END main -->

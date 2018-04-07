@@ -1,0 +1,26 @@
+*******************************************************************************
+*                                                                             *
+*                         NagiosQL 2005 - TODO List                           *
+*                                                                             *
+*******************************************************************************
+
+Version 1.0-RC1a open issues
+----------------------------
+- Move DB functions to class for easier support of other DB Systems like postgres
+- Import of configuration files using templates is not supported
+- IP adress field to short for FQDN
+- cgi.cfg is not supported
+
+Version 1.0-RC2 open issues
+----------------------------
+- A new settings file named template.ini for all default values of all configuration types
+- "Select all" checkbox for all types of configuration (like in services)
+- Remove main menu points if the user has no rights to all submenu points
+
+
+
+
+Wishlist - not planned for the near future
+------------------------------------------
+- More detailed user management - rights to single hosts/groups/commands etc.
+- Network version - stores configuration files to other servers

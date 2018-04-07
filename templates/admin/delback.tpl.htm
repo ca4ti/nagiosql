@@ -1,0 +1,50 @@
+<!-- Version 1.00 -->
+<!-- Last modified 11.3.2005 -->
+<!-- BEGIN main -->
+<td class="main">
+      <h1>{TITLE}</h1>
+<!-- END header -->
+<!-- BEGIN main -->
+<form name="frmImport" method="post" action="{ACTION_INSERT}">
+  <script language="JavaScript" type="text/JavaScript">
+  <!--
+    function abort() {
+      this.location.href = "{ACTION_INSERT}";
+    }
+    <!-- Formular absenden
+    function LockButton() {
+        document.frmImport.submit();
+        document.frmImport.subForm.disabled = true;
+    }
+    //-->
+  </script>
+  <table border="0"  class="inserttable">
+    <tr>
+      <td valign="top">{BACKUPFILE}*</td>
+      <td colspan="2" rowspan="2"><select name="selImportFile[]" size="10" multiple id="selImportFile">
+<!-- BEGIN filelist -->
+          <option value="{DAT_BACKUPFILE}">{DAT_BACKUPFILE}</option>
+<!-- END filelist -->
+        </select></td>
+    </tr>
+    <tr>
+      <td valign="top"><small>{CTRL_INFO}</small></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="160" height="1"></td>
+      <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="80" height="1"></td>
+      <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="180" height="1"></td>
+    </tr>
+    <tr>
+      <td colspan="2"><input name="subForm" type="button" id="subForm" value="{MAKE}" onClick="LockButton()">&nbsp;
+        <input name="subAbort" type="button" id="subAbort" onClick="abort()" value="{ABORT}"></td>
+      <td>{MUST_DATA}</td>
+    </tr>
+  </table>
+</form>
+<p class="dbmessage">{SUCCESS}</p></td>
+<!-- END main -->
