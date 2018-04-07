@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin serviceescalation definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: serviceescalations.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -258,12 +255,14 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
   if ($intVersion == 3) {
     $conttp->setVariable("CLASS_NAME_20","elementHide");
     $conttp->setVariable("CLASS_NAME_30","elementShow");
+	$conttp->setVariable("VERSION",3);
   } else {
     $conttp->setVariable("CLASS_NAME_20","elementShow");
     $conttp->setVariable("CLASS_NAME_30","elementHide");
     $conttp->setVariable("CLASS_20_MUST_ONLY","class=\"inpmust\"");
     $conttp->setVariable("MUST_20_STAR","*");
     $conttp->setVariable("MEMBER_20_MUST","selMembers,");
+	$conttp->setVariable("VERSION",2);
   }
   if ($chkModus == "refresh") {
     if ($chkTfFirstNotif != "NULL")   $conttp->setVariable("DAT_FIRST_NOTIFICATION",$chkTfFirstNotif);
@@ -282,7 +281,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
   } else if (isset($arrModifyData) && ($chkSelModify == "modify")) {
     foreach($arrModifyData AS $key => $value) {
       if (($key == "active") || ($key == "last_modified")) continue;
-      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value));
+      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_COMPAT,'UTF-8'));
     }
     // Optionskästchen verarbeiten
     foreach(explode(",",$arrModifyData['escalation_options']) AS $elem) {
@@ -336,7 +335,7 @@ if ($chkModus == "display") {
       foreach($arrDescription AS $elem) {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['config_name']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['config_name'],ENT_COMPAT,'UTF-8'));
       $strDataline = "";
       if ($arrDataLines[$i]['service_description'] != 0) {
         $strSQLService = "SELECT `service_description` FROM `tbl_service`
@@ -350,7 +349,7 @@ if ($chkModus == "display") {
         }
       }
       if (strlen(substr($strDataline,0,-1)) > 50) {$strAdd = "...";} else {$strAdd = "";}
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars(substr(substr($strDataline,0,-1),0,50).$strAdd));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars(substr(substr($strDataline,0,-1),0,50).$strAdd,ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
       $mastertp->setVariable("CELLCLASS_L",$strClassL);

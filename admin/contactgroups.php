@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin contactgroup definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-05-07 17:58:23 +0200 (Do, 07. Mai 2009) $
-// Author    : $LastChangedBy: martin $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 713 $
-// SVN-ID    : $Id: contactgroups.php 713 2009-05-07 15:58:23Z martin $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -183,7 +180,7 @@ if ($chkModus == "add") {
   if (isset($arrModifyData) && ($chkSelModify == "modify")) {
     foreach($arrModifyData AS $key => $value) {
       if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
-      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value));
+      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_COMPAT,'UTF-8'));
     }
     if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
     // Prüfen, ob dieser Eintrag in einer anderen Konfiguration verwendet wird
@@ -240,8 +237,8 @@ if ($chkModus == "display") {
       foreach($arrDescription AS $elem) {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['contactgroup_name']));
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['contactgroup_name'],ENT_COMPAT,'UTF-8'));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias'],ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
       $mastertp->setVariable("CELLCLASS_L",$strClassL);

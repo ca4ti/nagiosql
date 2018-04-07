@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: nag_class.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -350,7 +347,118 @@ class nagvisual {
       return("");
     }
   }
-    ///////////////////////////////////////////////////////////////////////////////////////////
+  
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Alle Services entsprechend einer Hostliste suchen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Sucht alle Services, die allen Hosts in der angegebenen Liste gemeinsam sind.
+  //
+  //  Übergabeparameter:  	$strHostlist 			Kommagetrennte Hostliste
+  //
+  //  Returnwert:     		Array mit Service IDs
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function getServicesHost($strHostlist,&$arrServices) {
+    // TODO -> servicetemplate ergänzen !!!
+	// Alle Hosts abarbeiten
+	if ($strHostlist != "") {
+		$arrHosts = explode(",",$strHostlist);
+		$arrTemp  = array();
+		foreach ($arrHosts AS $elem) {
+			// Services, welche direkt einem Host zugeteilt sind
+			$strSQL    = "SELECT `id`, `service_description` FROM `tbl_service`
+						  LEFT JOIN `tbl_lnkServiceToHost` ON `id` = `idMaster`
+						  WHERE `active`='1'
+							AND `config_id`=".$this->intDomainId."
+							AND `idSlave` = ".$elem."
+						  UNION	
+						  SELECT `id`, `service_description` FROM `tbl_service`
+                      	  LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `tbl_lnkServiceToHostgroup`.`idMaster`
+					  	  LEFT JOIN `tbl_lnkHostgroupToHost` ON `tbl_lnkServiceToHostgroup`.`idSlave` = `tbl_lnkHostgroupToHost`.`idMaster`
+                      	  WHERE `active`='1'
+                        	AND `config_id`=".$this->intDomainId."
+                        	AND `tbl_lnkHostgroupToHost`.`idSlave` = ".$elem."
+						  UNION
+						  SELECT `id`, `service_description` FROM `tbl_service`
+                      	  LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `tbl_lnkServiceToHostgroup`.`idMaster`
+					  	  LEFT JOIN `tbl_lnkHostToHostgroup` ON `tbl_lnkServiceToHostgroup`.`idSlave` = `tbl_lnkHostToHostgroup`.`idSlave`
+                      	  WHERE `active`='1'
+                        	AND `config_id`=".$this->intDomainId."
+                        	AND `tbl_lnkHostToHostgroup`.`idMaster` = ".$elem;
+			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+			if ($intDataCount != 0) {
+				if (count($arrTemp) == 0) {
+					$arrTemp = $arrData;
+				} else {
+					$arrTemp1 = array();
+					foreach ($arrTemp AS $elem) {
+						if (in_array($elem,$arrData)) $arrTemp1[] = $elem;
+					}
+					$arrTemp = $arrTemp1;
+				}
+			} else {
+				$arrServices = array();
+				return false;
+			}
+		}
+		$arrServices = $arrTemp;
+		return true;
+	} else {
+		$arrServices = array();
+		return false;
+	}
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Alle Services entsprechend einer Hostgruppenliste suchen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Sucht alle Services, die allen Hosts in der angegebenen Liste gemeinsam sind.
+  //
+  //  Übergabeparameter:  	$strHostgrouplist 		Kommagetrennte Hostgruppenliste
+  //
+  //  Returnwert:     		Array mit Service IDs
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function getServicesHostgroup($strHostgrouplist,&$arrServices) {
+
+	// Alle Hosts abarbeiten
+	if ($strHostgrouplist != "") {
+		$arrHostgroups = explode(",",$strHostgrouplist);
+		$arrTemp  = array();
+		foreach ($arrHostgroups AS $elem) {
+			// Services, welche direkt einem Host zugeteilt sind
+			$strSQL    = "SELECT `id`, `service_description` FROM `tbl_service`
+						  LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `idMaster`
+						  WHERE `active`='1'
+							AND `config_id`=".$this->intDomainId."
+							AND `idSlave` = ".$elem;
+			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+			if ($intDataCount != 0) {
+				if (count($arrTemp) == 0) {
+					$arrTemp = $arrData;
+				} else {
+					$arrTemp1 = array();
+					foreach ($arrTemp AS $elem) {
+						if (in_array($elem,$arrData)) $arrTemp1[] = $elem;
+					}
+					$arrTemp = $arrTemp1;
+				}
+			} else {
+				$arrServices = array();
+				return false;
+			}
+		}
+		$arrServices = $arrTemp;
+		return true;
+	} else {
+		$arrServices = array();
+		return false;
+	}
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
   //  Funktion: Auswahlfeld aufbauen
   ///////////////////////////////////////////////////////////////////////////////////////////
   //
@@ -406,9 +514,12 @@ class nagvisual {
       } else {
         return(1);
       }
-      if ((is_array($arrHost) && in_array("*",$arrHost)) || (is_array($arrHostgroup) && in_array("*",$arrHostgroup))) {
-        if (is_array($arrHost)) {
-		  $strSQL  = "SELECT `id` FROM `tbl_host` WHERE `active`='1' AND `config_id`=".$this->intDomainId;
+      //if ((is_array($arrHost) && in_array("*",$arrHost)) || (is_array($arrHostgroup) && in_array("*",$arrHostgroup))) {
+		//if (is_array($arrHost)) {
+		  //$booReturn = $this->getServicesHost('%',$arrServListHost);
+		  //$arrData = $arrServListHost;
+		  //$intDataCount = count($arrData);
+		  /*$strSQL  = "SELECT `id` FROM `tbl_host` WHERE `active`='1' AND `config_id`=".$this->intDomainId;
           $booReturn = $this->myDBClass->getDataArray($strSQL,$arrTemp,$intDCTemp);
           foreach($arrTemp AS $elem) {
             $arrTempHost[] = $elem['id'];
@@ -439,7 +550,7 @@ class nagvisual {
                   ORDER BY `".$strTabField."`";
           $booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
         }
-      } else {
+      } else {*/
 		// Service Dependency/Escalation Auswahl entsprechend POST Parameter
         if ($intVersion != 3) {
 		  if (is_array($arrHost)) {
@@ -448,19 +559,67 @@ class nagvisual {
             $intCounter1 = 0;
           }
           if ($intCounter1 != 0) {
-            $strSQL  = "SELECT `id`, `".$strTabField."`, count(`idSlave`) AS `counter` FROM `".$strTable."`
-                  LEFT JOIN `tbl_lnkServiceToHost` ON `id` = `tbl_lnkServiceToHost`.`idMaster`
-                  WHERE `active`='1'
-                    AND `config_id`=".$this->intDomainId."
-                    AND `tbl_lnkServiceToHost`.`idSlave` IN (".implode(",",$arrHost).")
-                    GROUP BY `".$strTabField."`
-                    HAVING `counter` = $intCounter1
-                    ORDER BY `".$strTabField."`";
+            if (in_array("*",$arrHost)) {
+				$strSQL  = "SELECT `id`, `".$strTabField."`, count(`idSlave`) AS `counter` FROM `".$strTable."`
+					  LEFT JOIN `tbl_lnkServiceToHost` ON `id` = `tbl_lnkServiceToHost`.`idMaster`
+					  WHERE `active`='1'
+						AND `config_id`=".$this->intDomainId."
+						AND `tbl_lnkServiceToHost`.`idSlave` IN (%)
+						GROUP BY `".$strTabField."`
+						HAVING `counter` = $intCounter1
+						ORDER BY `".$strTabField."`";
+			} else {
+				$strSQL  = "SELECT `id`, `".$strTabField."`, count(`idSlave`) AS `counter` FROM `".$strTable."`
+					  LEFT JOIN `tbl_lnkServiceToHost` ON `id` = `tbl_lnkServiceToHost`.`idMaster`
+					  WHERE `active`='1'
+						AND `config_id`=".$this->intDomainId."
+						AND `tbl_lnkServiceToHost`.`idSlave` IN (".implode(",",$arrHost).")
+						GROUP BY `".$strTabField."`
+						HAVING `counter` = $intCounter1
+						ORDER BY `".$strTabField."`";
+			}
             $booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
           } else {
             $booReturn = false;
           }
         } else {
+			// TEST THIS!!!
+		  $booReturn 	  = true;
+		  $arrData   	  = array();
+		  $intHostOk 	  = 0;
+		  $intHostgroupOk = 0;  
+		  // Services nach Host suchen
+		  if (is_array($arrHost)) {
+			if (in_array("*",$arrHost)) {
+				$booReturn = $this->getServicesHost("%",$arrServListHost);
+			} else {
+				$booReturn = $this->getServicesHost(implode(",",$arrHost),$arrServListHost);
+			}
+			$intHostOk = 1;
+		  } 
+  		  // Services nach Hostgruppe suchen
+		  if (is_array($arrHostgroup)) {
+		  	if (in_array("*",$arrHostgroup)) {
+				$booReturn = $this->getServicesHostgroup("%",$arrServListHostgroup);
+			} else {
+				$booReturn = $this->getServicesHostgroup(implode(",",$arrHostgroup),$arrServListHostgroup);
+			}
+			$intHostgroupOk = 1;
+		  } 
+		  if (($intHostOk == 1) && ($intHostgroupOk == 0)) {
+		  	$arrData = $arrServListHost;
+		  } else if (($intHostOk == 0) && ($intHostgroupOk == 1)) {
+		  	$arrData = $arrServListHostgroup;
+		  } else if (($intHostOk == 1) && ($intHostgroupOk == 1)) {
+		  	$arrTemp = array();
+			foreach ($arrServListHost AS $elem) {
+				if (in_array($elem,$arrServListHostgroup)) $arrTemp[] = $elem;
+			}
+		  	$arrData = $arrTemp;
+		  }
+		  $intDataCount = count($arrData);
+			// TEST THIS !!!
+		  /*	
           if (is_array($arrHostgroup)) {
             $intCounter1 = count($arrHostgroup);
           } else {
@@ -538,7 +697,8 @@ class nagvisual {
 //                    HAVING `counter` = $intCounter
 //                    ORDER BY `".$strTabField."`";
 //			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData2,$intDataCount);
-//			$arrData = array_merge($arrData,$arrData2);			
+//			$arrData = array_merge($arrData,$arrData2);		
+				
           } else if ($intCounter2 != 0) {
             $strSQL  = "SELECT `id`, `".$strTabField."`, count(`idSlave`) AS `counter` FROM `".$strTable."`
                   LEFT JOIN `tbl_lnkServiceToHost` ON `id` = `tbl_lnkServiceToHost`.`idMaster`
@@ -565,7 +725,8 @@ class nagvisual {
           } else {
             $booReturn = false;
           }
-        }
+          */
+		//}
       }
     }
     if (($booReturn == false) || ($intDataCount == 0)) {
@@ -601,6 +762,7 @@ class nagvisual {
         }
       }
     }
+	//echo $intModeId;
     // Im Modus 1 und 2 Leerzeile einfügen
     if (($intModeId == 1) || ($intModeId == 2)) {
       $objTemplate->setVariable($strParseVar,"&nbsp;");

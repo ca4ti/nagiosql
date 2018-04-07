@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : http://www.nagiosql.org
-// Date    : $LastChangedDate: 2009-05-05 10:21:42 +0200 (Di, 05. Mai 2009) $
-// Author    : $LastChangedBy: martin $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 711 $
-// SVN-ID    : $Id: config_class.php 711 2009-05-05 08:21:42Z martin $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //

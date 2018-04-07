@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin time definition list
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: templatedefinitions.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -221,7 +218,7 @@ if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefini
       if ($elem['status'] == 0) {
 ?>
   <tr>
-      <td class="tablerow" style="padding-bottom:2px;"><?php echo htmlspecialchars(stripslashes($elem['definition'])) ;?></td>
+      <td class="tablerow" style="padding-bottom:2px;"><?php echo htmlspecialchars(stripslashes($elem['definition']),ENT_COMPAT,'UTF-8') ;?></td>
         <td class="tablerow" align="right"><img src="<?php echo $SETS['path']['root']; ?>images/up.gif" width="18" height="18" alt="<?php echo gettext('Up');?>" title="<?php echo gettext('Up');?>" onClick="doUp('<?php echo $key; ?>','<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $SETS['path']['root']; ?>images/down.gif" width="18" height="18" alt="<?php echo gettext('Down'); ?>" title="<?php echo gettext('Down'); ?>" onClick="doDown('<?php echo $key; ?>','<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $SETS['path']['root']; ?>images/delete.gif" width="18" height="18" alt="<?php echo gettext('Delete'); ?>" title="<?php echo gettext('Delete'); ?>" onClick="doDel('<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer"></td>
     </tr>
 <?php

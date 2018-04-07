@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin host definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: hosts.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -37,7 +34,7 @@ $myConfigClass->getConfigData("version",$intVersion);
 //
 // Übergabeparameter
 // =================
-$chkTfSearch      = isset($_POST['txtSearch'])      ? $_POST['txtSearch']             : "";
+$chkTfSearch      = isset($_POST['txtSearch'])      ? htmlspecialchars($_POST['txtSearch'])             : "";
 $chkTfName        = isset($_POST['tfName'])         ? $_POST['tfName']              : "";
 $chkOldHost       = isset($_POST['hidName'])        ? $_POST['hidName']             : "";
 $chkTfFriendly      = isset($_POST['tfFriendly'])       ? $_POST['tfFriendly']            : "";
@@ -254,7 +251,7 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
           $strMessage .=  gettext('The assigned, no longer used configuration files were deleted successfully!');
           $myDataClass->writeLog(gettext('Host file deleted:')." ".$chkOldHost.".cfg");
         } else {
-          $strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br>".$myConfigClass->strDBMessage;
+          $strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br />".$myConfigClass->strDBMessage;
         }
       }
       // Falls Host deaktiviert wurde - Datei löschen
@@ -264,7 +261,7 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
           $strMessage .=  gettext('The assigned, no longer used configuration files were deleted successfully!');
           $myDataClass->writeLog(gettext('Host file deleted:')." ".$chkTfName.".cfg");
         } else {
-          $strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br>".$myConfigClass->strDBMessage;
+          $strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br />".$myConfigClass->strDBMessage;
         }
       }
       //
@@ -338,10 +335,10 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
     }
   }
   if ($intError == 0) {
-    $strMessage .= gettext('Configuration file successfully written!')."<br>";
+    $strMessage .= gettext('Configuration file successfully written!')."<br />";
     $intReturn = 0;
   } else {
-    $strMessage .= $myConfigClass->strDBMessage."<br>";
+    $strMessage .= $myConfigClass->strDBMessage."<br />";
     $intReturn = 1;
   }
   $chkModus  = "display";
@@ -355,7 +352,7 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
   // Daten des gewählten Datensatzes holen
   $booReturn = $myDBClass->getSingleDataset("SELECT * FROM `tbl_host` WHERE `id`=".$chkListId,$arrModifyData);
   if ($booReturn == false) {
-    $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    $strMessage .= gettext('Error while selecting data from database:')."<br />".$myDBClass->strDBError."<br />";
     $intReturn = 1;
   }
   $chkModus      = "add";
@@ -437,7 +434,7 @@ if ($chkModus == "add") {
   $intReturn = $myVisClass->parseSelect('tbl_timeperiod','timeperiod_name','DAT_CHECK_PERIODS','checkperiod',$conttp,$chkListId,'',$intFieldId,1);
   if (isset($arrModifyData['notification_period'])) {$intFieldId = $arrModifyData['notification_period'];} else {$intFieldId = 0;}
   $intReturn = $myVisClass->parseSelect('tbl_timeperiod','timeperiod_name','DAT_NOTIF_PERIOD','notifperiod',$conttp,$chkListId,'',$intFieldId,1);
-  if ($intReturn != 0) $strDBWarning .= gettext('Attention, no time periods defined!')."<br>";
+  if ($intReturn != 0) $strDBWarning .= gettext('Attention, no time periods defined!')."<br />";
   // Eventhandlerfelder füllen
   if (isset($arrModifyData['event_handler'])) {$intFieldId = $arrModifyData['event_handler'];} else {$intFieldId = 0;}
   $intReturn = $myVisClass->parseSelect('tbl_command','command_name','DAT_EVENTHANDLER','eventhandlerrow',$conttp,$chkListId,'',$intFieldId,1,0,4);
@@ -448,7 +445,7 @@ if ($chkModus == "add") {
   $intReturn1 = $myVisClass->parseSelect('tbl_contact','contact_name','DAT_CONTACT','contacts',$conttp,$chkListId,'tbl_lnkHostToContact',$intFieldId,0);
   if (isset($arrModifyData['contact_groups'])) {$intFieldId = $arrModifyData['contact_groups'];} else {$intFieldId = 0;}
   $intReturn2 = $myVisClass->parseSelect('tbl_contactgroup','contactgroup_name','DAT_CONTACTGROUPS','contactgroups',$conttp,$chkListId,'tbl_lnkHostToContactgroup',$intFieldId,0);
-  if (($intReturn != 0) && ($intReturn2 != 0)) $strDBWarning .= gettext('Attention, no contact groups defined!')."<br>";
+  if (($intReturn != 0) && ($intReturn2 != 0)) $strDBWarning .= gettext('Attention, no contact groups defined!')."<br />";
   // Feldbeschriftungen setzen
   foreach($arrDescription AS $elem) {
     $conttp->setVariable($elem['name'],str_replace("</","<\/",$elem['string']));
@@ -483,7 +480,7 @@ if ($chkModus == "add") {
   if (isset($arrModifyData) && ($chkSelModify == "modify")) {
     foreach($arrModifyData AS $key => $value) {
       if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
-      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value));
+      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_COMPAT,'UTF-8'));
     }
     if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
     // Statusfelder setzen
@@ -516,12 +513,13 @@ if ($chkModus == "add") {
       }
     }
     if ($arrModifyData['check_command'] != "") {
-      $arrArgument = explode("!",$arrModifyData['check_command']);
+      $strTmpCommand = str_replace("\!","::AZ::",$arrModifyData['check_command']);
+	  $arrArgument   = explode("!",$strTmpCommand);
       foreach ($arrArgument AS $key => $value) {
         if ($key == 0) {
-          $conttp->setVariable("IFRAME_SRC",$SETS['path']['root']."admin/commandline.php?cname=".$value);
+          $conttp->setVariable("IFRAME_SRC",$SETS['path']['root']."admin/commandline.php?cname=".str_replace("::AZ::","\!",$value));
         } else {
-          $conttp->setVariable("DAT_ARG".$key,htmlentities($value));
+          $conttp->setVariable("DAT_ARG".$key,htmlentities(str_replace("::AZ::","\!",$value),ENT_COMPAT,'UTF-8'));
         }
       }
     }
@@ -530,7 +528,7 @@ if ($chkModus == "add") {
       $conttp->setVariable("ACT_DISABLED","disabled");
       $conttp->setVariable("ACT_CHECKED","checked");
       $conttp->setVariable("ACTIVE","1");
-      $strInfo = "<br><span class=\"dbmessage\">".gettext('Entry cannot be activated because it is used by another configuration').":</span><br><span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
+      $strInfo = "<br /><span class=\"dbmessage\">".gettext('Entry cannot be activated because it is used by another configuration').":</span><br /><span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
       $conttp->setVariable("CHECK_MUST_DATA",$strInfo);
     }
     // Optionskästchen verarbeiten
@@ -577,7 +575,7 @@ if ($chkModus == "display") {
   $strSQL    = "SELECT count(*) AS `number` FROM `tbl_host` WHERE `config_id`=$chkDomainId $strSearchWhere";
   $booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
   if ($booReturn == false) {
-    $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    $strMessage .= gettext('Error while selecting data from database:')."<br />".$myDBClass->strDBError."<br />";
   } else {
     $intCount = (int)$arrDataLinesCount['number'];
   }
@@ -587,7 +585,7 @@ if ($chkModus == "display") {
           ORDER BY `host_name` LIMIT $chkLimit,".$SETS['common']['pagelines'];
   $booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
   if ($booReturn == false) {
-    $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    $strMessage .= gettext('Error while selecting data from database:')."<br />".$myDBClass->strDBError."<br />";
     $mastertp->setVariable("CELLCLASS_L","tdlb");
     $mastertp->setVariable("CELLCLASS_M","tdmb");
     $mastertp->setVariable("DISABLED","disabled");
@@ -611,8 +609,8 @@ if ($chkModus == "display") {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
       if (strlen($arrDataLines[$i]['host_name']) > 50) {$strAdd = ".....";} else {$strAdd = "";}
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars(substr($arrDataLines[$i]['host_name'],0,50).$strAdd));
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars(substr($arrDataLines[$i]['host_name'],0,50).$strAdd,ENT_COMPAT,'UTF-8'));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias'],ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("DATA_FILE","<span class=\"dbmessage\">".gettext('out-of-date')."</span>");
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);

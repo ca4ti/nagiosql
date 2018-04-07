@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin logbook
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: logbook.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -36,9 +33,9 @@ require("../functions/prepend_adm.php");
 // Übergabeparameter
 // =================
 $chkFromLine  = isset($_GET['from_line'])   ? $_GET['from_line']+0  : 0;
-$chkDelFrom   = isset($_POST['txtFrom'])    ? $_POST['txtFrom']   : "";
-$chkDelTo     = isset($_POST['txtTo'])    ? $_POST['txtTo']   : "";
-$chkSearch    = isset($_POST['txtSearch'])  ? $_POST['txtSearch'] : "";
+$chkDelFrom   = isset($_POST['txtFrom'])    ? mysql_real_escape_string($_POST['txtFrom'])   : "";
+$chkDelTo     = isset($_POST['txtTo'])    	? mysql_real_escape_string($_POST['txtTo'])   : "";
+$chkSearch    = isset($_POST['txtSearch'])  ? htmlspecialchars($_POST['txtSearch']) : "";
 //
 // Daten löschen
 // =============

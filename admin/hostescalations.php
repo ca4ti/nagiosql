@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin hostescalation definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: hostescalations.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -220,7 +217,7 @@ if ($chkModus == "add") {
   if (isset($arrModifyData) && ($chkSelModify == "modify")) {
     foreach($arrModifyData AS $key => $value) {
       if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
-      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value));
+      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_COMPAT,'UTF-8'));
     }
     if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
     $conttp->setVariable("MODUS","modify");
@@ -275,7 +272,7 @@ if ($chkModus == "display") {
       foreach($arrDescription AS $elem) {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['config_name']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['config_name'],ENT_COMPAT,'UTF-8'));
       $strDataline = "";
       if ($arrDataLines[$i]['host_name'] != 0) {
         $strSQLHost = "SELECT `host_name` FROM `tbl_host`
@@ -299,7 +296,7 @@ if ($chkModus == "display") {
         }
       }
       if (strlen(substr($strDataline,0,-1)) > 50) {$strAdd = "...";} else {$strAdd = "";}
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars(substr(substr($strDataline,0,-1),0,50).$strAdd));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars(substr(substr($strDataline,0,-1),0,50).$strAdd,ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
       $mastertp->setVariable("CELLCLASS_L",$strClassL);

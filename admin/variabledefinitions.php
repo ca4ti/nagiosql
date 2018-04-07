@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin time definition list
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: variabledefinitions.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -127,8 +124,8 @@ if ($chkMode == "del") {
       if ($elem['status'] == 0) {
 ?>
   <tr>
-      <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['definition'])); ?></td>
-        <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['range'])); ?></td>
+      <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['definition']),ENT_COMPAT,'UTF-8'); ?></td>
+        <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['range']),ENT_COMPAT,'UTF-8'); ?></td>
         <td class="tablerow" style="width:50px" align="right"><img src="<?php echo $SETS['path']['root']; ?>images/edit.gif" width="18" height="18" alt="<?php echo gettext('Modify'); ?>" title="<?php echo gettext('Modify'); ?>" onClick="doEdit('<?php echo $elem['definition']; ?>','<?php echo $elem['range']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $SETS['path']['root']; ?>images/delete.gif" width="18" height="18" alt="<?php echo gettext('Delete'); ?>" title="<?php echo gettext('Delete'); ?>" onClick="doDel('<?php echo $elem['definition']; ?>')" style="cursor:pointer"></td>
     </tr>
 <?php

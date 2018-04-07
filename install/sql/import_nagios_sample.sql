@@ -5,16 +5,13 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
---  (c) 2008, 2009 by Martin Willisegger
---
 --  Project   : NagiosQL
 --  Component : Import samples build from Nagios 3.0.5 configuration samples
 --  Website   : www.nagiosql.org
 --  Date      : LastChangedDate: 2008-11-24 12:28:32 +0100 (Mo, 24 Nov 2008) 
 --  Author    : LastChangedBy: rouven 
---  Version   : 3.0.3
+--  Version   : 3.0.4
 --  Revision  : LastChangedRevision: 514 
---  SVN-ID    : Id: update_200_202.sql 514 2008-11-24 11:28:32Z rouven 
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --

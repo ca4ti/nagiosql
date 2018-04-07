@@ -1,8 +1,9 @@
-<!-- BEGIN config -->###############################################################################
+<!-- BEGIN config -->
+###############################################################################
 #
 # Extended host information configuration file
 #
-# Created by: Nagios QL Version 3.0.3
+# Created by: Nagios QL Version 3.0.4
 # Date:	      {CREATE_DATE}
 # Version:    {VERSION}
 #

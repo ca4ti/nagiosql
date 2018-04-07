@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project  : NagiosQL
 // Component: Installer Functions
 // Website  : http://www.nagiosql.org
-// Date     : $LastChangedDate: 2009-05-14 10:49:01 +0200 (Do, 14. Mai 2009) $
+// Date     : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author   : $LastChangedBy: rouven $
-// Version  : 3.0.3
-// Revision : $LastChangedRevision: 715 $
-// SVN-ID   : $Id: func_installer.php 715 2009-05-14 08:49:01Z rouven $
+// Version  : 3.0.4
+// Revision : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -123,14 +120,12 @@ function writeSettingsFile(&$errmsg) {
     fwrite($filSet,";\n");
     fwrite($filSet,";///////////////////////////////////////////////////////////////////////////////\n");
     fwrite($filSet,";\n");
-    fwrite($filSet,"; (c) 2008, 2009 by Martin Willisegger\n");
-    fwrite($filSet,";\n");
     fwrite($filSet,"; Project  : NagiosQL\n");
     fwrite($filSet,"; Component: Database Configuration\n");
     fwrite($filSet,"; Website  : http://www.nagiosql.org\n");
     fwrite($filSet,"; Date     : ".date("F j, Y, g:i a")."\n");
-    fwrite($filSet,"; Version  : 3.0.3\n");
-    fwrite($filSet,'; Revision : $LastChangedRevision: 715 $'."\n");
+    fwrite($filSet,"; Version  : 3.0.4\n");
+    fwrite($filSet,'; Revision : $LastChangedRevision: 827 $'."\n");
     fwrite($filSet,";\n");
     fwrite($filSet,";///////////////////////////////////////////////////////////////////////////////\n");
     fwrite($filSet,"[db]\n");
@@ -198,10 +193,13 @@ function updateQL($strCurrentVersion, $dbhost, $dbport, $dbprivuser, $dbprivpass
   $errmsg="";
   $result=true;
   switch ($strCurrentVersion) {
-    case "3.0.3":
+    case "3.0.4":
       $result=true;
       return $result;
-    case "3.0.2":
+    case "3.0.3":
+      $strFile="sql/update_303_304.sql";
+      break;
+	case "3.0.2":
       $strFile="sql/update_302_303.sql";
       break;
     case "3.0.1":

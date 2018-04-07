@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : User administration
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: user.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -36,7 +33,7 @@ require("../functions/prepend_adm.php");
 // Übergabeparameter
 // =================
 $chkInsName   = isset($_POST['tfName'])       ? $_POST['tfName']      : "";
-$chkInsAlias  = isset($_POST['tfAlias'])      ? $_POST['tfAlias']     : "";
+$chkInsAlias  = isset($_POST['tfAlias'])      ? htmlspecialchars($_POST['tfAlias'])     : "";
 $chkHidName   = isset($_POST['hidName'])      ? $_POST['hidName']     : "";
 $chkInsPwd1   = isset($_POST['tfPassword1'])  ? $_POST['tfPassword1'] : "";
 $chkInsPwd2   = isset($_POST['tfPassword2'])  ? $_POST['tfPassword2'] : "";
@@ -215,8 +212,8 @@ if ($chkModus == "display") {
       foreach($arrDescription AS $elem) {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['username']));
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['username'],ENT_COMPAT,'UTF-8'));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias'],ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
       $mastertp->setVariable("CELLCLASS_L",$strClassL);

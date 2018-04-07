@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin servicetemplate definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: servicetemplates.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -418,7 +415,7 @@ if ($chkModus == "add") {
   if (isset($arrModifyData) && ($chkSelModify == "modify")) {
     foreach($arrModifyData AS $key => $value) {
       if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
-      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value));
+      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_COMPAT,'UTF-8'));
     }
     if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
     // Statusfelder setzen
@@ -454,12 +451,13 @@ if ($chkModus == "add") {
       }
     }
     if ($arrModifyData['check_command'] != "") {
-      $arrArgument = explode("!",$arrModifyData['check_command']);
+      $strTmpCommand = str_replace("\!","::AZ::",$arrModifyData['check_command']);
+	  $arrArgument   = explode("!",$strTmpCommand);
       foreach ($arrArgument AS $key => $value) {
         if ($key == 0) {
-          $conttp->setVariable("IFRAME_SRC",$SETS['path']['root']."admin/commandline.php?cname=".$value);
+          $conttp->setVariable("IFRAME_SRC",$SETS['path']['root']."admin/commandline.php?cname=".str_replace("::AZ::","\!",$value));
         } else {
-          $conttp->setVariable("DAT_ARG".$key,htmlentities($value));
+          $conttp->setVariable("DAT_ARG".$key,htmlentities(str_replace("::AZ::","\!",$value),ENT_COMPAT,'UTF-8'));
         }
       }
     }
@@ -530,8 +528,8 @@ if ($chkModus == "display") {
       foreach($arrDescription AS $elem) {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['template_name']));
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['service_description']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['template_name'],ENT_COMPAT,'UTF-8'));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['service_description'],ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
       $mastertp->setVariable("CELLCLASS_L",$strClassL);

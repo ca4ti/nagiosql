@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Admin domain administration
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: domain.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -37,23 +34,23 @@ require("../functions/prepend_adm.php");
 // Übergabeparameter
 // =================
 $chkInsDomain           = isset($_POST['tfDomain'])           ? $_POST['tfDomain']                                  : "";
-$chkInsAlias            = isset($_POST['tfAlias'])            ? $_POST['tfAlias']                                   : "";
+$chkInsAlias            = isset($_POST['tfAlias'])            ? htmlspecialchars($_POST['tfAlias'])                                   : "";
 $chkHidDomain           = isset($_POST['hidDomain'])          ? $_POST['hidDomain']                                 : "";
-$chkInsServer           = isset($_POST['tfServername'])       ? $_POST['tfServername']                              : "";
+$chkInsServer           = isset($_POST['tfServername'])       ? htmlspecialchars($_POST['tfServername'])                              : "";
 $chkInsMethod           = isset($_POST['selMethod'])          ? $_POST['selMethod']                                 : 0;
 $chkInsUser             = isset($_POST['tfUsername'])         ? $_POST['tfUsername']                                : "";
 $chkInsPasswd           = isset($_POST['tfPassword'])         ? $_POST['tfPassword']                                : "";
-$chkInsBasedir          = isset($_POST['tfBasedir'])          ? $myVisClass->addSlash($_POST['tfBasedir'])          : "";
-$chkInsHostconfig       = isset($_POST['tfHostconfigdir'])    ? $myVisClass->addSlash($_POST['tfHostconfigdir'])    : "";
-$chkInsServiceconfig    = isset($_POST['tfServiceconfigdir']) ? $myVisClass->addSlash($_POST['tfServiceconfigdir']) : "";
-$chkInsBackupdir        = isset($_POST['tfBackupdir'])        ? $myVisClass->addSlash($_POST['tfBackupdir'])        : "";
-$chkInsHostbackup       = isset($_POST['tfHostbackupdir'])    ? $myVisClass->addSlash($_POST['tfHostbackupdir'])    : "";
-$chkInsServicebackup    = isset($_POST['tfServicebackupdir']) ? $myVisClass->addSlash($_POST['tfServicebackupdir']) : "";
-$chkInsNagiosBaseDir    = isset($_POST['tfNagiosBaseDir'])    ? $myVisClass->addSlash($_POST['tfNagiosBaseDir'])    : "";
-$chkInsImportDir        = isset($_POST['tfImportdir'])        ? $myVisClass->addSlash($_POST['tfImportdir'])        : "";
-$chkInsCommandfile      = isset($_POST['tfCommandfile'])      ? $_POST['tfCommandfile']                             : "";
-$chkInsBinary           = isset($_POST['tfBinary'])           ? $_POST['tfBinary']                                  : "";
-$chkInsPidfile          = isset($_POST['tfPidfile'])          ? $_POST['tfPidfile']                                 : "";
+$chkInsBasedir          = isset($_POST['tfBasedir'])          ? $myVisClass->addSlash(htmlspecialchars($_POST['tfBasedir']))          : "";
+$chkInsHostconfig       = isset($_POST['tfHostconfigdir'])    ? $myVisClass->addSlash(htmlspecialchars($_POST['tfHostconfigdir']))    : "";
+$chkInsServiceconfig    = isset($_POST['tfServiceconfigdir']) ? $myVisClass->addSlash(htmlspecialchars($_POST['tfServiceconfigdir'])) : "";
+$chkInsBackupdir        = isset($_POST['tfBackupdir'])        ? $myVisClass->addSlash(htmlspecialchars($_POST['tfBackupdir']))        : "";
+$chkInsHostbackup       = isset($_POST['tfHostbackupdir'])    ? $myVisClass->addSlash(htmlspecialchars($_POST['tfHostbackupdir']))    : "";
+$chkInsServicebackup    = isset($_POST['tfServicebackupdir']) ? $myVisClass->addSlash(htmlspecialchars($_POST['tfServicebackupdir'])) : "";
+$chkInsNagiosBaseDir    = isset($_POST['tfNagiosBaseDir'])    ? $myVisClass->addSlash(htmlspecialchars($_POST['tfNagiosBaseDir']))    : "";
+$chkInsImportDir        = isset($_POST['tfImportdir'])        ? $myVisClass->addSlash(htmlspecialchars($_POST['tfImportdir']))        : "";
+$chkInsCommandfile      = isset($_POST['tfCommandfile'])      ? htmlspecialchars($_POST['tfCommandfile'])                             : "";
+$chkInsBinary           = isset($_POST['tfBinary'])           ? htmlspecialchars($_POST['tfBinary'])                                  : "";
+$chkInsPidfile          = isset($_POST['tfPidfile'])          ? htmlspecialchars($_POST['tfPidfile'])                                 : "";
 $chkInsVersion          = isset($_POST['selVersion'])         ? $_POST['selVersion']                                : 1;
 $chkInsKey1             = isset($_POST['chbKey1'])            ? $_POST['chbKey1']                                   : 0;
 $chkInsKey2             = isset($_POST['chbKey2'])            ? $_POST['chbKey2']                                   : 0;
@@ -251,7 +248,7 @@ if ($chkModus == "add") {
   if (isset($arrModifyData) && ($chkSelModify == "modify") && (is_array($arrModifyData))) {
     foreach($arrModifyData AS $key => $value) {
       if (($key == "active") || ($key == "last_modified")) continue;
-      $conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars($value));
+      $conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars($value,ENT_COMPAT,'UTF-8'));
     }
     if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
     // Methode
@@ -370,8 +367,8 @@ if ($chkModus == "display") {
       foreach($arrDescription AS $elem) {
         $mastertp->setVariable($elem['name'],$elem['string']);
       }
-      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['domain']));
-      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias']));
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['domain'],ENT_COMPAT,'UTF-8'));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias'],ENT_COMPAT,'UTF-8'));
       $mastertp->setVariable("DATA_ACTIVE",$strActive);
       $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
       $mastertp->setVariable("CELLCLASS_L",$strClassL);

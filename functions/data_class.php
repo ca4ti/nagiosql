@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: data_class.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -458,8 +455,8 @@ class nagdata {
           // Eventuell vorhandene Relationen kopieren
           if (($this->tableRelations($strTableName,$arrRelations) != 0) && ($intCheck == 0)){
 			foreach ($arrRelations AS $elem) {
-              if (($elem['type'] != "3") && ($elem['type'] != "5") && ($elem['type'] != "1")) {
-                // Ist Feld nicht auf "None" oder "*" gesetzt?
+              if (($elem['type'] != "3") && ($elem['type'] != "5") && ($elem['type'] != "1") && ($elem['type'] != "4")) {
+				// Ist Feld nicht auf "None" oder "*" gesetzt?
                 if ($arrData[$i][$elem['fieldName']] == 1) {
                   $strSQL = "SELECT `idSlave` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
                   $booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
@@ -471,7 +468,7 @@ class nagdata {
                     }
                   }
                 }
-              } else if (($elem['type'] != "5") && ($elem['type'] != "1")) {
+              } else if (($elem['type'] != "5") && ($elem['type'] != "1") && ($elem['type'] != "4")) {
                 // Ist Feld nicht auf "None" oder "*" gesetzt?
                 if ($arrData[$i][$elem['fieldName']] == 1) {
                   $strSQL = "SELECT `idSlave`,`idSort`,`idTable` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
@@ -485,7 +482,7 @@ class nagdata {
                     }
                   }
                 }
-              } else if ($elem['type'] != "1") {
+              } else if (($elem['type'] != "1") && ($elem['type'] != "4")) {
                 // Ist Feld nicht auf "None" oder "*" gesetzt?
                 if ($arrData[$i][$elem['fieldName']] == 1) {
                   $strSQL = "SELECT `idSlaveH`,`idSlaveHG`,`idSlaveS` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
@@ -499,7 +496,27 @@ class nagdata {
                     }
                   }
                 }
-              }
+              } else if ($elem['type'] == "4") {
+				// Ist Feld nicht auf "None" oder "*" gesetzt?
+                if ($arrData[$i][$elem['fieldName']] == 1) {
+                  $strSQL = "SELECT `idSlave` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
+                  $booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
+                  if ($intRelDataCount != 0) {
+                    for ($y=0;$y<$intRelDataCount;$y++) {
+                      // Variabeln neu eintragen
+					  $strSQLVar = "SELECT * FROM tbl_variabledefinition WHERE id=".$arrRelData[$y]['idSlave'];
+					  $booReturn = $this->myDBClass->getDataArray($strSQLVar,$arrVarData,$intVarDataCount);
+					  $strSQLIns = "INSERT INTO tbl_variabledefinition SET name='".$arrVarData[0]['name']."', value='".$arrVarData[0]['value']."', last_modified=NOW()";
+					  $booReturn = $this->myDBClass->insertData($strSQLIns);
+					  if ($booReturn == false) $intCheck++;
+					  // Link neu eintragen
+					  $strSQLRel = "INSERT INTO `".$elem['linktable']."` SET `idMaster`=$intMasterId, `idSlave`=".$this->myDBClass->intLastId;
+                      $booReturn   = $this->myDBClass->insertData($strSQLRel);
+                      if ($booReturn == false) $intCheck++;
+                    }
+                  }
+                }
+			  }
             }
           }
           // Untertabellenwerte bei tbl_timeperiod kopieren

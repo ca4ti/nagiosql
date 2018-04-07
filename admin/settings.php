@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Settings configuration
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 708 $
-// SVN-ID    : $Id: settings.php 708 2009-04-28 13:02:27Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -36,20 +33,20 @@ require("../functions/prepend_adm.php");
 // Import translation function
 require("../functions/translator.php");
 // Parameter
-$txtBasePath    = isset($_POST['txtBasePath'])    ? $myVisClass->addSlash($_POST['txtBasePath'])    : $SETS['path']['physical'];
-$txtRootPath    = isset($_POST['txtRootPath'])    ? $myVisClass->addSlash($_POST['txtRootPath'])    : $SETS['path']['root'];
+$txtBasePath    = isset($_POST['txtBasePath'])    ? $myVisClass->addSlash(htmlspecialchars($_POST['txtBasePath']))    : $SETS['path']['physical'];
+$txtRootPath    = isset($_POST['txtRootPath'])    ? $myVisClass->addSlash(htmlspecialchars($_POST['txtRootPath']))    : $SETS['path']['root'];
 $selProtocol    = isset($_POST['selProtocol'])    ? $_POST['selProtocol']                           : $SETS['path']['protocol'];
-$txtTempdir     = isset($_POST['txtTempdir'])     ? $_POST['txtTempdir']                            : $SETS['path']['tempdir'];
+$txtTempdir     = isset($_POST['txtTempdir'])     ? htmlspecialchars($_POST['txtTempdir'])                            : $SETS['path']['tempdir'];
 $selLanguage    = isset($_POST['selLanguage'])    ? $_POST['selLanguage']                           : $SETS['data']['locale'];
-$txtEncoding    = isset($_POST['txtEncoding'])    ? $_POST['txtEncoding']                           : $SETS['data']['encoding'];
-$txtDBserver    = isset($_POST['txtDBserver'])    ? $_POST['txtDBserver']                           : $SETS['db']['server'];
-$txtDBport      = isset($_POST['txtDBport'])      ? $_POST['txtDBport']                             : $SETS['db']['port'];
-$txtDBname      = isset($_POST['txtDBname'])      ? $_POST['txtDBname']                             : $SETS['db']['database'];
-$txtDBuser      = isset($_POST['txtDBuser'])      ? $_POST['txtDBuser']                             : $SETS['db']['username'];
-$txtDBpass      = isset($_POST['txtDBpass'])      ? $_POST['txtDBpass']                             : $SETS['db']['password'];
-$txtLogoff      = isset($_POST['txtLogoff'])      ? $_POST['txtLogoff']                             : $SETS['security']['logofftime'];
+$txtEncoding    = isset($_POST['txtEncoding'])    ? htmlspecialchars($_POST['txtEncoding'])                           : $SETS['data']['encoding'];
+$txtDBserver    = isset($_POST['txtDBserver'])    ? htmlspecialchars($_POST['txtDBserver'])                           : $SETS['db']['server'];
+$txtDBport      = isset($_POST['txtDBport'])      ? htmlspecialchars($_POST['txtDBport'])                             : $SETS['db']['port'];
+$txtDBname      = isset($_POST['txtDBname'])      ? htmlspecialchars($_POST['txtDBname'])                             : $SETS['db']['database'];
+$txtDBuser      = isset($_POST['txtDBuser'])      ? htmlspecialchars($_POST['txtDBuser'])                             : $SETS['db']['username'];
+$txtDBpass      = isset($_POST['txtDBpass'])      ? htmlspecialchars($_POST['txtDBpass'])                             : $SETS['db']['password'];
+$txtLogoff      = isset($_POST['txtLogoff'])      ? htmlspecialchars($_POST['txtLogoff'])                             : $SETS['security']['logofftime'];
 $selWSAuth      = isset($_POST['selWSAuth'])      ? $_POST['selWSAuth']                             : $SETS['security']['wsauth'];
-$txtLines       = isset($_POST['txtLines'])       ? $_POST['txtLines']                              : $SETS['common']['pagelines'];
+$txtLines       = isset($_POST['txtLines'])       ? htmlspecialchars($_POST['txtLines'])                              : $SETS['common']['pagelines'];
 $selSeldisable  = isset($_POST['selSeldisable'])  ? $_POST['selSeldisable']                         : $SETS['common']['seldisable'];
 // Always set magic_quotes_gpc to the current value
 if (ini_get('magic_quotes_gpc') == "" ) {
@@ -93,14 +90,12 @@ if ( (isset($_POST)) AND (isset($_POST['selLanguage']))) {
     fwrite($filSet,";\n");
     fwrite($filSet,";///////////////////////////////////////////////////////////////////////////////\n");
     fwrite($filSet,";\n");
-    fwrite($filSet,"; (c) 2008, 2009 by Martin Willisegger\n");
-    fwrite($filSet,";\n");
     fwrite($filSet,"; Project  : NagiosQL\n");
     fwrite($filSet,"; Component: Database Configuration\n");
     fwrite($filSet,"; Website  : http://www.nagiosql.org\n");
     fwrite($filSet,"; Date     : ".date("F j, Y, g:i a")."\n");
-    fwrite($filSet,"; Version  : 3.0.3\n");
-    fwrite($filSet,"; \$LastChangedRevision: 708 $\n");
+    fwrite($filSet,"; Version  : 3.0.4\n");
+    fwrite($filSet,"; \$LastChangedRevision: 827 $\n");
     fwrite($filSet,";\n");
     fwrite($filSet,";///////////////////////////////////////////////////////////////////////////////\n");
     fwrite($filSet,"[db]\n");

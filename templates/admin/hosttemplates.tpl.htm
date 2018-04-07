@@ -1,13 +1,10 @@
-<!-- (c) 2008, 2009 by Martin Willisegger	-->					
-<!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : hosttemplate template -->
 <!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $ -->
+<!-- Date       : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $ -->
 <!-- Author     : $LastChangedBy: rouven $ -->
-<!-- Version    : 3.0.3 -->
-<!-- Revision   : $LastChangedRevision: 708 $ -->
-<!-- SVN-ID     : $Id: hosttemplates.tpl.htm 708 2009-04-28 13:02:27Z rouven $ -->
+<!-- Version    : 3.0.4 -->
+<!-- Revision   : $LastChangedRevision: 827 $ -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -139,7 +136,7 @@
           <tr>
             <td width="205"><select name="selParents[]" size="4" multiple id="selParents" style="width:205px;" {SELECT_FIELD_DISABLED}>
 <!-- BEGIN parents -->
-        		<option value="{DAT_PARENTITEM_ID}" {dat_parentitem_sel}>{DAT_PARENTITEM}</option>
+        		<option value="{DAT_PARENTITEM_ID}" {DAT_PARENTITEM_SEL}>{DAT_PARENTITEM}</option>
 <!-- END parents -->
               </select>            </td>
             <td valign="top" style="padding-left:1px"><img id="mutparents" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer" ><br><br>&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','parents','all','Info')" style="vertical-align:text-bottom; padding-bottom:2px!" ></td>
@@ -635,7 +632,7 @@
       <td>{LANG_NOTIFICATION_INTERVAL}</td>
       <td><input name="tfNotifInterval" type="text" id="tfNotifInterval" value="{DAT_NOTIFICATION_INTERVAL}" style="width:100px" >        &nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_intervall','all','Info')" style="vertical-align:text-bottom; padding-bottom:2px!" ></td>
 	  <td>{LANG_FIRST_NOTIFICATION_DELAY}</td>
-	  <td><input name="tfFirstNotifDelay" type="text" id="tfFirstNotifDelay" value="{DAT_FIRST_NOTIFICATION_DELAY}" style="width:100px" > %&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','first_notification_delay','all','Info')" style="vertical-align:text-bottom; padding-bottom:2px!" ></td>
+	  <td><input name="tfFirstNotifDelay" type="text" id="tfFirstNotifDelay" value="{DAT_FIRST_NOTIFICATION_DELAY}" style="width:100px" >&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','first_notification_delay','all','Info')" style="vertical-align:text-bottom; padding-bottom:2px!" ></td>
     </tr>
  	<tr>
       <td>{LANG_NOTIFICATION_ENABLED}</td>

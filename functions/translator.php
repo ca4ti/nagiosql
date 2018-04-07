@@ -5,16 +5,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008, 2009 by Martin Willisegger
-//
 // Project   : NagiosQL
 // Component : Translation Functions
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2009-05-14 10:19:05 +0200 (Do, 14. Mai 2009) $
+// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.3
-// Revision  : $LastChangedRevision: 714 $
-// SVN-ID    : $Id: translator.php 714 2009-05-14 08:19:05Z rouven $
+// Version   : 3.0.4
+// Revision  : $LastChangedRevision: 827 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -76,18 +73,22 @@ function getLanguageData() {
   $supportedLanguages['ru_RU']['description'] = gettext('Russian');
   $supportedLanguages['ru_RU']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
 
-	// Spanish
-	$supportedLanguages['es_ES']['description'] = gettext('Spanish');
-	$supportedLanguages['es_ES']['nativedescription'] = 'Espa&#241;ol';
+  // Spanish
+  $supportedLanguages['es_ES']['description'] = gettext('Spanish');
+  $supportedLanguages['es_ES']['nativedescription'] = 'Espa&#241;ol';
+
+  // Brazilian Portuguese
+  $supportedLanguages['pt_BR']['description'] = gettext('Portuguese (Brazilian)');
+  $supportedLanguages['pt_BR']['nativedescription'] = 'Portugu&#234;s do Brasil';
+  
+  // Japanese
+  $supportedLanguages['ja_JP']['description'] = gettext('Japanese');
+  $supportedLanguages['ja_JP']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
 
 // Postponed until 3.1.0
 //  // Spanish (Argentina)
 //  $supportedLanguages['es_AR']['description'] = gettext('Spanish (Argentina)');
 //  $supportedLanguages['es_AR']['nativedescription'] = 'Espa&#241;ol Argentina';
-//
-//  // Brazilian Portuguese
-//  $supportedLanguages['pt_BR']['description'] = gettext('Portuguese (Brazilian)');
-//  $supportedLanguages['pt_BR']['nativedescription'] = 'Portugu&#234;s do Brasil';
 //
 //  // Dutch
 //  $supportedLanguages['nl_NL']['description'] = gettext('Dutch');
@@ -172,9 +173,6 @@ function getLanguageData() {
   //  $supportedLanguages['id']['description'] = gettext('Indonesian');
   //  $supportedLanguages['id']['nativedescription'] = 'Bahasa Indonesia';
   //
-  //  // Japanese
-  //  $supportedLanguages['ja']['description'] = gettext('Japanese');
-  //  $supportedLanguages['ja']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
   //
   //  // Lithuanian
   //  $supportedLanguages['lt']['description'] = gettext('Lithuanian');

@@ -5,16 +5,13 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
---  (c) 2008, 2009 by Martin Willisegger
---
 --  Project   : NagiosQL
 --  Component : Complete Database
 --  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2009-05-20 15:40:00 +0200 (Mi, 20. Mai 2009) $
+--  Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
 --  Author    : $LastChangedBy: rouven $
---  Version   : 3.0.3
---  Revision  : $LastChangedRevision: 719 $
---  SVN-ID    : $Id: nagiosQL_v3_db_mysql.sql 719 2009-05-20 13:40:00Z rouven $
+--  Version   : 3.0.4
+--  Revision  : $LastChangedRevision: 827 $
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
@@ -2322,4 +2319,4 @@ CREATE TABLE IF NOT EXISTS `tbl_settings` (
 -- Daten für Tabelle `tbl_settings`
 --
 
-INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES ('', 'db', 'version', '3.0.3');
+INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES ('', 'db', 'version', '3.0.4');
