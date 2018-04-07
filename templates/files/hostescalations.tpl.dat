@@ -1,9 +1,8 @@
-<!-- BEGIN config -->
-###############################################################################
+<!-- BEGIN config -->###############################################################################
 #
 # Host escalations configuration file
 #
-# Created by: Nagios QL Version 3.0.4
+# Created by: Nagios QL Version {NAGIOS_QL_VERSION}
 # Date:	      {CREATE_DATE}
 # Version:    {VERSION}
 #
@@ -14,7 +13,7 @@
 <!-- BEGIN configset -->
 define hostescalation {
 <!-- BEGIN configline -->	{ITEM_TITLE}	{ITEM_VALUE}
-<!-- END configline -->	}	
+<!-- END configline -->}	
 <!-- END configset -->
 ###############################################################################
 #

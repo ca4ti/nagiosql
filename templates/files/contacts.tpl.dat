@@ -1,9 +1,8 @@
-<!-- BEGIN config -->
-###############################################################################
+<!-- BEGIN config -->###############################################################################
 #
 # Contact configuration file
 #
-# Created by: Nagios QL Version 3.0.4
+# Created by: Nagios QL Version {NAGIOS_QL_VERSION}
 # Date:	      {CREATE_DATE}
 # Version:    {VERSION}
 #

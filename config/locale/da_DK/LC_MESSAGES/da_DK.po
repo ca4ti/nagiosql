@@ -1,0 +1,3205 @@
+# #############################################################################
+# #
+# # Project   : NagiosQL
+# # Component : Translation File Danish
+# # Website   : http://www.nagiosql.org
+# # Date      : $LastChangedDate: 2011-04-10 16:59:17 +0200 (So, 10. Apr 2011) $
+# # Author    : $LastChangedBy: rouven $
+# # Version   : 3.1.1
+# # Revision  : $LastChangedRevision: 1069 $
+# #
+# #############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: NagiosQL 3.1.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-10 15:15+0100\n"
+"PO-Revision-Date: 2011-04-10 15:15+0100\n"
+"Last-Translator: NagiosQL <http://www.nagiosql.org>\n"
+"Language-Team: NagiosQL Team <www.nagiosql.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: da_DK\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.1.5\n"
+"Language: da_DK\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate\n"
+"X-Poedit-Basepath: C:\\Development\\NagiosQL3.1\\\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin.php:42
+msgid "NagiosQL Administration"
+msgstr "NagiosQL administration"
+
+#: admin.php:45
+msgid "Welcome to NagiosQL, the administration module that can be used to easily create, modify and delete configuration files for Nagios and Icinga. The data is stored in a MySQL database and can be written directly to the standard files at any time you want."
+msgstr "Velkommen til NagiosQL, administrationsmodulet der kan bruges til nemt at oprette, ændre og slette konfigurationsfiler til Nagios og Icinga. Data gemmes i en MySQL database og kan skrives direkte til standardfilerne når du vil."
+
+#: admin.php:68
+msgid "Could not connect to Updateserver"
+msgstr "Kunne ikke forbinde til Updateserver"
+
+#: admin.php:69
+msgid "Error"
+msgstr "Fejl"
+
+#: admin.php:103
+msgid "An error occured during the version check"
+msgstr "Der opstod en fejl ved versionskontrollen"
+
+#: admin.php:111
+msgid "Checking for NagiosQL Updates"
+msgstr "Søger efter NagiosQL opdateringer"
+
+#: admin.php:113
+msgid "Installed"
+msgstr "Installeret"
+
+#: admin.php:114
+msgid "Available"
+msgstr "Tilgængelig"
+
+#: admin.php:115
+msgid "Information"
+msgstr "Information"
+
+#: admin.php:123
+msgid "You already have the latest version installed"
+msgstr "Du har allerede den nyeste version installeret"
+
+#: admin.php:129
+msgid "You already have the latest development version installed"
+msgstr "Du har allerede den nyeste udviklingsversion installeret"
+
+#: admin.php:134
+msgid "You are using an older development version. Please update to the latest development version"
+msgstr "Du bruger en ældre udviklingsversion. Opdatér venligst til den nyeste udviklingsversion"
+
+#: admin.php:142
+msgid "You are using an old NagiosQL version. Please update to the latest stable version"
+msgstr "Du bruger en gammel NagiosQL version. Opdatér venligst til den nyeste stabile version"
+
+#: index.php:48
+msgid "Welcome to"
+msgstr "Velkommen til"
+
+#: index.php:49
+msgid "Welcome"
+msgstr "Velkommen"
+
+#: index.php:50
+msgid "Please enter your username and password to access NagiosQL.<br>If you forgot one of them, please contact your Administrator."
+msgstr "Indtast venligst dit brugernavn og adgangskode for at tilgå NagiosQL.<br>Hvis du har glemt en af dem, kontakt da venligst din administrator."
+
+#: index.php:51
+msgid "Username"
+msgstr "Brugernavn"
+
+#: index.php:52
+msgid "Password"
+msgstr "Adgangskode"
+
+#: index.php:53
+msgid "Login"
+msgstr "Log ind"
+
+#: admin/administration.php:37
+msgid "Administration"
+msgstr "Administration"
+
+#: admin/administration.php:40
+msgid "Functions to administrate NagiosQL V3"
+msgstr "Funktioner til at administrere NagiosQL V3"
+
+#: admin/alarming.php:37
+msgid "Alarming"
+msgstr "Alarmering"
+
+#: admin/alarming.php:40
+msgid "To define contact data, contact templates and contact groups and time periods."
+msgstr "Her defineres kontaktdata, kontakt-skabeloner, kontaktgrupper, og tidsrammer."
+
+#: admin/alarming.php:41
+#: admin/commands.php:41
+msgid "Statistical datas"
+msgstr "Statistiske data"
+
+#: admin/alarming.php:42
+#: admin/commands.php:42
+msgid "Group"
+msgstr "Gruppe"
+
+#: admin/alarming.php:43
+#: admin/commands.php:43
+msgid "Active"
+msgstr "Aktive"
+
+#: admin/alarming.php:44
+#: admin/commands.php:44
+msgid "Inactive"
+msgstr "Inaktive"
+
+#: admin/alarming.php:48
+msgid "Contact data"
+msgstr "Kontaktdata"
+
+#: admin/alarming.php:52
+msgid "Contact groups"
+msgstr "Kontaktgrupper"
+
+#: admin/alarming.php:56
+msgid "Time periods"
+msgstr "Tidsrammer"
+
+#: admin/alarming.php:60
+msgid "Contact templates"
+msgstr "Kontakt-skabeloner"
+
+#: admin/cgicfg.php:66
+#: admin/cgicfg.php:84
+msgid "Configuration file successfully written!"
+msgstr "Konfigurationsfiler blev skrevet korrekt!"
+
+#: admin/cgicfg.php:67
+#: admin/cgicfg.php:85
+msgid "Configuration successfully written:"
+msgstr "Konfiguration blev skrevet korrekt:"
+
+#: admin/cgicfg.php:69
+msgid "Cannot open/overwrite the configuration file (check the permissions)!"
+msgstr "Kan ikke åbne/overskrive konfigurationsfilen (tjek rettigheder)!"
+
+#: admin/cgicfg.php:70
+msgid "Configuration write failed:"
+msgstr "Konfigurationsskrivning mislykkedes:"
+
+#: admin/cgicfg.php:88
+msgid "Cannot open/overwrite the configuration file (check the permissions on remote system)!"
+msgstr "Kan ikke åbne/overskrive konfigurationsfilen (tjek rettighederne på fjernsystemet)!"
+
+#: admin/cgicfg.php:89
+msgid "Configuration write failed (remote):"
+msgstr "Konfigurationsskrivning mislykkedes (fjern):"
+
+#: admin/cgicfg.php:101
+msgid "CGI configuration file"
+msgstr "CGI konfigurationsfil"
+
+#: admin/cgicfg.php:124
+msgid "Cannot open the data file (check the permissions)!"
+msgstr "Kan ikke åbne datafilen (tjek rettigheder)!"
+
+#: admin/cgicfg.php:139
+msgid "Cannot open the temporary file"
+msgstr "Kan ikke åbne den midlertidige fil"
+
+#: admin/cgicfg.php:143
+msgid "Configuration read failed (remote):"
+msgstr "Læsning af konfigurationen mislykkedes (fjern):"
+
+#: admin/checkcommands.php:79
+msgid "New command inserted:"
+msgstr "Ny kommando indsat:"
+
+#: admin/checkcommands.php:80
+msgid "Command modified:"
+msgstr "Kommando ændret:"
+
+#: admin/checkcommands.php:84
+#: admin/contactgroups.php:113
+#: admin/contacts.php:262
+#: admin/contacttemplates.php:262
+#: admin/domain.php:180
+#: admin/group.php:98
+msgid "Database entry failed! Not all necessary data filled in!"
+msgstr "Database-skrivning mislykkedes! Ikke alle nødvendige data blev skrevet!"
+
+#: admin/checkcommands.php:123
+#: admin/checkcommands.php:232
+#: admin/checkcommands.php:250
+#: admin/contactgroups.php:152
+#: admin/contactgroups.php:277
+#: admin/contactgroups.php:295
+#: admin/contacts.php:301
+#: admin/contacts.php:500
+#: admin/contacts.php:518
+#: admin/contacttemplates.php:301
+#: admin/contacttemplates.php:498
+#: admin/contacttemplates.php:516
+#: admin/domain.php:202
+#: admin/domain.php:371
+#: admin/domain.php:389
+#: admin/group.php:115
+#: admin/group.php:198
+#: admin/group.php:216
+msgid "Error while selecting data from database:"
+msgstr "Fejl ved udtræk af data fra databasen:"
+
+#: admin/checkcommands.php:129
+#: admin/contactgroups.php:158
+#: admin/contacts.php:307
+#: admin/contacttemplates.php:307
+#: admin/domain.php:208
+msgid "No permission to open configuration!"
+msgstr "Ingen rettigheder til at åbne konfigurationen!"
+
+#: admin/checkcommands.php:154
+msgid "Command definitions"
+msgstr "Kommando-definitioner"
+
+#: admin/checkcommands.php:171
+#: admin/contactgroups.php:210
+#: admin/contacts.php:390
+#: admin/contacttemplates.php:390
+msgid "Saving not possible!"
+msgstr "Kan ikke gemme!"
+
+#: admin/checkcommands.php:176
+msgid "unclassified"
+msgstr "uklassificeret"
+
+#: admin/checkcommands.php:177
+msgid "check command"
+msgstr "tjek kommando"
+
+#: admin/checkcommands.php:178
+msgid "misc command"
+msgstr "div kommando"
+
+#: admin/checkcommands.php:192
+#: admin/contactgroups.php:240
+#: admin/contacttemplates.php:450
+msgid "Entry cannot be activated because it is used by another configuration"
+msgstr "Emnet kan ikke aktiveres da det bruges af en anden konfiguration"
+
+#: admin/checkcommands.php:212
+msgid "Command name"
+msgstr "Kommandonavn"
+
+#: admin/checkcommands.php:213
+msgid "Command line"
+msgstr "Kommandolinje"
+
+#: admin/checkcommands.php:244
+#: admin/contactgroups.php:289
+#: admin/contacts.php:512
+#: admin/contacttemplates.php:510
+#: admin/domain.php:383
+#: admin/group.php:210
+msgid "No data"
+msgstr "Ingen data"
+
+#: admin/checkcommands.php:256
+#: admin/contactgroups.php:301
+#: admin/contacts.php:524
+#: admin/contacttemplates.php:522
+#: admin/domain.php:395
+#: admin/group.php:222
+msgid "No"
+msgstr "Nej"
+
+#: admin/checkcommands.php:256
+#: admin/contactgroups.php:301
+#: admin/contacts.php:524
+#: admin/contacttemplates.php:522
+#: admin/domain.php:395
+#: admin/group.php:222
+msgid "Yes"
+msgstr "Ja"
+
+#: admin/checkcommands.php:301
+#: admin/contactgroups.php:346
+#: admin/contacts.php:568
+#: admin/contacttemplates.php:566
+msgid "Last database update:"
+msgstr "Sidste database-opdatering:"
+
+#: admin/checkcommands.php:302
+#: admin/contactgroups.php:347
+#: admin/contacts.php:569
+#: admin/contacttemplates.php:567
+msgid "Last change of the configuration file:"
+msgstr "Sidste ændring af konfigurationsfilen:"
+
+#: admin/commands.php:37
+#: admin/commands.php:48
+msgid "Check commands"
+msgstr "Tjek-kommandoer"
+
+#: admin/commands.php:40
+msgid "To define check and misc commands, notification commands and special commands."
+msgstr "Her defineres tjek og div. kommandoer, notifikations-kommandoer og specielle kommandoer.Her defineres tjek og div. kommandoer, notifikations-kommandoer og specielle kommandoer."
+
+#: admin/contactgroups.php:86
+msgid "New contact group inserted:"
+msgstr "Ny kontaktgruppe indsat:"
+
+#: admin/contactgroups.php:87
+msgid "Contact group modified:"
+msgstr "Kontaktgruppe ændret:"
+
+#: admin/contactgroups.php:183
+msgid "Define contact groups (contactgroups.cfg)"
+msgstr "Definér kontaktgrupper (contactgroups.cfg)"
+
+#: admin/contactgroups.php:194
+msgid "Attention, no contacts defined!"
+msgstr "Bemærk! Ingen kontakter defineret!"
+
+#: admin/contactgroups.php:257
+msgid "Contact group"
+msgstr "Kontaktgruppe"
+
+#: admin/contactgroups.php:258
+#: admin/contacts.php:476
+#: admin/contacttemplates.php:475
+#: admin/domain.php:362
+#: admin/group.php:187
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: admin/contacts.php:175
+msgid "New contact inserted:"
+msgstr "Ny kontakt indsat:"
+
+#: admin/contacts.php:176
+msgid "Contact modified:"
+msgstr "Kontakt ændret:"
+
+#: admin/contacts.php:332
+msgid "Define contacts (contacts.cfg)"
+msgstr "Definér kontakter (contacts.cfg)"
+
+#: admin/contacts.php:368
+msgid "Attention, no time periods defined!"
+msgstr "Bemærk! Ingen tidsrammer defineret!"
+
+#: admin/contacts.php:374
+msgid "Attention, no commands defined!"
+msgstr "Bemærk! Ingen kommandoer defineret!"
+
+#: admin/contacts.php:451
+msgid "Entry cannot be deactivated because it is used by another configuration"
+msgstr "Emnet kan ikke deaktiveres da det bruges af en anden konfiguration"
+
+#: admin/contacts.php:475
+#: admin/contacttemplates.php:474
+msgid "Contact name"
+msgstr "Kontaktnavn"
+
+#: admin/contacttemplates.php:175
+msgid "New contact template inserted:"
+msgstr "Ny kontaktskabelon indsat:"
+
+#: admin/contacttemplates.php:176
+msgid "Contact template modified:"
+msgstr "Kontaktskabelon ændret:"
+
+#: admin/contacttemplates.php:332
+msgid "Define contact templates (contacttemplates.cfg)"
+msgstr "Definér kontaktskabeloner (contacttemplates.cfg)"
+
+#: admin/delbackup.php:54
+#: admin/delconfig.php:54
+msgid "Could not open directory"
+msgstr "Kunne ikke åbne mappen"
+
+#: admin/delbackup.php:88
+#: admin/delconfig.php:88
+msgid "File deleted"
+msgstr "Filen er slettet"
+
+#: admin/delbackup.php:89
+#: admin/delconfig.php:89
+msgid "successfully deleted"
+msgstr "korrekt slettet"
+
+#: admin/delbackup.php:91
+#: admin/delconfig.php:91
+msgid "could not be deleted (check the permissions)"
+msgstr "kunne ikke slettes (tjek rettigheder)"
+
+#: admin/delbackup.php:103
+msgid "Delete backup files"
+msgstr "Slet backupfiler"
+
+#: admin/delbackup.php:106
+#: admin/delconfig.php:106
+msgid "Filter string"
+msgstr "Filtrér streng"
+
+#: admin/delbackup.php:107
+#: admin/delconfig.php:107
+msgid "Search"
+msgstr "Søg"
+
+#: admin/delbackup.php:108
+#: admin/delbackup.php:113
+#: admin/delconfig.php:108
+#: admin/delconfig.php:113
+#: admin/group.php:188
+msgid "Delete"
+msgstr "Slet"
+
+#: admin/delbackup.php:109
+#: admin/delconfig.php:109
+msgid "Reset filter"
+msgstr "Nulstil filter"
+
+#: admin/delbackup.php:111
+#: admin/delconfig.php:111
+msgid "Backup file"
+msgstr "Backupfil"
+
+#: admin/delbackup.php:112
+#: admin/delconfig.php:112
+msgid "required"
+msgstr "påkrævet"
+
+#: admin/delbackup.php:114
+#: admin/delconfig.php:114
+msgid "Abort"
+msgstr "Afbryd"
+
+#: admin/delbackup.php:115
+#: admin/delconfig.php:115
+msgid "Hold CTRL to select<br>more than one entry"
+msgstr "Hold CTRL tasten nede<br>for mere end et emne"
+
+#: admin/delconfig.php:103
+msgid "Delete config files"
+msgstr "Slet konfig. filer"
+
+#: admin/domain.php:96
+#: admin/domain.php:101
+#: admin/domain.php:106
+#: admin/domain.php:111
+#: admin/domain.php:116
+#: admin/domain.php:121
+#: admin/domain.php:128
+#: admin/domain.php:132
+msgid "is not writeable"
+msgstr "er ikke skrivbar"
+
+#: admin/domain.php:127
+msgid "Nagios config file"
+msgstr "Nagios konfig. fil"
+
+#: admin/domain.php:138
+msgid "SSH module not loaded!"
+msgstr "SSH modulet er ikke indlæst!"
+
+#: admin/domain.php:143
+msgid "FTP module not loaded!"
+msgstr "FTP modulet er ikke indlæst!"
+
+#: admin/domain.php:150
+msgid "Warning, at least one error occured, please check!"
+msgstr "Advarsel! Der opstod mindst én fejl. Kontrollér venligst!"
+
+#: admin/domain.php:177
+msgid "New Domain inserted:"
+msgstr "Nyt domæne indsat:"
+
+#: admin/domain.php:178
+msgid "Domain modified:"
+msgstr "Domæne ændret:"
+
+#: admin/domain.php:189
+msgid "Localhost can't be deleted"
+msgstr "Localhost kan ikke slettes"
+
+#: admin/domain.php:226
+msgid "Domain administration"
+msgstr "Domæne administration"
+
+#: admin/domain.php:241
+msgid "In order for a user to get access, he needs to be member of the group selected here."
+msgstr "For at en bruger kan få adgang skal han være medlem af denne valgte gruppe.For at en bruger kan få adgang skal han være medlem af denne valgte gruppe."
+
+#: admin/domain.php:248
+#: admin/group.php:164
+msgid "Please fill in all fields marked with an *"
+msgstr "Udfyld venligst alle felter markeret med en *"
+
+#: admin/domain.php:249
+#: admin/group.php:165
+msgid "The following field contains not permitted characters:"
+msgstr "Det følgende felt indeholder ugyldige tegn:"
+
+#: admin/domain.php:251
+msgid "Enable"
+msgstr "Aktiver"
+
+#: admin/domain.php:252
+msgid "Disable"
+msgstr "Deaktiver"
+
+#: admin/domain.php:361
+msgid "Domain"
+msgstr "Domæne"
+
+#: admin/download.php:67
+msgid "Download"
+msgstr "Download"
+
+#: admin/group.php:69
+msgid "A new group added:"
+msgstr "En ny gruppe tilføjet:"
+
+#: admin/group.php:70
+msgid "User modified:"
+msgstr "Bruger ændret:"
+
+#: admin/group.php:128
+msgid "Group administration"
+msgstr "Gruppe-administration"
+
+#: admin/group.php:159
+msgid "Read"
+msgstr "Læs"
+
+#: admin/group.php:160
+msgid "Write"
+msgstr "Skriv"
+
+#: admin/group.php:161
+msgid "Link"
+msgstr "Link"
+
+#: admin/group.php:186
+msgid "Groupname"
+msgstr "Gruppenavn"
+
+#: admin/group.php:190
+msgid "Copy"
+msgstr "Kopiér"
+
+#: admin/group.php:192
+msgid "Do you really want to delete this database entry:"
+msgstr "Ønsker du virkelig at slette denne database-indgang:"
+
+#: admin/group.php:193
+msgid "Do you really want to delete all marked entries?"
+msgstr "Ønsker du virkelig at slette alle markerede indgange?"
+
+#: admin/helpedit.php:80
+msgid "Help text editor"
+msgstr "Hjælpe-tekst editor"
+
+#: admin/helpedit.php:91
+msgid "Main key"
+msgstr "Primær nøgle"
+
+#: admin/helpedit.php:92
+msgid "Sub key"
+msgstr "Under-nøgle"
+
+#: admin/helpedit.php:93
+msgid "Language"
+msgstr "Sprog"
+
+#: admin/helpedit.php:94
+msgid "Nagios version"
+msgstr "Nagios version"
+
+#: admin/helpedit.php:95
+msgid "Load default text"
+msgstr "Indlæs standardtekst"
+
+#: admin/hostdependencies.php:108
+msgid "New host dependency inserted:"
+msgstr "Ny værts-afhængighed indsat:"
+
+#: admin/hostdependencies.php:109
+msgid "Host dependency modified:"
+msgstr "Værts-afhængighed ændret:"
+
+#: admin/hostdependencies.php:227
+msgid "Define host dependencies (hostdependencies.cfg)"
+msgstr "Definer værts-afhængigheder (hostdependencies.cfg)"
+
+#: admin/hostdependencies.php:251
+#: admin/hostescalations.php:234
+msgid "Attention, no hosts and hostgroups defined!"
+msgstr "Bemærk! Ingen værter eller værtsgrupper defineret!"
+
+#: admin/hostdependencies.php:308
+#: admin/hostescalations.php:299
+msgid "Config name"
+msgstr "Konfig. navn"
+
+#: admin/hostdependencies.php:309
+msgid "Dependent hosts"
+msgstr "Afhængige værter"
+
+#: admin/hostdependencies.php:309
+msgid "Dependent hostgroups"
+msgstr "Afhængige værtsgrupper"
+
+#: admin/hostescalations.php:102
+msgid "New host escalation inserted:"
+msgstr "Ny værts-eskalering indsat:"
+
+#: admin/hostescalations.php:103
+msgid "Host escalation modified:"
+msgstr "Værts-eskalering ændret:"
+
+#: admin/hostescalations.php:220
+msgid "Define host escalation (hostescalations.cfg)"
+msgstr "Definer værts-eskalering (hostescalations.cfg)"
+
+#: admin/hostescalations.php:245
+msgid "Attention, no contacts and contactgroups defined!"
+msgstr "Bemærk! Ingen kontakter eller kontaktgrupper defineret!"
+
+#: admin/hostescalations.php:300
+#: admin/monitoring.php:48
+msgid "Hosts"
+msgstr "Værter"
+
+#: admin/hostescalations.php:300
+#: admin/monitoring.php:56
+msgid "Host groups"
+msgstr "Værtsgrupper"
+
+#: admin/hostextinfo.php:94
+msgid "New host extended information inserted:"
+msgstr "Ny udvidet værts-information indsat:"
+
+#: admin/hostextinfo.php:95
+msgid "Host extended information modified:"
+msgstr "Udvidet værts-information ændret:"
+
+#: admin/hostextinfo.php:169
+msgid "Define host extended information (hostextinfo.cfg)"
+msgstr "Definer udvidet værts-information (hostextinfo.cfg)"
+
+#: admin/hostextinfo.php:180
+#: admin/hostgroups.php:201
+msgid "Attention, no hosts defined!"
+msgstr "Bemærk! Ingen værter defineret!"
+
+#: admin/hostextinfo.php:219
+#: admin/hosts.php:641
+msgid "Host name"
+msgstr "Værtsnavn"
+
+#: admin/hostextinfo.php:220
+msgid "Notes"
+msgstr "Noter"
+
+#: admin/hostgroups.php:93
+msgid "New host group inserted:"
+msgstr "Ny værtsgruppe indsat:"
+
+#: admin/hostgroups.php:94
+msgid "Host group modified:"
+msgstr "Værtsgruppe ændret:"
+
+#: admin/hostgroups.php:190
+msgid "Define host groups (hostgroups.cfg)"
+msgstr "Definer værtsgrupper (hostgroups.cfg)"
+
+#: admin/hostgroups.php:262
+msgid "Host group"
+msgstr "Værtsgruppe"
+
+#: admin/hosts.php:219
+msgid "New host inserted:"
+msgstr "Ny vært indsat:"
+
+#: admin/hosts.php:220
+msgid "Host modified:"
+msgstr "Vært ændret:"
+
+#: admin/hosts.php:265
+msgid "The assigned, no longer used configuration files were deleted successfully!"
+msgstr "De tilknyttede, ikke længere brugte konfigurationsfiler blev slettet korrekt!De tilknyttede, ikke længere brugte konfigurationsfiler blev slettet korrekt!"
+
+#: admin/hosts.php:266
+msgid "Host file deleted:"
+msgstr "Værtsfil slettet:"
+
+#: admin/hosts.php:269
+msgid "Common files cannot be removed from target systems - please check manually"
+msgstr "Grundlæggende filer kan ikke fjernes fra destinations-systemet - kontrollér venligst manueltGrundlæggende filer kan ikke fjernes fra destinations-systemet - kontrollér venligst manuelt"
+
+#: admin/hosts.php:271
+msgid "Errors while deleting the old configuration file - please check!:"
+msgstr "Fejl ved sletning af den gamle konfig. fil - kontrollér venligst!:"
+
+#: admin/hosts.php:455
+msgid "Define hosts (hosts.cfg)"
+msgstr "Definer værter (hosts.cfg)"
+
+#: admin/hosts.php:517
+msgid "Attention, no contact groups defined!"
+msgstr "Bemærk! Ingen kontaktgrupper defineret!"
+
+#: admin/hosts.php:710
+msgid "out-of-date"
+msgstr "ændret"
+
+#: admin/hosts.php:719
+msgid "up-to-date"
+msgstr "uændret"
+
+#: admin/hosts.php:720
+msgid "missed"
+msgstr "mangler"
+
+#: admin/hosttemplates.php:208
+msgid "New host template inserted:"
+msgstr "Ny værtsskabelon indsat:"
+
+#: admin/hosttemplates.php:209
+msgid "Host template modified:"
+msgstr "Værtsskabelon ændret:"
+
+#: admin/hosttemplates.php:373
+msgid "Host template definition (hosttemplates.cfg)"
+msgstr "Værtsskabelon definition (hosttemplates.cfg)"
+
+#: admin/hosttemplates.php:548
+msgid "Host template name"
+msgstr "Værtsskabelon navn"
+
+#: admin/import.php:92
+msgid "File upload error:"
+msgstr "Fil-upload fejl:"
+
+#: admin/import.php:100
+#: admin/import.php:112
+msgid "File imported - File [overwite flag]:"
+msgstr "Fil importeret - Fil [overskriv flag]:"
+
+#: admin/import.php:123
+msgid "Configuration import"
+msgstr "Konfigurationsimport"
+
+#: admin/import.php:131
+msgid "Template definition"
+msgstr "Skabelon definition"
+
+#: admin/import.php:132
+msgid "Import file"
+msgstr "Importér fil"
+
+#: admin/import.php:133
+msgid "Local import file"
+msgstr "Lokal importfil"
+
+#: admin/import.php:134
+msgid "Overwrite database"
+msgstr "Overskriv database"
+
+#: admin/import.php:135
+msgid "Import"
+msgstr "Importér"
+
+#: admin/import.php:138
+msgid "Hold CTRL to select<br>more than one"
+msgstr "Hold CTRL nede for at<br>vælge mere end én"
+
+#: admin/import.php:142
+msgid "To prevent errors or misconfigurations, you should import your configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br><span style=\"color:#FF0000\"><b>Check your configuration after import!</b><br>In cause of an error or an uncomplete configuration, re-importing the wrong configuration can solve the problem.</span>"
+msgstr "For at forhindre fejl og forkerte konfigurationer, skal du importere dine konfigurationer i en brugbar rækkefølge. Vi anbefaler følgende:<br><br><b><i>kommandoer -> tidsrammer -> kontaktskabeloner -> kontakter -> kontaktgrupper -> værtsskabeloner -> værter -> værtsgrupper -> serviceskabeloner -> services -> servicegrupper</i></b><br><br><span style=\"color:#FF0000\"><b>Kontrollér din konfiguration efter import!</b><br>I tilfælde af en fejl eller en ufærdig konfiguration, kan en gen-import løse problemet.</span>For at forhindre fejl og forkerte konfigurationer, skal du importere dine konfigurationer i en brugbar rækkefølge. Vi anbefaler følgende:<br><br><b><i>kommandoer -> tidsrammer -> kontaktskabeloner -> kontakter -> kontaktgrupper -> værtsskabeloner -> værter -> værtsgrupper -> serviceskabeloner -> services -> servicegrupper</i></b><br><br><span style=\"color:#FF0000\"><b>Kontrollér din konfiguration efter import!</b><br>I tilfælde af en fejl eller en ufærdig konfiguration, kan en gen-import løse problemet.</span>"
+
+#: admin/info.php:39
+msgid "This is relative path of your NagiosQL Installation"
+msgstr "Dette er den relative sti til din NagiosQL installation"
+
+#: admin/info.php:40
+msgid "This is the absolut path to your NagiosQL Installation"
+msgstr "Dette er den absolutte sti til din NagiosQL installation"
+
+#: admin/info.php:41
+msgid "If you need a secure connection, select HTTPS instead of HTTP"
+msgstr "Hvis du har behov for en sikker forbindelse, vælg HTTPS i stedet for HTTPHvis du har behov for en sikker forbindelse, vælg HTTPS i stedet for HTTP"
+
+#: admin/info.php:42
+msgid "Please choose a temporary directory with write permissions. The default is the temp directory provided by your OS"
+msgstr "Vælg en midlertidigt mappe med skrive-rettigheder. Standarden er temp mappen fra dit operativsystemVælg en midlertidigt mappe med skrive-rettigheder. Standarden er temp mappen fra dit operativsystem"
+
+#: admin/info.php:43
+msgid "Please choose your application language"
+msgstr "Vælg venligst dit program-sprog"
+
+#: admin/info.php:44
+msgid "Encoding should be set to nothing else than utf-8. Any changes at your own risk"
+msgstr "Tegnkodningen bør ikke være sat til andet en utf-8. Ændringer er på egen risikoTegnkodningen bør ikke være sat til andet en utf-8. Ændringer er på egen risiko"
+
+#: admin/info.php:45
+msgid "IP-Address or hostname of the database server<br>e.g. localhost"
+msgstr "IP-adresse eller værtsnavn for databaseserveren<br>f.eks. localhost"
+
+#: admin/info.php:46
+msgid "MySQL Server Port, default is 3306"
+msgstr "MySQL serverport, standard er 3306"
+
+#: admin/info.php:47
+msgid "Name of the NagiosQL database<br>e.g. db_nagiosql_v3"
+msgstr "Navn på NagiosQL databasen<br>f.eks. db_nagiosql_v3"
+
+#: admin/info.php:48
+msgid "User with sufficient permission for the NagiosQL database<br>At least this user should have SELECT, INSERT, UPDATE, DELETE permissions"
+msgstr "Bruger med nødvendige rettigheder til NagiosQL databasen<br>Som minimum skal denne bruger have rettigheder til SELECT, INSERT, UPDATE og DELETEBruger med nødvendige rettigheder til NagiosQL databasen<br>Som minimum skal denne bruger have rettigheder til SELECT, INSERT, UPDATE og DELETE"
+
+#: admin/info.php:49
+msgid "Password for the above mentioned user"
+msgstr "Adgangskode for den ovennævnte bruger"
+
+#: admin/info.php:50
+msgid "After the defined amount of seconds the session will terminate for security reasons"
+msgstr "Efter det foruddefinerede antal sekunder, vil sessionen afbrydes af sikkerhedsmæssige årsagerEfter det foruddefinerede antal sekunder, vil sessionen afbrydes af sikkerhedsmæssige årsager"
+
+#: admin/info.php:51
+msgid "Decide between authentication based on your Webserver<br>e.g. Apache configuration (config file or htaccess) or NagiosQL"
+msgstr "Vælg godkendelsesmetode baseret på din webserver<br>f.eks. Apache konfiguration (konfig fil eller htaccess) eller NagiosQLVælg godkendelsesmetode baseret på din webserver<br>f.eks. Apache konfiguration (konfig fil eller htaccess) eller NagiosQL"
+
+#: admin/info.php:52
+msgid "How many entries per side should be visibile (e.g. services or hosts)"
+msgstr "Hvor mange emner der skal være synlig per side (f.eks services eller værter)Hvor mange emner der skal være synlig per side (f.eks services eller værter)"
+
+#: admin/info.php:53
+msgid "Selection of multiple entries by using the new dialog or by holding CTRL + left click like in NagiosQL2"
+msgstr "Vælg flere emner ved at bruge den nye dialog, eller ved at holde CTRL + venstre klik som i NagiosQL2Vælg flere emner ved at bruge den nye dialog, eller ved at holde CTRL + venstre klik som i NagiosQL2"
+
+#: admin/info.php:54
+msgid "Enable or disable the warning if a required field contains no data in objects with templates"
+msgstr "Aktiver eller deaktiver advarsel hvis et krævet fejl ikke indeholder data i objekter med skabelonerAktiver eller deaktiver advarsel hvis et krævet fejl ikke indeholder data i objekter med skabeloner"
+
+#: admin/info.php:55
+msgid "Enable or disable the automatic online version check."
+msgstr "Aktiver eller deaktiver automatisk online versionstjek."
+
+#: admin/info.php:56
+msgid "If you require a Proxyserver to connect to the Internet (Port 80), please define one."
+msgstr "Hvis det kræver en proxyserver for at forbinde til internettet (port 80), angiv venligst en.Hvis det kræver en proxyserver for at forbinde til internettet (port 80), angiv venligst en."
+
+#: admin/info.php:57
+msgid "Address of your Proxyserver e.g. proxy.yourdomain.com:3128"
+msgstr "Adresse på din proxyserver f.eks. proxy.ditdomæne.dk:3128"
+
+#: admin/info.php:58
+msgid "Username to connect through your proxy (optional)"
+msgstr "Brugernavn til at forbinde via din proxy (valgfri)"
+
+#: admin/info.php:59
+msgid "Password to connect through your proxy (optional)"
+msgstr "Adgangskode til at forbinde via din proxy (valgfri)"
+
+#: admin/info.php:78
+msgid "Information PopUp"
+msgstr "Informations-popup"
+
+#: admin/info.php:91
+msgid "No information available"
+msgstr "Ingen information tilgængelig"
+
+#: admin/logbook.php:58
+msgid "Dataset successfully deleted. Affected rows:"
+msgstr "Datasæt slettet korrekt. Påvirkede rækker:"
+
+#: admin/logbook.php:87
+msgid "View logbook"
+msgstr "Vis logbog"
+
+#: admin/logbook.php:91
+msgid "Delete logentries between:"
+msgstr "Slet log-indgange mellem:"
+
+#: admin/logbook.php:93
+msgid "Please at least fill in a start or a stop time"
+msgstr "Indtast venligst en start- eller stoptid"
+
+#: admin/logbook.php:94
+msgid "Do you really want to delete all log entries between the selected dates?"
+msgstr "Ønsker du virkelig at slette alle log-indgange mellem de valgte datoer?"
+
+#: admin/logbook.php:99
+msgid "previous 20 entries"
+msgstr "forrige 20 emner"
+
+#: admin/logbook.php:105
+msgid "next 20 entries"
+msgstr "næste 20 emner"
+
+#: admin/menuaccess.php:47
+msgid "Error while inserting the data to the data base:"
+msgstr "Fejl ved indsætning af data i databasen:"
+
+#: admin/menuaccess.php:50
+msgid "Data were successfully inserted to the data base!"
+msgstr "Data blev korrekt indsat i databasen!"
+
+#: admin/menuaccess.php:51
+msgid "Access group set for menu item:"
+msgstr "Adgangsgruppe valgt for menuemnet:"
+
+#: admin/menuaccess.php:61
+msgid "Define Menu Accessrights"
+msgstr "Definer menu adgangsrettigheder"
+
+#: admin/monitoring.php:37
+msgid "Monitoring"
+msgstr "Overvågning"
+
+#: admin/monitoring.php:40
+msgid "To define host and service supervisions as well as host and service groups."
+msgstr "Her defineres vært og service-overvågning såvel som værts- og servicegrupper.Her defineres vært og service-overvågning såvel som værts- og servicegrupper."
+
+#: admin/monitoring.php:52
+msgid "Services"
+msgstr "Services"
+
+#: admin/monitoring.php:60
+msgid "Service groups"
+msgstr "Servicegrupper"
+
+#: admin/monitoring.php:64
+msgid "Host templates"
+msgstr "Værtsskabeloner"
+
+#: admin/monitoring.php:68
+msgid "Service templates"
+msgstr "Serviceskabeloner"
+
+#: admin/mutdialog.php:53
+msgid "Selected"
+msgstr "Valgte"
+
+#: admin/nagioscfg.php:101
+msgid "Nagios main configuration file"
+msgstr "Primær Nagios konfigurationsfil"
+
+#: admin/password.php:57
+msgid "Password successfully modified"
+msgstr "Adgangskode korrekt ændret"
+
+#: admin/password.php:70
+msgid "Password too short or password fields unequally!"
+msgstr "Adgangskode er for kort eller adgangskode-felter ikke ens!"
+
+#: admin/password.php:74
+msgid "Old password is wrong"
+msgstr "Gammel adgangskode er forkert"
+
+#: admin/password.php:94
+msgid "Save"
+msgstr "Gem"
+
+#: admin/password.php:97
+msgid "The new passwords are not equal!"
+msgstr "De nye adgangskoder er ikke ens!"
+
+#: admin/password.php:98
+msgid "The new password is too short - use at least 6 characters!"
+msgstr "Den nye adgangskode er for kort - brug mindst 6 tegn!"
+
+#: admin/servicedependencies.php:117
+msgid "New service dependency inserted:"
+msgstr "Ny service-afhængighed indsat:"
+
+#: admin/servicedependencies.php:118
+msgid "Service dependency modified:"
+msgstr "Service-afhængighed ændret:"
+
+#: admin/servicedependencies.php:251
+msgid "Define service dependencies (servicedependencies.cfg)"
+msgstr "Definer service-afhængigheder (servicedependencies.cfg)"
+
+#: admin/servicedependencies.php:442
+#: config/fieldvars.php:214
+msgid "Dependent services"
+msgstr "Afhængige services"
+
+#: admin/serviceescalations.php:108
+msgid "New service escalation inserted:"
+msgstr "Ny service-eskalering indsat:"
+
+#: admin/serviceescalations.php:109
+msgid "Service escalation modified:"
+msgstr "Service-eskalering ændret:"
+
+#: admin/serviceescalations.php:234
+msgid "Define service escalation (serviceescalations.cfg)"
+msgstr "Definer service-eskalering (serviceescalations.cfg)"
+
+#: admin/serviceextinfo.php:86
+msgid "New service extended information inserted:"
+msgstr "Ny udvidet service-information indsat:"
+
+#: admin/serviceextinfo.php:87
+msgid "Service extended information modified:"
+msgstr "Udvidet service-information ændret:"
+
+#: admin/serviceextinfo.php:171
+msgid "Define service extended information (serviceextinfo.cfg)"
+msgstr "Definer udvidet service-information (serviceextinfo.cfg)"
+
+#: admin/serviceextinfo.php:254
+msgid "Hostname"
+msgstr "Værtsnavn"
+
+#: admin/serviceextinfo.php:255
+msgid "Service"
+msgstr "Service"
+
+#: admin/servicegroups.php:93
+msgid "New service group inserted:"
+msgstr "Ny servicegruppe indsat:"
+
+#: admin/servicegroups.php:94
+msgid "Service group modified:"
+msgstr "Servicegruppe ændret:"
+
+#: admin/servicegroups.php:190
+msgid "Define service groups (servicegroups.cfg)"
+msgstr "Definer servicegrupper (servicegroups.cfg)"
+
+#: admin/servicegroups.php:201
+msgid "Attention, no services defined!"
+msgstr "Bemærk! Ingen services defineret!"
+
+#: admin/servicegroups.php:262
+msgid "Service group"
+msgstr "Servicegruppe"
+
+#: admin/services.php:150
+#: admin/services.php:692
+msgid "All configs"
+msgstr "Alle konfigurationer"
+
+#: admin/services.php:227
+msgid "New service inserted:"
+msgstr "Ny service indsat:"
+
+#: admin/services.php:228
+msgid "Service modified:"
+msgstr "Service ændret:"
+
+#: admin/services.php:285
+#: admin/services.php:460
+msgid "Service file deleted:"
+msgstr "Servicefil slettet:"
+
+#: admin/services.php:488
+msgid "Define services (services.cfg)"
+msgstr "Definer services (services.cfg)"
+
+#: admin/services.php:525
+msgid "Attention, no hosts or hostgroups defined!"
+msgstr "Bemærk! Ingen værter eller værtsgrupper defineret!"
+
+#: admin/services.php:537
+msgid "Attention, no check commands defined!"
+msgstr "Bemærk! Ingen tjek-kommandoer defineret!"
+
+#: admin/services.php:680
+#: admin/servicetemplates.php:560
+msgid "Service name"
+msgstr "Servicenavn"
+
+#: admin/servicetemplates.php:209
+msgid "New service template inserted:"
+msgstr "Ny serviceskabelon indsat:"
+
+#: admin/servicetemplates.php:210
+msgid "Service template modified:"
+msgstr "Serviceskabelon ændret:"
+
+#: admin/servicetemplates.php:380
+msgid "Define service templates (servicetemplates.cfg)"
+msgstr "Definer serviceskabeloner (servicetemplates.cfg)"
+
+#: admin/servicetemplates.php:559
+#: config/fieldvars.php:113
+#: config/fieldvars.php:197
+msgid "Template name"
+msgstr "Skabelonnavn"
+
+#: admin/settings.php:85
+msgid "Curl module not loaded, Proxy will be deactivated!"
+msgstr "Curl modulet ikke indlæst, proxy vil være deaktiveret!"
+
+#: admin/settings.php:100
+msgid "An error occured while writing settings to database"
+msgstr "En fejl opstod ved skrivning af indstillinger i databasen"
+
+#: admin/settings.php:135
+msgid "Error in setting the correct locale, please report this error with the associated output of 'locale -a'"
+msgstr "Fejl i indstilling af korrekt lokalitet, rapporter venligst denne fejl hos det tilknyttede output fra 'locale -a'Fejl i indstilling af korrekt lokalitet, rapporter venligst denne fejl hos det tilknyttede output fra 'locale -a'"
+
+#: admin/settings.php:142
+msgid "Settings were changed"
+msgstr "Indstillinger blev ændret"
+
+#: admin/settings.php:144
+msgid "An error occured while writing settings.php, please check permissions!"
+msgstr "En fejl opstod ved skrivning af settings.php, kontroller venligst rettigheder!En fejl opstod ved skrivning af settings.php, kontroller venligst rettigheder!"
+
+#: admin/settings.php:154
+msgid "Configure Settings"
+msgstr "Konfigurér indstillinger"
+
+#: admin/settings.php:161
+msgid "Change your current NagiosQL settings (e.g. Database user, Language)."
+msgstr "Tilpas dine aktuelle NagiosQL indstillinger (f.eks. databasebruger og sprog).Tilpas dine aktuelle NagiosQL indstillinger (f.eks. databasebruger og sprog)."
+
+#: admin/settings.php:165
+msgid "Path"
+msgstr "Sti"
+
+#: admin/settings.php:166
+msgid "Temporary Directory"
+msgstr "Midlertidig mappe"
+
+#: admin/settings.php:168
+msgid "Server protocol"
+msgstr "Serverprotokol"
+
+#: admin/settings.php:195
+msgid "Encoding"
+msgstr "Tegnkodning"
+
+#: admin/settings.php:200
+msgid "Database"
+msgstr "Database"
+
+#: admin/settings.php:201
+msgid "MySQL Server"
+msgstr "MySQL server"
+
+#: admin/settings.php:203
+msgid "MySQL Server Port"
+msgstr "MySQL serverport"
+
+#: admin/settings.php:205
+msgid "Database name"
+msgstr "Databasenavn"
+
+#: admin/settings.php:207
+msgid "Database user"
+msgstr "Databasebruger"
+
+#: admin/settings.php:209
+msgid "Database password"
+msgstr "Database adgangskode"
+
+#: admin/settings.php:214
+msgid "Security"
+msgstr "Sikkerhed"
+
+#: admin/settings.php:215
+msgid "Session auto logoff time"
+msgstr "Session auto log-af tid"
+
+#: admin/settings.php:217
+msgid "Authentication type"
+msgstr "Godkendelsestype"
+
+#: admin/settings.php:233
+msgid "Common"
+msgstr "Fælles"
+
+#: admin/settings.php:234
+msgid "Data lines per page"
+msgstr "Datalinjer per side"
+
+#: admin/settings.php:237
+msgid "Selection method"
+msgstr "Markeringsmetode"
+
+#: admin/settings.php:251
+msgid "Template warn message"
+msgstr "Skabelon advarselsbesked"
+
+#: admin/settings.php:267
+msgid "Automatically check for online updates (internet access required!)"
+msgstr "Tjek automatisk for online opdateringer (kræver internet adgang!)"
+
+#: admin/settings.php:281
+msgid "Proxyserver"
+msgstr "Proxyserver"
+
+#: admin/settings.php:289
+msgid "Proxy Address"
+msgstr "Proxyadresse"
+
+#: admin/settings.php:291
+msgid "Proxy Username (optional)"
+msgstr "Proxy brugernavn (valgfri)"
+
+#: admin/settings.php:293
+msgid "Proxy Password (optional)"
+msgstr "Proxy adgangskode (valgfri)"
+
+#: admin/specials.php:37
+msgid "Misc commands"
+msgstr "Div. kommandoer"
+
+#: admin/specials.php:40
+msgid "To define host and service dependencies, host and service escalations as well as host and service additional data."
+msgstr "Her defineres værts- og service-afhængigheder, værts- og service-eskaleringer samt yderligere værts- og servicedata.Her defineres værts- og service-afhængigheder, værts- og service-eskaleringer samt yderligere værts- og servicedata."
+
+#: admin/specials.php:48
+msgid "Host dependencies"
+msgstr "Værts-afhængigheder"
+
+#: admin/specials.php:52
+msgid "Host escalations"
+msgstr "Værts-eskaleringer"
+
+#: admin/specials.php:56
+msgid "Host ext. info"
+msgstr "Udv. værts-info"
+
+#: admin/specials.php:60
+msgid "Service dependencies"
+msgstr "Service-afhængigheder"
+
+#: admin/specials.php:64
+msgid "Service escalations"
+msgstr "Service-eskaleringer"
+
+#: admin/specials.php:68
+msgid "Service ext. info"
+msgstr "Udv. service-info"
+
+#: admin/templatedefinitions.php:227
+msgid "Up"
+msgstr "Op"
+
+#: admin/templatedefinitions.php:227
+msgid "Down"
+msgstr "Ned"
+
+#: admin/timedefinitions.php:168
+#: admin/variabledefinitions.php:134
+#: config/fieldvars.php:68
+msgid "Modify"
+msgstr "Tilpas"
+
+#: admin/timeperiods.php:87
+msgid "New time period inserted:"
+msgstr "Ny tidsramme indsat:"
+
+#: admin/timeperiods.php:88
+msgid "Time period modified:"
+msgstr "Tidsramme ændret:"
+
+#: admin/timeperiods.php:207
+msgid "Timeperiod definitions"
+msgstr "Tidsramme definitioner"
+
+#: admin/timeperiods.php:236
+msgid "Please insert a time definition and a time range"
+msgstr "Indsæt venligst en tidsdefinition og en tidsramme"
+
+#: admin/timeperiods.php:281
+#: config/fieldvars.php:83
+msgid "Time period"
+msgstr "Tidsramme"
+
+#: admin/tools.php:37
+msgid "Different tools"
+msgstr "Forskelligt værktøj"
+
+#: admin/tools.php:40
+msgid "Useful functions for data import, main configuration, daemon control and so on."
+msgstr "Nyttige funktioner til dataimport, primær konfiguration, daemon kontrol osv.Nyttige funktioner til dataimport, primær konfiguration, daemon kontrol osv."
+
+#: admin/user.php:81
+msgid "A new user added:"
+msgstr "En ny bruger er tilføjet:"
+
+#: admin/user.php:98
+msgid "Admin can't be deleted"
+msgstr "Admin kan ikke slettes"
+
+#: admin/user.php:123
+msgid "User administration"
+msgstr "Brugeradministration"
+
+#: admin/user.php:142
+msgid "The passwords are not equal!"
+msgstr "Adgangskoderne er ikke ens!"
+
+#: admin/user.php:143
+msgid "Please fill in the password"
+msgstr "Udfyld venligst adgangskoden"
+
+#: admin/user.php:144
+msgid "The password is too short - use at least 6 characters!"
+msgstr "Adgangskoden er for kort - brug mindst 6 tegn!"
+
+#: admin/user.php:145
+msgid "Webserver authentification"
+msgstr "Webserver godkendelse"
+
+#: admin/verify.php:54
+msgid "Cannot find the Nagios binary or no rights for execution!"
+msgstr "Kan ikke finde Nagios programfilen eller ingen rettigheder til afvikling!Kan ikke finde Nagios programfilen eller ingen rettigheder til afvikling!"
+
+#: admin/verify.php:65
+msgid "Remote execution (FTP SITE EXEC) is not supported on your system!"
+msgstr "Fjernafvikling (FTP SITE EXEC) er ikke understøttet på dit system!"
+
+#: admin/verify.php:81
+msgid "Remote execution of nagios verify command failed (remote SSH)!"
+msgstr "Fjernafvikling af nagios verificeringskommando mislykkedes (fjern-SSH)!"
+
+#: admin/verify.php:84
+msgid "Nagios binary or configuration file not found (remote SSH)!"
+msgstr "Nagios programfil eller konfigurationsfil ikke fundet (fjern- SSH)!"
+
+#: admin/verify.php:114
+msgid "Nagios daemon successfully restarted"
+msgstr "Nagios daemon genstartet korrekt"
+
+#: admin/verify.php:115
+msgid "Restart command successfully send to Nagios"
+msgstr "Genstart-kommando er sendt korrekt til Nagios"
+
+#: admin/verify.php:117
+#: admin/verify.php:121
+#: admin/verify.php:122
+msgid "Restart failed - Nagios command file not found or no rights to execute"
+msgstr "Genstart mislykkedes - Nagios kommandofil ikke fundet eller ingen ret til at afvikleGenstart mislykkedes - Nagios kommandofil ikke fundet eller ingen ret til at afvikle"
+
+#: admin/verify.php:118
+msgid "Nagios command file not found or no rights to write!"
+msgstr "Nagios kommandofil ikke fundet eller ingen ret til at skrive!"
+
+#: admin/verify.php:125
+msgid "Restart failed - Nagios daemon was not running"
+msgstr "Genstart mislykkedes - Nagios daemon kørte ikke"
+
+#: admin/verify.php:126
+msgid "Nagios daemon is not running, cannot send restart command!"
+msgstr "Nagios daemon kører ikke, kan ikke sende genstart kommando!"
+
+#: admin/verify.php:129
+msgid "Restart failed - FTP restrictions"
+msgstr "Genstart mislykkedes - FTP begrænsninger"
+
+#: admin/verify.php:130
+msgid "Nagios restart is not possible via FTP remote connection!"
+msgstr "Nagios genstart er ikke muligt via FTP fjern-forbindelse!"
+
+#: admin/verify.php:147
+msgid "Restart failed - Nagios command file not found or no rights to execute (remote SSH)!"
+msgstr "Genstart mislykkedes - Nagios kommandofil ikke fundet eller ingen ret til at afvikle (fjern-SSH)!Genstart mislykkedes - Nagios kommandofil ikke fundet eller ingen ret til at afvikle (fjern-SSH)!"
+
+#: admin/verify.php:149
+msgid "Nagios daemon successfully restarted (remote SSH)"
+msgstr "Nagios daemon genstartet korrekt (fjern-SSH)"
+
+#: admin/verify.php:150
+msgid "Restart command successfully send to Nagios (remote SSH)"
+msgstr "Genstart-kommando sendt korrekt til Nagios (fjern-SSH)"
+
+#: admin/verify.php:153
+msgid "Nagios command file not found (remote SSH)!"
+msgstr "Nagios kommandofil ikke fundet (fjern-SSH)!"
+
+#: admin/verify.php:160
+msgid "Write host configurations"
+msgstr "Skriv værts-konfigurationer"
+
+#: admin/verify.php:175
+#: admin/verify.php:193
+msgid "No configuration items defined!"
+msgstr "Ingen konfigurationsemner defineret!"
+
+#: admin/verify.php:178
+msgid "Write service configurations"
+msgstr "Skriv service-konfigurationer"
+
+#: admin/verify.php:250
+msgid "Check written configuration files"
+msgstr "Kontrollér skrevne konfigurationsfiler"
+
+#: admin/verify.php:253
+msgid "Check configuration files:"
+msgstr "Kontrollér konfigurationsfiler:"
+
+#: admin/verify.php:254
+msgid "Restart Nagios:"
+msgstr "Genstart Nagios:"
+
+#: admin/verify.php:255
+msgid "Write monitoring data"
+msgstr "Skriv overvågningsdata"
+
+#: admin/verify.php:256
+msgid "Write additional data"
+msgstr "Skriv yderligere data"
+
+#: admin/verify.php:257
+msgid "Warning, always check the configuration files before restart Nagios!"
+msgstr "Advarsel. Kontrollér altid konfigurationsfilerne før du genstarter Nagios!Advarsel. Kontrollér altid konfigurationsfilerne før du genstarter Nagios!"
+
+#: admin/verify.php:258
+#: config/fieldvars.php:53
+msgid "Do it"
+msgstr "Gør det"
+
+#: admin/verify.php:286
+#: admin/verify.php:315
+msgid "Written Nagios configuration checked - Warnings/Errors:"
+msgstr "Skreven Nagios konfiguration kontrolleret - advarsler/fejl:"
+
+#: admin/verify.php:290
+#: admin/verify.php:318
+msgid "Written configuration files are valid, Nagios can be restarted!"
+msgstr "Skrevne konfigurationsfiler er korrekte, Nagios kan genstartes!"
+
+#: config/fieldvars.php:24
+#: config/fieldvars.php:29
+msgid "Server name"
+msgstr "Servernavn"
+
+#: config/fieldvars.php:25
+msgid "Method"
+msgstr "Metode"
+
+#: config/fieldvars.php:28
+msgid "Directory with SSH key pair"
+msgstr "Mappe med SSH nøglepar"
+
+#: config/fieldvars.php:30
+msgid "Configuration directories"
+msgstr "Konfigurationsmapper"
+
+#: config/fieldvars.php:31
+msgid "Base directory"
+msgstr "Rodmappe"
+
+#: config/fieldvars.php:32
+msgid "Host directory"
+msgstr "Værtsmappe"
+
+#: config/fieldvars.php:33
+msgid "Service directory"
+msgstr "Servicemappe"
+
+#: config/fieldvars.php:34
+msgid "Backup directory"
+msgstr "Backupmappe"
+
+#: config/fieldvars.php:35
+msgid "Host backup directory"
+msgstr "Vært backupmappe"
+
+#: config/fieldvars.php:36
+msgid "Service backup directory"
+msgstr "Service backupmappe"
+
+#: config/fieldvars.php:37
+msgid "Picture base directory"
+msgstr "Rodmappe for billeder"
+
+#: config/fieldvars.php:38
+msgid "Nagios command file"
+msgstr "Nagios kommandofil"
+
+#: config/fieldvars.php:39
+msgid "Nagios binary file"
+msgstr "Nagios programfil"
+
+#: config/fieldvars.php:40
+msgid "Nagios process file"
+msgstr "Nagios procesfil"
+
+#: config/fieldvars.php:43
+msgid "Use common domain"
+msgstr "Brug fælles domæne"
+
+#: config/fieldvars.php:44
+msgid "Decode UTF8 data in config files"
+msgstr "Afkod UTF8 data i konfigurationsfiler"
+
+#: config/fieldvars.php:45
+msgid "Access key holes"
+msgstr "Adgangs-nøglehuller"
+
+#: config/fieldvars.php:46
+msgid "Access keys"
+msgstr "Adgangsnøgler"
+
+#: config/fieldvars.php:51
+msgid "Function"
+msgstr "Funktion"
+
+#: config/fieldvars.php:52
+msgid "Marked"
+msgstr "Markeret"
+
+#: config/fieldvars.php:54
+msgid "Add"
+msgstr "Tilføj"
+
+#: config/fieldvars.php:55
+msgid "Formcheck"
+msgstr "Formkontrol"
+
+#: config/fieldvars.php:56
+msgid "Secure question"
+msgstr "Sikkert spørgsmål"
+
+#: config/fieldvars.php:59
+msgid "Time"
+msgstr "Tid"
+
+#: config/fieldvars.php:60
+msgid "User"
+msgstr "Bruger"
+
+#: config/fieldvars.php:61
+msgid "IP"
+msgstr "IP"
+
+#: config/fieldvars.php:62
+msgid "Entry"
+msgstr "Indgang"
+
+#: config/fieldvars.php:63
+msgid "From"
+msgstr "Fra"
+
+#: config/fieldvars.php:64
+msgid "To"
+msgstr "Til"
+
+#: config/fieldvars.php:65
+msgid "Delete log entries"
+msgstr "Slet log indgange"
+
+#: config/fieldvars.php:69
+msgid "Confirm password"
+msgstr "Bekræft adgangskode"
+
+#: config/fieldvars.php:70
+msgid "Old password"
+msgstr "Gammel adgangskode"
+
+#: config/fieldvars.php:71
+#: config/fieldvars.php:275
+msgid "New password"
+msgstr "Ny adgangskode"
+
+#: config/fieldvars.php:72
+msgid "Change password"
+msgstr "Skift adgangskode"
+
+#: config/fieldvars.php:73
+msgid "Menu page"
+msgstr "Menuside"
+
+#: config/fieldvars.php:74
+msgid "Search string"
+msgstr "Søgestreng"
+
+#: config/fieldvars.php:77
+#: config/fieldvars.php:171
+msgid "Write config file"
+msgstr "Skriv konfigurationsfil"
+
+#: config/fieldvars.php:80
+msgid "Command"
+msgstr "Kommando"
+
+#: config/fieldvars.php:82
+msgid "Command type"
+msgstr "Kommandotype"
+
+#: config/fieldvars.php:84
+msgid "Exclude"
+msgstr "Ekskludér"
+
+#: config/fieldvars.php:85
+msgid "Include"
+msgstr "Inkludér"
+
+#: config/fieldvars.php:86
+msgid "Time definitions"
+msgstr "Tidsdefinitioner"
+
+#: config/fieldvars.php:87
+msgid "Weekday"
+msgstr "Ugedag"
+
+#: config/fieldvars.php:88
+msgid "Time range"
+msgstr "Tidsramme"
+
+#: config/fieldvars.php:89
+msgid "Time definition"
+msgstr "Tidsdefinition"
+
+#: config/fieldvars.php:90
+msgid "Insert"
+msgstr "Indsæt"
+
+#: config/fieldvars.php:91
+msgid "Modify selection"
+msgstr "Tilpas markering"
+
+#: config/fieldvars.php:94
+msgid "Time period hosts"
+msgstr "Tidsperiode værter"
+
+#: config/fieldvars.php:95
+msgid "Time period services"
+msgstr "Tidsperiode services"
+
+#: config/fieldvars.php:96
+msgid "Host options"
+msgstr "Værts indstillinger"
+
+#: config/fieldvars.php:97
+msgid "Service options"
+msgstr "Service indstillinger"
+
+#: config/fieldvars.php:98
+msgid "Host command"
+msgstr "Værtskommando"
+
+#: config/fieldvars.php:99
+msgid "Service command"
+msgstr "Servicekommando"
+
+#: config/fieldvars.php:100
+msgid "EMail address"
+msgstr "E-mail adresse"
+
+#: config/fieldvars.php:101
+msgid "Pager number"
+msgstr "Personsøgernummer"
+
+#: config/fieldvars.php:102
+msgid "Addon address"
+msgstr "Tilføjelse adresse"
+
+#: config/fieldvars.php:103
+msgid "Host notif. enable"
+msgstr "Vært notif. aktiver"
+
+#: config/fieldvars.php:104
+msgid "Service notif. enable"
+msgstr "Service notif. aktiver"
+
+#: config/fieldvars.php:105
+msgid "Can submit commands"
+msgstr "Kan indsende kommandoer"
+
+#: config/fieldvars.php:106
+msgid "Retain status info"
+msgstr "Behold statusinfo"
+
+#: config/fieldvars.php:107
+msgid "Retain nonstatus info"
+msgstr "Behold ikke-statusinfo"
+
+#: config/fieldvars.php:108
+msgid "Members"
+msgstr "Medlemmer"
+
+#: config/fieldvars.php:109
+msgid "Group members"
+msgstr "Gruppemedlemmer"
+
+#: config/fieldvars.php:110
+msgid "Common settings"
+msgstr "Fælles indstillinger"
+
+#: config/fieldvars.php:111
+msgid "Service settings"
+msgstr "Service indstillinger"
+
+#: config/fieldvars.php:112
+msgid "Add this host configuration to existing service definitions"
+msgstr "Tilføj denne værtskonfiguration til eksisterende servicedefinitioner"
+
+#: config/fieldvars.php:114
+msgid "Parents"
+msgstr "Overordnede"
+
+#: config/fieldvars.php:116
+msgid "Check command"
+msgstr "Tjek-kommando"
+
+#: config/fieldvars.php:117
+msgid "Command view"
+msgstr "Kommandovisning"
+
+#: config/fieldvars.php:118
+msgid "Additional templates"
+msgstr "Yderligere skabeloner"
+
+#: config/fieldvars.php:119
+msgid "Check settings"
+msgstr "Tjek-indstillinger"
+
+#: config/fieldvars.php:120
+msgid "Initial state"
+msgstr "Start-tilstand"
+
+#: config/fieldvars.php:121
+msgid "Retry interval"
+msgstr "Genforsøg interval"
+
+#: config/fieldvars.php:122
+msgid "Max check attempts"
+msgstr "Maks tjek forsøg"
+
+#: config/fieldvars.php:123
+msgid "Check interval"
+msgstr "Tjek interval"
+
+#: config/fieldvars.php:124
+msgid "Active checks enabled"
+msgstr "Aktive tjek aktiveret"
+
+#: config/fieldvars.php:125
+msgid "Passive checks enabled"
+msgstr "Passive tjek aktiveret"
+
+#: config/fieldvars.php:126
+msgid "Check period"
+msgstr "Tjek-periode"
+
+#: config/fieldvars.php:127
+msgid "Freshness treshold"
+msgstr "Friskhedsgrænse"
+
+#: config/fieldvars.php:128
+msgid "Check freshness"
+msgstr "Tjek friskhed"
+
+#: config/fieldvars.php:129
+msgid "Obsess over host"
+msgstr "Vær besat af vært"
+
+#: config/fieldvars.php:130
+msgid "Obsess over service"
+msgstr "Vær besat af service"
+
+#: config/fieldvars.php:131
+msgid "Event handler"
+msgstr "Hændelses behandler"
+
+#: config/fieldvars.php:132
+msgid "Event handler enabled"
+msgstr "Hændelses behandler aktiveret"
+
+#: config/fieldvars.php:133
+msgid "Low flap threshold"
+msgstr "Lav flap grænse"
+
+#: config/fieldvars.php:134
+msgid "High flap threshold"
+msgstr "Høj flap grænse"
+
+#: config/fieldvars.php:135
+msgid "Flap detection enabled"
+msgstr "Flap-opdagelse aktiveret"
+
+#: config/fieldvars.php:136
+msgid "Flap detection options"
+msgstr "Flap-opdagelse indstillinger"
+
+#: config/fieldvars.php:137
+msgid "Retain status information"
+msgstr "Behold statusinformation"
+
+#: config/fieldvars.php:138
+msgid "Retain nostatus information"
+msgstr "Behold ikke-status information"
+
+#: config/fieldvars.php:139
+msgid "Process perf data"
+msgstr "Behandl perf data"
+
+#: config/fieldvars.php:140
+msgid "Alarm settings"
+msgstr "Alarm indstillinger"
+
+#: config/fieldvars.php:141
+msgid "Contacts"
+msgstr "Kontakter"
+
+#: config/fieldvars.php:143
+msgid "Notification period"
+msgstr "Besked periode"
+
+#: config/fieldvars.php:144
+msgid "Notification options"
+msgstr "Besked indstillinger"
+
+#: config/fieldvars.php:145
+msgid "Notification interval"
+msgstr "Besked interval"
+
+#: config/fieldvars.php:146
+msgid "First notification delay"
+msgstr "Første besked forsinkelse"
+
+#: config/fieldvars.php:147
+msgid "Notification enabled"
+msgstr "Besked aktiveret"
+
+#: config/fieldvars.php:148
+msgid "Stalking options"
+msgstr "Forfølger indstillinger"
+
+#: config/fieldvars.php:149
+msgid "Addon settings"
+msgstr "Tilføjelse-indstillinger"
+
+#: config/fieldvars.php:151
+msgid "VRML image"
+msgstr "VRML billede"
+
+#: config/fieldvars.php:152
+msgid "Notes URL"
+msgstr "Noter URL"
+
+#: config/fieldvars.php:153
+msgid "Status image"
+msgstr "Statusbillede"
+
+#: config/fieldvars.php:154
+msgid "Icon image"
+msgstr "Ikon-billede"
+
+#: config/fieldvars.php:155
+msgid "Action URL"
+msgstr "Hændelses URL"
+
+#: config/fieldvars.php:156
+msgid "2D coords"
+msgstr "2D koordinater"
+
+#: config/fieldvars.php:157
+msgid "3D coords"
+msgstr "3D koordinater"
+
+#: config/fieldvars.php:158
+msgid "Icon image ALT text"
+msgstr "Ikon-billede ALT tekst"
+
+#: config/fieldvars.php:159
+msgid "standard"
+msgstr "standard"
+
+#: config/fieldvars.php:160
+msgid "on"
+msgstr "til"
+
+#: config/fieldvars.php:161
+msgid "off"
+msgstr "fra"
+
+#: config/fieldvars.php:162
+msgid "skip"
+msgstr "spring over"
+
+#: config/fieldvars.php:163
+msgid "Free variable definitions"
+msgstr "Frie variabeldefinitioner"
+
+#: config/fieldvars.php:164
+msgid "Variable name"
+msgstr "Variabelnavn"
+
+#: config/fieldvars.php:165
+msgid "Variable value"
+msgstr "Variabelværdi"
+
+#: config/fieldvars.php:168
+msgid "Activate"
+msgstr "Aktivér"
+
+#: config/fieldvars.php:169
+msgid "Deactivate"
+msgstr "Deaktivér"
+
+#: config/fieldvars.php:174
+msgid "Mark all shown datasets"
+msgstr "Marker alle viste datasæt"
+
+#: config/fieldvars.php:175
+msgid "File"
+msgstr "Fil"
+
+#: config/fieldvars.php:176
+msgid "Write all config files"
+msgstr "Skriv alle konfig. filer"
+
+#: config/fieldvars.php:177
+msgid "Address"
+msgstr "Adresse"
+
+#: config/fieldvars.php:178
+msgid "Display name"
+msgstr "Visnings-navn"
+
+#: config/fieldvars.php:179
+msgid "Use this configuration as template"
+msgstr "Brug denne konfiguration som skabelon"
+
+#: config/fieldvars.php:180
+msgid "Generic name"
+msgstr "Standardnavn"
+
+#: config/fieldvars.php:184
+msgid "Please check at least one option from:"
+msgstr "Vælg mindst en mulighed fra:"
+
+#: config/fieldvars.php:185
+msgid "Host group name"
+msgstr "Værtsgruppenavn"
+
+#: config/fieldvars.php:186
+msgid "Host group members"
+msgstr "Værtsgruppe medlemmer"
+
+#: config/fieldvars.php:188
+msgid "Service description"
+msgstr "Servicebeskrivelse"
+
+#: config/fieldvars.php:190
+msgid "Is volatile"
+msgstr "Er flygtig"
+
+#: config/fieldvars.php:191
+msgid "Parallelize checks"
+msgstr "Parallelle tjeks"
+
+#: config/fieldvars.php:192
+msgid "Config name filter"
+msgstr "Konfig. navnefilter"
+
+#: config/fieldvars.php:194
+msgid "Import directory"
+msgstr "Importmappe"
+
+#: config/fieldvars.php:195
+msgid "Please insert a variable name and a variable definition"
+msgstr "Indsæt venligst et variabelnavn og en variabeldefinition"
+
+#: config/fieldvars.php:196
+#: config/fieldvars.php:200
+msgid "Warning:"
+msgstr "Advarsel:"
+
+#: config/fieldvars.php:196
+msgid "You have not filled in some required fields!<br><br>If this values are set by a template, you can save anyway - otherwise you will get an invalid configuration!"
+msgstr "Du har ikke udfyldt alle krævede felter!<br><br>Hvis disse værdier sættes af en skabelon, kan du gemme alligevel - ellers vil du få en ugyldig konfiguration!Du har ikke udfyldt alle krævede felter!<br><br>Hvis disse værdier sættes af en skabelon, kan du gemme alligevel - ellers vil du få en ugyldig konfiguration!"
+
+#: config/fieldvars.php:198
+msgid "Nagios base directory"
+msgstr "Nagios rodmappe"
+
+#: config/fieldvars.php:199
+msgid "Write config"
+msgstr "Skriv konfig"
+
+#: config/fieldvars.php:200
+msgid "You have not filled in all command arguments (ARGx) for your selected command!<br><br>If this arguments are optional, you can save anyway - otherwise you will get an invalid configuration!"
+msgstr "Du har ikke udfyldt alle kommando-argumenter (ARGx) for den valgte kommando!<br><br>Hvis disse argumenter er valgfrie kan du gemme alligevel - ellers vil du få en ugyldig konfiguration!Du har ikke udfyldt alle kommando-argumenter (ARGx) for den valgte kommando!<br><br>Hvis disse argumenter er valgfrie kan du gemme alligevel - ellers vil du få en ugyldig konfiguration!"
+
+#: config/fieldvars.php:201
+msgid "Service group members"
+msgstr "Servicegruppe medlemmer"
+
+#: config/fieldvars.php:202
+msgid "Service group name"
+msgstr "Servicegruppenavn"
+
+#: config/fieldvars.php:205
+msgid "Hostgroups"
+msgstr "Værtsgrupper"
+
+#: config/fieldvars.php:206
+msgid "Inherit parents"
+msgstr "Nedarv overordnede"
+
+#: config/fieldvars.php:207
+msgid "Execution failure criteria"
+msgstr "Afviklings fejlkriterie"
+
+#: config/fieldvars.php:208
+msgid "Nofification failure criteria"
+msgstr "Besked fejlkriterie"
+
+#: config/fieldvars.php:209
+msgid "Dependency period"
+msgstr "Afhængigheds-periode"
+
+#: config/fieldvars.php:210
+msgid "Escalation period"
+msgstr "Eskalerings-periode"
+
+#: config/fieldvars.php:211
+msgid "Escalation options"
+msgstr "Eskalerings indstillinger"
+
+#: config/fieldvars.php:212
+msgid "First notification"
+msgstr "Første besked"
+
+#: config/fieldvars.php:213
+msgid "Last notification"
+msgstr "Sidste besked"
+
+#: config/fieldvars.php:216
+msgid "Help"
+msgstr "Hjælp"
+
+#: config/fieldvars.php:217
+msgid "Calendar"
+msgstr "Kalender"
+
+#: config/fieldvars.php:218
+msgid "Group name"
+msgstr "Gruppenavn"
+
+#: config/fieldvars.php:219
+msgid "Users"
+msgstr "Brugere"
+
+#: config/fieldvars.php:220
+msgid "Access group"
+msgstr "Adgangsgruppe"
+
+#: config/fieldvars.php:221
+msgid "User definitions"
+msgstr "Bruger-definitioner"
+
+#: config/fieldvars.php:222
+msgid "User name"
+msgstr "Brugernavn"
+
+#: config/fieldvars.php:223
+msgid "User rights"
+msgstr "Bruger-rettigheder"
+
+#: config/fieldvars.php:224
+msgid "Object access restrictions"
+msgstr "Objekt-adgangsbegrænsninger"
+
+#: config/fieldvars.php:225
+msgid "Enable group administration"
+msgstr "Aktiver gruppeadministration"
+
+#: config/fieldvars.php:226
+msgid "Show relation data"
+msgstr "Vis relationsdata"
+
+#: config/fieldvars.php:227
+msgid "Hide relation data"
+msgstr "Skjul relationsdata"
+
+#: config/fieldvars.php:229
+msgid "Monday"
+msgstr "Mandag"
+
+#: config/fieldvars.php:230
+msgid "Tuesday"
+msgstr "Tirsdag"
+
+#: config/fieldvars.php:231
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: config/fieldvars.php:232
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: config/fieldvars.php:233
+msgid "Friday"
+msgstr "Fredag"
+
+#: config/fieldvars.php:234
+msgid "Saturday"
+msgstr "Lørdag"
+
+#: config/fieldvars.php:235
+msgid "Sunday"
+msgstr "Søndag"
+
+#: config/fieldvars.php:246
+msgid "Main page"
+msgstr "Hovedside"
+
+#: config/fieldvars.php:247
+msgid "Supervision"
+msgstr "Overvågning"
+
+#: config/fieldvars.php:250
+msgid "Commands"
+msgstr "Kommandoer"
+
+#: config/fieldvars.php:251
+msgid "Specialties"
+msgstr "Specialiteter"
+
+#: config/fieldvars.php:252
+msgid "Tools"
+msgstr "Værktøj"
+
+#: config/fieldvars.php:263
+msgid "Service dependency"
+msgstr "Service-afhængighed"
+
+#: config/fieldvars.php:264
+msgid "Service escalation"
+msgstr "Service-eskalering"
+
+#: config/fieldvars.php:265
+msgid "Host dependency"
+msgstr "Værts-afhængighed"
+
+#: config/fieldvars.php:266
+msgid "Host escalation"
+msgstr "Værts-eskalering"
+
+#: config/fieldvars.php:267
+msgid "Extended Host"
+msgstr "Udvidet vært"
+
+#: config/fieldvars.php:268
+msgid "Extended Service"
+msgstr "Udvidet service"
+
+#: config/fieldvars.php:269
+msgid "Data import"
+msgstr "Dataimport"
+
+#: config/fieldvars.php:272
+msgid "User admin"
+msgstr "Bruger-admin"
+
+#: config/fieldvars.php:273
+msgid "Group admin"
+msgstr "Gruppe-admin"
+
+#: config/fieldvars.php:274
+msgid "Nagios control"
+msgstr "Nagioskontrol"
+
+#: config/fieldvars.php:276
+msgid "Logbook"
+msgstr "Logbog"
+
+#: config/fieldvars.php:277
+msgid "Nagios config"
+msgstr "Nagios konfig"
+
+#: config/fieldvars.php:278
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: config/fieldvars.php:279
+msgid "Definitions"
+msgstr "Definitioner"
+
+#: config/fieldvars.php:280
+msgid "CGI config"
+msgstr "CGI konfig"
+
+#: config/fieldvars.php:281
+msgid "Menu access"
+msgstr "Menuadgang"
+
+#: config/fieldvars.php:282
+msgid "Domains"
+msgstr "Domæner"
+
+#: config/fieldvars.php:286
+msgid "Help editor"
+msgstr "Hjælpeeditor"
+
+#: functions/config_class.php:155
+#: functions/config_class.php:158
+msgid "Warning: configuration file is out of date!"
+msgstr "Advarsel: konfigurationsfil er for gammel!"
+
+#: functions/config_class.php:301
+msgid "Cannot backup and delete the old configuration file (check the permissions)!"
+msgstr "Kan ikke lave backup af, og slette den gamle, konfigurationsfil (tjek rettigheder)!Kan ikke lave backup af, og slette den gamle, konfigurationsfil (tjek rettigheder)!"
+
+#: functions/config_class.php:317
+msgid "Cannot backup the old configuration file because the permissions are wrong (remote FTP)!"
+msgstr "Kan ikke lave backup af den gamle konfigurationsfil da rettighederne er forkerte (fjern-FTP)!Kan ikke lave backup af den gamle konfigurationsfil da rettighederne er forkerte (fjern-FTP)!"
+
+#: functions/config_class.php:337
+msgid "Cannot backup the old configuration file because the permissions are wrong (remote SFTP)!"
+msgstr "Kan ikke lave backup af den gamle konfigurationsfil da rettighederne er forkerte (fjern-SFTP)!Kan ikke lave backup af den gamle konfigurationsfil da rettighederne er forkerte (fjern-SFTP)!"
+
+#: functions/config_class.php:365
+msgid "Cannot delete the file (check the permissions)!"
+msgstr "Kan ikke slette filen (tjek rettigheder)!"
+
+#: functions/config_class.php:380
+msgid "Cannot delete file because the permissions are wrong (remote FTP)!"
+msgstr "Kan ikke slette filen da rettighederne er forkerte (fjern-FTP)!"
+
+#: functions/config_class.php:383
+msgid "Cannot delete file because it does not exists (remote FTP)!"
+msgstr "Kan ikke slette filen da den ikke eksisterer (fjern-FTP)!"
+
+#: functions/config_class.php:396
+msgid "Cannot delete file because the permissions are wrong (remote SFTP)!"
+msgstr "Kan ikke slette filen da rettighederne er forkerte (fjern-SFTP)!"
+
+#: functions/config_class.php:399
+msgid "Cannot delete file because it does not exists (remote SFTP)!"
+msgstr "Kan ikke slette filen da den ikke eksisterer (fjern-SFTP)!"
+
+#: functions/config_class.php:430
+msgid "Cannot get the configuration file (FTP connection failed)!"
+msgstr "Kan ikke hente konfigurationsfilen (FTP forbindelse mislykkedes)!"
+
+#: functions/config_class.php:437
+msgid "Cannot write the configuration file (FTP connection failed)!"
+msgstr "Kan ikke skrive konfigurationsfilen (FTP forbindelse mislykkedes)!"
+
+#: functions/config_class.php:452
+msgid "Cannot get the configuration file (SSH connection failed)!"
+msgstr "Kan ikke hente konfigurationsfilen (SSH forbindelse mislykkedes)!"
+
+#: functions/config_class.php:456
+msgid "Cannot get the configuration file (remote file does not exist)!"
+msgstr "Kan ikke hente konfigurationsfilen (fjern-filen eksisterer ikke)!"
+
+#: functions/config_class.php:463
+msgid "Cannot write the configuration file (SSH connection failed)!"
+msgstr "Kan ikke skrive konfigurationsfilen (SSH forbindelse mislykkedes)!"
+
+#: functions/config_class.php:491
+#: functions/config_class.php:662
+msgid "It is not possible to write config files directly from the common domain!"
+msgstr "Det er ikke muligt at skrive konfig. filer direkte fra fællesdomænet!"
+
+#: functions/config_class.php:822
+msgid "Configuration write failed - Dataset not found"
+msgstr "Konfigurationsskrivning mislykkedes - datasæt ikke fundet"
+
+#: functions/config_class.php:938
+msgid "Configuration write failed (FTP connection failed):"
+msgstr "Konfigurationsskrivning mislykkedes (FTP forbindelse fejlede):"
+
+#: functions/config_class.php:939
+#: functions/config_class.php:989
+msgid "Cannot open/overwrite the configuration file (FTP connection failed)!"
+msgstr "Kan ikke åbne/overskrive konfigurationsfilen (FTP forbindelse fejlede)!"
+
+#: functions/config_class.php:1005
+msgid "Cannot open/overwrite the configuration file (remote SFTP)!"
+msgstr "Kan ikke åbne/overskrive konfigurationsfilen (fjern-SFTP)!"
+
+#: functions/config_class.php:1403
+#: functions/config_class.php:1435
+msgid "Connection to remote system failed (SSH2 connection):"
+msgstr "Kan ikke tilslutte til fjern-systemet (SSH2 forbindelse):"
+
+#: functions/config_class.php:1404
+#: functions/config_class.php:1436
+msgid "Connection to remote system failed (SSH2 connection)!"
+msgstr "Kan ikke tilslutte til fjern-systemet (SSH2 forbindelse)!"
+
+#: functions/config_class.php:1416
+#: functions/config_class.php:1417
+msgid "SSH public key does not exist or is not readable"
+msgstr "SSH offentlig nøgle eksisterer ikke eller er ikke læsbar"
+
+#: functions/config_class.php:1421
+#: functions/config_class.php:1422
+msgid "SSH private key does not exist or is not readable"
+msgstr "SSH privat nøgle eksisterer ikke eller er ikke læsbar"
+
+#: functions/config_class.php:1497
+msgid "Connection to remote system failed (FTP connection):"
+msgstr "Kan ikke tilslutte til fjern-systemet (FTP forbindelse):"
+
+#: functions/config_class.php:1498
+msgid "Connection to remote system failed (FTP connection)!"
+msgstr "Kan ikke tilslutte til fjern-systemet (FTP forbindelse)!"
+
+#: functions/data_class.php:125
+#: functions/data_class.php:149
+msgid "Delete failed because a database error:"
+msgstr "Sletning mislykkedes på grund af en databasefejl:"
+
+#: functions/data_class.php:128
+#: functions/data_class.php:158
+#: functions/data_class.php:167
+msgid "No data deleted. Probably the dataset does not exist or it is protected from delete."
+msgstr "Ingen data slettet. Datasættet eksisterer sikker ikke, eller er beskyttet mod sletning.Ingen data slettet. Datasættet eksisterer sikker ikke, eller er beskyttet mod sletning."
+
+#: functions/data_class.php:132
+msgid "Delete dataset id:"
+msgstr "Slet datasæt-id:"
+
+#: functions/data_class.php:132
+msgid "- from table:"
+msgstr "- fra tabel:"
+
+#: functions/data_class.php:132
+#: functions/data_class.php:162
+#: functions/data_class.php:301
+#: functions/data_class.php:582
+#: functions/data_class.php:645
+msgid "- with affected rows:"
+msgstr "- med påvirkede rækker:"
+
+#: functions/data_class.php:162
+#: functions/data_class.php:301
+msgid "Delete data from table:"
+msgstr "Slet data fra tabel:"
+
+#: functions/data_class.php:297
+msgid "No data deleted. Probably the dataset does not exist, is protected from deletion or has relations to other configurations which cannot be deleted. Use the \"info\" function for detailed informations about relations!"
+msgstr "Ingen data slettet. Enten eksisterer datasættet ikke, er beskyttet mod sletning eller har relationer til andre konfigurationer der ikke kan slettes. Brug \"Info\" funktionen for yderligere detaljer om relationer!Ingen data slettet. Enten eksisterer datasættet ikke, er beskyttet mod sletning eller har relationer til andre konfigurationer der ikke kan slettes. Brug \"Info\" funktionen for yderligere detaljer om relationer!"
+
+#: functions/data_class.php:307
+msgid "No data deleted. Probably the dataset does not exist or it is protected from deletion."
+msgstr "Ingen data slettet. Datasættet eksisterer sandsynligvis ikke, eller er beskyttet mod sletning.Ingen data slettet. Datasættet eksisterer sandsynligvis ikke, eller er beskyttet mod sletning."
+
+#: functions/data_class.php:508
+msgid "Data set copy failed - table [new name]:"
+msgstr "Datasæt kopi mislykkedes- tabel [nyt navn]:"
+
+#: functions/data_class.php:511
+msgid "Data set copied - table [new name]:"
+msgstr "Datasæt kopieret - tabel[nyt navn]:"
+
+#: functions/data_class.php:578
+msgid "No dataset activated. Probably the dataset does not exist or no dataset was selected"
+msgstr "Ingen datasæt aktiveret. Sandsynligvis eksisterer datasættet ikke, eller der var ikke valgt noget datasætIngen datasæt aktiveret. Sandsynligvis eksisterer datasættet ikke, eller der var ikke valgt noget datasæt"
+
+#: functions/data_class.php:581
+msgid "Dataset successfully activated. Affected rows:"
+msgstr "Datasæt aktiveret korrekt. Påvirkede rækker:"
+
+#: functions/data_class.php:582
+#: functions/data_class.php:645
+msgid "Activate dataset from table:"
+msgstr "Aktiver datasæt fra tabel:"
+
+#: functions/data_class.php:587
+msgid "No dataset activated. Probably the dataset does not exist"
+msgstr "Ingen datasæt aktiveret. Sandsynligvis eksisterer datasættet ikke"
+
+#: functions/data_class.php:641
+msgid "No dataset deactivated. Probably the dataset does not exist, is protected from deactivation or no dataset was selected. Use the \"info\" function for detailed informations about relations!"
+msgstr "Ingen datasæt deaktiveret. Sandsynligvis eksisterer datasættet ikke, er beskyttet mod deaktivering eller der var ikke valgt noget datasæt. Brug \"info\" funktionen for yderligere informationer om relationer!Ingen datasæt deaktiveret. Sandsynligvis eksisterer datasættet ikke, er beskyttet mod deaktivering eller der var ikke valgt noget datasæt. Brug \"info\" funktionen for yderligere informationer om relationer!"
+
+#: functions/data_class.php:644
+msgid "Dataset successfully deactivated. Affected rows:"
+msgstr "Datasæt korrekt deaktiveret. Påvirkede rækker:"
+
+#: functions/data_class.php:650
+msgid "No dataset deactivated. Probably the dataset does not exist"
+msgstr "Ingen datasæt deaktiveret. Sandsynligvis eksisterer datasættet ikke"
+
+#: functions/data_class.php:834
+msgid "<span style=\"color:#0000FF;\">Relation information for <b>"
+msgstr "<span style=\"color:#0000FF;\">Relationsinformation for <b>"
+
+#: functions/data_class.php:834
+msgid "</b> of table <b>"
+msgstr "</b> af tabellen <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:890
+#: functions/data_class.php:894
+#: functions/data_class.php:910
+#: functions/data_class.php:913
+msgid "Relation to <b>"
+msgstr "Relation til <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:890
+#: functions/data_class.php:894
+#: functions/data_class.php:910
+#: functions/data_class.php:913
+msgid "</b>, entry <b>"
+msgstr "</b>, indgang <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:894
+#: functions/data_class.php:913
+msgid "deletion <b>possible</b>"
+msgstr "sletning <b>mulig</b>"
+
+#: functions/data_class.php:890
+#: functions/data_class.php:910
+msgid "deletion <b>not possible</b>"
+msgstr "sletning <b>ikke mulig</b>"
+
+#: functions/import_class.php:99
+msgid "Cannot receive the configuration file (FTP connection)!"
+msgstr "Kan ikke hente konfigurationsfilen (FTP forbindelse)!"
+
+#: functions/import_class.php:112
+msgid "Cannot receive the configuration file (SSH connection)!"
+msgstr "Kan ikke hente konfigurationsfilen (SSH forbindelse)!"
+
+#: functions/import_class.php:178
+msgid "No valid configuration found!"
+msgstr "Ingen gyldig konfiguration fundet!"
+
+#: functions/import_class.php:250
+msgid "Table for import definition"
+msgstr "Tabel til import-definition"
+
+#: functions/import_class.php:250
+msgid "is not available!"
+msgstr "er ikke tilgængelig!"
+
+#: functions/import_class.php:292
+#: functions/import_class.php:297
+#: functions/import_class.php:609
+#: functions/import_class.php:610
+#: functions/import_class.php:613
+#: functions/import_class.php:614
+msgid "inside"
+msgstr "indvendig"
+
+#: functions/import_class.php:292
+msgid "exists and were not overwritten"
+msgstr "eksisterer og blev ikke overskrevet"
+
+#: functions/import_class.php:297
+msgid "were not written"
+msgstr "blev ikke skrevet"
+
+#: functions/import_class.php:609
+#: functions/import_class.php:610
+msgid "could not be inserted:"
+msgstr "kunne ikke indsættes:"
+
+#: functions/import_class.php:613
+#: functions/import_class.php:614
+msgid "successfully inserted"
+msgstr "korrekt indsat"
+
+#: functions/import_class.php:1199
+msgid "Error: wrong number of arguments - cannot import service group members"
+msgstr "Fejl: forkert antal argumenter - kan ikke importere servicegruppe medlemmerFejl: forkert antal argumenter - kan ikke importere servicegruppe medlemmer"
+
+#: functions/mysql_class.php:274
+msgid "Missing server connection parameter!"
+msgstr "Manglende server-forbindelses parameter!"
+
+#: functions/mysql_class.php:281
+#: functions/mysql_class.php:310
+msgid "Connection to the database server has failed by reason:"
+msgstr "Forbindelsen til database-serveren mislykkedes med årsagen:"
+
+#: functions/mysql_class.php:303
+msgid "Missing database connection parameter!"
+msgstr "Manglende database-forbindelses parameter!"
+
+#: functions/nag_class.php:187
+msgid "Hide menu"
+msgstr "Skjul menu"
+
+#: functions/nag_class.php:192
+msgid "Show menu"
+msgstr "Vis menu"
+
+#: functions/nag_class.php:402
+msgid "Page"
+msgstr "Side"
+
+#: functions/nag_class.php:811
+msgid "Unrestricted access"
+msgstr "Ubegrænset adgang"
+
+#: functions/prepend_adm.php:98
+#: install/index.php:148
+msgid "Error while connecting to database:"
+msgstr "Fejl ved forbindelse til databasen:"
+
+#: functions/prepend_adm.php:124
+msgid "Error in setting the correct locale, please report this error with the associated output of  'locale -a' to bugs@nagiosql.org"
+msgstr "Fejl ved indstilling af korrekt lokalitet, rapportér venligst denne fejl med det tilknyttede output fra  'locale -a' til bugs@nagiosql.orgFejl ved indstilling af korrekt lokalitet, rapportér venligst denne fejl med det tilknyttede output fra  'locale -a' til bugs@nagiosql.org"
+
+#: functions/prepend_adm.php:210
+msgid "Webserver login successfull"
+msgstr "Korrekt webserver-login"
+
+#: functions/prepend_adm.php:235
+msgid "Login successfull"
+msgstr "Korrekt login"
+
+#: functions/prepend_adm.php:240
+#: functions/prepend_adm.php:241
+msgid "Login failed!"
+msgstr "Login mislykkedes!"
+
+#: functions/prepend_adm.php:260
+msgid "Session timeout reached - Seconds:"
+msgstr "Session timeout nået - sekunder:"
+
+#: functions/prepend_adm.php:270
+msgid "Restricted site accessed:"
+msgstr "Begrænset websted tilgået:"
+
+#: functions/prepend_adm.php:282
+msgid "User not found in database"
+msgstr "Bruger ikke fundet i databasen"
+
+#: functions/prepend_adm.php:307
+msgid "Admin"
+msgstr "Admin"
+
+#: functions/prepend_adm.php:352
+msgid "Logged in:"
+msgstr "Logget ind:"
+
+#: functions/prepend_adm.php:353
+msgid "Logout"
+msgstr "Log ud"
+
+#: functions/prepend_adm.php:369
+msgid "Warning - template file not found or not readable, please check your file permissions! - File: "
+msgstr "Advarsel - skabelonfil ikke fundet eller ikke læsbar, kontrollér venligst dine filrettigheder! - Fil: Advarsel - skabelonfil ikke fundet eller ikke læsbar, kontrollér venligst dine filrettigheder! - Fil: "
+
+#: functions/translator.php:56
+msgid "English"
+msgstr "Engelsk"
+
+#: functions/translator.php:60
+msgid "German"
+msgstr "Tysk"
+
+#: functions/translator.php:64
+msgid "Chinese (Simplified)"
+msgstr "Kinesisk (simpelt)"
+
+#: functions/translator.php:68
+msgid "Polish"
+msgstr "Polsk"
+
+#: functions/translator.php:72
+msgid "Italian"
+msgstr "Italiensk"
+
+#: functions/translator.php:76
+msgid "French"
+msgstr "Fransk"
+
+#: functions/translator.php:80
+msgid "Russian"
+msgstr "Russisk"
+
+#: functions/translator.php:84
+msgid "Spanish"
+msgstr "Spansk"
+
+#: functions/translator.php:88
+msgid "Portuguese (Brazilian)"
+msgstr "Portugisisk (Brasilien)"
+
+#: functions/translator.php:92
+msgid "Japanese"
+msgstr "Japansk"
+
+#: functions/translator.php:96
+msgid "Dutch"
+msgstr "Hollandsk"
+
+#: functions/translator.php:100
+msgid "Spanish (Argentina)"
+msgstr "Spansk (Argentina)"
+
+#: functions/translator.php:104
+msgid "Danish"
+msgstr "Dansk"
+
+#: install/index.php:74
+#: install/install.php:88
+msgid "Online Documentation"
+msgstr "Online dokumentation"
+
+#: install/index.php:98
+msgid "Welcome to the NagiosQL Installation Wizard"
+msgstr "Velkommen til NagiosQL installationsguiden"
+
+#: install/index.php:99
+msgid "This wizard will help you to install and configure NagiosQL."
+msgstr "Denne guide vil hjælpe dig med at installere og konfigurere NagiosQL."
+
+#: install/index.php:100
+msgid "For questions please visit"
+msgstr "Ved spørgsmål besøg venligst"
+
+#: install/index.php:102
+msgid "First let's check your local environment and find out if everything NagiosQL needs is available."
+msgstr "Lad os først undersøge dit lokale miljø, og se om alt hvad NagiosQL skal bruge er tilgængeligt.Lad os først undersøge dit lokale miljø, og se om alt hvad NagiosQL skal bruge er tilgængeligt."
+
+#: install/index.php:103
+msgid "The basic requirements are:"
+msgstr "De grundlæggende krav er:"
+
+#: install/index.php:105
+msgid "PHP 5.2.0 or greater including:"
+msgstr "PHP 5.2.0 eller nyere inklusiv:"
+
+#: install/index.php:107
+#: install/index.php:108
+#: install/index.php:109
+#: install/index.php:110
+#: install/index.php:111
+#: install/index.php:112
+#: install/index.php:113
+#: install/index.php:114
+msgid "PHP Module:"
+msgstr "PHP modul:"
+
+#: install/index.php:113
+#: install/index.php:114
+#: install/index.php:115
+msgid "(optional)"
+msgstr "(valgfri)"
+
+#: install/index.php:115
+msgid "PECL Extension:"
+msgstr "PECL udvidelse:"
+
+#: install/index.php:118
+msgid "php.ini options"
+msgstr "php.ini indstillinger"
+
+#: install/index.php:120
+msgid "file_uploads on (for upload features)"
+msgstr "file_uploads slået til (for upload funktioner)"
+
+#: install/index.php:121
+msgid "session.auto_start needs to be off"
+msgstr "session.auto_start skal være slået fra"
+
+#: install/index.php:124
+msgid "A MySQL database server"
+msgstr "En MySQL databaseserver"
+
+#: install/index.php:125
+msgid "Nagios 2.x/3.x or Icinga 1.x"
+msgstr "Nagios 2.x/3.x eller Icinga 1.x"
+
+#: install/index.php:198
+msgid "START UPDATE"
+msgstr "START OPDATERING"
+
+#: install/index.php:201
+#: install/index.php:204
+msgid "START INSTALLATION"
+msgstr "START INSTALLATION"
+
+#: install/status.php:23
+msgid "Requirements"
+msgstr "Krav"
+
+#: install/status.php:25
+#: install/step3.php:371
+msgid "Finish"
+msgstr "Færdig"
+
+#: install/step1.php:86
+msgid "Checking requirements"
+msgstr "Kontrollerer krav"
+
+#: install/step1.php:87
+msgid "Checking Client"
+msgstr "Kontrollerer klient"
+
+#: install/step1.php:89
+msgid "ENABLED"
+msgstr "AKTIVERET"
+
+#: install/step1.php:91
+msgid "NOT ENABLED"
+msgstr "DEAKTIVERET"
+
+#: install/step1.php:94
+msgid "Checking PHP version"
+msgstr "Kontrollerer PHP version"
+
+#: install/step1.php:97
+#: install/step1.php:99
+msgid "Version"
+msgstr "Version"
+
+#: install/step1.php:97
+#: install/step1.php:109
+#: install/step1.php:121
+#: install/step1.php:135
+#: install/step1.php:167
+#: install/step1.php:173
+#: install/step1.php:187
+#: install/step1.php:193
+#: install/step1.php:205
+#: install/step1.php:215
+#: install/step1.php:217
+#: install/step1.php:229
+#: install/step1.php:238
+#: install/step1.php:247
+#: install/step1.php:256
+#: install/step1.php:265
+#: install/step1.php:274
+msgid "OK"
+msgstr "OK"
+
+#: install/step1.php:97
+#: install/step1.php:99
+msgid "detected"
+msgstr "opdaget"
+
+#: install/step1.php:99
+msgid "or greater is required"
+msgstr "eller nyere er krævet"
+
+#: install/step1.php:102
+msgid "Checking PHP extensions"
+msgstr "Kontrollerer PHP udvidelser"
+
+#: install/step1.php:103
+msgid "The following modules/extensions are <em>required</em> to run NagiosQL"
+msgstr "De følgende moduler/udvidelser er <em>krævet</em> for at køre NagiosQL"
+
+#: install/step1.php:112
+#: install/step1.php:125
+#: install/step1.php:139
+msgid "Could be loaded. Please add in php.ini"
+msgstr "Kunne indlæses. Tilføj venligst i php.ini"
+
+#: install/step1.php:113
+#: install/step1.php:126
+#: install/step1.php:140
+#: install/step1.php:164
+msgid "NOT AVAILABLE"
+msgstr "IKKE TILGÆNGELIG"
+
+#: install/step1.php:118
+msgid "The next couple of extensions are <em>optional</em> but recommended"
+msgstr "De næste par udvidelser er <em>valgfri</em> men anbefalet"
+
+#: install/step1.php:130
+msgid "Checking available database interfaces"
+msgstr "Kontrollerer tilgængelige database-grænseflader"
+
+#: install/step1.php:131
+msgid "Check which of the supported extensions are installed. At least one of them is required."
+msgstr "Kontroller hvilke af de understøttede udvidelser der er installeret. Mindst en af dem er krævet.Kontroller hvilke af de understøttede udvidelser der er installeret. Mindst en af dem er krævet."
+
+#: install/step1.php:139
+msgid "Not installed"
+msgstr "Ikke installeret"
+
+#: install/step1.php:158
+msgid "Checking php.ini/.htaccess settings"
+msgstr "Kontrollerer php.ini/.htaccess indstillinger"
+
+#: install/step1.php:159
+msgid "The following settings are <em>required</em> to run NagiosQL"
+msgstr "Følgende indstillinger er <em>krævet</em> for at køre NagiosQL"
+
+#: install/step1.php:164
+msgid "cannot be empty and needs to be set"
+msgstr "kan ikke være blank og skal indstilles"
+
+#: install/step1.php:175
+msgid "should be"
+msgstr "bør være"
+
+#: install/step1.php:180
+msgid "The following settings are <em>optional</em> but recommended"
+msgstr "Følgende indstillinger er <em>valgfri</em> men anbefalet"
+
+#: install/step1.php:185
+msgid "Could be set"
+msgstr "Kunne indstilles"
+
+#: install/step1.php:195
+msgid "Could be"
+msgstr "Kunne"
+
+#: install/step1.php:200
+msgid "Checking System Permission"
+msgstr "Kontrollerer system-rettigheder"
+
+#: install/step1.php:205
+#: install/step1.php:207
+msgid "Read test on settings file (config/settings.php)"
+msgstr "Læse-test på indstillingsfil (config/settings.php)"
+
+#: install/step1.php:207
+#: install/step1.php:219
+#: install/step1.php:222
+#: install/step1.php:231
+#: install/step1.php:240
+#: install/step1.php:249
+#: install/step1.php:258
+#: install/step1.php:267
+#: install/step1.php:276
+#: install/step3.php:67
+#: install/step3.php:89
+#: install/step3.php:102
+#: install/step3.php:116
+#: install/step3.php:123
+#: install/step3.php:139
+#: install/step3.php:151
+#: install/step3.php:163
+#: install/step3.php:177
+#: install/step3.php:183
+#: install/step3.php:199
+#: install/step3.php:210
+#: install/step3.php:222
+#: install/step3.php:234
+#: install/step3.php:284
+#: install/step3.php:296
+#: install/step3.php:308
+#: install/step3.php:322
+#: install/step3.php:328
+#: install/step3.php:344
+#: install/step3.php:355
+msgid "failed"
+msgstr "mislykkedes"
+
+#: install/step1.php:210
+msgid "Settings file does not exists (config/settings.php)"
+msgstr "Indstillingsfilen eksisterer ikke (config/settings.php)"
+
+#: install/step1.php:210
+msgid "will be created"
+msgstr "vil blive oprettet"
+
+#: install/step1.php:215
+#: install/step1.php:219
+msgid "Write test on settings file (config/settings.php)"
+msgstr "Skrive-test på indstillingsfilen (config/settings.php)"
+
+#: install/step1.php:217
+#: install/step1.php:222
+msgid "Write test on settings directory (config/)"
+msgstr "Skrive-test på indstillingsmappen (config/)"
+
+#: install/step1.php:229
+#: install/step1.php:231
+msgid "Read test on a class file (functions/nag_class.php)"
+msgstr "Læse-test på en klasse-fil (functions/nag_class.php)"
+
+#: install/step1.php:238
+#: install/step1.php:240
+msgid "Read test on startsite file (admin.php)"
+msgstr "Læse-test på en startside-fil (admin.php)"
+
+#: install/step1.php:247
+#: install/step1.php:249
+msgid "Read test on a template file (templates/index.tpl.htm)"
+msgstr "Læse-test på en skabelonfil (templates/index.tpl.htm)"
+
+#: install/step1.php:256
+#: install/step1.php:258
+msgid "Read test on a admin template file (templates/admin/admin_master.tpl.htm)"
+msgstr "Læse-test på en admin skabelonfil (templates/admin/admin_master.tpl.htm)Læse-test på en admin skabelonfil (templates/admin/admin_master.tpl.htm)"
+
+#: install/step1.php:265
+#: install/step1.php:267
+msgid "Read test on a file template (templates/files/contacts.tpl.dat)"
+msgstr "Læse-test på en fil-skabelon (templates/files/contacts.tpl.dat)"
+
+#: install/step1.php:274
+#: install/step1.php:276
+msgid "Read test on a image file (images/pixel.gif)"
+msgstr "Læse-test på en billedfil (images/pixel.gif)"
+
+#: install/step1.php:283
+msgid "There are some errors - please check your system settings and read the requirements of NagiosQL!"
+msgstr "Der er nogle fejl - kontroller venligst dine systemindstilling og læs kravene til NagiosQL!Der er nogle fejl - kontroller venligst dine systemindstilling og læs kravene til NagiosQL!"
+
+#: install/step1.php:284
+msgid "Read the INSTALLATION file from NagiosQL to find out, how to fix them."
+msgstr "Læs INSTALLATION filen fra NagiosQL for finde vejledning til at løse dem.Læs INSTALLATION filen fra NagiosQL for finde vejledning til at løse dem."
+
+#: install/step1.php:285
+msgid "After that - refresh this page to proceed"
+msgstr "Derefter skal du genopfriske denne side for at fortsætte"
+
+#: install/step1.php:288
+msgid "Refresh"
+msgstr "Genopfrisk"
+
+#: install/step1.php:292
+msgid "Environment test sucessfully passed"
+msgstr "Miljøtest bestået korrekt"
+
+#: install/step1.php:297
+#: install/step2.php:103
+msgid "Next"
+msgstr "Næste"
+
+#: install/step2.php:55
+msgid "Setup"
+msgstr "Installation"
+
+#: install/step2.php:58
+msgid "Please complete the form below. Mandatory fields marked <em>*</em>"
+msgstr "Udfyld venligst nedenstående formular. Krævede felter er markeret med <em>*</em>Udfyld venligst nedenstående formular. Krævede felter er markeret med <em>*</em>"
+
+#: install/step2.php:59
+msgid "Please backup your database before proceeding!"
+msgstr "Tag venligst en backup af din database før du fortsætter!"
+
+#: install/step2.php:61
+msgid "Database Configuration"
+msgstr "Database konfiguration"
+
+#: install/step2.php:67
+msgid "NagiosQL DB User"
+msgstr "NagiosQL DB bruger"
+
+#: install/step2.php:68
+msgid "NagiosQL DB Password"
+msgstr "NagiosQL DB adgangskode"
+
+#: install/step2.php:73
+msgid "Administrative MySQL User"
+msgstr "Administrativ MySQL bruger"
+
+#: install/step2.php:74
+msgid "Administrative MySQL Password"
+msgstr "Administrativ MySQL adgangskode"
+
+#: install/step2.php:76
+msgid "Drop database if already exists?"
+msgstr "Slet databasen hvis den allerede eksisterer?"
+
+#: install/step2.php:86
+msgid "NagiosQL User Setup"
+msgstr "NagiosQL bruger-opsætning"
+
+#: install/step2.php:88
+msgid "Initial NagiosQL User"
+msgstr "Første NagiosQL bruger"
+
+#: install/step2.php:89
+msgid "Initial NagiosQL Password"
+msgstr "Første NagiosQL adgangskode"
+
+#: install/step2.php:90
+msgid "Please repeat the password"
+msgstr "Gentag venligst adgangskoden"
+
+#: install/step2.php:94
+msgid "Nagios Configuration"
+msgstr "Nagios konfiguration"
+
+#: install/step2.php:96
+msgid "Import Nagios sample config?"
+msgstr "Importer Nagios eksempel-konfiguration?"
+
+#: install/step3.php:41
+msgid "Finishing Setup"
+msgstr "Færdiggør installation"
+
+#: install/step3.php:47
+msgid "Create new NagiosQL database"
+msgstr "Opret ny NagiosQL database"
+
+#: install/step3.php:55
+msgid "Database already exists and drop database was not selected, please correct or manage manually"
+msgstr "Databasen eksisterer allerede og sletning af database var ikke valgt, ret venligst eller håndter manueltDatabasen eksisterer allerede og sletning af database var ikke valgt, ret venligst eller håndter manuelt"
+
+#: install/step3.php:63
+msgid "MySQL server connection (privileged user)"
+msgstr "MySQL server-forbindelse (priviligeret bruger)"
+
+#: install/step3.php:70
+#: install/step3.php:174
+#: install/step3.php:319
+msgid "passed"
+msgstr "bestået"
+
+#: install/step3.php:71
+msgid "MySQL server version"
+msgstr "MySQL serverversion"
+
+#: install/step3.php:81
+msgid "MySQL server support"
+msgstr "MySQL server-understøttelse"
+
+#: install/step3.php:83
+msgid "supported"
+msgstr "understøttet"
+
+#: install/step3.php:85
+msgid "not supported"
+msgstr "ikke understøttet"
+
+#: install/step3.php:96
+msgid "Delete existing NagiosQL database"
+msgstr "Slet eksisterende NagiosQL database"
+
+#: install/step3.php:99
+#: install/step3.php:119
+#: install/step3.php:136
+#: install/step3.php:148
+#: install/step3.php:160
+#: install/step3.php:196
+#: install/step3.php:207
+#: install/step3.php:219
+#: install/step3.php:231
+#: install/step3.php:281
+#: install/step3.php:293
+#: install/step3.php:305
+#: install/step3.php:341
+#: install/step3.php:352
+msgid "done"
+msgstr "færdig"
+
+#: install/step3.php:108
+msgid "Creating new database"
+msgstr "Opretter ny database"
+
+#: install/step3.php:127
+#: install/functions/func_installer.php:291
+#: install/functions/func_installer.php:312
+msgid "Could not access"
+msgstr "Kunne ikke tilgå"
+
+#: install/step3.php:133
+msgid "Create NagiosQL MySQL user"
+msgstr "Opret NagiosQL MySQL bruger"
+
+#: install/step3.php:145
+msgid "Update MySQL permissions"
+msgstr "Opdatér MySQL rettigheder"
+
+#: install/step3.php:157
+msgid "Reloading MySQL User Table"
+msgstr "Genindlæser MySQL brugertabel"
+
+#: install/step3.php:169
+#: install/step3.php:314
+msgid "Testing database connection to"
+msgstr "Tester databaseforbindelse til"
+
+#: install/step3.php:192
+#: install/step3.php:337
+msgid "Deploy NagiosQL settings"
+msgstr "Udsend NagiosQL indstillinger"
+
+#: install/step3.php:194
+#: install/step3.php:339
+msgid "Writing global settings to database"
+msgstr "Skriver globale indstillinger til databasen"
+
+#: install/step3.php:205
+#: install/step3.php:350
+msgid "Writing database configuration to settings.php"
+msgstr "Skriver databasekonfiguration til settings.php"
+
+#: install/step3.php:216
+msgid "Set initial NagiosQL Administrator"
+msgstr "Opretter første NagiosQL administrator"
+
+#: install/step3.php:228
+msgid "Import Nagios sample data"
+msgstr "Importer Nagios eksempeldata"
+
+#: install/step3.php:243
+msgid "Updating existing NagiosQL database"
+msgstr "Opdatér eksisterende NagiosQL database"
+
+#: install/step3.php:246
+msgid "Installed NagiosQL version"
+msgstr "Installeret NagiosQL version"
+
+#: install/step3.php:252
+msgid "is not supported!"
+msgstr "er ikke understøttet!"
+
+#: install/step3.php:256
+#: install/step3.php:270
+msgid "error"
+msgstr "fejl"
+
+#: install/step3.php:263
+msgid "Upgrading from version"
+msgstr "Opgraderer fra version"
+
+#: install/step3.php:263
+msgid "to"
+msgstr "til"
+
+#: install/step3.php:278
+msgid "Converting database to utf8 character set"
+msgstr "Konverterer databasen til utf8 tegnsæt"
+
+#: install/step3.php:290
+msgid "Converting database tables to utf8 character set"
+msgstr "Konverterer databasetabeller til utf8 tegnsæt"
+
+#: install/step3.php:302
+msgid "Converting database fields to utf8 character set"
+msgstr "Konverterer databasefelter til utf8 tegnsæt"
+
+#: install/step3.php:369
+msgid "Please delete the install directory to continue!"
+msgstr "Slet venligst installationsmappen for at fortsætte!"
+
+#: install/step3.php:377
+msgid "Back"
+msgstr "Tilbage"
+
+#: install/functions/func_installer.php:64
+msgid "Could not create"
+msgstr "Kunne ikke oprette"
+
+#: install/functions/func_installer.php:64
+#: install/functions/func_installer.php:70
+msgid "database in MySQL"
+msgstr "databasen i MySQL"
+
+#: install/functions/func_installer.php:70
+msgid "Could not select"
+msgstr "Kunne ikke vælge"
+
+#: install/functions/func_installer.php:169
+msgid "Could not open settings.php in config directory for writing!"
+msgstr "Kunne ikke åbne settings.php i config mappen for skrivning!"
+
+#: install/functions/func_installer.php:277
+msgid "Unknown version!"
+msgstr "Ukendt version!"
+
+#: install/functions/func_installer.php:325
+msgid "Cannot connect to the database."
+msgstr "Kan ikke forbinde til databasen."
+
+#: install/functions/func_installer.php:325
+#: install/functions/func_installer.php:334
+#: install/functions/func_installer.php:337
+msgid "MySQL Error"
+msgstr "MySQL fejl"
+
+#: install/functions/func_installer.php:334
+msgid "Cannot select the database."
+msgstr "Kan ikke vælge databasen."
+
+#: install/functions/func_installer.php:337
+msgid "Cannot set"
+msgstr "Kan ikke indstille"
+

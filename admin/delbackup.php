@@ -5,18 +5,20 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2011 by Martin Willisegger
+//
 // Project   : NagiosQL
 // Component : Admin file deletion
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.4
-// Revision  : $LastChangedRevision: 827 $
+// Version   : 3.1.1
+// Revision  : $LastChangedRevision: 1058 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Variabeln deklarieren
-// =====================
+// Define common variables
+// =======================
 $intMain    = 6;
 $intSub     = 17;
 $intMenu    = 2;
@@ -25,133 +27,151 @@ $intModus   = 0;
 $strMessage = "";
 $errMessage = "";
 //
-// Übergabeparameter
-// =================
-$chkSelFilename = isset($_POST['selImportFile'])  ? $_POST['selImportFile'] : array("");
-$chkSearch      = isset($_POST['txtSearch'])    ? htmlspecialchars($_POST['txtSearch'])   : "";
+// Process post parameters
+// =======================
+$chkSelFilename = isset($_POST['selImportFile'])  ? $_POST['selImportFile'] 									: array("");
+$chkSearch      = isset($_POST['txtSearch'])      ? htmlspecialchars($_POST['txtSearch'], ENT_QUOTES, 'utf-8')  : "";
+$chkStatus      = isset($_POST['hidStatus'])      ? $_POST['hidStatus']+0   									: 0;
 //
-// Vorgabedatei einbinden
-// ======================
+// Include preprocessing file
+// ==========================
 $preAccess    = 1;
 $preFieldvars = 1;
 require("../functions/prepend_adm.php");
 $myConfigClass->getConfigData("method",$intMethod);
-//
-// Function to add files of a given directory to an array
-//
-function DirToArray($sPath, $include, $exclude, &$output,&$errMessage) {
-  while (substr($sPath,-1) == "/" OR substr($sPath,-1) == "\\") {
-    $sPath=substr($sPath, 0, -1);
-  }
-  $handle = @opendir($sPath);
-  if( $handle === false ) {
-    $errMessage .= gettext('Could not open directory')." ".$sPath."<br>";
-  } else {
-    while ($arrDir[] = readdir($handle)) {}
-    closedir($handle);
-    sort($arrDir);
-    foreach($arrDir as $file) {
-      if (!preg_match("/^\.{1,2}/", $file) and strlen($file)) {
-        if (is_dir($sPath."/".$file)) {
-          DirToArray($sPath."/".$file, $include, $exclude, $output, $errMessage);
-        } else {
-          if (preg_match("/".$include."/",$file) && (($exclude == "") || !preg_match("/".$exclude."/", $file))) {
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-              $sPath=str_replace("/", "\\", $sPath);
-              $output [] = $sPath."\\".$file;
-            } else {
-              $output [] = $sPath."/".$file;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-//
-// Formulareingaben verarbeiten
-// ============================
-if ($chkSelFilename[0] != "") {
-  $intModus = 1;
-  $strMessage = "";
-  foreach($chkSelFilename AS $elem) {
-    $intCheck = $myConfigClass->removeFile(trim($elem));
-    if ($intCheck == 0) {
-      $myDataClass->writeLog(gettext("File deleted").": ".trim($elem));
-      $strMessage .= $elem." ".gettext("successfully deleted")."!<br>";
-    } else {
-      $strMessage .= $elem." ".gettext("could not be deleted (check the permissions)")."!<br>";
-      $strMessage .= $myDataClass->strDBMessage;
-    }
-  }
-}
-//
-// Menu aufbauen
-// =============
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
-//
-// Content einbinden
-// =================
-$conttp->setVariable("TITLE",gettext("Delete backup files"));
-$conttp->parse("header");
-$conttp->show("header");
-$conttp->setVariable("LANG_SEARCH_STRING",gettext('Filter string'));
-$conttp->setVariable("LANG_SEARCH",gettext('Search'));
-$conttp->setVariable("LANG_DELETE",gettext('Delete'));
-$conttp->setVariable("DAT_SEARCH",$chkSearch);
-$conttp->setVariable("BACKUPFILE",gettext("Backup file"));
-$conttp->setVariable("MUST_DATA","* ".gettext('required'));
-$conttp->setVariable("MAKE",gettext("Delete"));
-$conttp->setVariable("ABORT",gettext("Abort"));
-$conttp->setVariable("CTRL_INFO",gettext("Hold CTRL to select<br>more than one entry"));
-$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-$conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
-// Dateien zusammensuchen
 $myConfigClass->getConfigData("backupdir",$strBackupDir);
 $myConfigClass->getConfigData("hostbackup",$strHostBackupDir);
 $myConfigClass->getConfigData("servicebackup",$strServiceBackupDir);
-// Building local file list
+//
+// 3rd party function to add files of a given directory to an array
+// ======================================================
+function DirToArray($sPath, $include, $exclude, &$output,&$errMessage) {
+	while (substr($sPath,-1) == "/" OR substr($sPath,-1) == "\\") {
+		$sPath=substr($sPath, 0, -1);
+	}
+	$handle = @opendir($sPath);
+	if( $handle === false ) {
+		$errMessage = translate('Could not open directory')." ".$sPath;
+	} else {
+    	while ($arrDir[] = readdir($handle)) {}
+		closedir($handle);
+		sort($arrDir);
+		foreach($arrDir as $file) {
+			if (!preg_match("/^\.{1,2}/", $file) and strlen($file)) {
+				if (is_dir($sPath."/".$file)) {
+					DirToArray($sPath."/".$file, $include, $exclude, $output, $errMessage);
+				} else {
+					if (preg_match("/".$include."/",$file) && (($exclude == "") || !preg_match("/".$exclude."/", $file))) {
+						if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+							$sPath=str_replace("/", "\\", $sPath);
+							$output [] = $sPath."\\".$file;
+						} else {
+							$output [] = $sPath."/".$file;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+//
+// Process form inputs
+// ===================
+if (($chkSelFilename[0] != "") && ($chkStatus == 1)) {
+	$intModus = 1;
+	foreach($chkSelFilename AS $elem) {
+		$intCheck = $myConfigClass->removeFile(trim($elem));
+		$strFile = str_replace($strServiceBackupDir,"",$elem);
+		$strFile = str_replace($strHostBackupDir,"",$strFile);
+		$strFile = str_replace($strBackupDir,"",$strFile);
+    	if ($intCheck == 0) {
+      		$myDataClass->writeLog(translate("File deleted").": ".trim($strFile));
+      		$myVisClass->processMessage($strFile." ".translate("successfully deleted")."!",$strMessage);
+    	} else {
+      		$myVisClass->processMessage($strFile." ".translate("could not be deleted (check the permissions)")."!",$strMessage);
+      		$strMessage .= $myDataClass->strDBMessage;
+    	}
+  	}
+}
+//
+// Build content menu
+// ==================
+$myVisClass->getMenu($intMain,$intSub,$intMenu);
+//
+// Include content
+// ===============
+$conttp->setVariable("TITLE",translate("Delete backup files"));
+$conttp->parse("header");
+$conttp->show("header");
+$conttp->setVariable("LANG_SEARCH_STRING",translate('Filter string'));
+$conttp->setVariable("LANG_SEARCH",translate('Search'));
+$conttp->setVariable("LANG_DELETE",translate('Delete'));
+$conttp->setVariable("LANG_DELETE_SEARCH",translate("Reset filter"));
+$conttp->setVariable("DAT_SEARCH",$chkSearch);
+$conttp->setVariable("BACKUPFILE",translate("Backup file"));
+$conttp->setVariable("MUST_DATA","* ".translate('required'));
+$conttp->setVariable("MAKE",translate("Delete"));
+$conttp->setVariable("ABORT",translate("Abort"));
+$conttp->setVariable("CTRL_INFO",translate("Hold CTRL to select<br>more than one entry"));
+$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
+$conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
+// Build a local file list
 $output = array();
 $temp=DirToArray($strBackupDir, "\.cfg_", "",$output,$errMessage);
 if ($intMethod == 1) {
-  if (is_array($output) && (count($output) != 0)) {
-    foreach ($output AS $elem2) {
-      if (($chkSearch == "") || (substr_count($elem2,$chkSearch) != 0)) {
-        $conttp->setVariable("DAT_BACKUPFILE",$elem2);
-        $conttp->parse("filelist");
-      }
-    }
-  }
+  	if (is_array($output) && (count($output) != 0)) {
+    	foreach ($output AS $elem2) {
+      		if (($chkSearch == "") || (substr_count($elem2,$chkSearch) != 0)) {
+				$conttp->setVariable("DAT_BACKUPFILE",$elem2);
+				$conttp->parse("filelist");
+      		}
+    	}
+  	}
 } else if ($intMethod == 2) {
-  // Set up basic connection
-  $booReturn    = $myConfigClass->getConfigData("server",$strServer);
-  $conn_id    = ftp_connect($strServer);
-  // Login with username and password
-  $booReturn    = $myConfigClass->getConfigData("user",$strUser);
-  $booReturn    = $myConfigClass->getConfigData("password",$strPasswd);
-  $login_result   = ftp_login($conn_id, $strUser, $strPasswd);
-  // Check connection
-  if ((!$conn_id) || (!$login_result)) {
-    return(1);
-  } else {
-    $arrFiles  = array();
-    $arrFiles1 = ftp_nlist($conn_id,$strBackupDir);
-    if (is_array($arrFiles1)) $arrFiles = array_merge($arrFiles,$arrFiles1);
-    $arrFiles2 = ftp_nlist($conn_id,$strHostBackupDir);
-    if (is_array($arrFiles2)) $arrFiles = array_merge($arrFiles,$arrFiles2);
-    $arrFiles3 = ftp_nlist($conn_id,$strServiceBackupDir);
-    if (is_array($arrFiles3)) $arrFiles = array_merge($arrFiles,$arrFiles3);
-    if (is_array($arrFiles) && (count($arrFiles) != 0)) {
-      foreach ($arrFiles AS $elem) {
-        if (!substr_count($elem,"cfg")) continue;
-        if (($chkSearch == "") || (substr_count($elem,$chkSearch) != 0)) {
-          $conttp->setVariable("DAT_BACKUPFILE",str_replace("//","/",$elem));
-          $conttp->parse("filelist");
-        }
-      }
-    }
-    ftp_close($conn_id);
-  }
+	// Set up basic connection
+	if ($myConfigClass->getFTPConnection() == "0") {
+		$arrFiles  = array();
+		$arrFiles1 = ftp_nlist($myConfigClass->resConnectId,$strBackupDir);
+		if (is_array($arrFiles1)) $arrFiles = array_merge($arrFiles,$arrFiles1);
+		$arrFiles2 = ftp_nlist($myConfigClass->resConnectId,$strHostBackupDir);
+		if (is_array($arrFiles2)) $arrFiles = array_merge($arrFiles,$arrFiles2);
+		$arrFiles1 = ftp_nlist($myConfigClass->resConnectId,$strServiceBackupDir);
+		if (is_array($arrFiles1)) $arrFiles = array_merge($arrFiles,$arrFiles1);
+		if (is_array($arrFiles) && (count($arrFiles) != 0)) {
+			foreach ($arrFiles AS $elem) {
+				if (!substr_count($elem,"cfg")) continue;
+				if (($chkSearch == "") || (substr_count($elem,$chkSearch) != 0)) {
+					$conttp->setVariable("DAT_BACKUPFILE",$elem2);
+					$conttp->parse("filelist");
+				}
+			}
+		}
+		ftp_close($myConfigClass->resConnectId);
+	} else {
+		$errMessage .= $myConfigClass->strDBMessage;
+	}
+} else if ($intMethod == 3) {
+  	// Set up basic connection
+  	if ($myConfigClass->getSSHConnection() == "0") {
+		$arrFiles  = array();
+		$arrFiles1 = $myConfigClass->sendSSHCommand("ls ".$strBackupDir."*.cfg_old*");
+		if (is_array($arrFiles1)) $arrFiles = array_merge($arrFiles,$arrFiles1);
+		$arrFiles2 = $myConfigClass->sendSSHCommand("ls ".$strHostBackupDir."*.cfg_old*");
+		if (is_array($arrFiles2)) $arrFiles = array_merge($arrFiles,$arrFiles2);
+		$arrFiles3 = $myConfigClass->sendSSHCommand("ls ".$strServiceBackupDir."*.cfg_old*");
+		if (is_array($arrFiles3)) $arrFiles = array_merge($arrFiles,$arrFiles3);
+		if (is_array($arrFiles) && (count($arrFiles) != 0)) {
+			foreach ($arrFiles AS $elem) {
+				if (!substr_count($elem,"cfg_old")) continue;
+				if (($chkSearch == "") || (substr_count($elem,$chkSearch) != 0)) {
+			  		$conttp->setVariable("DAT_BACKUPFILE",str_replace("//","/",$elem));
+			  		$conttp->parse("filelist");
+				}
+			}
+		}
+	} else {
+		$errMessage .= $myConfigClass->strDBMessage;
+	}
 }
 if (isset($errMessage)) {
     $conttp->setVariable("ERRORMESSAGE",$errMessage);
@@ -167,7 +187,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

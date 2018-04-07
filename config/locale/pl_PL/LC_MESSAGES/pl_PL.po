@@ -1,0 +1,3754 @@
+# #############################################################################
+# #
+# # Project   : NagiosQL
+# # Component : Translation File Polish
+# # Website   : http://www.nagiosql.org
+# # Date      : $LastChangedDate: 2011-04-10 16:59:17 +0200 (So, 10. Apr 2011) $
+# # Author    : $LastChangedBy: rouven $
+# # Version   : 3.1.1
+# # Revision  : $LastChangedRevision: 1069 $
+# #
+# #############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: NagiosQL 3.1.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-10 15:42+0100\n"
+"PO-Revision-Date: 2011-04-10 15:42+0100\n"
+"Last-Translator: NagiosQL <http://www.nagiosql.org>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.1.5\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: C:\\Development\\NagiosQL3.1\\\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin.php:42
+msgid "NagiosQL Administration"
+msgstr "Administracja NagiosQL"
+
+#: admin.php:45
+msgid "Welcome to NagiosQL, the administration module that can be used to easily create, modify and delete configuration files for Nagios and Icinga. The data is stored in a MySQL database and can be written directly to the standard files at any time you want."
+msgstr ""
+
+#: admin.php:68
+#, fuzzy
+msgid "Could not connect to Updateserver"
+msgstr "Połącz z serwerem docelowym"
+
+#: admin.php:69
+msgid "Error"
+msgstr "Błąd"
+
+#: admin.php:103
+msgid "An error occured during the version check"
+msgstr "Wystąpił błąd podczas sprawdzania wersji"
+
+#: admin.php:111
+#, fuzzy
+msgid "Checking for NagiosQL Updates"
+msgstr "Sprawdzanie twojej instalacji NagiosQL"
+
+#: admin.php:113
+msgid "Installed"
+msgstr "Zainstalowano"
+
+#: admin.php:114
+msgid "Available"
+msgstr "Dostępny"
+
+#: admin.php:115
+msgid "Information"
+msgstr "Informacje"
+
+#: admin.php:123
+msgid "You already have the latest version installed"
+msgstr "Już masz zainstalowaną najnowszą wersję"
+
+#: admin.php:129
+msgid "You already have the latest development version installed"
+msgstr ""
+
+#: admin.php:134
+msgid "You are using an older development version. Please update to the latest development version"
+msgstr ""
+
+#: admin.php:142
+msgid "You are using an old NagiosQL version. Please update to the latest stable version"
+msgstr ""
+
+#: index.php:48
+msgid "Welcome to"
+msgstr "Witaj w "
+
+#: index.php:49
+msgid "Welcome"
+msgstr "Witaj"
+
+#: index.php:50
+#, fuzzy
+msgid "Please enter your username and password to access NagiosQL.<br>If you forgot one of them, please contact your Administrator."
+msgstr "Aby uzyskać dostęp do NagiosQL proszę podać swoją nazwę użytkownika i hasło.<br/>Jeżeli zapomniałeś któregokolwiek, skontaktuj się ze swoim administratorem Nagios."
+
+#: index.php:51
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: index.php:52
+msgid "Password"
+msgstr "Hasło"
+
+#: index.php:53
+msgid "Login"
+msgstr "Login"
+
+#: admin/administration.php:37
+msgid "Administration"
+msgstr "Administracja"
+
+#: admin/administration.php:40
+msgid "Functions to administrate NagiosQL V3"
+msgstr "Funkcje administracyjne NagiosQL V3"
+
+#: admin/alarming.php:37
+msgid "Alarming"
+msgstr "Zawiadamianie"
+
+#: admin/alarming.php:40
+msgid "To define contact data, contact templates and contact groups and time periods."
+msgstr "Pozwala organizować kontakty, grupy i szablony oraz sposób zawiadamiania o szczególnych przypadkach."
+
+#: admin/alarming.php:41
+#: admin/commands.php:41
+msgid "Statistical datas"
+msgstr "Dane statystyczne"
+
+#: admin/alarming.php:42
+#: admin/commands.php:42
+msgid "Group"
+msgstr "Grupa"
+
+#: admin/alarming.php:43
+#: admin/commands.php:43
+msgid "Active"
+msgstr "Aktywne"
+
+#: admin/alarming.php:44
+#: admin/commands.php:44
+msgid "Inactive"
+msgstr "Nieaktywne"
+
+#: admin/alarming.php:48
+msgid "Contact data"
+msgstr "Dane kontaktu"
+
+#: admin/alarming.php:52
+msgid "Contact groups"
+msgstr "Grupy kontaktów"
+
+#: admin/alarming.php:56
+msgid "Time periods"
+msgstr "Okresy czasowe"
+
+#: admin/alarming.php:60
+msgid "Contact templates"
+msgstr "Szablony kontaktów"
+
+#: admin/cgicfg.php:66
+#: admin/cgicfg.php:84
+msgid "Configuration file successfully written!"
+msgstr "Plik konfiguracyjny został pomyślnie zapisany!"
+
+#: admin/cgicfg.php:67
+#: admin/cgicfg.php:85
+msgid "Configuration successfully written:"
+msgstr "Konfiguracja została pomyślnie zapisana:"
+
+#: admin/cgicfg.php:69
+msgid "Cannot open/overwrite the configuration file (check the permissions)!"
+msgstr "Nie można otworzyć/nadpisać pliku konfiguracyjnego (sprawdź uprawnienia)!"
+
+#: admin/cgicfg.php:70
+msgid "Configuration write failed:"
+msgstr "Zapisywanie konfiguracji nie powiodło się:"
+
+#: admin/cgicfg.php:88
+#, fuzzy
+msgid "Cannot open/overwrite the configuration file (check the permissions on remote system)!"
+msgstr "Nie można otworzyć/nadpisać pliku konfiguracyjnego (sprawdź uprawnienia na zdalnym systemie FTP)!"
+
+#: admin/cgicfg.php:89
+#, fuzzy
+msgid "Configuration write failed (remote):"
+msgstr "Zapisanie konfiguracji nie powiodło się (zdalny FTP):"
+
+#: admin/cgicfg.php:101
+msgid "CGI configuration file"
+msgstr "Plik konfiguracyjny CGI"
+
+#: admin/cgicfg.php:124
+msgid "Cannot open the data file (check the permissions)!"
+msgstr "Nie można otworzyć pliku z danymi (sprawdź uprawnienia)!"
+
+#: admin/cgicfg.php:139
+#, fuzzy
+msgid "Cannot open the temporary file"
+msgstr "nie mozna otworzyc pliku"
+
+#: admin/cgicfg.php:143
+#, fuzzy
+msgid "Configuration read failed (remote):"
+msgstr "Zapisanie konfiguracji nie powiodło się (zdalny FTP):"
+
+#: admin/checkcommands.php:79
+msgid "New command inserted:"
+msgstr "Wstawiono nowe polecenie:"
+
+#: admin/checkcommands.php:80
+msgid "Command modified:"
+msgstr "Zmodyfikowano polecenie:"
+
+#: admin/checkcommands.php:84
+#: admin/contactgroups.php:113
+#: admin/contacts.php:262
+#: admin/contacttemplates.php:262
+#: admin/domain.php:180
+#: admin/group.php:98
+msgid "Database entry failed! Not all necessary data filled in!"
+msgstr "Wejście do bazy danych nie powiodło się! Nie wpisano wszystkich wymaganych danych!"
+
+#: admin/checkcommands.php:123
+#: admin/checkcommands.php:232
+#: admin/checkcommands.php:250
+#: admin/contactgroups.php:152
+#: admin/contactgroups.php:277
+#: admin/contactgroups.php:295
+#: admin/contacts.php:301
+#: admin/contacts.php:500
+#: admin/contacts.php:518
+#: admin/contacttemplates.php:301
+#: admin/contacttemplates.php:498
+#: admin/contacttemplates.php:516
+#: admin/domain.php:202
+#: admin/domain.php:371
+#: admin/domain.php:389
+#: admin/group.php:115
+#: admin/group.php:198
+#: admin/group.php:216
+msgid "Error while selecting data from database:"
+msgstr "Błąd podczas wybierania danych z bazy danych:"
+
+#: admin/checkcommands.php:129
+#: admin/contactgroups.php:158
+#: admin/contacts.php:307
+#: admin/contacttemplates.php:307
+#: admin/domain.php:208
+#, fuzzy
+msgid "No permission to open configuration!"
+msgstr "Zapisz konfiguracje hosta"
+
+#: admin/checkcommands.php:154
+msgid "Command definitions"
+msgstr "Definiowanie poleceń"
+
+#: admin/checkcommands.php:171
+#: admin/contactgroups.php:210
+#: admin/contacts.php:390
+#: admin/contacttemplates.php:390
+msgid "Saving not possible!"
+msgstr "Zapisanie niemożliwe!"
+
+#: admin/checkcommands.php:176
+msgid "unclassified"
+msgstr "niesklasyfikowany"
+
+#: admin/checkcommands.php:177
+msgid "check command"
+msgstr "polecenie sprawdzające"
+
+#: admin/checkcommands.php:178
+msgid "misc command"
+msgstr "różne polecenia"
+
+#: admin/checkcommands.php:192
+#: admin/contactgroups.php:240
+#: admin/contacttemplates.php:450
+msgid "Entry cannot be activated because it is used by another configuration"
+msgstr "Wejście nie może być aktywowane, ponieważ jest używane przez inną konfigurację"
+
+#: admin/checkcommands.php:212
+msgid "Command name"
+msgstr "nazwa polecenia"
+
+#: admin/checkcommands.php:213
+msgid "Command line"
+msgstr "Wiersz polecenia"
+
+#: admin/checkcommands.php:244
+#: admin/contactgroups.php:289
+#: admin/contacts.php:512
+#: admin/contacttemplates.php:510
+#: admin/domain.php:383
+#: admin/group.php:210
+msgid "No data"
+msgstr "Brak danych"
+
+#: admin/checkcommands.php:256
+#: admin/contactgroups.php:301
+#: admin/contacts.php:524
+#: admin/contacttemplates.php:522
+#: admin/domain.php:395
+#: admin/group.php:222
+msgid "No"
+msgstr "Nie"
+
+#: admin/checkcommands.php:256
+#: admin/contactgroups.php:301
+#: admin/contacts.php:524
+#: admin/contacttemplates.php:522
+#: admin/domain.php:395
+#: admin/group.php:222
+msgid "Yes"
+msgstr "Tak"
+
+#: admin/checkcommands.php:301
+#: admin/contactgroups.php:346
+#: admin/contacts.php:568
+#: admin/contacttemplates.php:566
+msgid "Last database update:"
+msgstr "Ostatnia aktualizacja banku danych:"
+
+#: admin/checkcommands.php:302
+#: admin/contactgroups.php:347
+#: admin/contacts.php:569
+#: admin/contacttemplates.php:567
+msgid "Last change of the configuration file:"
+msgstr "Ostatnia zmiana pliku konfiguracyjnego:"
+
+#: admin/commands.php:37
+#: admin/commands.php:48
+msgid "Check commands"
+msgstr "Polecenia sprawdzające"
+
+#: admin/commands.php:40
+msgid "To define check and misc commands, notification commands and special commands."
+msgstr "Polecenia kontroli, powiadomień, specjalne i inne."
+
+#: admin/contactgroups.php:86
+msgid "New contact group inserted:"
+msgstr "Wstawiono nowa grupę kontaktów:"
+
+#: admin/contactgroups.php:87
+msgid "Contact group modified:"
+msgstr "Zmodyfikowano grupę kontaktów:"
+
+#: admin/contactgroups.php:183
+msgid "Define contact groups (contactgroups.cfg)"
+msgstr "Definiowanie grup kontaktów (contactgroups.cfg)"
+
+#: admin/contactgroups.php:194
+msgid "Attention, no contacts defined!"
+msgstr "Uwaga, brak zdefiniowanych kontaktów!"
+
+#: admin/contactgroups.php:257
+msgid "Contact group"
+msgstr "Grupa kontaktów"
+
+#: admin/contactgroups.php:258
+#: admin/contacts.php:476
+#: admin/contacttemplates.php:475
+#: admin/domain.php:362
+#: admin/group.php:187
+msgid "Description"
+msgstr "Opis"
+
+#: admin/contacts.php:175
+msgid "New contact inserted:"
+msgstr "Wstawiono nowy kontakt:"
+
+#: admin/contacts.php:176
+msgid "Contact modified:"
+msgstr "Zmodyfikowano kontakt:"
+
+#: admin/contacts.php:332
+msgid "Define contacts (contacts.cfg)"
+msgstr "Definiowanie kontaktów (contacts.cfg)"
+
+#: admin/contacts.php:368
+msgid "Attention, no time periods defined!"
+msgstr "Uwaga, brak zdefiniowanych okresów czasowych!"
+
+#: admin/contacts.php:374
+msgid "Attention, no commands defined!"
+msgstr "Uwaga, brak zdefiniowanych poleceń!"
+
+#: admin/contacts.php:451
+msgid "Entry cannot be deactivated because it is used by another configuration"
+msgstr "Pozycja nie może być deaktywowana gdyż jest używana przez inną konfigurację"
+
+#: admin/contacts.php:475
+#: admin/contacttemplates.php:474
+msgid "Contact name"
+msgstr "Nazwa kontaktu"
+
+#: admin/contacttemplates.php:175
+#, fuzzy
+msgid "New contact template inserted:"
+msgstr "Wstawiono nowy szablon hosta:"
+
+#: admin/contacttemplates.php:176
+#, fuzzy
+msgid "Contact template modified:"
+msgstr "Zmodyfikowano szablon hosta:"
+
+#: admin/contacttemplates.php:332
+msgid "Define contact templates (contacttemplates.cfg)"
+msgstr "Definiowanie szablonów kontaktów (contacttemplates.cfg)"
+
+#: admin/delbackup.php:54
+#: admin/delconfig.php:54
+msgid "Could not open directory"
+msgstr "Nie udało się otworzyć katalogu"
+
+#: admin/delbackup.php:88
+#: admin/delconfig.php:88
+msgid "File deleted"
+msgstr "plik usunięty"
+
+#: admin/delbackup.php:89
+#: admin/delconfig.php:89
+msgid "successfully deleted"
+msgstr "Pomyślnie usunięto"
+
+#: admin/delbackup.php:91
+#: admin/delconfig.php:91
+msgid "could not be deleted (check the permissions)"
+msgstr "nie może być usunięte (sprawdź zezwolenia)"
+
+#: admin/delbackup.php:103
+msgid "Delete backup files"
+msgstr "Usuń pliki kopii zapasowej"
+
+#: admin/delbackup.php:106
+#: admin/delconfig.php:106
+msgid "Filter string"
+msgstr "Filtr"
+
+#: admin/delbackup.php:107
+#: admin/delconfig.php:107
+msgid "Search"
+msgstr "Szukaj"
+
+#: admin/delbackup.php:108
+#: admin/delbackup.php:113
+#: admin/delconfig.php:108
+#: admin/delconfig.php:113
+#: admin/group.php:188
+msgid "Delete"
+msgstr "Usuń"
+
+#: admin/delbackup.php:109
+#: admin/delconfig.php:109
+#, fuzzy
+msgid "Reset filter"
+msgstr "Usuń pliki"
+
+#: admin/delbackup.php:111
+#: admin/delconfig.php:111
+msgid "Backup file"
+msgstr "Plik kopii zapasowej"
+
+#: admin/delbackup.php:112
+#: admin/delconfig.php:112
+msgid "required"
+msgstr "wymagane"
+
+#: admin/delbackup.php:114
+#: admin/delconfig.php:114
+msgid "Abort"
+msgstr "Przerwij"
+
+#: admin/delbackup.php:115
+#: admin/delconfig.php:115
+msgid "Hold CTRL to select<br>more than one entry"
+msgstr "Przytrzymaj CTRL aby wybrać<br>więcej niż jedna pozycje"
+
+#: admin/delconfig.php:103
+#, fuzzy
+msgid "Delete config files"
+msgstr "Zapisz plik config"
+
+#: admin/domain.php:96
+#: admin/domain.php:101
+#: admin/domain.php:106
+#: admin/domain.php:111
+#: admin/domain.php:116
+#: admin/domain.php:121
+#: admin/domain.php:128
+#: admin/domain.php:132
+msgid "is not writeable"
+msgstr "nie jest zapisywalny"
+
+#: admin/domain.php:127
+#, fuzzy
+msgid "Nagios config file"
+msgstr "Konfiguracja Nagiosa"
+
+#: admin/domain.php:138
+msgid "SSH module not loaded!"
+msgstr ""
+
+#: admin/domain.php:143
+msgid "FTP module not loaded!"
+msgstr ""
+
+#: admin/domain.php:150
+msgid "Warning, at least one error occured, please check!"
+msgstr "Ostrzeżenie, wystąpił przynajmniej jeden błąd, proszę sprawdzić!"
+
+#: admin/domain.php:177
+msgid "New Domain inserted:"
+msgstr "Wstawiono nową domenę:"
+
+#: admin/domain.php:178
+msgid "Domain modified:"
+msgstr "Zmodyfikowano domenę:"
+
+#: admin/domain.php:189
+msgid "Localhost can't be deleted"
+msgstr "Host lokalny nie może być usunięty"
+
+#: admin/domain.php:226
+msgid "Domain administration"
+msgstr "Zarządzanie domeną"
+
+#: admin/domain.php:241
+#, fuzzy
+msgid "In order for a user to get access, he needs to be member of the group selected here."
+msgstr "Aby użytkownik mógł uzyskać dostęp, potrzebuje klucza do każdego zdefiniowanego tutaj zamka."
+
+#: admin/domain.php:248
+#: admin/group.php:164
+msgid "Please fill in all fields marked with an *"
+msgstr "Proszę wypełnić wszystkie pola zaznaczone gwiazdką *"
+
+#: admin/domain.php:249
+#: admin/group.php:165
+msgid "The following field contains not permitted characters:"
+msgstr "Następujące pole zawiera niedozwolone znaki:"
+
+#: admin/domain.php:251
+msgid "Enable"
+msgstr ""
+
+#: admin/domain.php:252
+#, fuzzy
+msgid "Disable"
+msgstr "Dostępny"
+
+#: admin/domain.php:361
+msgid "Domain"
+msgstr "Domena"
+
+#: admin/download.php:67
+msgid "Download"
+msgstr "Pobierz"
+
+#: admin/group.php:69
+#, fuzzy
+msgid "A new group added:"
+msgstr "Dodano nowego użytkownika:"
+
+#: admin/group.php:70
+msgid "User modified:"
+msgstr "Użytkownik zmodyfikowany:"
+
+#: admin/group.php:128
+#, fuzzy
+msgid "Group administration"
+msgstr "Zarządzanie użytkownikiem"
+
+#: admin/group.php:159
+msgid "Read"
+msgstr ""
+
+#: admin/group.php:160
+msgid "Write"
+msgstr "Zapisz"
+
+#: admin/group.php:161
+msgid "Link"
+msgstr ""
+
+#: admin/group.php:186
+#, fuzzy
+msgid "Groupname"
+msgstr "Grupa"
+
+#: admin/group.php:190
+msgid "Copy"
+msgstr "Kopiuj"
+
+#: admin/group.php:192
+msgid "Do you really want to delete this database entry:"
+msgstr "Czy na pewno chcesz usunąć ten wpis do bazy danych?"
+
+#: admin/group.php:193
+msgid "Do you really want to delete all marked entries?"
+msgstr "Czy na pewno chcesz usunąć wszystkie zaznaczone pozycje?"
+
+#: admin/helpedit.php:80
+msgid "Help text editor"
+msgstr "Tekstowy edytor pomocy"
+
+#: admin/helpedit.php:91
+msgid "Main key"
+msgstr "Klucz główny"
+
+#: admin/helpedit.php:92
+msgid "Sub key"
+msgstr "Klucz podrzędny"
+
+#: admin/helpedit.php:93
+msgid "Language"
+msgstr "Język"
+
+#: admin/helpedit.php:94
+msgid "Nagios version"
+msgstr "wersja Nagios"
+
+#: admin/helpedit.php:95
+msgid "Load default text"
+msgstr "Ładuj domyślny tekst"
+
+#: admin/hostdependencies.php:108
+msgid "New host dependency inserted:"
+msgstr "Wstawiono nowa zalezność hosta:"
+
+#: admin/hostdependencies.php:109
+msgid "Host dependency modified:"
+msgstr "Zmodyfikowano zalezność hosta:"
+
+#: admin/hostdependencies.php:227
+msgid "Define host dependencies (hostdependencies.cfg)"
+msgstr "Definiowanie zależności hostów (hostdependecies.cfg)"
+
+#: admin/hostdependencies.php:251
+#: admin/hostescalations.php:234
+msgid "Attention, no hosts and hostgroups defined!"
+msgstr "Uwaga, brak zdefiniowanych hostów i grup hostów!"
+
+#: admin/hostdependencies.php:308
+#: admin/hostescalations.php:299
+msgid "Config name"
+msgstr "Nazwa konfiguracji"
+
+#: admin/hostdependencies.php:309
+msgid "Dependent hosts"
+msgstr "Zależne hosty"
+
+#: admin/hostdependencies.php:309
+msgid "Dependent hostgroups"
+msgstr "Zależne grupy hostów"
+
+#: admin/hostescalations.php:102
+msgid "New host escalation inserted:"
+msgstr "Wstawiono nową eskalację hosta:"
+
+#: admin/hostescalations.php:103
+msgid "Host escalation modified:"
+msgstr "Zmodyfikowano eskalację hosta:"
+
+#: admin/hostescalations.php:220
+msgid "Define host escalation (hostescalations.cfg)"
+msgstr "Definiowanie eskalacji hostów (hostescalations.cfg)"
+
+#: admin/hostescalations.php:245
+msgid "Attention, no contacts and contactgroups defined!"
+msgstr "Uwaga, brak zdefiniowanych kontaktów i grup kontaktów!"
+
+#: admin/hostescalations.php:300
+#: admin/monitoring.php:48
+msgid "Hosts"
+msgstr "Hosty"
+
+#: admin/hostescalations.php:300
+#: admin/monitoring.php:56
+msgid "Host groups"
+msgstr "Grupy hostów"
+
+#: admin/hostextinfo.php:94
+msgid "New host extended information inserted:"
+msgstr "Wstawiono nowe rozszerzone informacje o hoście:"
+
+#: admin/hostextinfo.php:95
+msgid "Host extended information modified:"
+msgstr "Zmodyfikowano rozszerzone informacje o hoście:"
+
+#: admin/hostextinfo.php:169
+msgid "Define host extended information (hostextinfo.cfg)"
+msgstr "Definiuj rozszerzone informacje o Hoście (hostextinfo.cfg)"
+
+#: admin/hostextinfo.php:180
+#: admin/hostgroups.php:201
+msgid "Attention, no hosts defined!"
+msgstr "Uwaga, nie zdefiniowano żadnych hostów!"
+
+#: admin/hostextinfo.php:219
+#: admin/hosts.php:641
+msgid "Host name"
+msgstr "Nazwa hosta"
+
+#: admin/hostextinfo.php:220
+msgid "Notes"
+msgstr "Notatki"
+
+#: admin/hostgroups.php:93
+msgid "New host group inserted:"
+msgstr "Umieszczono nowa grupę hostów:"
+
+#: admin/hostgroups.php:94
+msgid "Host group modified:"
+msgstr "Zmodyfikowano grupę hostów:"
+
+#: admin/hostgroups.php:190
+msgid "Define host groups (hostgroups.cfg)"
+msgstr "Definiuj grupę hostów (hostgroups.cfg)"
+
+#: admin/hostgroups.php:262
+msgid "Host group"
+msgstr "Grupa hostów"
+
+#: admin/hosts.php:219
+msgid "New host inserted:"
+msgstr "Wstawiono nowego hosta:"
+
+#: admin/hosts.php:220
+msgid "Host modified:"
+msgstr "Zmodyfikowano hosta:"
+
+#: admin/hosts.php:265
+msgid "The assigned, no longer used configuration files were deleted successfully!"
+msgstr "Przypisano, dłużej nieużywane pliki konfiguracyjne zostały pomyślnie usunięte!"
+
+#: admin/hosts.php:266
+msgid "Host file deleted:"
+msgstr "plik hosta usunięty"
+
+#: admin/hosts.php:269
+msgid "Common files cannot be removed from target systems - please check manually"
+msgstr ""
+
+#: admin/hosts.php:271
+msgid "Errors while deleting the old configuration file - please check!:"
+msgstr "Błędy podczas usuwania starych plików konfiguracyjnych - proszę sprawdzić!:"
+
+#: admin/hosts.php:455
+msgid "Define hosts (hosts.cfg)"
+msgstr "Definiowanie hostów (hosts.cfg)"
+
+#: admin/hosts.php:517
+msgid "Attention, no contact groups defined!"
+msgstr "Uwaga, brak zdefiniowanych grup kontaktów!"
+
+#: admin/hosts.php:710
+msgid "out-of-date"
+msgstr "nieaktualny"
+
+#: admin/hosts.php:719
+msgid "up-to-date"
+msgstr "aktualny"
+
+#: admin/hosts.php:720
+msgid "missed"
+msgstr "brakujący"
+
+#: admin/hosttemplates.php:208
+msgid "New host template inserted:"
+msgstr "Wstawiono nowy szablon hosta:"
+
+#: admin/hosttemplates.php:209
+msgid "Host template modified:"
+msgstr "Zmodyfikowano szablon hosta:"
+
+#: admin/hosttemplates.php:373
+msgid "Host template definition (hosttemplates.cfg)"
+msgstr "Definiowanie szablonów hostów"
+
+#: admin/hosttemplates.php:548
+msgid "Host template name"
+msgstr "Nazwa szablonu"
+
+#: admin/import.php:92
+msgid "File upload error:"
+msgstr ""
+
+#: admin/import.php:100
+#: admin/import.php:112
+msgid "File imported - File [overwite flag]:"
+msgstr "Zaimportowano plik - Plik [overwrite flag]"
+
+#: admin/import.php:123
+msgid "Configuration import"
+msgstr "Import konfiguracji"
+
+#: admin/import.php:131
+msgid "Template definition"
+msgstr "Definicja szablonu"
+
+#: admin/import.php:132
+msgid "Import file"
+msgstr "Importuj plik"
+
+#: admin/import.php:133
+#, fuzzy
+msgid "Local import file"
+msgstr "Importuj plik"
+
+#: admin/import.php:134
+msgid "Overwrite database"
+msgstr "Zastąp bazę danych"
+
+#: admin/import.php:135
+msgid "Import"
+msgstr "Import"
+
+#: admin/import.php:138
+msgid "Hold CTRL to select<br>more than one"
+msgstr "Przytrzymaj CTRL aby wybrać<br>więcej niż jeden"
+
+#: admin/import.php:142
+msgid "To prevent errors or misconfigurations, you should import your configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br><span style=\"color:#FF0000\"><b>Check your configuration after import!</b><br>In cause of an error or an uncomplete configuration, re-importing the wrong configuration can solve the problem.</span>"
+msgstr "Aby zapobiec błędom lub złym konfiguracjom, powinieneś zaimportować swoje konfiguracje w prawidłowej kolejności. Zalecamy zrobić to tak: <br><br><b><i>polecenia -> okresy czasowe -> kontakty -> grupy kontaktów -> szablony hostów -> hosty -> grupy hostów -> szablony usług -> usługi -> grupy usług</i></b><br><br><span style=\"color:#FF0000\"><b>Po zaimportowaniu sprawdź swoją konfigurację!</b><br>W przypadku jakiegokolwiek błędu lub niedokończonej konfiguracji, ponowny import złej konfiguracji może rozwiązać problem.</span>"
+
+#: admin/info.php:39
+msgid "This is relative path of your NagiosQL Installation"
+msgstr "To jest względna ścieżka twojej instalacji NagiosQL"
+
+#: admin/info.php:40
+msgid "This is the absolut path to your NagiosQL Installation"
+msgstr "To jest całkowita ścieżka do twojej instalacji NagiosQL"
+
+#: admin/info.php:41
+msgid "If you need a secure connection, select HTTPS instead of HTTP"
+msgstr "Jeżeli potrzebujesz bezpiecznego połączenia, wybierz HTTPS zamiast HTTP"
+
+#: admin/info.php:42
+msgid "Please choose a temporary directory with write permissions. The default is the temp directory provided by your OS"
+msgstr "Proszę wybrać tymczasowy katalog z prawami zapisu. Domyślnym katalogiem jest temp, dostarczony przez twój OS"
+
+#: admin/info.php:43
+msgid "Please choose your application language"
+msgstr "Proszę wybrać swój język aplikacji"
+
+#: admin/info.php:44
+msgid "Encoding should be set to nothing else than utf-8. Any changes at your own risk"
+msgstr "Szyfrowanie nie powinno być nastawione na nic innego poza utf-8. Jakiekolwiek zmiany na własne ryzyko"
+
+#: admin/info.php:45
+msgid "IP-Address or hostname of the database server<br>e.g. localhost"
+msgstr "Adres IP lub nazwa hosta serwera bazy danych<br>np. localhost"
+
+#: admin/info.php:46
+msgid "MySQL Server Port, default is 3306"
+msgstr "Port serwera MySQL, domyślnie 3306"
+
+#: admin/info.php:47
+msgid "Name of the NagiosQL database<br>e.g. db_nagiosql_v3"
+msgstr "Nazwa bazy danych NagiosQL<br>np. db_nagiosql_v3"
+
+#: admin/info.php:48
+msgid "User with sufficient permission for the NagiosQL database<br>At least this user should have SELECT, INSERT, UPDATE, DELETE permissions"
+msgstr "Użytkownik z wystarczającym prawem do bazy danych NagiosQL<br>Taki użytkownik powinien mieć przynajmniej prawa do SELECT, INSERT, UPDATE, DELETE"
+
+#: admin/info.php:49
+msgid "Password for the above mentioned user"
+msgstr "Hasło dla wyżej wymienionego użytkownika"
+
+#: admin/info.php:50
+msgid "After the defined amount of seconds the session will terminate for security reasons"
+msgstr "Ze względów bezpieczeństwa, po zdefiniowanej ilości sekund, sesja zostanie przerwana"
+
+#: admin/info.php:51
+msgid "Decide between authentication based on your Webserver<br>e.g. Apache configuration (config file or htaccess) or NagiosQL"
+msgstr "Wybierz jedną z autoryzacji: opartą na twoim webserwerze<br> np. plik konfiguracyjny Apache (config lub htaccess ) lub NagiosQL"
+
+#: admin/info.php:52
+msgid "How many entries per side should be visibile (e.g. services or hosts)"
+msgstr "Ile pozycji ma być widocznych na stronie (np. usług lub hostów)"
+
+#: admin/info.php:53
+msgid "Selection of multiple entries by using the new dialog or by holding CTRL + left click like in NagiosQL2"
+msgstr "Wybór spośród wielu pozycji za pomocą nowego dialogu lub przez przytrzymanie CTRL + lewy przycisk myszy - jak w NagiosQL2"
+
+#: admin/info.php:54
+msgid "Enable or disable the warning if a required field contains no data in objects with templates"
+msgstr ""
+
+#: admin/info.php:55
+msgid "Enable or disable the automatic online version check."
+msgstr ""
+
+#: admin/info.php:56
+msgid "If you require a Proxyserver to connect to the Internet (Port 80), please define one."
+msgstr ""
+
+#: admin/info.php:57
+msgid "Address of your Proxyserver e.g. proxy.yourdomain.com:3128"
+msgstr ""
+
+#: admin/info.php:58
+msgid "Username to connect through your proxy (optional)"
+msgstr ""
+
+#: admin/info.php:59
+msgid "Password to connect through your proxy (optional)"
+msgstr ""
+
+#: admin/info.php:78
+#, fuzzy
+msgid "Information PopUp"
+msgstr "Informacje"
+
+#: admin/info.php:91
+msgid "No information available"
+msgstr "Brak dostępnych informacji"
+
+#: admin/logbook.php:58
+msgid "Dataset successfully deleted. Affected rows:"
+msgstr "Zbiór danych pomyślnie usunięty. Zniszczone wpisy:"
+
+#: admin/logbook.php:87
+msgid "View logbook"
+msgstr "Dziennik"
+
+#: admin/logbook.php:91
+msgid "Delete logentries between:"
+msgstr "Usuń wpisy dziennika z okresu:"
+
+#: admin/logbook.php:93
+msgid "Please at least fill in a start or a stop time"
+msgstr "Proszę wypełnić przynajmniej czas startu i zatrzymania"
+
+#: admin/logbook.php:94
+msgid "Do you really want to delete all log entries between the selected dates?"
+msgstr "Czy na pewno chcesz usunąć wszystkie wpisy dziennika pomiędzy wybranymi datami?"
+
+#: admin/logbook.php:99
+msgid "previous 20 entries"
+msgstr "poprzednie 20 wpisów"
+
+#: admin/logbook.php:105
+msgid "next 20 entries"
+msgstr "następne 20 wpisów"
+
+#: admin/menuaccess.php:47
+msgid "Error while inserting the data to the data base:"
+msgstr "Wystąpił błąd podczas wstawiania danych do bazy danych:"
+
+#: admin/menuaccess.php:50
+msgid "Data were successfully inserted to the data base!"
+msgstr "Dane zostały pomyślnie wstawione do bazy danych!"
+
+#: admin/menuaccess.php:51
+#, fuzzy
+msgid "Access group set for menu item:"
+msgstr "Klucze dostępu ustawione dla poszczególnych punktów menu:"
+
+#: admin/menuaccess.php:61
+msgid "Define Menu Accessrights"
+msgstr "Definiuj prawa dostępu do Menu"
+
+#: admin/monitoring.php:37
+msgid "Monitoring"
+msgstr "Monitoring"
+
+#: admin/monitoring.php:40
+msgid "To define host and service supervisions as well as host and service groups."
+msgstr "Pozwala definiować hosty, grupy hostów, a także szablonowe i szczególne metody ich kontroli."
+
+#: admin/monitoring.php:52
+msgid "Services"
+msgstr "Usługi"
+
+#: admin/monitoring.php:60
+msgid "Service groups"
+msgstr "Grupy usług"
+
+#: admin/monitoring.php:64
+msgid "Host templates"
+msgstr "Szablony hostów"
+
+#: admin/monitoring.php:68
+msgid "Service templates"
+msgstr "Szablony usług"
+
+#: admin/mutdialog.php:53
+msgid "Selected"
+msgstr "Wybrany"
+
+#: admin/nagioscfg.php:101
+msgid "Nagios main configuration file"
+msgstr "Główny plik konfiguracyjny Nagiosa"
+
+#: admin/password.php:57
+msgid "Password successfully modified"
+msgstr "Hasło pomyślnie zmodyfikowano"
+
+#: admin/password.php:70
+msgid "Password too short or password fields unequally!"
+msgstr "Hasło zbyt krótkie lub różna liczba pól!"
+
+#: admin/password.php:74
+msgid "Old password is wrong"
+msgstr "Stare haslo jest bledne"
+
+#: admin/password.php:94
+msgid "Save"
+msgstr "Zapisz"
+
+#: admin/password.php:97
+msgid "The new passwords are not equal!"
+msgstr "Nowe hasła się różnią!"
+
+#: admin/password.php:98
+msgid "The new password is too short - use at least 6 characters!"
+msgstr "Nowe hasło jest zbyt krótkie - użyj przynajmniej 6 znaków!"
+
+#: admin/servicedependencies.php:117
+msgid "New service dependency inserted:"
+msgstr "Wstawiono nową zależność usługi:"
+
+#: admin/servicedependencies.php:118
+msgid "Service dependency modified:"
+msgstr "Zmodyfikowano zależność usługi:"
+
+#: admin/servicedependencies.php:251
+msgid "Define service dependencies (servicedependencies.cfg)"
+msgstr "Definiowanie zależności usług (servicedependencies.cfg)"
+
+#: admin/servicedependencies.php:442
+#: config/fieldvars.php:214
+msgid "Dependent services"
+msgstr "Zależne usługi"
+
+#: admin/serviceescalations.php:108
+msgid "New service escalation inserted:"
+msgstr "Wstawiono nową eskalację usługi:"
+
+#: admin/serviceescalations.php:109
+msgid "Service escalation modified:"
+msgstr "Eskalacja usługi zmodyfikowana:"
+
+#: admin/serviceescalations.php:234
+msgid "Define service escalation (serviceescalations.cfg)"
+msgstr "Definiowanie eskalacji usług (serviceescalations.cfg)"
+
+#: admin/serviceextinfo.php:86
+msgid "New service extended information inserted:"
+msgstr "Wstawiono nowe rozszerzone informacje o usłudze:"
+
+#: admin/serviceextinfo.php:87
+msgid "Service extended information modified:"
+msgstr "Zmodyfikowano rozszerzone informacje usług:"
+
+#: admin/serviceextinfo.php:171
+msgid "Define service extended information (serviceextinfo.cfg)"
+msgstr "Definiowanie rozszerzonych informacji usług (serviceextinfo.cfg)"
+
+#: admin/serviceextinfo.php:254
+msgid "Hostname"
+msgstr "Nazwa hosta"
+
+#: admin/serviceextinfo.php:255
+msgid "Service"
+msgstr "Usługa"
+
+#: admin/servicegroups.php:93
+msgid "New service group inserted:"
+msgstr "Wstawiono nowa grupę usług:"
+
+#: admin/servicegroups.php:94
+msgid "Service group modified:"
+msgstr "Grupa usług zmodyfikowana:"
+
+#: admin/servicegroups.php:190
+msgid "Define service groups (servicegroups.cfg)"
+msgstr "Definiowanie grupy usług (servicegroups.cfg)"
+
+#: admin/servicegroups.php:201
+msgid "Attention, no services defined!"
+msgstr "Uwaga, brak zdefiniowanych usług!"
+
+#: admin/servicegroups.php:262
+msgid "Service group"
+msgstr "Grupa usług"
+
+#: admin/services.php:150
+#: admin/services.php:692
+msgid "All configs"
+msgstr "Wszystkie konfiguracje"
+
+#: admin/services.php:227
+msgid "New service inserted:"
+msgstr "Wstawiono nową usługę:"
+
+#: admin/services.php:228
+msgid "Service modified:"
+msgstr "Zmodyfikowano usługę:"
+
+#: admin/services.php:285
+#: admin/services.php:460
+msgid "Service file deleted:"
+msgstr "Usunięty plik usługi:"
+
+#: admin/services.php:488
+msgid "Define services (services.cfg)"
+msgstr "Definiuj usługi (services.cfg)"
+
+#: admin/services.php:525
+msgid "Attention, no hosts or hostgroups defined!"
+msgstr "Uwaga, brak zdefiniowanych hostów lub grup hostów!"
+
+#: admin/services.php:537
+msgid "Attention, no check commands defined!"
+msgstr "Uwaga, brak zdefiniowanych poleceń sprawdzających!"
+
+#: admin/services.php:680
+#: admin/servicetemplates.php:560
+msgid "Service name"
+msgstr "Nazwa usługi"
+
+#: admin/servicetemplates.php:209
+msgid "New service template inserted:"
+msgstr "Wstawiono nowy szablon usługi:"
+
+#: admin/servicetemplates.php:210
+msgid "Service template modified:"
+msgstr "Zmodyfikowano szablon usługi:"
+
+#: admin/servicetemplates.php:380
+msgid "Define service templates (servicetemplates.cfg)"
+msgstr "Definiowanie szablonów usług (servicetemplates.cfg)"
+
+#: admin/servicetemplates.php:559
+#: config/fieldvars.php:113
+#: config/fieldvars.php:197
+msgid "Template name"
+msgstr "Nazwa szablonu"
+
+#: admin/settings.php:85
+msgid "Curl module not loaded, Proxy will be deactivated!"
+msgstr ""
+
+#: admin/settings.php:100
+msgid "An error occured while writing settings to database"
+msgstr "Wystąpił błąd podczas zapisywania ustawień do bazy danych"
+
+#: admin/settings.php:135
+#, fuzzy
+msgid "Error in setting the correct locale, please report this error with the associated output of 'locale -a'"
+msgstr "Błąd w ustawieniach poprawnej lokalizacji, proszę zgłosić ten błąd z powiązanym wyjściem 'locale -a' to bugs@nagiosql.org"
+
+#: admin/settings.php:142
+msgid "Settings were changed"
+msgstr "Ustawienia zostały zmienione"
+
+#: admin/settings.php:144
+msgid "An error occured while writing settings.php, please check permissions!"
+msgstr "Wystąpił błąd podczas zapisywania settings.php, proszę sprawdzić uprawnienia!"
+
+#: admin/settings.php:154
+msgid "Configure Settings"
+msgstr "Konfigurowanie ustawień"
+
+#: admin/settings.php:161
+msgid "Change your current NagiosQL settings (e.g. Database user, Language)."
+msgstr "Zmień swoje aktualne ustawienia NagiosQL (np. użytkownika bazy danych, języka)"
+
+#: admin/settings.php:165
+msgid "Path"
+msgstr "Ścieżka"
+
+#: admin/settings.php:166
+msgid "Temporary Directory"
+msgstr "Katalog tymczasowy"
+
+#: admin/settings.php:168
+msgid "Server protocol"
+msgstr "Protokół serwera"
+
+#: admin/settings.php:195
+msgid "Encoding"
+msgstr "Kodowanie"
+
+#: admin/settings.php:200
+msgid "Database"
+msgstr "Baza danych"
+
+#: admin/settings.php:201
+msgid "MySQL Server"
+msgstr "Serwer MySQL"
+
+#: admin/settings.php:203
+msgid "MySQL Server Port"
+msgstr "Port serwera MySQL"
+
+#: admin/settings.php:205
+msgid "Database name"
+msgstr "Nazwa bazy danych"
+
+#: admin/settings.php:207
+msgid "Database user"
+msgstr "Użytkownik bazy danych"
+
+#: admin/settings.php:209
+msgid "Database password"
+msgstr "Hasło bazy danych"
+
+#: admin/settings.php:214
+msgid "Security"
+msgstr "Ochrona"
+
+#: admin/settings.php:215
+msgid "Session auto logoff time"
+msgstr "Czas automatycznego wylogowania"
+
+#: admin/settings.php:217
+msgid "Authentication type"
+msgstr "Rodzaj uwierzytelniania"
+
+#: admin/settings.php:233
+msgid "Common"
+msgstr "Wspólny"
+
+#: admin/settings.php:234
+msgid "Data lines per page"
+msgstr "Linii danych na stronę"
+
+#: admin/settings.php:237
+msgid "Selection method"
+msgstr "Metoda selekcji"
+
+#: admin/settings.php:251
+#, fuzzy
+msgid "Template warn message"
+msgstr "Nazwa szablonu"
+
+#: admin/settings.php:267
+msgid "Automatically check for online updates (internet access required!)"
+msgstr ""
+
+#: admin/settings.php:281
+#, fuzzy
+msgid "Proxyserver"
+msgstr "Webserver"
+
+#: admin/settings.php:289
+#, fuzzy
+msgid "Proxy Address"
+msgstr "Adres"
+
+#: admin/settings.php:291
+msgid "Proxy Username (optional)"
+msgstr ""
+
+#: admin/settings.php:293
+#, fuzzy
+msgid "Proxy Password (optional)"
+msgstr "Haslo MySQL (tylko instalacja)"
+
+#: admin/specials.php:37
+msgid "Misc commands"
+msgstr "Polecenia różne"
+
+#: admin/specials.php:40
+msgid "To define host and service dependencies, host and service escalations as well as host and service additional data."
+msgstr "Pozwalają definiować zależności, eskalacje oraz dane hostów i usług."
+
+#: admin/specials.php:48
+msgid "Host dependencies"
+msgstr "Zależności hostów"
+
+#: admin/specials.php:52
+msgid "Host escalations"
+msgstr "Eskalacje hostów"
+
+#: admin/specials.php:56
+msgid "Host ext. info"
+msgstr "Dodatkowe informacje o hoście"
+
+#: admin/specials.php:60
+msgid "Service dependencies"
+msgstr "Zależności usług"
+
+#: admin/specials.php:64
+msgid "Service escalations"
+msgstr "Eskalacje usług"
+
+#: admin/specials.php:68
+msgid "Service ext. info"
+msgstr "Rozszerzone informacje o usłudze"
+
+#: admin/templatedefinitions.php:227
+msgid "Up"
+msgstr "Góra"
+
+#: admin/templatedefinitions.php:227
+msgid "Down"
+msgstr "Dół"
+
+#: admin/timedefinitions.php:168
+#: admin/variabledefinitions.php:134
+#: config/fieldvars.php:68
+msgid "Modify"
+msgstr "Modyfikacja"
+
+#: admin/timeperiods.php:87
+msgid "New time period inserted:"
+msgstr "Wstawiono nowy okres czasu:"
+
+#: admin/timeperiods.php:88
+msgid "Time period modified:"
+msgstr "Zmodyfikowano okres czasowy:"
+
+#: admin/timeperiods.php:207
+msgid "Timeperiod definitions"
+msgstr "Definicje okresów czasowych"
+
+#: admin/timeperiods.php:236
+msgid "Please insert a time definition and a time range"
+msgstr "Proszę wstawić definicję czasu oraz jego zakres"
+
+#: admin/timeperiods.php:281
+#: config/fieldvars.php:83
+msgid "Time period"
+msgstr "Okres czasowy"
+
+#: admin/tools.php:37
+msgid "Different tools"
+msgstr "Różne narzędzia"
+
+#: admin/tools.php:40
+msgid "Useful functions for data import, main configuration, daemon control and so on."
+msgstr "Użyteczne funkcje dla importu danych, głównej konfiguracji, kontroli demona i innych."
+
+#: admin/user.php:81
+msgid "A new user added:"
+msgstr "Dodano nowego użytkownika:"
+
+#: admin/user.php:98
+msgid "Admin can't be deleted"
+msgstr "Admin nie może być usunięty"
+
+#: admin/user.php:123
+msgid "User administration"
+msgstr "Zarządzanie użytkownikiem"
+
+#: admin/user.php:142
+msgid "The passwords are not equal!"
+msgstr "Hasła się różnią!"
+
+#: admin/user.php:143
+msgid "Please fill in the password"
+msgstr "Proszę wpisać hasło"
+
+#: admin/user.php:144
+msgid "The password is too short - use at least 6 characters!"
+msgstr "Hasło jest za krótkie - użyj przynajmniej 6 znaków!"
+
+#: admin/user.php:145
+msgid "Webserver authentification"
+msgstr "Uwierzytelnianie Webserwera"
+
+#: admin/verify.php:54
+msgid "Cannot find the Nagios binary or no rights for execution!"
+msgstr "Nie można znaleźć pliku binarnego Nagios lub brak praw do wykonania!"
+
+#: admin/verify.php:65
+msgid "Remote execution (FTP SITE EXEC) is not supported on your system!"
+msgstr "Zdalne wykonanie (FTP SITE EXEC) nie jest wspierane w twoim systemie!"
+
+#: admin/verify.php:81
+msgid "Remote execution of nagios verify command failed (remote SSH)!"
+msgstr ""
+
+#: admin/verify.php:84
+#, fuzzy
+msgid "Nagios binary or configuration file not found (remote SSH)!"
+msgstr "Główny plik konfiguracyjny Nagiosa"
+
+#: admin/verify.php:114
+msgid "Nagios daemon successfully restarted"
+msgstr "Nagios demon pomyślnie zrestartowany"
+
+#: admin/verify.php:115
+msgid "Restart command successfully send to Nagios"
+msgstr "Polecenie restartu pomyślnie wysłane do Nagios"
+
+#: admin/verify.php:117
+#: admin/verify.php:121
+#: admin/verify.php:122
+msgid "Restart failed - Nagios command file not found or no rights to execute"
+msgstr "Nieudany restart - Nie znaleziono pliku polecenia Nagios lub brak praw wykonywania"
+
+#: admin/verify.php:118
+msgid "Nagios command file not found or no rights to write!"
+msgstr "Plik poleceń Nagios nie znaleziony lub nie ma praw do zapisu"
+
+#: admin/verify.php:125
+msgid "Restart failed - Nagios daemon was not running"
+msgstr "Restart nie powiódł się - demon Nagiosa nie działał"
+
+#: admin/verify.php:126
+msgid "Nagios daemon is not running, cannot send restart command!"
+msgstr "Demon Nagios nie jest uruchomiony, nie można wysłać polecenia restart!"
+
+#: admin/verify.php:129
+msgid "Restart failed - FTP restrictions"
+msgstr "Restart nie powiódł się - ograniczenia FTP "
+
+#: admin/verify.php:130
+msgid "Nagios restart is not possible via FTP remote connection!"
+msgstr "Restart Nagios nie jest możliwy poprzez zdalne połączenie FTP!"
+
+#: admin/verify.php:147
+#, fuzzy
+msgid "Restart failed - Nagios command file not found or no rights to execute (remote SSH)!"
+msgstr "Nieudany restart - Nie znaleziono pliku polecenia Nagios lub brak praw wykonywania"
+
+#: admin/verify.php:149
+#, fuzzy
+msgid "Nagios daemon successfully restarted (remote SSH)"
+msgstr "Nagios demon pomyślnie zrestartowany"
+
+#: admin/verify.php:150
+#, fuzzy
+msgid "Restart command successfully send to Nagios (remote SSH)"
+msgstr "Polecenie restartu pomyślnie wysłane do Nagios"
+
+#: admin/verify.php:153
+#, fuzzy
+msgid "Nagios command file not found (remote SSH)!"
+msgstr "Plik poleceń Nagios nie znaleziony lub nie ma praw do zapisu"
+
+#: admin/verify.php:160
+msgid "Write host configurations"
+msgstr "Zapisz konfiguracje hosta"
+
+#: admin/verify.php:175
+#: admin/verify.php:193
+#, fuzzy
+msgid "No configuration items defined!"
+msgstr "Zapisywanie konfiguracji nie powiodło się:"
+
+#: admin/verify.php:178
+msgid "Write service configurations"
+msgstr "Zapisz konfiguracje usług"
+
+#: admin/verify.php:250
+msgid "Check written configuration files"
+msgstr "Sprawdź zapisane pliki konfiguracyjne"
+
+#: admin/verify.php:253
+msgid "Check configuration files:"
+msgstr "Sprawdź pliki konfiguracyjne:"
+
+#: admin/verify.php:254
+msgid "Restart Nagios:"
+msgstr "Restart Nagios:"
+
+#: admin/verify.php:255
+msgid "Write monitoring data"
+msgstr "Zapisz dane monitorujące"
+
+#: admin/verify.php:256
+msgid "Write additional data"
+msgstr "Zapisz dodatkowe dane"
+
+#: admin/verify.php:257
+msgid "Warning, always check the configuration files before restart Nagios!"
+msgstr "Ostrzeżenie, przed restartem Nagios zawsze sprawdź pliki konfiguracyjne!"
+
+#: admin/verify.php:258
+#: config/fieldvars.php:53
+msgid "Do it"
+msgstr "Zrób to"
+
+#: admin/verify.php:286
+#: admin/verify.php:315
+msgid "Written Nagios configuration checked - Warnings/Errors:"
+msgstr "Sprawdzono zapisaną konfigurację Nagios - Ostrzeżenia/Błędy:"
+
+#: admin/verify.php:290
+#: admin/verify.php:318
+msgid "Written configuration files are valid, Nagios can be restarted!"
+msgstr "Zapisane pliki konfiguracyjne są przekonywujące, Nagios może być zrestartowany!"
+
+#: config/fieldvars.php:24
+#: config/fieldvars.php:29
+msgid "Server name"
+msgstr "Nazwa serwera"
+
+#: config/fieldvars.php:25
+msgid "Method"
+msgstr "Metoda"
+
+#: config/fieldvars.php:28
+msgid "Directory with SSH key pair"
+msgstr ""
+
+#: config/fieldvars.php:30
+msgid "Configuration directories"
+msgstr "Katalogi konfiguracyjne"
+
+#: config/fieldvars.php:31
+msgid "Base directory"
+msgstr "Katalog podstawowy"
+
+#: config/fieldvars.php:32
+msgid "Host directory"
+msgstr "Katalog hosta"
+
+#: config/fieldvars.php:33
+msgid "Service directory"
+msgstr "Katalog usługi"
+
+#: config/fieldvars.php:34
+msgid "Backup directory"
+msgstr "Katalog zapasowy"
+
+#: config/fieldvars.php:35
+msgid "Host backup directory"
+msgstr "Zapasowy katalog hosta"
+
+#: config/fieldvars.php:36
+msgid "Service backup directory"
+msgstr "Zapasowy katalog usługi"
+
+#: config/fieldvars.php:37
+#, fuzzy
+msgid "Picture base directory"
+msgstr "Główny katalog Nagios"
+
+#: config/fieldvars.php:38
+msgid "Nagios command file"
+msgstr "Wiersz poleceń Nagios"
+
+#: config/fieldvars.php:39
+msgid "Nagios binary file"
+msgstr "plik binarny Nagios"
+
+#: config/fieldvars.php:40
+msgid "Nagios process file"
+msgstr "plik procesu Nagios"
+
+#: config/fieldvars.php:43
+msgid "Use common domain"
+msgstr ""
+
+#: config/fieldvars.php:44
+#, fuzzy
+msgid "Decode UTF8 data in config files"
+msgstr "Zapisz plik config"
+
+#: config/fieldvars.php:45
+msgid "Access key holes"
+msgstr "Zamki dla kluczy dostępu"
+
+#: config/fieldvars.php:46
+msgid "Access keys"
+msgstr "Klucze dostępu"
+
+#: config/fieldvars.php:51
+msgid "Function"
+msgstr "Czynność"
+
+#: config/fieldvars.php:52
+msgid "Marked"
+msgstr "Zaznaczono"
+
+#: config/fieldvars.php:54
+msgid "Add"
+msgstr "Dodaj"
+
+#: config/fieldvars.php:55
+msgid "Formcheck"
+msgstr "Kontrola formularza"
+
+#: config/fieldvars.php:56
+msgid "Secure question"
+msgstr "Pytanie zabezpieczające"
+
+#: config/fieldvars.php:59
+msgid "Time"
+msgstr "Czas"
+
+#: config/fieldvars.php:60
+msgid "User"
+msgstr "Użytkownik"
+
+#: config/fieldvars.php:61
+msgid "IP"
+msgstr "IP"
+
+#: config/fieldvars.php:62
+msgid "Entry"
+msgstr "Pozycja"
+
+#: config/fieldvars.php:63
+msgid "From"
+msgstr "Od"
+
+#: config/fieldvars.php:64
+msgid "To"
+msgstr "Do"
+
+#: config/fieldvars.php:65
+msgid "Delete log entries"
+msgstr "Usuń wpisy dziennika"
+
+#: config/fieldvars.php:69
+msgid "Confirm password"
+msgstr "Potwierdź hasło"
+
+#: config/fieldvars.php:70
+msgid "Old password"
+msgstr "Stare hasło"
+
+#: config/fieldvars.php:71
+#: config/fieldvars.php:275
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: config/fieldvars.php:72
+msgid "Change password"
+msgstr "Zmień hasło"
+
+#: config/fieldvars.php:73
+msgid "Menu page"
+msgstr "Strona menu"
+
+#: config/fieldvars.php:74
+msgid "Search string"
+msgstr "Szukaj znaku"
+
+#: config/fieldvars.php:77
+#: config/fieldvars.php:171
+msgid "Write config file"
+msgstr "Zapisz plik config"
+
+#: config/fieldvars.php:80
+msgid "Command"
+msgstr "Polecenie"
+
+#: config/fieldvars.php:82
+msgid "Command type"
+msgstr "Typ polecenia"
+
+#: config/fieldvars.php:84
+msgid "Exclude"
+msgstr "Wyklucz"
+
+#: config/fieldvars.php:85
+#, fuzzy
+msgid "Include"
+msgstr "Wyklucz"
+
+#: config/fieldvars.php:86
+msgid "Time definitions"
+msgstr "Zakresy czasowe"
+
+#: config/fieldvars.php:87
+msgid "Weekday"
+msgstr "Dzień weekendowy"
+
+#: config/fieldvars.php:88
+msgid "Time range"
+msgstr "Zakres czasu"
+
+#: config/fieldvars.php:89
+msgid "Time definition"
+msgstr "Definicja czasu"
+
+#: config/fieldvars.php:90
+msgid "Insert"
+msgstr "Wstaw"
+
+#: config/fieldvars.php:91
+msgid "Modify selection"
+msgstr "Modyfikuj wybór"
+
+#: config/fieldvars.php:94
+msgid "Time period hosts"
+msgstr "Okres czasowy hostów"
+
+#: config/fieldvars.php:95
+msgid "Time period services"
+msgstr "Okres czasowy usług"
+
+#: config/fieldvars.php:96
+msgid "Host options"
+msgstr "Opcje hosta"
+
+#: config/fieldvars.php:97
+msgid "Service options"
+msgstr "Opcje usług"
+
+#: config/fieldvars.php:98
+msgid "Host command"
+msgstr "Polecenie hosta"
+
+#: config/fieldvars.php:99
+msgid "Service command"
+msgstr "Polecenie usługi"
+
+#: config/fieldvars.php:100
+msgid "EMail address"
+msgstr "Adres email"
+
+#: config/fieldvars.php:101
+msgid "Pager number"
+msgstr "Numer pagera"
+
+#: config/fieldvars.php:102
+msgid "Addon address"
+msgstr "Adres główny"
+
+#: config/fieldvars.php:103
+msgid "Host notif. enable"
+msgstr "Zezwól na zawiadamianie hosta"
+
+#: config/fieldvars.php:104
+msgid "Service notif. enable"
+msgstr "Zezwól na zawiadamianie usługi"
+
+#: config/fieldvars.php:105
+msgid "Can submit commands"
+msgstr "Można przesyłać polecenia"
+
+#: config/fieldvars.php:106
+msgid "Retain status info"
+msgstr "Pozostaw informacje o statusie"
+
+#: config/fieldvars.php:107
+msgid "Retain nonstatus info"
+msgstr "Pozostaw informacje o braku statusu"
+
+#: config/fieldvars.php:108
+msgid "Members"
+msgstr "Członkowie"
+
+#: config/fieldvars.php:109
+msgid "Group members"
+msgstr "Członkowie grupy"
+
+#: config/fieldvars.php:110
+msgid "Common settings"
+msgstr "Ustawienia publiczne"
+
+#: config/fieldvars.php:111
+#, fuzzy
+msgid "Service settings"
+msgstr "Opcje usług"
+
+#: config/fieldvars.php:112
+msgid "Add this host configuration to existing service definitions"
+msgstr ""
+
+#: config/fieldvars.php:114
+msgid "Parents"
+msgstr "Rodzice"
+
+#: config/fieldvars.php:116
+msgid "Check command"
+msgstr "Wybierz polecenie"
+
+#: config/fieldvars.php:117
+msgid "Command view"
+msgstr "Widok polecenia"
+
+#: config/fieldvars.php:118
+msgid "Additional templates"
+msgstr "Dodatkowe szablony"
+
+#: config/fieldvars.php:119
+msgid "Check settings"
+msgstr "Zaznacz ustawienia"
+
+#: config/fieldvars.php:120
+msgid "Initial state"
+msgstr "Stan początkowy"
+
+#: config/fieldvars.php:121
+msgid "Retry interval"
+msgstr "Odstęp ponownego sprawdzenia"
+
+#: config/fieldvars.php:122
+msgid "Max check attempts"
+msgstr "Limit wystąpień sprawdzeń"
+
+#: config/fieldvars.php:123
+msgid "Check interval"
+msgstr "Kontrola odstępów"
+
+#: config/fieldvars.php:124
+msgid "Active checks enabled"
+msgstr "Kontrole aktywne włączono"
+
+#: config/fieldvars.php:125
+msgid "Passive checks enabled"
+msgstr "Kontrole pasywne włączono"
+
+#: config/fieldvars.php:126
+msgid "Check period"
+msgstr "Kontrola okresu"
+
+#: config/fieldvars.php:127
+msgid "Freshness treshold"
+msgstr "Próg świeżości"
+
+#: config/fieldvars.php:128
+msgid "Check freshness"
+msgstr "Kontrola świeżości"
+
+#: config/fieldvars.php:129
+msgid "Obsess over host"
+msgstr "Śledzenie hosta"
+
+#: config/fieldvars.php:130
+msgid "Obsess over service"
+msgstr "Śledzenie usług"
+
+#: config/fieldvars.php:131
+msgid "Event handler"
+msgstr "Opiekun zdarzeń"
+
+#: config/fieldvars.php:132
+msgid "Event handler enabled"
+msgstr "Opiekun zdarzeń włączony"
+
+#: config/fieldvars.php:133
+msgid "Low flap threshold"
+msgstr "Niskie progi pozycji"
+
+#: config/fieldvars.php:134
+msgid "High flap threshold"
+msgstr "Wysokie progi pozycji"
+
+#: config/fieldvars.php:135
+msgid "Flap detection enabled"
+msgstr "Włączono wykrywanie pozycji"
+
+#: config/fieldvars.php:136
+msgid "Flap detection options"
+msgstr "Opcje wykrywania pozycji"
+
+#: config/fieldvars.php:137
+msgid "Retain status information"
+msgstr "Pozostaw informacje o statusie"
+
+#: config/fieldvars.php:138
+msgid "Retain nostatus information"
+msgstr "Pozostaw informacje o braku statusu"
+
+#: config/fieldvars.php:139
+msgid "Process perf data"
+msgstr "Proces wykonywania danych"
+
+#: config/fieldvars.php:140
+msgid "Alarm settings"
+msgstr "Ustawienia alarmu"
+
+#: config/fieldvars.php:141
+msgid "Contacts"
+msgstr "Kontakty"
+
+#: config/fieldvars.php:143
+msgid "Notification period"
+msgstr "Powiadomienie okresu"
+
+#: config/fieldvars.php:144
+msgid "Notification options"
+msgstr "Powiadomienie opcji"
+
+#: config/fieldvars.php:145
+msgid "Notification interval"
+msgstr "Odstępy miedzy powiadomieniami"
+
+#: config/fieldvars.php:146
+msgid "First notification delay"
+msgstr "Opóźnienie pierwszego powiadomienia"
+
+#: config/fieldvars.php:147
+msgid "Notification enabled"
+msgstr "Powiadomienia włączone"
+
+#: config/fieldvars.php:148
+msgid "Stalking options"
+msgstr "Opcje śledzenia"
+
+#: config/fieldvars.php:149
+msgid "Addon settings"
+msgstr "Ustawienia podstawowe"
+
+#: config/fieldvars.php:151
+msgid "VRML image"
+msgstr "Obraz VRML"
+
+#: config/fieldvars.php:152
+msgid "Notes URL"
+msgstr "URL do notatek"
+
+#: config/fieldvars.php:153
+msgid "Status image"
+msgstr "Obrazek statusu"
+
+#: config/fieldvars.php:154
+msgid "Icon image"
+msgstr "Obrazek ikony"
+
+#: config/fieldvars.php:155
+msgid "Action URL"
+msgstr "URL dodatkowych działań"
+
+#: config/fieldvars.php:156
+msgid "2D coords"
+msgstr "współrzędne 2D"
+
+#: config/fieldvars.php:157
+msgid "3D coords"
+msgstr "współrzędne 3D"
+
+#: config/fieldvars.php:158
+msgid "Icon image ALT text"
+msgstr "Tekst zastępujący ikonę"
+
+#: config/fieldvars.php:159
+msgid "standard"
+msgstr "standard"
+
+#: config/fieldvars.php:160
+msgid "on"
+msgstr "włącz"
+
+#: config/fieldvars.php:161
+msgid "off"
+msgstr "wyłącz"
+
+#: config/fieldvars.php:162
+msgid "skip"
+msgstr "pomiń"
+
+#: config/fieldvars.php:163
+msgid "Free variable definitions"
+msgstr "Dowolne definicje zmiennych"
+
+#: config/fieldvars.php:164
+msgid "Variable name"
+msgstr "Nazwa zmiennej"
+
+#: config/fieldvars.php:165
+msgid "Variable value"
+msgstr "Wartość zmiennej"
+
+#: config/fieldvars.php:168
+#, fuzzy
+msgid "Activate"
+msgstr "Aktywne"
+
+#: config/fieldvars.php:169
+#, fuzzy
+msgid "Deactivate"
+msgstr "Nieaktywne"
+
+#: config/fieldvars.php:174
+msgid "Mark all shown datasets"
+msgstr "Zaznacz wszystkie pokazane zbiory danych"
+
+#: config/fieldvars.php:175
+msgid "File"
+msgstr "Plik"
+
+#: config/fieldvars.php:176
+msgid "Write all config files"
+msgstr "Zapisz wszystkie pliki konfiguracyjne"
+
+#: config/fieldvars.php:177
+msgid "Address"
+msgstr "Adres"
+
+#: config/fieldvars.php:178
+msgid "Display name"
+msgstr "Wyświetlana nazwa"
+
+#: config/fieldvars.php:179
+msgid "Use this configuration as template"
+msgstr "Użyj tej konfiguracji jako szablonu"
+
+#: config/fieldvars.php:180
+msgid "Generic name"
+msgstr "Ogólna nazwa"
+
+#: config/fieldvars.php:184
+msgid "Please check at least one option from:"
+msgstr "Proszę zaznaczyć przynajmniej jedna z opcji:"
+
+#: config/fieldvars.php:185
+msgid "Host group name"
+msgstr "Nazwa grupy hostów"
+
+#: config/fieldvars.php:186
+msgid "Host group members"
+msgstr "Członkowie grupy hostów"
+
+#: config/fieldvars.php:188
+msgid "Service description"
+msgstr "Opis usługi"
+
+#: config/fieldvars.php:190
+msgid "Is volatile"
+msgstr "Jest zmienny"
+
+#: config/fieldvars.php:191
+msgid "Parallelize checks"
+msgstr "Równoległe kontrole"
+
+#: config/fieldvars.php:192
+msgid "Config name filter"
+msgstr "Nazwa filtru konfiguracyjnego"
+
+#: config/fieldvars.php:194
+msgid "Import directory"
+msgstr "Katalog importu"
+
+#: config/fieldvars.php:195
+msgid "Please insert a variable name and a variable definition"
+msgstr "Proszę wstawić nazwę zmiennej oraz jej definicje"
+
+#: config/fieldvars.php:196
+#: config/fieldvars.php:200
+msgid "Warning:"
+msgstr "Ostrzeżenie:"
+
+#: config/fieldvars.php:196
+msgid "You have not filled in some required fields!<br><br>If this values are set by a template, you can save anyway - otherwise you will get an invalid configuration!"
+msgstr "Nie wypelnileś niektórych wymaganych pól!<br><br>Jeżeli wartości są ustawione za pomocą szablonu, możesz je zapisać - w przeciwnym razie otrzymasz błędna konfigurację!"
+
+#: config/fieldvars.php:198
+msgid "Nagios base directory"
+msgstr "Główny katalog Nagios"
+
+#: config/fieldvars.php:199
+msgid "Write config"
+msgstr "Zapisz konfiguracje"
+
+#: config/fieldvars.php:200
+msgid "You have not filled in all command arguments (ARGx) for your selected command!<br><br>If this arguments are optional, you can save anyway - otherwise you will get an invalid configuration!"
+msgstr "Nie wypełniłeś wszystkich wymaganych argumentów (ARGx) dla wybranego polecenia!<br><br>Jeżeli wartości są opcjonalne, możesz je zapisać - w przeciwnym razie otrzymasz błędną konfigurację!"
+
+#: config/fieldvars.php:201
+msgid "Service group members"
+msgstr "Członkowie grupy usług"
+
+#: config/fieldvars.php:202
+msgid "Service group name"
+msgstr "Nazwa grupy usług"
+
+#: config/fieldvars.php:205
+msgid "Hostgroups"
+msgstr "Grupy hostów"
+
+#: config/fieldvars.php:206
+msgid "Inherit parents"
+msgstr "Dziedziczenie rodziców"
+
+#: config/fieldvars.php:207
+msgid "Execution failure criteria"
+msgstr "Kryteria testowania w przypadkach uszkodzeń"
+
+#: config/fieldvars.php:208
+msgid "Nofification failure criteria"
+msgstr "Kryteria powiadamiania w przypadkach uszkodzeń"
+
+#: config/fieldvars.php:209
+msgid "Dependency period"
+msgstr "Okres zależności"
+
+#: config/fieldvars.php:210
+msgid "Escalation period"
+msgstr "Okres eskalacji"
+
+#: config/fieldvars.php:211
+msgid "Escalation options"
+msgstr "Opcje eskalacji"
+
+#: config/fieldvars.php:212
+msgid "First notification"
+msgstr "Pierwsze powiadomienie"
+
+#: config/fieldvars.php:213
+msgid "Last notification"
+msgstr "Ostatnie powiadomienie"
+
+#: config/fieldvars.php:216
+msgid "Help"
+msgstr "Pomoc"
+
+#: config/fieldvars.php:217
+msgid "Calendar"
+msgstr "Kalendarz"
+
+#: config/fieldvars.php:218
+#, fuzzy
+msgid "Group name"
+msgstr "Nazwa grupy hostów"
+
+#: config/fieldvars.php:219
+#, fuzzy
+msgid "Users"
+msgstr "Użytkownik"
+
+#: config/fieldvars.php:220
+#, fuzzy
+msgid "Access group"
+msgstr "Grupa usług"
+
+#: config/fieldvars.php:221
+#, fuzzy
+msgid "User definitions"
+msgstr "Zakresy czasowe"
+
+#: config/fieldvars.php:222
+#, fuzzy
+msgid "User name"
+msgstr "Nazwa użytkownika"
+
+#: config/fieldvars.php:223
+msgid "User rights"
+msgstr ""
+
+#: config/fieldvars.php:224
+#, fuzzy
+msgid "Object access restrictions"
+msgstr "Restart nie powiódł się - ograniczenia FTP "
+
+#: config/fieldvars.php:225
+#, fuzzy
+msgid "Enable group administration"
+msgstr "Zarządzanie użytkownikiem"
+
+#: config/fieldvars.php:226
+#, fuzzy
+msgid "Show relation data"
+msgstr "Zapisz dodatkowe dane"
+
+#: config/fieldvars.php:227
+#, fuzzy
+msgid "Hide relation data"
+msgstr "Zapisz dodatkowe dane"
+
+#: config/fieldvars.php:229
+msgid "Monday"
+msgstr "Poniedziałek"
+
+#: config/fieldvars.php:230
+msgid "Tuesday"
+msgstr "Wtorek"
+
+#: config/fieldvars.php:231
+msgid "Wednesday"
+msgstr "Środa"
+
+#: config/fieldvars.php:232
+msgid "Thursday"
+msgstr "Czwartek"
+
+#: config/fieldvars.php:233
+msgid "Friday"
+msgstr "Piątek"
+
+#: config/fieldvars.php:234
+msgid "Saturday"
+msgstr "Sobota"
+
+#: config/fieldvars.php:235
+msgid "Sunday"
+msgstr "Niedziela"
+
+#: config/fieldvars.php:246
+msgid "Main page"
+msgstr "Strona Główna"
+
+#: config/fieldvars.php:247
+msgid "Supervision"
+msgstr "Nadzór"
+
+#: config/fieldvars.php:250
+msgid "Commands"
+msgstr "Polecenia"
+
+#: config/fieldvars.php:251
+msgid "Specialties"
+msgstr "Specjalności"
+
+#: config/fieldvars.php:252
+msgid "Tools"
+msgstr "Narzędzia"
+
+#: config/fieldvars.php:263
+#, fuzzy
+msgid "Service dependency"
+msgstr "Zależności usług"
+
+#: config/fieldvars.php:264
+#, fuzzy
+msgid "Service escalation"
+msgstr "Eskalacje usług"
+
+#: config/fieldvars.php:265
+msgid "Host dependency"
+msgstr "Zależności hosta"
+
+#: config/fieldvars.php:266
+msgid "Host escalation"
+msgstr "Eskalacja hosta"
+
+#: config/fieldvars.php:267
+msgid "Extended Host"
+msgstr ""
+
+#: config/fieldvars.php:268
+#, fuzzy
+msgid "Extended Service"
+msgstr "Zależne usługi"
+
+#: config/fieldvars.php:269
+msgid "Data import"
+msgstr "Import Danych"
+
+#: config/fieldvars.php:272
+msgid "User admin"
+msgstr "Użytkownik admin"
+
+#: config/fieldvars.php:273
+#, fuzzy
+msgid "Group admin"
+msgstr "Użytkownik admin"
+
+#: config/fieldvars.php:274
+msgid "Nagios control"
+msgstr "Sterowanie Nagiosem"
+
+#: config/fieldvars.php:276
+msgid "Logbook"
+msgstr "Dziennik"
+
+#: config/fieldvars.php:277
+msgid "Nagios config"
+msgstr "Konfiguracja Nagiosa"
+
+#: config/fieldvars.php:278
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: config/fieldvars.php:279
+msgid "Definitions"
+msgstr "Definicje"
+
+#: config/fieldvars.php:280
+msgid "CGI config"
+msgstr "konfiguracja CGI"
+
+#: config/fieldvars.php:281
+msgid "Menu access"
+msgstr "Dostęp do menu"
+
+#: config/fieldvars.php:282
+msgid "Domains"
+msgstr "Domeny"
+
+#: config/fieldvars.php:286
+msgid "Help editor"
+msgstr "Edytor pomocy"
+
+#: functions/config_class.php:155
+#: functions/config_class.php:158
+msgid "Warning: configuration file is out of date!"
+msgstr "Ostrzeżenie: plik konfiguracyjny jest nieaktualny!"
+
+#: functions/config_class.php:301
+msgid "Cannot backup and delete the old configuration file (check the permissions)!"
+msgstr "Nie można utworzyć kopii zapasowej ani usunąć starego pliku konfiguracyjnego (sprawdz uprawnienia)!"
+
+#: functions/config_class.php:317
+msgid "Cannot backup the old configuration file because the permissions are wrong (remote FTP)!"
+msgstr "Nie można zarchiwizować starego pliku konfiguracyjnego, ponieważ pozwolenia są złe (zdalny FTP)!"
+
+#: functions/config_class.php:337
+#, fuzzy
+msgid "Cannot backup the old configuration file because the permissions are wrong (remote SFTP)!"
+msgstr "Nie można zarchiwizować starego pliku konfiguracyjnego, ponieważ pozwolenia są złe (zdalny FTP)!"
+
+#: functions/config_class.php:365
+msgid "Cannot delete the file (check the permissions)!"
+msgstr "Nie można usunąć tego pliku (sprawdź uprawnienia)!"
+
+#: functions/config_class.php:380
+msgid "Cannot delete file because the permissions are wrong (remote FTP)!"
+msgstr "Nie można usunąć pliku, ponieważ uprawnienia są niewłaściwe (zdalny FTP)!"
+
+#: functions/config_class.php:383
+#, fuzzy
+msgid "Cannot delete file because it does not exists (remote FTP)!"
+msgstr "Nie można usunąć pliku, ponieważ uprawnienia są niewłaściwe (zdalny FTP)!"
+
+#: functions/config_class.php:396
+#, fuzzy
+msgid "Cannot delete file because the permissions are wrong (remote SFTP)!"
+msgstr "Nie można usunąć pliku, ponieważ uprawnienia są niewłaściwe (zdalny FTP)!"
+
+#: functions/config_class.php:399
+#, fuzzy
+msgid "Cannot delete file because it does not exists (remote SFTP)!"
+msgstr "Nie można usunąć pliku, ponieważ uprawnienia są niewłaściwe (zdalny FTP)!"
+
+#: functions/config_class.php:430
+msgid "Cannot get the configuration file (FTP connection failed)!"
+msgstr "Nie można ściągnąć pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/config_class.php:437
+msgid "Cannot write the configuration file (FTP connection failed)!"
+msgstr "Nie można zapisac pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/config_class.php:452
+#, fuzzy
+msgid "Cannot get the configuration file (SSH connection failed)!"
+msgstr "Nie można ściągnąć pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/config_class.php:456
+#, fuzzy
+msgid "Cannot get the configuration file (remote file does not exist)!"
+msgstr "Nie można ściągnąć pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/config_class.php:463
+#, fuzzy
+msgid "Cannot write the configuration file (SSH connection failed)!"
+msgstr "Nie można zapisac pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/config_class.php:491
+#: functions/config_class.php:662
+msgid "It is not possible to write config files directly from the common domain!"
+msgstr ""
+
+#: functions/config_class.php:822
+msgid "Configuration write failed - Dataset not found"
+msgstr "Zapisanie konfiguracji nie powiodło się - nie znaleziono zbioru danych"
+
+#: functions/config_class.php:938
+msgid "Configuration write failed (FTP connection failed):"
+msgstr "Zapisywanie konfiguracji nie powiodło się (połączenie FTP nie powiodło się):"
+
+#: functions/config_class.php:939
+#: functions/config_class.php:989
+msgid "Cannot open/overwrite the configuration file (FTP connection failed)!"
+msgstr "Nie można otworzyć/nadpisać pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/config_class.php:1005
+#, fuzzy
+msgid "Cannot open/overwrite the configuration file (remote SFTP)!"
+msgstr "Nie można otworzyć/nadpisać pliku konfiguracyjnego (sprawdź uprawnienia)!"
+
+#: functions/config_class.php:1403
+#: functions/config_class.php:1435
+#, fuzzy
+msgid "Connection to remote system failed (SSH2 connection):"
+msgstr "Zapisywanie konfiguracji nie powiodło się (połączenie FTP nie powiodło się):"
+
+#: functions/config_class.php:1404
+#: functions/config_class.php:1436
+#, fuzzy
+msgid "Connection to remote system failed (SSH2 connection)!"
+msgstr "Zapisywanie konfiguracji nie powiodło się (połączenie FTP nie powiodło się):"
+
+#: functions/config_class.php:1416
+#: functions/config_class.php:1417
+#, fuzzy
+msgid "SSH public key does not exist or is not readable"
+msgstr "nie istnieje - modernizacja niemozliwa"
+
+#: functions/config_class.php:1421
+#: functions/config_class.php:1422
+#, fuzzy
+msgid "SSH private key does not exist or is not readable"
+msgstr "nie istnieje - modernizacja niemozliwa"
+
+#: functions/config_class.php:1497
+#, fuzzy
+msgid "Connection to remote system failed (FTP connection):"
+msgstr "Zapisywanie konfiguracji nie powiodło się (połączenie FTP nie powiodło się):"
+
+#: functions/config_class.php:1498
+#, fuzzy
+msgid "Connection to remote system failed (FTP connection)!"
+msgstr "Nie można usunąć pliku (połączenie FTP nie powiodło się)!"
+
+#: functions/data_class.php:125
+#: functions/data_class.php:149
+msgid "Delete failed because a database error:"
+msgstr "Kasowanie nie powiodło się, ponieważ wystąpił błąd bazy danych:"
+
+#: functions/data_class.php:128
+#: functions/data_class.php:158
+#: functions/data_class.php:167
+msgid "No data deleted. Probably the dataset does not exist or it is protected from delete."
+msgstr "Dane nie zostały wymazane. Zbiór danych nie istnieje albo jest chroniony przed skasowaniem."
+
+#: functions/data_class.php:132
+msgid "Delete dataset id:"
+msgstr "Usuń id zbioru danych:"
+
+#: functions/data_class.php:132
+msgid "- from table:"
+msgstr "- z tabeli:"
+
+#: functions/data_class.php:132
+#: functions/data_class.php:162
+#: functions/data_class.php:301
+#: functions/data_class.php:582
+#: functions/data_class.php:645
+msgid "- with affected rows:"
+msgstr "- wraz z uszkodzonymi wpisami:"
+
+#: functions/data_class.php:162
+#: functions/data_class.php:301
+msgid "Delete data from table:"
+msgstr "Dane wymazano z tabeli:"
+
+#: functions/data_class.php:297
+msgid "No data deleted. Probably the dataset does not exist, is protected from deletion or has relations to other configurations which cannot be deleted. Use the \"info\" function for detailed informations about relations!"
+msgstr "Żadne dane nie zostały usunięte. Prawdopodobnie zbiór danych nie istnieje, jest chroniony przed usuwaniem lub istnieją relacje z innymi konfiguracjami, które nie mogą być usunięte. Użyj funkcji \"info\" dla uzyskania szczegółowych informacji o relacjach!"
+
+#: functions/data_class.php:307
+msgid "No data deleted. Probably the dataset does not exist or it is protected from deletion."
+msgstr "Dane nie zostały usunięte. Zbiór danych nie istnieje albo jest chroniony przed skasowaniem."
+
+#: functions/data_class.php:508
+msgid "Data set copy failed - table [new name]:"
+msgstr "Kopiowanie zbioru danych nieudane - tabela [nowa nazwa]:"
+
+#: functions/data_class.php:511
+msgid "Data set copied - table [new name]:"
+msgstr "Skopiowano zbiór danych - tabela [nowa nazwa]:"
+
+#: functions/data_class.php:578
+#, fuzzy
+msgid "No dataset activated. Probably the dataset does not exist or no dataset was selected"
+msgstr "Dane nie zostały wymazane. Zbiór danych nie istnieje albo jest chroniony przed skasowaniem."
+
+#: functions/data_class.php:581
+#, fuzzy
+msgid "Dataset successfully activated. Affected rows:"
+msgstr "Zbiór danych pomyślnie usunięty. Zniszczone wpisy:"
+
+#: functions/data_class.php:582
+#: functions/data_class.php:645
+#, fuzzy
+msgid "Activate dataset from table:"
+msgstr "Dane wymazano z tabeli:"
+
+#: functions/data_class.php:587
+#, fuzzy
+msgid "No dataset activated. Probably the dataset does not exist"
+msgstr "Dane nie zostały wymazane. Zbiór danych nie istnieje albo jest chroniony przed skasowaniem."
+
+#: functions/data_class.php:641
+#, fuzzy
+msgid "No dataset deactivated. Probably the dataset does not exist, is protected from deactivation or no dataset was selected. Use the \"info\" function for detailed informations about relations!"
+msgstr "Żadne dane nie zostały usunięte. Prawdopodobnie zbiór danych nie istnieje, jest chroniony przed usuwaniem lub istnieją relacje z innymi konfiguracjami, które nie mogą być usunięte. Użyj funkcji \"info\" dla uzyskania szczegółowych informacji o relacjach!"
+
+#: functions/data_class.php:644
+#, fuzzy
+msgid "Dataset successfully deactivated. Affected rows:"
+msgstr "Zbiór danych pomyślnie usunięty. Zniszczone wpisy:"
+
+#: functions/data_class.php:650
+#, fuzzy
+msgid "No dataset deactivated. Probably the dataset does not exist"
+msgstr "Dane nie zostały wymazane. Zbiór danych nie istnieje albo jest chroniony przed skasowaniem."
+
+#: functions/data_class.php:834
+msgid "<span style=\"color:#0000FF;\">Relation information for <b>"
+msgstr "<span style=\"color:#0000FF;\">Relacje informacji dla <b>"
+
+#: functions/data_class.php:834
+msgid "</b> of table <b>"
+msgstr "</b> tabela <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:890
+#: functions/data_class.php:894
+#: functions/data_class.php:910
+#: functions/data_class.php:913
+msgid "Relation to <b>"
+msgstr "Stosunek do <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:890
+#: functions/data_class.php:894
+#: functions/data_class.php:910
+#: functions/data_class.php:913
+msgid "</b>, entry <b>"
+msgstr "</b>, wejście <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:894
+#: functions/data_class.php:913
+#, fuzzy
+msgid "deletion <b>possible</b>"
+msgstr "usuwanie <b>nie możliwe</b>"
+
+#: functions/data_class.php:890
+#: functions/data_class.php:910
+msgid "deletion <b>not possible</b>"
+msgstr "usuwanie <b>nie możliwe</b>"
+
+#: functions/import_class.php:99
+#, fuzzy
+msgid "Cannot receive the configuration file (FTP connection)!"
+msgstr "Nie można zapisac pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/import_class.php:112
+#, fuzzy
+msgid "Cannot receive the configuration file (SSH connection)!"
+msgstr "Nie można zapisac pliku konfiguracyjnego (połączenie FTP nie powiodło się)!"
+
+#: functions/import_class.php:178
+#, fuzzy
+msgid "No valid configuration found!"
+msgstr "Główny plik konfiguracyjny Nagiosa"
+
+#: functions/import_class.php:250
+msgid "Table for import definition"
+msgstr "Tabela dla definicji importu"
+
+#: functions/import_class.php:250
+msgid "is not available!"
+msgstr "nie jest dostępny!"
+
+#: functions/import_class.php:292
+#: functions/import_class.php:297
+#: functions/import_class.php:609
+#: functions/import_class.php:610
+#: functions/import_class.php:613
+#: functions/import_class.php:614
+msgid "inside"
+msgstr "wewnątrz"
+
+#: functions/import_class.php:292
+msgid "exists and were not overwritten"
+msgstr "istnieje i nie został nadpisany"
+
+#: functions/import_class.php:297
+msgid "were not written"
+msgstr "nie został zapisany"
+
+#: functions/import_class.php:609
+#: functions/import_class.php:610
+msgid "could not be inserted:"
+msgstr "nie został umieszczony:"
+
+#: functions/import_class.php:613
+#: functions/import_class.php:614
+msgid "successfully inserted"
+msgstr "umieszczone pomyślnie"
+
+#: functions/import_class.php:1199
+msgid "Error: wrong number of arguments - cannot import service group members"
+msgstr "Błąd: niewłaściwa liczba argumentów - nie można zaimportować"
+
+#: functions/mysql_class.php:274
+msgid "Missing server connection parameter!"
+msgstr "Brak parametru połączenia serwera!"
+
+#: functions/mysql_class.php:281
+#: functions/mysql_class.php:310
+msgid "Connection to the database server has failed by reason:"
+msgstr "Połączenie z serwerem bazy danych nie powiodło się z powodu:"
+
+#: functions/mysql_class.php:303
+msgid "Missing database connection parameter!"
+msgstr "Brak parametru połączenia bazy danych!"
+
+#: functions/nag_class.php:187
+msgid "Hide menu"
+msgstr "Schowaj menu"
+
+#: functions/nag_class.php:192
+msgid "Show menu"
+msgstr "Pokaz menu"
+
+#: functions/nag_class.php:402
+#, fuzzy
+msgid "Page"
+msgstr "Strony"
+
+#: functions/nag_class.php:811
+#, fuzzy
+msgid "Unrestricted access"
+msgstr "Poufna strona udostępniona:"
+
+#: functions/prepend_adm.php:98
+#: install/index.php:148
+msgid "Error while connecting to database:"
+msgstr "Błąd podczas połączenia z bazą danych:"
+
+#: functions/prepend_adm.php:124
+msgid "Error in setting the correct locale, please report this error with the associated output of  'locale -a' to bugs@nagiosql.org"
+msgstr "Błąd w ustawieniach poprawnej lokalizacji, proszę zgłosić ten błąd z powiązanym wyjściem 'locale -a' to bugs@nagiosql.org"
+
+#: functions/prepend_adm.php:210
+#, fuzzy
+msgid "Webserver login successfull"
+msgstr "Logowanie pomyślne!"
+
+#: functions/prepend_adm.php:235
+msgid "Login successfull"
+msgstr "Logowanie pomyślne!"
+
+#: functions/prepend_adm.php:240
+#: functions/prepend_adm.php:241
+msgid "Login failed!"
+msgstr "Logowanie nieudane!"
+
+#: functions/prepend_adm.php:260
+msgid "Session timeout reached - Seconds:"
+msgstr "Limit czasu sesji został osiągnięty - Sekundy:"
+
+#: functions/prepend_adm.php:270
+msgid "Restricted site accessed:"
+msgstr "Poufna strona udostępniona:"
+
+#: functions/prepend_adm.php:282
+msgid "User not found in database"
+msgstr "Użytkownik nie istnieje w bazie danych"
+
+#: functions/prepend_adm.php:307
+msgid "Admin"
+msgstr "Admin"
+
+#: functions/prepend_adm.php:352
+msgid "Logged in:"
+msgstr "Zalogowano w:"
+
+#: functions/prepend_adm.php:353
+#, fuzzy
+msgid "Logout"
+msgstr "Dziennik"
+
+#: functions/prepend_adm.php:369
+msgid "Warning - template file not found or not readable, please check your file permissions! - File: "
+msgstr ""
+
+#: functions/translator.php:56
+msgid "English"
+msgstr "Angielski"
+
+#: functions/translator.php:60
+msgid "German"
+msgstr "Niemiecki"
+
+#: functions/translator.php:64
+msgid "Chinese (Simplified)"
+msgstr "Chiński (Uproszczony)"
+
+#: functions/translator.php:68
+msgid "Polish"
+msgstr "Polski"
+
+#: functions/translator.php:72
+msgid "Italian"
+msgstr "Włoski"
+
+#: functions/translator.php:76
+msgid "French"
+msgstr "Francuski"
+
+#: functions/translator.php:80
+msgid "Russian"
+msgstr "Rosyjski"
+
+#: functions/translator.php:84
+msgid "Spanish"
+msgstr "Hiszpański"
+
+#: functions/translator.php:88
+msgid "Portuguese (Brazilian)"
+msgstr "Portugalski (Brazylijski)"
+
+#: functions/translator.php:92
+msgid "Japanese"
+msgstr "Japoński"
+
+#: functions/translator.php:96
+msgid "Dutch"
+msgstr "Niemiecki"
+
+#: functions/translator.php:100
+msgid "Spanish (Argentina)"
+msgstr "Hiszpański (Argentyna)"
+
+#: functions/translator.php:104
+#, fuzzy
+msgid "Danish"
+msgstr "Hiszpański"
+
+#: install/index.php:74
+#: install/install.php:88
+msgid "Online Documentation"
+msgstr "Dokumentacja elektroniczna"
+
+#: install/index.php:98
+msgid "Welcome to the NagiosQL Installation Wizard"
+msgstr "Witamy w kreatorze instalacji NagiosQL"
+
+#: install/index.php:99
+msgid "This wizard will help you to install and configure NagiosQL."
+msgstr "Ten kreator pomoże ci zainstalować i skonfigurować NagiosQL"
+
+#: install/index.php:100
+msgid "For questions please visit"
+msgstr "W razie pytań proszę odwiedzić"
+
+#: install/index.php:102
+msgid "First let's check your local environment and find out if everything NagiosQL needs is available."
+msgstr ""
+
+#: install/index.php:103
+#, fuzzy
+msgid "The basic requirements are:"
+msgstr "Sprawdza wymagania"
+
+#: install/index.php:105
+msgid "PHP 5.2.0 or greater including:"
+msgstr ""
+
+#: install/index.php:107
+#: install/index.php:108
+#: install/index.php:109
+#: install/index.php:110
+#: install/index.php:111
+#: install/index.php:112
+#: install/index.php:113
+#: install/index.php:114
+msgid "PHP Module:"
+msgstr ""
+
+#: install/index.php:113
+#: install/index.php:114
+#: install/index.php:115
+msgid "(optional)"
+msgstr ""
+
+#: install/index.php:115
+msgid "PECL Extension:"
+msgstr ""
+
+#: install/index.php:118
+#, fuzzy
+msgid "php.ini options"
+msgstr "Opcje śledzenia"
+
+#: install/index.php:120
+msgid "file_uploads on (for upload features)"
+msgstr ""
+
+#: install/index.php:121
+msgid "session.auto_start needs to be off"
+msgstr ""
+
+#: install/index.php:124
+#, fuzzy
+msgid "A MySQL database server"
+msgstr "Serwer MySQL"
+
+#: install/index.php:125
+msgid "Nagios 2.x/3.x or Icinga 1.x"
+msgstr ""
+
+#: install/index.php:198
+msgid "START UPDATE"
+msgstr ""
+
+#: install/index.php:201
+#: install/index.php:204
+msgid "START INSTALLATION"
+msgstr ""
+
+#: install/status.php:23
+msgid "Requirements"
+msgstr "Wymagania"
+
+#: install/status.php:25
+#: install/step3.php:371
+msgid "Finish"
+msgstr "Zakończ"
+
+#: install/step1.php:86
+msgid "Checking requirements"
+msgstr "Sprawdza wymagania"
+
+#: install/step1.php:87
+#, fuzzy
+msgid "Checking Client"
+msgstr "Sprawdza wymagania"
+
+#: install/step1.php:89
+msgid "ENABLED"
+msgstr ""
+
+#: install/step1.php:91
+msgid "NOT ENABLED"
+msgstr ""
+
+#: install/step1.php:94
+#, fuzzy
+msgid "Checking PHP version"
+msgstr "Wersja PHP"
+
+#: install/step1.php:97
+#: install/step1.php:99
+#, fuzzy
+msgid "Version"
+msgstr "Nadzór"
+
+#: install/step1.php:97
+#: install/step1.php:109
+#: install/step1.php:121
+#: install/step1.php:135
+#: install/step1.php:167
+#: install/step1.php:173
+#: install/step1.php:187
+#: install/step1.php:193
+#: install/step1.php:205
+#: install/step1.php:215
+#: install/step1.php:217
+#: install/step1.php:229
+#: install/step1.php:238
+#: install/step1.php:247
+#: install/step1.php:256
+#: install/step1.php:265
+#: install/step1.php:274
+msgid "OK"
+msgstr ""
+
+#: install/step1.php:97
+#: install/step1.php:99
+#, fuzzy
+msgid "detected"
+msgstr "Wybrany"
+
+#: install/step1.php:99
+msgid "or greater is required"
+msgstr ""
+
+#: install/step1.php:102
+#, fuzzy
+msgid "Checking PHP extensions"
+msgstr "Sprawdzanie twojego środowiska PHP"
+
+#: install/step1.php:103
+msgid "The following modules/extensions are <em>required</em> to run NagiosQL"
+msgstr ""
+
+#: install/step1.php:112
+#: install/step1.php:125
+#: install/step1.php:139
+msgid "Could be loaded. Please add in php.ini"
+msgstr ""
+
+#: install/step1.php:113
+#: install/step1.php:126
+#: install/step1.php:140
+#: install/step1.php:164
+msgid "NOT AVAILABLE"
+msgstr ""
+
+#: install/step1.php:118
+msgid "The next couple of extensions are <em>optional</em> but recommended"
+msgstr ""
+
+#: install/step1.php:130
+msgid "Checking available database interfaces"
+msgstr ""
+
+#: install/step1.php:131
+msgid "Check which of the supported extensions are installed. At least one of them is required."
+msgstr ""
+
+#: install/step1.php:139
+#, fuzzy
+msgid "Not installed"
+msgstr "nie zainstalowano"
+
+#: install/step1.php:158
+msgid "Checking php.ini/.htaccess settings"
+msgstr ""
+
+#: install/step1.php:159
+msgid "The following settings are <em>required</em> to run NagiosQL"
+msgstr ""
+
+#: install/step1.php:164
+msgid "cannot be empty and needs to be set"
+msgstr ""
+
+#: install/step1.php:175
+msgid "should be"
+msgstr ""
+
+#: install/step1.php:180
+msgid "The following settings are <em>optional</em> but recommended"
+msgstr ""
+
+#: install/step1.php:185
+#, fuzzy
+msgid "Could be set"
+msgstr "Nie zdołał wybrać"
+
+#: install/step1.php:195
+msgid "Could be"
+msgstr ""
+
+#: install/step1.php:200
+msgid "Checking System Permission"
+msgstr "Sprawdzanie praw systemowych"
+
+#: install/step1.php:205
+#: install/step1.php:207
+msgid "Read test on settings file (config/settings.php)"
+msgstr "Test czytania na pliku ustawień (config/settings.php)"
+
+#: install/step1.php:207
+#: install/step1.php:219
+#: install/step1.php:222
+#: install/step1.php:231
+#: install/step1.php:240
+#: install/step1.php:249
+#: install/step1.php:258
+#: install/step1.php:267
+#: install/step1.php:276
+#: install/step3.php:67
+#: install/step3.php:89
+#: install/step3.php:102
+#: install/step3.php:116
+#: install/step3.php:123
+#: install/step3.php:139
+#: install/step3.php:151
+#: install/step3.php:163
+#: install/step3.php:177
+#: install/step3.php:183
+#: install/step3.php:199
+#: install/step3.php:210
+#: install/step3.php:222
+#: install/step3.php:234
+#: install/step3.php:284
+#: install/step3.php:296
+#: install/step3.php:308
+#: install/step3.php:322
+#: install/step3.php:328
+#: install/step3.php:344
+#: install/step3.php:355
+msgid "failed"
+msgstr "nieudany"
+
+#: install/step1.php:210
+msgid "Settings file does not exists (config/settings.php)"
+msgstr "Plik z ustawieniami nie istnieje (config/settings.php)"
+
+#: install/step1.php:210
+msgid "will be created"
+msgstr "będzie utworzony"
+
+#: install/step1.php:215
+#: install/step1.php:219
+msgid "Write test on settings file (config/settings.php)"
+msgstr "Test zapisu na pliku ustawień (config/settings.php)"
+
+#: install/step1.php:217
+#: install/step1.php:222
+msgid "Write test on settings directory (config/)"
+msgstr "Test zapisu na katalogu ustawień (config/)"
+
+#: install/step1.php:229
+#: install/step1.php:231
+msgid "Read test on a class file (functions/nag_class.php)"
+msgstr "Test czytania na pliku klasy (functions/nag_class.php)"
+
+#: install/step1.php:238
+#: install/step1.php:240
+msgid "Read test on startsite file (admin.php)"
+msgstr "Test czytania na pliku startowym strony (admin.php)"
+
+#: install/step1.php:247
+#: install/step1.php:249
+msgid "Read test on a template file (templates/index.tpl.htm)"
+msgstr "Test czytania na pliku szablonu (templates/index.tpl.htm)"
+
+#: install/step1.php:256
+#: install/step1.php:258
+msgid "Read test on a admin template file (templates/admin/admin_master.tpl.htm)"
+msgstr "Test czytania na pliku szablonu admina (templates/admin/admin_master.tpl.htm)"
+
+#: install/step1.php:265
+#: install/step1.php:267
+msgid "Read test on a file template (templates/files/contacts.tpl.dat)"
+msgstr "Test czytania na pliku szablonu (templates/files/contacts.tpl.dat) ()"
+
+#: install/step1.php:274
+#: install/step1.php:276
+msgid "Read test on a image file (images/pixel.gif)"
+msgstr "Test czytania na pliku obrazka (images/pixel.gif)"
+
+#: install/step1.php:283
+msgid "There are some errors - please check your system settings and read the requirements of NagiosQL!"
+msgstr "Występują pewne błędy - proszę sprawdź swoje ustawienia systemowe i przeczytaj wymagania NagiosQL!"
+
+#: install/step1.php:284
+msgid "Read the INSTALLATION file from NagiosQL to find out, how to fix them."
+msgstr "Przeczytaj plik INSTALATION z NagiosQL, żeby dowiedzieć się jak je naprawić."
+
+#: install/step1.php:285
+msgid "After that - refresh this page to proceed"
+msgstr "Następnie - odśwież tą stronę aby kontynuować"
+
+#: install/step1.php:288
+msgid "Refresh"
+msgstr "odśwież"
+
+#: install/step1.php:292
+msgid "Environment test sucessfully passed"
+msgstr "Test środowiska przeszedł pomyślnie"
+
+#: install/step1.php:297
+#: install/step2.php:103
+msgid "Next"
+msgstr "Dalej"
+
+#: install/step2.php:55
+#, fuzzy
+msgid "Setup"
+msgstr "Krok"
+
+#: install/step2.php:58
+msgid "Please complete the form below. Mandatory fields marked <em>*</em>"
+msgstr ""
+
+#: install/step2.php:59
+#, fuzzy
+msgid "Please backup your database before proceeding!"
+msgstr "Przed kontynuacją proszę utworzyć kopię zapasową swojej bazy danych ..."
+
+#: install/step2.php:61
+#, fuzzy
+msgid "Database Configuration"
+msgstr "Zapisz konfiguracje usług"
+
+#: install/step2.php:67
+msgid "NagiosQL DB User"
+msgstr "Użytkownik NagiosQL DB"
+
+#: install/step2.php:68
+msgid "NagiosQL DB Password"
+msgstr "Haslo NagiosQL DB"
+
+#: install/step2.php:73
+msgid "Administrative MySQL User"
+msgstr "Administracyjny użytkownik MySQL"
+
+#: install/step2.php:74
+msgid "Administrative MySQL Password"
+msgstr "Administracyjne hasło MySQL"
+
+#: install/step2.php:76
+msgid "Drop database if already exists?"
+msgstr "Czy zrzucić bazę danych jeśli istnieje ?"
+
+#: install/step2.php:86
+#, fuzzy
+msgid "NagiosQL User Setup"
+msgstr "Użytkownik NagiosQL DB"
+
+#: install/step2.php:88
+msgid "Initial NagiosQL User"
+msgstr "Początkowy użytkownik NagiosQL"
+
+#: install/step2.php:89
+msgid "Initial NagiosQL Password"
+msgstr "Początkowe hasło NagiosQL"
+
+#: install/step2.php:90
+msgid "Please repeat the password"
+msgstr "Proszę powtórzyć hasło"
+
+#: install/step2.php:94
+#, fuzzy
+msgid "Nagios Configuration"
+msgstr "Główny plik konfiguracyjny Nagiosa"
+
+#: install/step2.php:96
+msgid "Import Nagios sample config?"
+msgstr "Importuj próbne pliki konfiguracyjne Nagios"
+
+#: install/step3.php:41
+msgid "Finishing Setup"
+msgstr "Kończenie konfiguracji"
+
+#: install/step3.php:47
+#, fuzzy
+msgid "Create new NagiosQL database"
+msgstr "Tworzenie nowej bazy danych"
+
+#: install/step3.php:55
+msgid "Database already exists and drop database was not selected, please correct or manage manually"
+msgstr "Baza danych istnieje a zrzut nie został wybrany, proszę dokonać korekty lub pokierować ręcznie"
+
+#: install/step3.php:63
+msgid "MySQL server connection (privileged user)"
+msgstr "Połączenie serwera MySQL (użytkownik uprzywilejowany)"
+
+#: install/step3.php:70
+#: install/step3.php:174
+#: install/step3.php:319
+msgid "passed"
+msgstr "zaliczony"
+
+#: install/step3.php:71
+msgid "MySQL server version"
+msgstr "wersja serwera MySQL"
+
+#: install/step3.php:81
+msgid "MySQL server support"
+msgstr "wsparcie serwera MySQL"
+
+#: install/step3.php:83
+msgid "supported"
+msgstr "wspierany"
+
+#: install/step3.php:85
+msgid "not supported"
+msgstr "niewspierany"
+
+#: install/step3.php:96
+#, fuzzy
+msgid "Delete existing NagiosQL database"
+msgstr "Wymaż istniejącą bazę danych NagiosQL 3"
+
+#: install/step3.php:99
+#: install/step3.php:119
+#: install/step3.php:136
+#: install/step3.php:148
+#: install/step3.php:160
+#: install/step3.php:196
+#: install/step3.php:207
+#: install/step3.php:219
+#: install/step3.php:231
+#: install/step3.php:281
+#: install/step3.php:293
+#: install/step3.php:305
+#: install/step3.php:341
+#: install/step3.php:352
+msgid "done"
+msgstr "Wykonane"
+
+#: install/step3.php:108
+msgid "Creating new database"
+msgstr "Tworzenie nowej bazy danych"
+
+#: install/step3.php:127
+#: install/functions/func_installer.php:291
+#: install/functions/func_installer.php:312
+msgid "Could not access"
+msgstr "Nie uzyskał dostępu"
+
+#: install/step3.php:133
+#, fuzzy
+msgid "Create NagiosQL MySQL user"
+msgstr "Utwórz użytkownika NagiosQL MySQL"
+
+#: install/step3.php:145
+#, fuzzy
+msgid "Update MySQL permissions"
+msgstr "Uaktualnij prawa MySQL "
+
+#: install/step3.php:157
+msgid "Reloading MySQL User Table"
+msgstr "Przeładowanie użytkownika tabeli MySQL"
+
+#: install/step3.php:169
+#: install/step3.php:314
+msgid "Testing database connection to"
+msgstr "Testowanie połączenia bazy danych"
+
+#: install/step3.php:192
+#: install/step3.php:337
+#, fuzzy
+msgid "Deploy NagiosQL settings"
+msgstr "Konfuguruj ustawienia NagiosQL"
+
+#: install/step3.php:194
+#: install/step3.php:339
+msgid "Writing global settings to database"
+msgstr "Zapisywanie globalnych ustawień do bazy danych"
+
+#: install/step3.php:205
+#: install/step3.php:350
+msgid "Writing database configuration to settings.php"
+msgstr "Zapisywanie "
+
+#: install/step3.php:216
+msgid "Set initial NagiosQL Administrator"
+msgstr "Ustal początkowego administratora NagiosQL"
+
+#: install/step3.php:228
+msgid "Import Nagios sample data"
+msgstr "Importuj przykładowe dane Nagios"
+
+#: install/step3.php:243
+#, fuzzy
+msgid "Updating existing NagiosQL database"
+msgstr "Wymaż istniejącą bazę danych NagiosQL 3"
+
+#: install/step3.php:246
+#, fuzzy
+msgid "Installed NagiosQL version"
+msgstr "Zainstalowana wersja NagiosQL"
+
+#: install/step3.php:252
+msgid "is not supported!"
+msgstr "niewspierany!"
+
+#: install/step3.php:256
+#: install/step3.php:270
+msgid "error"
+msgstr "błąd"
+
+#: install/step3.php:263
+msgid "Upgrading from version"
+msgstr "Aktualizacja z wersji"
+
+#: install/step3.php:263
+msgid "to"
+msgstr "do"
+
+#: install/step3.php:278
+msgid "Converting database to utf8 character set"
+msgstr ""
+
+#: install/step3.php:290
+msgid "Converting database tables to utf8 character set"
+msgstr ""
+
+#: install/step3.php:302
+msgid "Converting database fields to utf8 character set"
+msgstr ""
+
+#: install/step3.php:369
+msgid "Please delete the install directory to continue!"
+msgstr "Aby kontynuowac prosze usunac katalog instalacyjny!"
+
+#: install/step3.php:377
+msgid "Back"
+msgstr "Z powrotem"
+
+#: install/functions/func_installer.php:64
+msgid "Could not create"
+msgstr "Nie zdołał utworzyć"
+
+#: install/functions/func_installer.php:64
+#: install/functions/func_installer.php:70
+#, fuzzy
+msgid "database in MySQL"
+msgstr "baza danych w mysql"
+
+#: install/functions/func_installer.php:70
+msgid "Could not select"
+msgstr "Nie zdołał wybrać"
+
+#: install/functions/func_installer.php:169
+msgid "Could not open settings.php in config directory for writing!"
+msgstr "Nie zdołał otworzyć settings.php w katalogu konfiguracyjnym do zapisu!"
+
+#: install/functions/func_installer.php:277
+msgid "Unknown version!"
+msgstr "Nieznana wersja!"
+
+#: install/functions/func_installer.php:325
+msgid "Cannot connect to the database."
+msgstr "Nie można ustanowić połączenia z bazą danych"
+
+#: install/functions/func_installer.php:325
+#: install/functions/func_installer.php:334
+#: install/functions/func_installer.php:337
+msgid "MySQL Error"
+msgstr "Błąd MySQL"
+
+#: install/functions/func_installer.php:334
+msgid "Cannot select the database."
+msgstr "Nie można wybrać bazy danych"
+
+#: install/functions/func_installer.php:337
+msgid "Cannot set"
+msgstr "Nie zdołał nastawić"
+
+#~ msgid "Serv. dependency"
+#~ msgstr "Zależności usług"
+
+#~ msgid "Serv. escalation"
+#~ msgstr "Eskalacja usług"
+
+#~ msgid "Serv. ext. info"
+#~ msgstr "Rozszerz. inf. o usługach"
+
+#~ msgid "Admin description"
+#~ msgstr "Komfortowy konfigurator programu Nagios "
+
+#, fuzzy
+#~ msgid "Now"
+#~ msgstr "Nie"
+
+#, fuzzy
+#~ msgid "NagiosQL Plugins"
+#~ msgstr "Początkowy login NagiosQL"
+
+#, fuzzy
+#~ msgid "Plugin description"
+#~ msgstr "Komfortowy konfigurator programu Nagios "
+
+#, fuzzy
+#~ msgid "Administrate Plugins"
+#~ msgstr "Administracja"
+
+#, fuzzy
+#~ msgid "Manage your NagiosQL Plugins"
+#~ msgstr "zmień ustawienia twojego NagiosQL"
+
+#, fuzzy
+#~ msgid "Community Plugins"
+#~ msgstr "Wiersz polecenia"
+
+#, fuzzy
+#~ msgid "Functions to administrate NagiosQL Community Admins"
+#~ msgstr "Funkcje administracyjne NagiosQL V3"
+
+#, fuzzy
+#~ msgid "SVN Server changed to:"
+#~ msgstr "Ustawienia zostały zmienione"
+
+#, fuzzy
+#~ msgid "Commiting files"
+#~ msgstr "Ustawienia publiczne"
+
+#, fuzzy
+#~ msgid "Checkout files"
+#~ msgstr "Sprawdź pliki konfiguracyjne:"
+
+#, fuzzy
+#~ msgid "Revision"
+#~ msgstr "Nadzór"
+
+#, fuzzy
+#~ msgid "selected"
+#~ msgstr "Wybrany"
+
+#, fuzzy
+#~ msgid "Checkout database"
+#~ msgstr "Tworzenie nowej bazy danych"
+
+#, fuzzy
+#~ msgid "Importing base directories"
+#~ msgstr "Katalog importu"
+
+#, fuzzy
+#~ msgid "Checkout Nagios and NagiosQL config files."
+#~ msgstr "Próbne pliki konfiguracyjne Nagios"
+
+#, fuzzy
+#~ msgid "Warning, database checkout may destroy NagiosQL!"
+#~ msgstr ""
+#~ "Ostrzeżenie, przed restartem Nagios zawsze sprawdź pliki konfiguracyjne!"
+
+#, fuzzy
+#~ msgid "Server"
+#~ msgstr "Usługa"
+
+#, fuzzy
+#~ msgid "Database Dump Directory"
+#~ msgstr "Użytkownik bazy danych"
+
+#, fuzzy
+#~ msgid "Report"
+#~ msgstr "Import"
+
+#~ msgid ""
+#~ "Please remove the security file ENABLE_INSTALLER in the install directory "
+#~ "to continue!"
+#~ msgstr ""
+#~ "Aby kontynuować proszę usunąć plik ochrony ENABLE_INSTALLER z katalogu "
+#~ "instalacyjnego!"
+
+#~ msgid "Application root path"
+#~ msgstr "Początek ścieżki aplikacji"
+
+#~ msgid "Application base path"
+#~ msgstr "Podstawowa ścieżka aplikacji"
+
+#, fuzzy
+#~ msgid "Plugins"
+#~ msgstr "pozycje"
+
+#~ msgid "Basic Settings"
+#~ msgstr "Ustawienia podstawowe "
+
+#~ msgid "Setup Language"
+#~ msgstr "Ustawienia językowe"
+
+#~ msgid "does not exist!"
+#~ msgstr "nie istnieje!"
+
+#~ msgid ""
+#~ "Please create an empty file called ENABLE_INSTALLER in the install "
+#~ "directory to continue!"
+#~ msgstr ""
+#~ "Aby kontynuowac proszę utworzyc pusty plik o nazwie ENABLE_INSTALLER w "
+#~ "katalogu instalacyjnym!"
+
+#~ msgid "Start new installation"
+#~ msgstr "Uruchom nową instalację"
+
+#~ msgid "Update from previous releases"
+#~ msgstr "Aktualizuj z poprzednich wersji"
+
+#~ msgid "Reset settings (only in case of errors!)"
+#~ msgstr "Zresetuj ustawienia (tylko w przypadku błędów!)"
+
+#~ msgid ""
+#~ "does not exist, please create a file in the install directory to continue!"
+#~ msgstr ""
+#~ "nie istnieje, aby kontynuować proszę utworzyć plik w katalogu "
+#~ "instalacyjnym!"
+
+#~ msgid "PHP mysql support (mysql or mysqli)"
+#~ msgstr "Wsparcie PHP mysql (mysql or mysqli)"
+
+#~ msgid "PHP session support (session)"
+#~ msgstr "Wsparcie PHP session (session)"
+
+#~ msgid "PHP gettext support (gettext)"
+#~ msgstr "Wsparcie PHP gettext (gettext)"
+
+#~ msgid "PHP FTP support (ftp)"
+#~ msgstr "Wsparcie PHP FTP (ftp)"
+
+#~ msgid "PHP HTML_Template_IT support (pear module)"
+#~ msgstr "Wsparcie PHP HTML_Template_IT (pear module)"
+
+#~ msgid "Database Setup"
+#~ msgstr "Ustawienia Bazy danych"
+
+#~ msgid "New Installation of NagiosQL"
+#~ msgstr "Nowa instalacja NagiosQL"
+
+#~ msgid "Parameter"
+#~ msgstr "Parametr"
+
+#~ msgid "Value"
+#~ msgstr "Wartość"
+
+#~ msgid ""
+#~ "this option will drop an existing database with the same name during a "
+#~ "new installation!"
+#~ msgstr ""
+#~ "Podczas nowej instalacji, ta opcja zdropuje istniejącą bazę danych pod tą "
+#~ "samą nazwą!"
+
+#~ msgid "Initial NagiosQL Login"
+#~ msgstr "Początkowy login NagiosQL"
+
+#~ msgid "Nagios sample config files"
+#~ msgstr "Próbne pliki konfiguracyjne Nagios"
+
+#~ msgid "Update NagiosQL"
+#~ msgstr "Aktualizuj NagiosQL"
+
+#~ msgid "Note: Upgrades from NagiosQL before v2.0.0 are not possible!"
+#~ msgstr ""
+#~ "Uwaga: Uaktualnienia z wersji NagiosQL wcześniejszej od v2.0.0 jest "
+#~ "niemożliwe!"
+
+#~ msgid "Old"
+#~ msgstr "Stary"
+
+#~ msgid "Modify Settings"
+#~ msgstr "Modyfikacja ustawień"
+
+#~ msgid "Connect to source server"
+#~ msgstr "Połącz z serwerem źródłowym"
+
+#~ msgid "Server not found!"
+#~ msgstr "Nie znaleziono serwera!"
+
+#~ msgid "Copying old database to new database"
+#~ msgstr "Kopiowanie starej bazy danych do nowej"
+
+#~ msgid "Copy table"
+#~ msgstr "Kopiuj tabelę"
+
+#~ msgid "db in mysql"
+#~ msgstr "baza danych w mysql"
+
+#~ msgid ""
+#~ "In order for a user to get access, he needs to have a key for each key "
+#~ "hole defined here"
+#~ msgstr ""
+#~ "Aby użytkownik mógł uzyskać dostęp, potrzebuje klucza do każdego "
+#~ "zdefiniowanego zamka."
+
+#~ msgid "Access violation"
+#~ msgstr "Złamanie prawa dostępu"
+
+#~ msgid ""
+#~ "You have tried to open a restricted area without having the required "
+#~ "access level. Please contact your local system administrator for further "
+#~ "information!"
+#~ msgstr ""
+#~ "Próbowałeś uzyskac dostęp do chronionej strefy, nie posiadając wymaganego "
+#~ "poziomu uprawnień. Proszę skontaktuj się z lokalnym administratorem "
+#~ "systemu aby uzyskac dalsze informacje!"
+
+#~ msgid "Host not active!"
+#~ msgstr "Host nieaktywny!"
+
+#~ msgid "Attention, no contact or contact groups defined!"
+#~ msgstr "Uwaga, brak zdefiniowanych kontaktów lub grup kontaktów!"
+
+#~ msgid "Exclude data"
+#~ msgstr "Wyklucz dane"
+
+#~ msgid "Reading remote configuration failed (FTP connection failed):"
+#~ msgstr ""
+#~ "Czytanie zdalnej konfiguracji nie powiodło się (połączenie FTP nie "
+#~ "powiodło się):"
+
+#~ msgid "Cannot read the remote configuration file (FTP connection failed)!"
+#~ msgstr ""
+#~ "Nie można przeczytać zdalnego pliku konfiguracyjnego (połączenie FTP nie "
+#~ "powiodło się)!"
+
+#~ msgid "Configuration backup failed (FTP connection failed):"
+#~ msgstr ""
+#~ "Konfiguracja kopii zapasowej nie powiodła się (połączenie FTP nie "
+#~ "powiodło się): "
+
+#~ msgid ""
+#~ "Cannot backup and delete the old configuration file (FTP connection "
+#~ "failed)!"
+#~ msgstr ""
+#~ "Nie można zarchiwizować ani usunąć starego pliku konfiguracyjnego "
+#~ "(połączenie FTP nieudane!)"
+
+#~ msgid "File deletion failed (FTP connection failed):"
+#~ msgstr "Usuwanie pliku nie powiodło się (połączenie FTP nie powiodło się):"
+
+#~ msgid ""
+#~ "Cannot backup the configuration file because the permissions are wrong "
+#~ "(remote FTP)!"
+#~ msgstr ""
+#~ "Nie można utworzyć kopii zapasowej pliku konfiguracyjnego, ponieważ "
+#~ "uprawnienia są niewłaściwe (zdalny FTP)!"
+
+#~ msgid ""
+#~ "Cannot open/overwrite the configuration file - check the permissions of "
+#~ "the temp directory:"
+#~ msgstr ""
+#~ "Nie można otworzyć/nadpisać pliku konfiguracyjnego - sprawdź uprawnienia "
+#~ "katalogu tymczasowego:"
+
+#~ msgid "Cannot backup the configuration file (check the permissions)!"
+#~ msgstr ""
+#~ "Nie można utworzyć kopii zapasowej pliku konfiguracyjnego (sprawdź "
+#~ "uprawnienia)!"
+
+#~ msgid "</b> - deletion <b>possible</b>"
+#~ msgstr "</b> - usuwanie <b>możliwe</b>"
+
+#~ msgid "Cannot open the configuration file (FTP connection failed)!"
+#~ msgstr ""
+#~ "Nie można otworzyć pliku konfiguracyjnego (połączenie FTP nie powiodło "
+#~ "się)!"
+
+#, fuzzy
+#~ msgid "Change settings (optional)"
+#~ msgstr "Zaznacz ustawienia"
+
+#~ msgid "Installation"
+#~ msgstr "Instalacja"
+
+#~ msgid "Update"
+#~ msgstr "Aktualizuj"
+
+#~ msgid "Hold CTRL to select<br />more than one entry"
+#~ msgstr "Przytrzymaj CTRL aby wybrac<br>więcej niż jedną pozycję"
+
+#~ msgid ""
+#~ "Please fill in all required arguments (ARGx) for your selected command"
+#~ msgstr ""
+#~ "Prosze wypelnic wszystkie wymagane argumenty (ARGx) dla wybrenego "
+#~ "polecenia"
+
+#~ msgid "Please define the language for the Setup process"
+#~ msgstr "Prosze wybrac jezyk dla procesu instalacji"
+
+#~ msgid "This setup will help you with your new NagiosQL Installation:"
+#~ msgstr "Te ustawienia pomogą ci przy twojej nowej instalacji NagiosQL"
+
+#~ msgid "This setup will help you upgrading your old NagiosQL Installation:"
+#~ msgstr ""
+#~ "Te ustawienia pomogą ci przy uaktualnieniu twojej starej instalacji "
+#~ "NagiosQL:"
+
+#~ msgid "verify the requirements,"
+#~ msgstr "weryfikacja wymagań,"
+
+#~ msgid "and upgrade the database."
+#~ msgstr "oraz uaktualnienie bazy danych."
+
+#~ msgid "Upgrades are only possible from NagiosQL 2.0 and above!"
+#~ msgstr ""
+#~ "Uaktualnienia są możliwe jedynie przy wersji NagiosQL 2.0 lub nowszej!"
+
+#~ msgid "Module / Test"
+#~ msgstr "Modul / Test"
+
+#~ msgid "Installation Test"
+#~ msgstr "Test instalacji"
+
+#~ msgid "NagiosQL System settings"
+#~ msgstr "Ustawienia systemu NagiosQL"
+
+#~ msgid "seconds"
+#~ msgstr "sekundy"
+
+#~ msgid "Database settings"
+#~ msgstr "Ustawienia banku danych"
+
+#~ msgid ""
+#~ "Now we install the NagiosQL V3.00 Database. If you upgrade from NagiosQL "
+#~ "V2.0.0 or V2.0.2 you can use the upgrade option."
+#~ msgstr ""
+#~ "Teraz zainstalujemy bazę danych NagiosQL V3.00. Jeżeli uaktualniasz z "
+#~ "NagiosQL V2.0.0 lub V2.0.2 to możesz wybrac opcję uaktualnij."
+
+#~ msgid ""
+#~ "In any case, you can also install a new database for NagiosQL V3.0.0."
+#~ msgstr ""
+#~ "W każdym przypadku możesz także zainstalowac nową bazę danych dla "
+#~ "NagiosQL V3.0.0."
+
+#~ msgid ""
+#~ "Using the option 'Skip DB installation' will only upgrade the NagiosQL DB "
+#~ "access settings and does not install or upgrade the database."
+#~ msgstr "Używając opcji 'Pomiń instalację bazy danych'"
+
+#~ msgid "Installation option"
+#~ msgstr "Opcje instalacyjne"
+
+#~ msgid "Database name (new or existing V2.x database)"
+#~ msgstr "Nazwa bazy danych (nowa lub istniejaca V2.x baza danych)"
+
+#~ msgid "Drop existing database?"
+#~ msgstr "Wyrzucic istniejaca baze danych?"
+
+#~ msgid "MySQL User (installation only)"
+#~ msgstr "Uzytkownik MySQL (tylko instalacja)"
+
+#~ msgid "In case of an upgrade, this option has no functionality."
+#~ msgstr ""
+#~ "W przypadku uaktualnienia ta opcja nie posiada żadnej funkcjonalności."
+
+#~ msgid "exists"
+#~ msgstr "istnieje"
+
+#~ msgid "Existing database"
+#~ msgstr "Istniejaca baza danych"
+
+#~ msgid "will be deleted"
+#~ msgstr "bedzie wymazane"
+
+#~ msgid "already exists - new installation is not possible"
+#~ msgstr "juz istnije - nowa instalacja nie jest mozliwa"
+
+#~ msgid "MySQL database connection (privileged user)"
+#~ msgstr "Polaczenie z baza danych MySQL (uprziwilejowany uzytkownik)"
+
+#~ msgid "Accessing SQL Script"
+#~ msgstr "Ładowanie Skryptu SQL"
+
+#~ msgid "Create tables and data"
+#~ msgstr "Utworz tabele i dane"
+
+#~ msgid "Update additional table definitions"
+#~ msgstr "Uaktualnij dodatkowe definicje tabel"
+
+#~ msgid "added columns"
+#~ msgstr "dodaj kolumny"
+
+#~ msgid "Accessing SQL Update Script"
+#~ msgstr "Ładowanie uaktualniającego skryptu SQL"
+
+#~ msgid "Update tables and data"
+#~ msgstr "Uaktualnij tabele i dane"
+
+#~ msgid "Read settings"
+#~ msgstr "Wczytaj ustawienia"
+
+#~ msgid "Writing settings"
+#~ msgstr "Zapisz ustawienia"
+
+#~ msgid "Installation sucessfully finished."
+#~ msgstr "Instalacja zakonczona bezblednie."
+
+#~ msgid "Thanks for using NagiosQL!"
+#~ msgstr "Dziekujemy za skorzstanie z NagiosQL!"
+
+#~ msgid "Go to NagiosQL"
+#~ msgstr "Idz do NagiosQL"
+
+#~ msgid "THIS FILE IS AUTOMATICALLY CREATED! DO NOT EDIT MANUALLY"
+#~ msgstr "PLIK ZAłOżONY AUTOMATYCZNIE! NIE EDYTOWAC RĘCZNIE!"
+
+#~ msgid "no text found in"
+#~ msgstr "nie znaleziono tekstu w "
+
+#~ msgid "query"
+#~ msgstr "zapytanie"
+
+#~ msgid "Host Templates"
+#~ msgstr "Szablony hostow"
+
+#~ msgid "Contact Templates"
+#~ msgstr "Szablony Kontaktow"
+
+#, fuzzy
+#~ msgid "MySQL User"
+#~ msgstr "Serwer MySQL"
+
+#, fuzzy
+#~ msgid "(installation only)"
+#~ msgstr "Uzytkownik MySQL (tylko instalacja)"

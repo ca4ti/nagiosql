@@ -5,30 +5,32 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2011 by Martin Willisegger
+//
 // Project   : NagiosQL
-// Component : Admin command line visualization
+// Component : Command line visualization
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.4
-// Revision  : $LastChangedRevision: 827 $
+// Version   : 3.1.1
+// Revision  : $LastChangedRevision: 1058 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Vorgabedatei einbinden
-// ======================
-//$preAccess		= 1;
-//$intSub			= 2;
+// Define common variables
+// =======================
 $preNoMain 		= 1;
-
+//
+// Include preprocessing file
+// ==========================
 require("../functions/prepend_adm.php");
 $strCommandLine = "&nbsp;";
 $intCount		= 0;
 //
-// Datenbank abfragen
+// Get database values
 // ===================
 if (isset($_GET['cname']) && ($_GET['cname'] != "")) {
-	$strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_command WHERE id='".$_GET['cname']."'");
+	$strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_command WHERE id='".filter_var($_GET['cname'], FILTER_SANITIZE_NUMBER_INT)."'");
 	if ($strResult != false) {
 		$strCommandLine = $strResult;
 		$intCount = substr_count($strCommandLine,"ARG");
@@ -64,7 +66,7 @@ if (isset($_GET['cname']) && ($_GET['cname'] != "")) {
     <!--
     body {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;
-	  font-size: 12px;
+	  font-size: 10px;
 	  color: #000000;
 	  background-color: #EDF5FF;
 	  margin: 3px;

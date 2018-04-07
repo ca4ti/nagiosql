@@ -5,13 +5,16 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
+--  (c) 2008, 2009 by Martin Willisegger
+--
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 2.0.0 to NagiosQL 2.0.0
 --  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+--  Date      : $LastChangedDate: 2009-02-02 11:24:55 +0100 (Mo, 02. Feb 2009) $
 --  Author    : $LastChangedBy: rouven $
---  Version   : 3.0.4
---  Revision  : $LastChangedRevision: 827 $
+--  Version   : 3.0.2
+--  Revision  : $LastChangedRevision: 654 $
+--  SVN-ID    : $Id: update_200_202.sql 654 2009-02-02 10:24:55Z rouven $
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --

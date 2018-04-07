@@ -8,24 +8,26 @@
 // Project  : NagiosQL
 // Component: Installer
 // Website  : http://www.nagiosql.org
-// Date     : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date     : $LastChangedDate: 2011-04-10 16:59:17 +0200 (So, 10. Apr 2011) $
 // Author   : $LastChangedBy: rouven $
-// Version  : 3.0.4
-// Revision : $LastChangedRevision: 827 $
+// Version  : 3.1.1
+// Revision : $LastChangedRevision: 1069 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 
 // Security
-if( eregi(basename(__FILE__),$_SERVER['PHP_SELF']) ) {
+if(preg_match('#' . basename(__FILE__) . '#', filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING))) {
   die("You can't access this file directly!");
 }
-if (!isset($_SESSION['step'])) {
+if (!isset($_SESSION['SETS']['install']['step'])) {
   header("Location: index.php");
 } else {
-  $_SESSION['step'] = 3;
+  $_SESSION['SETS']['install']['step'] = 3;
 }
 $intError = 0;
-include "functions/func_installer.php";
+if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get")) {
+ @date_default_timezone_set(@date_default_timezone_get());
+}
 ?>
 <!-- DIV Container for installer Menu -->
 <div id="installmenu">
@@ -36,465 +38,343 @@ include "functions/func_installer.php";
 <!-- DIV Container for installer content -->
 <div id="installmain">
   <div id="installmain_content">
-    <h1>NagiosQL <?php echo gettext($_SESSION['InstallType']). ": ". gettext("Finishing Setup"); ?></h1>
-    <table width="100%">
-      <?php
-      switch ($_SESSION['InstallType']) {
-        case "Installation":
-          echo "<tr><td colspan='2'><h3>".gettext("New Installation of NagiosQL")."</h3></td></tr>\n";
-          echo "<tr>\n";
-          echo "<td><b>".gettext("Parameter")."</b></td>\n";
-          echo "<td><b>".gettext("Value")."</b></td>\n";
-          echo "</tr>\n";
-          // Check if "no db drop" was selected but database exists
-          if ($_SESSION['db_drop'] == 0) {
-            $link = mysql_connect($_SESSION['db_server'].':'.$_SESSION['db_port'],$_SESSION['db_privusr'],$_SESSION['db_privpwd']);
-            $selectDB = mysql_select_db($_SESSION['db_name'], $link);
-            if ($selectDB) {
-              echo "<tr>\n";
-              echo "<td colspan='2' class='red'>".gettext("Database already exists and drop database was not selected, please correct or manage manually").".</td>\n";
-              echo "</tr>\n";
-              $intError=1;
-            }
-            mysql_close($link);
-          }
-          // Database connectivity
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("MySQL server connection (privileged user)")."</td>\n";
-            $newdb=db_connect($_SESSION['db_server'],$_SESSION['db_port'],$_SESSION['db_privusr'],$_SESSION['db_privpwd'],$_SESSION['db_name'],"latin1",$errmsg);
-            if ($errmsg != "") {
-              echo "<td class='red'>".$errmsg."</td>\n</tr>\n";
-              $intError=1;
-            } else {
-              echo "<td class='green'>".gettext("passed")."</td></tr>\n";
-              echo "<tr>\n";
-              echo "<td>".gettext("MySQL server version")."</td>\n";
-              $setVersion = mysql_result(mysql_query("SHOW VARIABLES LIKE 'version'"),0,1);
-              if (mysql_error() == "") {
-                echo "<td class='green'>$setVersion</td></tr>\n";
-                $arrVersion1 = explode("-",$setVersion);
-                $arrVersion2 = explode(".",$arrVersion1[0]);
-                if ($arrVersion2[0] <  4) $setMySQLVersion = 0;
-                if ($arrVersion2[0] == 4) $setMySQLVersion = 1;
-                if (($arrVersion2[0] == 4) && ($arrVersion2[1] > 0))  $setMySQLVersion = 2;
-                if ($arrVersion2[0] >  4) $setMySQLVersion = 2;
-                echo "<tr>\n";
-                echo "<td>".gettext("MySQL server support")."</td>\n";
-                if ($setMySQLVersion != 0) {
-                  echo "<td class='green'>".gettext("supported")."</td></tr>\n";
-                } else {
-                  echo "<td class='red'>".gettext("not supported")."</td></tr>\n";
-                  $intError = 1;
-                }
-              } else {
-                 echo "<td class='red'>".gettext("failed")."</td></tr>\n";
-                 $intError = 1;
-              }
-            }
-          }
-          // Drop existing NagiosQL 3 DB if checked
-          if ($intError != 1 AND $_SESSION['db_drop'] == 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Delete existing NagiosQL 3 database")." ".htmlspecialchars($_SESSION['db_name'])."</td>\n";
-            $result = dropMySQLDB($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_name'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td></tr>\n";
-              $intError = 1;
-            }
-          }
-          // Install new database
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Creating new database")." ".htmlspecialchars($_SESSION['db_name'])."</td>\n";
-            $strFile="sql/nagiosQL_v3_db_mysql.sql";
-            if (file_exists($strFile) AND is_readable($strFile)) {
-              $link=db_connect($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'],"","",$errmsg);
-              if ($errmsg == "") {
-                $result=mysql_install_db($_SESSION['db_name'], $strFile, $errmsg);
-                if (!$result) {
-                  echo "<td class='red'>".$errmsg."</td>\n";
-                  $intError = 1;
-                } else {
-                  echo "<td class='green'>".gettext("done")."</td>\n";
-                }
-              } else {
-                echo "<td class='red'>".$errmsg."</td>\n";
-                $intError = 1;
-              }
-            } else {
-                echo "<td class='red'>".gettext("Could not access")." ".$strFile."</td>\n";
-                $intError = 1;
-            }
-            echo "</tr>\n";
-          }
-          // Add MySQL user
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Create NagiosQL MySQL User")."</td>\n";
-            $result = addMySQLUser($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_user'], $_SESSION['db_pass'],$errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-            $intError = 1;
-            }
-          }
-          // Set MySQL permission
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Update MySQL Permissions")."</td>\n";
-            $result = setMySQLPermission($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_name'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_user'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError = 1;
-            }
-          }
-          // Flush MySQL privileges
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Reloading MySQL User Table")."</td>\n";
-            $result = flushMySQLPrivileges($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError = 1;
-            }
-          }
-          // Analyse Database
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Testing database connection to")." ".htmlspecialchars($_SESSION['db_name'])."</td>\n";
-            $link = mysql_connect($_SESSION['db_server'].':'.$_SESSION['db_port'],$_SESSION['db_user'],$_SESSION['db_pass']);
-            $selectDB = mysql_query("SELECT `id` FROM `".mysql_real_escape_string($_SESSION['db_name'])."`.`tbl_settings` LIMIT 1");
-            if ($selectDB) {
-              echo "<td class='green'>".gettext("passed")."</td></tr>\n";
-              echo "<tr>\n";
-              echo "<td>".gettext("Writing global settings to database")."</td>\n";
-              if (writeSettingsDB($errmsg)) {
-                echo "<td class='green'>".gettext("done")."</td>\n";
-              } else {
-                echo "<td class='red'>".gettext("failed")."</td>\n";
-                echo "</tr>\n";
-                echo "<tr><td class='red'>".$errmsg."</td></tr>\n";
-                $intError=1;
-              }
-              echo "</tr>\n";
-              echo "<tr>\n";
-              echo "<td>".gettext("Writing database configuration to settings.php")."</td>\n";
-              if (writeSettingsFile($errmsg)) {
-                echo "<td class='green'>".gettext("done")."</td>\n";
-              } else {
-                echo "<td class='red'>".gettext("failed")."</td>\n";
-                echo "</tr>\n";
-                echo "<tr><td class='red'>".$errmsg."</td></tr>\n";
-                $intError=1;
-              }
-            } else {
-              echo "<td class='red'>".gettext("error")."</td></tr>\n";
-              echo "<td class='red'>".mysql_error()."</td></tr>\n";
-              $intError = 1;
-            }
-            mysql_close($link);
-          }
-          // Set initial NagiosQL User/Pass
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Set initial NagiosQL Administrator")."</td>\n";
-            $result = setQLUser($_SESSION['ql_user'], $_SESSION['ql_pass'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError = 1;
-            }
-          }
-          // Import Nagios sample data
-          if ($intError != 1 && $_SESSION['sampleData'] == 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Import Nagios sample data")."</td>\n";
-            $result = importSample($_SESSION['db_server'],$_SESSION['db_port'],$_SESSION['db_user'],$_SESSION['db_pass'],$_SESSION['db_name'],"sql/import_nagios_sample.sql",$errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError = 1;
-            }
-          }
+    <h1>NagiosQL <?php echo translate($_SESSION['SETS']['install']['InstallType']). ": ". translate("Finishing Setup"); ?></h1>
+    <form action="" method="post" class="cmxform" id="setup" name="setup">
+    <?php
+    	switch ($_SESSION['SETS']['install']['InstallType']) {
+      	case "Installation":
+	    		echo "<fieldset>\n";
+					echo "<legend>".translate("Create new NagiosQL database")."</legend>\n";
+					echo "<ol>\n";
+					// Check if "no db drop" was selected but database exists
+					if ($_SESSION['SETS']['install']['db_drop'] == 0) {
+						$link = @mysql_connect($_SESSION['SETS']['db']['server'].':'.$_SESSION['SETS']['db']['port'],$_SESSION['SETS']['install']['db_privuser'],$_SESSION['SETS']['install']['db_privpwd']);
+						if ($link) {
+							$selectDB = @mysql_select_db($_SESSION['SETS']['db']['database'], $link);
+							if ($selectDB) {
+								echo "<li><label><span class='red'>".translate("Database already exists and drop database was not selected, please correct or manage manually").".</span></label></li>\n";
+								$intError=1;
+							}
+							mysql_close($link);
+						}
+					}
+					// Database connectivity
+					if ($intError != 1) {
+						echo "<li><label>".translate("MySQL server connection (privileged user)")."</label>";
+						$newdb=db_connect($_SESSION['SETS']['db']['server'],$_SESSION['SETS']['db']['port'],$_SESSION['SETS']['install']['db_privuser'],$_SESSION['SETS']['install']['db_privpwd'],$_SESSION['SETS']['db']['database'],"utf8",$errmsg);
+						if ($errmsg != "") {
+							echo "<div id='dbconnecterror' class='tooltip'>".$errmsg."</div>\n";
+							echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbconnecterror');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+							$intError=1;
+						} else {
+							echo "<span class='green'>".translate("passed")."</span></li>\n";
+							echo "<li><label>".translate("MySQL server version")."</label>";
+							$setVersion = @mysql_result(@mysql_query("SHOW VARIABLES LIKE 'version'"),0,1);
+							if (mysql_error() == "") {
+								echo "<span class='green'>$setVersion</span></li>\n";
+								$arrVersion1 = explode("-",$setVersion);
+								$arrVersion2 = explode(".",$arrVersion1[0]);
+								if ($arrVersion2[0] <  4) $setMySQLVersion = 0;
+								if ($arrVersion2[0] == 4) $setMySQLVersion = 1;
+								if (($arrVersion2[0] == 4) && ($arrVersion2[1] > 0))  $setMySQLVersion = 2;
+								if ($arrVersion2[0] >  4) $setMySQLVersion = 2;
+								echo "<li><label>".translate("MySQL server support")."</label>";
+								if ($setMySQLVersion != 0) {
+									echo "<span class='green'>".translate("supported")."</span></li>\n";
+								} else {
+									echo "<span class='red'>".translate("not supported")."</span></li>\n";
+									$intError = 1;
+								}
+							} else {
+								echo "<span class='red'>".translate("failed")."</span></li>\n";
+								$intError = 1;
+							}
+						}
+					}
+			// Drop existing NagiosQL database if checked
+			if ($intError != 1 AND $_SESSION['SETS']['install']['db_drop'] == 1) {
+				echo "<li><label>".translate("Delete existing NagiosQL database")." ".htmlspecialchars($_SESSION['SETS']['db']['database'], ENT_QUOTES, 'utf-8')."</label>";
+				$result = dropMySQLDB($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='dbdroperror' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbdroperror');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}
+			// Install new database
+			if ($intError != 1) {
+				echo "<li><label>".translate("Creating new database")." ".htmlspecialchars($_SESSION['SETS']['db']['database'], ENT_QUOTES, 'utf-8')."</label>";
+				$strFile="sql/nagiosQL_v31_db_mysql.sql";
+				if (file_exists($strFile) AND is_readable($strFile)) {
+					$link=db_connect($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'],"","",$errmsg);
+					if ($errmsg == "") {
+						$result=mysql_install_db($_SESSION['SETS']['db']['database'], $strFile, $errmsg);
+						if (!$result) {
+							echo "<div id='dbinstallerror' class='tooltip'>".$errmsg."</div>\n";
+							echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbinstallerror');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+							$intError = 1;
+						} else {
+							echo "<span class='green'>".translate("done")."</span></li>\n";
+						}
+					} else {
+						echo "<div id='dbconnecterror' class='tooltip'>".$errmsg."</div>\n";
+						echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbconnecterror');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+						$intError = 1;
+					}
+				} else {
+					echo "<span class='red'>".translate("Could not access")." ".$strFile."</span></li>\n";
+					$intError = 1;
+				}
+			}
+			// Add NagiosQL MySQL user
+			if ($intError != 1) {
+				echo "<li><label>".translate("Create NagiosQL MySQL user")."</label>";
+				$result = addMySQLUser($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['username'], $_SESSION['SETS']['db']['password'],$errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='dbcreatedbuser' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbcreatedbuser');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}
+			// Set MySQL permission
+			if ($intError != 1) {
+				echo "<li><label>".translate("Update MySQL permissions")."</label>";
+				$result = setMySQLPermission($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['db']['database'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['username'], $errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='dbsetpermission' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbsetpermission');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}
+			// Flush MySQL privileges
+			if ($intError != 1) {
+				echo "<li><label>".translate("Reloading MySQL User Table")."</label>";
+				$result = flushMySQLPrivileges($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='dbflushpriv' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbflushpriv');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}
+			// Validating new database connection with recently added user
+			if ($intError != 1) {		 
+				echo "<li><label>".translate("Testing database connection to")." ".htmlspecialchars($_SESSION['SETS']['db']['database'], ENT_QUOTES, 'utf-8')."</label>";
+				$link = @mysql_connect($_SESSION['SETS']['db']['server'].':'.$_SESSION['SETS']['db']['port'],$_SESSION['SETS']['db']['username'],$_SESSION['SETS']['db']['password']);
+				if ($link) {
+					$selectDB = @mysql_query("SELECT `id` FROM `".mysql_real_escape_string($_SESSION['SETS']['db']['database'])."`.`tbl_settings` LIMIT 1");
+					if ($selectDB) {
+						echo "<span class='green'>".translate("passed")."</span></li>\n";		 
+					} else {
+						echo "<div id='dbnewselect' class='tooltip'>".mysql_error()."</div>\n";
+						echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbnewselect');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+						$intError = 1;
+					}
+					mysql_close($link);
+				} else {
+					echo "<div id='dbnewconnect' class='tooltip'>".mysql_error()."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbnewconnect');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}		
+			}
+			// Write settings to database
+			if ($intError != 1) {
+				echo "</ol>\n";
+				echo "</fieldset>\n";
+				echo "<fieldset>\n";
+				echo "<legend>".translate("Deploy NagiosQL settings")."</legend>\n";
+				echo "<ol>\n";
+				echo "<li><label>".translate("Writing global settings to database")."</label>";
+				if (writeSettingsDB($errmsg)) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='dbdeploysettings' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbdeploysettings');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError=1;
+				}
+			}
+		 // Write database settings to file
+         if ($intError != 1) {
+			echo "<li><label>".translate("Writing database configuration to settings.php")."</label>";
+			if (writeSettingsFile($errmsg)) {
+				echo "<span class='green'>".translate("done")."</span></li>\n";
+			} else {
+				echo "<div id='deploysettings' class='tooltip'>".$errmsg."</div>\n";
+				echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'deploysettings');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+				$intError=1;
+			}
+         }
+		// Set initial NagiosQL User/Pass
+		if ($intError != 1) {
+			echo "<li><label>".translate("Set initial NagiosQL Administrator")."</label>";
+			$result = setQLUser($_SESSION['SETS']['install']['ql_user'], $_SESSION['SETS']['install']['ql_pass'], $errmsg);
+			if ($result) {
+				echo "<span class='green'>".translate("done")."</span></li>\n";
+			} else {
+				echo "<div id='setqluser' class='tooltip'>".$errmsg."</div>\n";
+				echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'setqluser');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+				$intError = 1;
+			}
+		}
+		// Import Nagios sample data
+		if ($intError != 1 && $_SESSION['SETS']['install']['sampleData'] == 1) {
+			echo "<li><label>".translate("Import Nagios sample data")."</label>";
+			$result = importSample($_SESSION['SETS']['db']['server'],$_SESSION['SETS']['db']['port'],$_SESSION['SETS']['db']['username'],$_SESSION['SETS']['db']['password'],$_SESSION['SETS']['db']['database'],"sql/import_nagios_sample.sql",$errmsg);
+			if ($result) {
+				echo "<span class='green'>".translate("done")."</span></li>\n";
+			} else {
+				echo "<div id='import' class='tooltip'>".$errmsg."</div>\n";
+				echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'import');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+				$intError = 1;
+			}
+		}
+		echo "</ol>\n";
+		echo "</fieldset>\n";
         break;
         case "Update":
-          echo "<tr><td colspan='2'><h3>".gettext("Update NagiosQL")."</h3></td></tr>\n";
-          echo "<tr>\n";
-          echo "<td><b>".gettext("Parameter")."</b></td>\n";
-          echo "<td><b>".gettext("Value")."</b></td>\n";
-          echo "</tr>\n";
-          // Check existing NagiosQL Version
-          echo "<tr>\n";
-          echo "<td>".gettext("Installed NagiosQL Version")."</td>\n";
-          $result = get_current_version($_SESSION['from_db_server'], $_SESSION['from_db_port'], $_SESSION['from_db_privusr'], $_SESSION['from_db_privpwd'], $_SESSION['from_db_name'], $strCurrentVersion,$errmsg);
-          if ($result) {
-            echo "<td class='green'>".$strCurrentVersion."</td>\n";
-          } else {
-            if ($strCurrentVersion != "") {
-              echo "<td class='red'>".$strCurrentVersion." ".gettext("is not supported!")."</td>\n";
-              $intError=1;
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError=1;
-            }
-          }
-          echo "</tr>\n";
-          // Drop existing NagiosQL 3 DB if checked
-          if ($intError != 1 AND $_SESSION['db_drop'] == 1 AND $_SESSION['db_server'] != $_SESSION['from_db_server']) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Delete existing NagiosQL 3 database")." ".htmlspecialchars($_SESSION['db_name'])."</td>\n";
-            $result = dropMySQLDB($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_name'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td></tr>\n";
-              $intError = 1;
-            }
-          }
-          // Check if selected no drop but database exists
-          if ($intError != 1 AND $_SESSION['db_drop'] == 0) {
-            $link = mysql_connect($_SESSION['db_server'].':'.$_SESSION['db_port'],$_SESSION['db_privusr'],$_SESSION['db_privpwd']);
-            $selectDB = mysql_select_db($_SESSION['db_name'], $link);
-            if ($selectDB) {
-              echo "<tr>\n";
-              echo "<td colspan='2' class='red'>".gettext("Database already exists and drop database was not selected, please correct or manage manually")."</td>\n";
-              echo "</tr>\n";
-              $intError=1;
-            }
-            mysql_close($link);
-          }
-          // Copy database
-          if ($intError != 1) {
-            if ( $_SESSION['from_db_name'] != $_SESSION['db_name'] OR $_SESSION['from_db_server'] != $_SESSION['db_server'] OR $_SESSION['from_db_port'] != $_SESSION['db_port'] ) {
-              echo "<tr>\n<td>".gettext("Connect to source server")." ".htmlspecialchars($_SESSION['from_db_server'])."</td>";
-              if (!preg_match('/^((1?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(1?\d{1,2}|2[0-4]\d|25[0-5]){1}$/',$_SESSION['from_db_server'])) {
-                $ip_from = @gethostbyname($_SESSION['from_db_server']);
-                if ($ip_from == $_SESSION['from_db_server']) {
-                  $intError=1;
-                  echo "<td class='red'>".gettext("Server not found!")."</td>\n</tr>\n";
-                }
-              }
-              if ($intError != 1) {
-                $dbfrom=db_connect($_SESSION['from_db_server'],$_SESSION['from_db_port'],$_SESSION['from_db_privusr'],$_SESSION['from_db_privpwd'],$_SESSION['from_db_name'],"latin1",$errmsg);
-                if ($errmsg != "") {
-                  $intError=1;
-                  echo "<td class='red'>".$err_msg."</td>\n</tr>\n";
-                } else {
-                  echo "<td class='green'>".gettext("passed")."</td>\n</tr>\n";
-                  echo "<tr>\n<td>".gettext("Connect to target server")." ".htmlspecialchars($_SESSION['db_server'])."</td>";
-                  if (!preg_match('/^((1?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(1?\d{1,2}|2[0-4]\d|25[0-5]){1}$/',$_SESSION['db_server'])) {
-                    $ip_to = @gethostbyname($_SESSION['db_server']);
-                    if ($ip_to == $_SESSION['db_server']) {
-                      $intError=1;
-                      echo "<td class='red'>".gettext("Server not found!")."</td>\n</tr>\n";
-                    }
-                  }
-                  if ($intError != 1) {
-                    $dbto=db_connect($_SESSION['db_server'],$_SESSION['db_port'],$_SESSION['db_privusr'],$_SESSION['db_privpwd'],$_SESSION['db_name'],"latin1",$errmsg);
-                    if ($errmsg != "") {
-                      $intError=1;
-                      echo "<td class='red'>".$errmsg."</td>\n</tr>\n";
-                    } else {
-                      echo "<td class='green'>".gettext("passed")."</td>\n</tr>\n";
-                      $sth=mysql_query("/*!40030 SET max_allowed_packet=838860 */;",$dbto);
-                      if (!$sth) {
-                        $intError=1;
-                        $errmsg=mysql_error();
-                      }
-                      $sth=mysql_query("SHOW TABLES FROM `".mysql_real_escape_string($_SESSION['from_db_name'])."`",$dbfrom);
-                      if (!$sth) {
-                        $intError=1;
-                        $errmsg=mysql_error();
-                      }
-                      echo "<tr>\n";
-                      echo "<td>".gettext("Copying old database to new database")." <a href='javascript:Klappen(3)'><img src='images/plus.png' id='SwPic3' border='0' /></a>\n";
-                      echo "<!-- DIV Container for copy table details -->\n";
-                      echo "<div id='SwTxt3' style='display: none;'>\n";
-                        echo "<table width='100%' cellpadding='0' cellspacing='0'>\n";
-                        while($row = mysql_fetch_row($sth)) {
-                          echo "<tr>\n";
-                          echo "<td>".gettext("Copy table")." ".$row[0]." ".gettext("to")." ".$_SESSION['db_name']."</td>\n";
-                          do_mysql_table($row[0],$dbfrom,$dbto,$errmsg);
-                          if ($errmsg != "") {
-                            echo "<td width='20%' class='red' align='left'>".$errmsg."</td>\n";
-                            $intError=1;
-                          } else {
-                            echo "<td width='20%' class='green' align='left'>".gettext("done")."</td>\n";
-                          }
-                          echo "</tr>\n";
-                        }
-                        echo "</table>\n";
-                      echo "</div>\n";
-                      echo "</td>\n";
-                      if ($intError!=1) {
-                        echo "<td class='green' valign='top'>".gettext("done")."</td>\n";
-                      } else {
-                        echo "<td class='red' valign='top'>".gettext("failed")."</td>\n";
-                      }
-                      echo "</tr>\n";
-                    }
-                  }
-                }
-              }
-            }
-          }
-          // Upgrade NagiosQL DB
-          if ($intError != 1) {
-            while ($strCurrentVersion != $_SESSION['version'] AND $errmsg == "") {
-              echo "<tr>\n";
-              echo "<td>".gettext("Upgrading from version")." ".$strCurrentVersion." ".gettext("to")."</td>\n";
-              $result=updateQL($strCurrentVersion, $_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_name'], $errmsg);
-              if ($result) {
-                $result=get_current_version($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_name'], $strCurrentVersion, $errmsg);
-                echo "<td class='green'>".$strCurrentVersion."</td>\n";
-                echo "</tr>\n";
-              } else {
-                echo "<td class='red'>".$errmsg."</td>\n";
-                $intError=1;
-                echo "</tr>\n";
-                break;
-              }
-            }
-          }
-          // Add MySQL user
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Create NagiosQL MySQL User")."</td>\n";
-            $result = addMySQLUser($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_user'], $_SESSION['db_pass'],$errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-            $intError = 1;
-            }
-          }
-          // Set MySQL permission
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Update MySQL Permissions")."</td>\n";
-            $result = setMySQLPermission($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_name'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $_SESSION['db_user'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError = 1;
-            }
-          }
-          // Flush MySQL privileges
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Reloading MySQL User Table")."</td>\n";
-            $result = flushMySQLPrivileges($_SESSION['db_server'], $_SESSION['db_port'], $_SESSION['db_privusr'], $_SESSION['db_privpwd'], $errmsg);
-            if ($result) {
-              echo "<td class='green'>".gettext("done")."</td></tr>\n";
-            } else {
-              echo "<td class='red'>".$errmsg."</td>\n";
-              $intError = 1;
-            }
-          }
-          // Analyse Database
-          if ($intError != 1) {
-            echo "<tr>\n";
-            echo "<td>".gettext("Testing database connection to")." ".htmlspecialchars($_SESSION['db_name'])."</td>\n";
-            $link = mysql_connect($_SESSION['db_server'].':'.$_SESSION['db_port'],$_SESSION['db_user'],$_SESSION['db_pass']);
-            $selectDB = mysql_query("SELECT `id` FROM `".mysql_real_escape_string($_SESSION['db_name'])."`.`tbl_settings` LIMIT 1");
-            if ($selectDB) {
-              echo "<td class='green'>".gettext("passed")."</td></tr>\n";
-              echo "<tr>\n";
-              echo "<td>".gettext("Writing global settings to database")."</td>\n";
-              if (writeSettingsDB($errmsg)) {
-                echo "<td class='green'>".gettext("done")."</td>\n";
-              } else {
-                echo "<td class='red'>".gettext("failed")."</td>\n";
-                echo "</tr>\n";
-                echo "<tr><td class='red'>".$errmsg."</td></tr>\n";
-                $intError=1;
-              }
-              echo "</tr>\n";
-              echo "<tr>\n";
-              echo "<td>".gettext("Writing database configuration to settings.php")."</td>\n";
-              if (writeSettingsFile($errmsg)) {
-                echo "<td class='green'>".gettext("done")."</td>\n";
-              } else {
-                echo "<td class='red'>".gettext("failed")."</td>\n";
-                echo "</tr>\n";
-                echo "<tr><td class='red'>".$errmsg."</td></tr>\n";
-                $intError=1;
-              }
-            } else {
-              echo "<td class='red'>".gettext("error")."</td></tr>\n";
-              echo "<td class='red'>".mysql_error()."</td></tr>\n";
-              $intError = 1;
-            }
-            mysql_close($link);
-          }
-        break;
-        case "Settings":
-          echo "<tr><td colspan='2'><h3>".gettext("Modify Settings")."</h3></td></tr>\n";
-          echo "<tr>\n";
-          echo "<td><b>".gettext("Parameter")."</b></td>\n";
-          echo "<td><b>".gettext("Value")."</b></td>\n";
-          echo "</tr>\n";
-          // Analyse Database
-          echo "<tr>\n";
-          echo "<td>".gettext("Testing database connection to")." ".htmlspecialchars($_SESSION['db_name'])."</td>\n";
-          $link = mysql_connect($_SESSION['db_server'].':'.$_SESSION['db_port'],$_SESSION['db_user'],''.$_SESSION['db_pass'].'');
-          $selectDB = mysql_query("SELECT `id` FROM `".mysql_real_escape_string($_SESSION['db_name'])."`.`tbl_settings` LIMIT 1",$link);
-          if ($selectDB) {
-            echo "<td class='green'>".gettext("passed")."</td></tr>\n";
-            echo "<tr>\n";
-            echo "<td>".gettext("Writing global settings to database")."</td>\n";
-            if (writeSettingsDB($errmsg)) {
-              echo "<td class='green'>".gettext("done")."</td>\n";
-            } else {
-              echo "<td class='red'>".gettext("failed")."</td>\n";
-              echo "</tr>\n";
-              echo "<tr><td class='red'>".$errmsg."</td></tr>\n";
-              $intError=1;
-            }
-            echo "</tr>\n";
-            echo "<tr>\n";
-            echo "<td>".gettext("Writing database configuration to settings.php")."</td>\n";
-            if (writeSettingsFile($errmsg)) {
-              echo "<td class='green'>".gettext("done")."</td>\n";
-            } else {
-              echo "<td class='red'>".gettext("failed")."</td>\n";
-              echo "</tr>\n";
-              echo "<tr><td class='red'>".$errmsg."</td></tr>\n";
-              $intError=1;
-            }
-          } else {
-            echo "<td class='red'>".gettext("error")."</td></tr>\n";
-            echo "<td class='red'>".mysql_error()."</td></tr>\n";
-            $intError = 1;
-          }
-          mysql_close($link);
-        break;
+        	echo "<fieldset>\n";
+			echo "<legend>".translate("Updating existing NagiosQL database")."</legend>\n";
+			echo "<ol>\n";
+			// Check existing NagiosQL Version
+			echo "<li><label>".translate("Installed NagiosQL version")."</label>";
+			$result = get_current_version($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $strCurrentVersion,$errmsg);
+			if ($result) {
+				echo "<span class='green'>".$strCurrentVersion."</span></li>\n";
+			} else {
+				if ($strCurrentVersion != "") {
+					echo "<span class='red'>".$strCurrentVersion." ".translate("is not supported!")."</span></li>\n";
+					$intError=1;
+				} else {
+					echo "<div id='versioncheck' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("error")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'versioncheck');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError=1;
+				}
+			}
+			// Upgrade NagiosQL DB
+			if ($intError != 1) {
+				while ($strCurrentVersion != BASE_VERSION AND $errmsg == "") {
+				  echo "<li><label>".translate("Upgrading from version")." ".$strCurrentVersion." ".translate("to")."</label>";
+				  $result=updateQL($strCurrentVersion, $_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $errmsg);
+				  if ($result and $errmsg == "") {
+						$result=get_current_version($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $strCurrentVersion, $errmsg);
+						echo "<span class='green'>".$strCurrentVersion."</span></li>\n";
+				  } else {
+						echo "<div id='updatecheck' class='tooltip'>".$errmsg."</div>\n";
+						echo "<span class='red'>".translate("error")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'updatecheck');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+						$intError=1;
+						break;
+				  }
+				}
+			}
+			// Converting database to UTF8
+			if ($intError != 1) {		 
+				echo "<li><label>".translate("Converting database to utf8 character set")."</label>";
+				$result=convertDBUTF8($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='dbconvertutf8' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbconvertutf8');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}
+			// Converting database tables to UTF8
+			if ($intError != 1) {		 
+				echo "<li><label>".translate("Converting database tables to utf8 character set")."</label>";
+				$result=convertDBTablesUTF8($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='tableconvertutf8' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'tableconvertutf8');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}			
+			// Converting database fields to UTF8
+			if ($intError != 1) {		 
+				echo "<li><label>".translate("Converting database fields to utf8 character set")."</label>";
+				$result=convertDBFieldsUTF8($_SESSION['SETS']['db']['server'], $_SESSION['SETS']['db']['port'], $_SESSION['SETS']['install']['db_privuser'], $_SESSION['SETS']['install']['db_privpwd'], $_SESSION['SETS']['db']['database'], $errmsg);
+				if ($result) {
+					echo "<span class='green'>".translate("done")."</span></li>\n";
+				} else {
+					echo "<div id='fieldconvertutf8' class='tooltip'>".$errmsg."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'fieldconvertutf8');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}
+			}	
+			// Validating new database connection with existing db user
+			if ($intError != 1) {		 
+				echo "<li><label>".translate("Testing database connection to")." ".htmlspecialchars($_SESSION['SETS']['db']['database'], ENT_QUOTES, 'utf-8')."</label>";
+				$link = @mysql_connect($_SESSION['SETS']['db']['server'].':'.$_SESSION['SETS']['db']['port'],$_SESSION['SETS']['db']['username'],$_SESSION['SETS']['db']['password']);
+				if ($link) {
+					$selectDB = @mysql_query("SELECT `id` FROM `".mysql_real_escape_string($_SESSION['SETS']['db']['database'])."`.`tbl_settings` LIMIT 1");
+					if ($selectDB) {
+						echo "<span class='green'>".translate("passed")."</span></li>\n";		 
+					} else {
+						echo "<div id='dbnewselect' class='tooltip'>".mysql_error()."</div>\n";
+						echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbnewselect');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+						$intError = 1;
+					}
+					mysql_close($link);
+				} else {
+					echo "<div id='dbnewconnect' class='tooltip'>".mysql_error()."</div>\n";
+					echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbnewconnect');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+					$intError = 1;
+				}		
+			}
+					// Write settings to database
+					if ($intError != 1) {
+						echo "</ol>\n";
+						echo "</fieldset>\n";
+						echo "<fieldset>\n";
+						echo "<legend>".translate("Deploy NagiosQL settings")."</legend>\n";
+						echo "<ol>\n";
+						echo "<li><label>".translate("Writing global settings to database")."</label>";
+						if (writeSettingsDB($errmsg)) {
+							echo "<span class='green'>".translate("done")."</span></li>\n";
+						} else {
+							echo "<div id='dbdeploysettings' class='tooltip'>".$errmsg."</div>\n";
+							echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'dbdeploysettings');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+							$intError=1;
+						}
+					}
+				 	// Write database settings to file
+		      if ($intError != 1) {
+							echo "<li><label>".translate("Writing database configuration to settings.php")."</label>";
+						if (writeSettingsFile($errmsg)) {
+								echo "<span class='green'>".translate("done")."</span></li>\n";
+						} else {
+								echo "<div id='deploysettings' class='tooltip'>".$errmsg."</div>\n";
+								echo "<span class='red'>".translate("failed")."</span> <a href=\"javascript:void(0);\" onmouseover=\"createTip(this,'deploysettings');\"><img src='images/invalid.png' alt='invalid' title='invalid'></a></li>\n";
+								$intError=1;
+						}
+		      }
+					echo "</ol>\n";
+					echo "</fieldset>\n";
+       		break;
       }
-      echo "</table>\n";
+
     // Display database error
     echo "<br />\n";
     echo "<br />\n";
+    echo "</form>";
     if ($intError != 1) {
-      echo "<span class='red'>".gettext("Please delete the install directory to continue!")."</span><br /><br />\n";
+      echo "<span class='red'>".translate("Please delete the install directory to continue!")."</span><br /><br />\n";
       echo "<div id=\"install-next\">\n";
-      echo "<a href='../index.php'><img src='images/next.png' alt='finish' border='0' /></a><br />".gettext("Finish")."\n";
+      echo "<a href='../index.php'><img src='images/next.png' alt='finish' title='finish' border='0' /></a><br />".translate("Finish")."\n";
       echo "</div>\n";
     } else {
       echo "<div id=\"install-back\">\n";
       echo "<form action='' method='post'>\n";
       echo "<input type='hidden' name='step' value='2' />\n";
-      echo "<input type='image' src='images/previous.png' value='Submit' alt='Submit' /><br />".gettext("Back")."\n";
+      echo "<input type='image' src='images/previous.png' value='Submit' alt='Submit' /><br />".translate("Back")."\n";
       echo "</form>\n";
       echo "</div>\n";
     }

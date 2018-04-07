@@ -5,43 +5,45 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2011 by Martin Willisegger
+//
 // Project   : NagiosQL
-// Component : Admin administration overview
+// Component : Administration overview
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.4
-// Revision  : $LastChangedRevision: 827 $
+// Version   : 3.1.1
+// Revision  : $LastChangedRevision: 1058 $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// 
-// Menuvariabeln für diese Seite
-// =============================
+//
+// Define common variables
+// =======================
 $intMain 		= 7;
 $intSub  		= 0;
 $intMenu 		= 2;
 $preContent 	= "admin/mainpages.tpl.htm";
 //
-// Vorgabedatei einbinden
-// ======================
+// Include preprocessing file
+// ==========================
 require("../functions/prepend_adm.php");
 //
-// Menu aufbauen
-// =============
+// Build content menu
+// ==================
 $myVisClass->getMenu($intMain,$intSub,$intMenu); 
 //
-// Content einbinden
-// =================
-$conttp->setVariable("TITLE",gettext('Administration'));
+// Include content
+// ===============
+$conttp->setVariable("TITLE",translate('Administration'));
 $conttp->parse("header");
 $conttp->show("header");
-$conttp->setVariable("DESC",gettext('Functions to administrate NagiosQL V3'));
+$conttp->setVariable("DESC",translate('Functions to administrate NagiosQL V3'));
 $conttp->parse("main");
 $conttp->show("main");
 //
-// Footer ausgeben
-// ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> - Version: $setFileVersion");
+// Include Footer
+// ==============
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

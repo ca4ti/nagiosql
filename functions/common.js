@@ -47,7 +47,7 @@ function checkboxes(fields,frm) {
 	return retval;
 }
 
-<!-- YUI Messagebox -->
+<!-- YUI message box -->
 function msginit(msg,header,type) {
 	YAHOO.namespace("msg.container");
 	var handleOK = function() {
@@ -77,7 +77,7 @@ function msginit(msg,header,type) {
 	YAHOO.msg.container.domainmsg.show();
 }
 
-<!-- YUI Confirmbox -->
+<!-- YUI confirm box -->
 function confirminit(msg,header,type,yes,no,key) {
 	YAHOO.namespace("question.container");
 	var handleYes = function() {
@@ -109,7 +109,7 @@ function confirminit(msg,header,type,yes,no,key) {
 }
 
 
-<!-- YUI Dialogbox -->
+<!-- YUI dialog box -->
 function dialoginit(key1,key2,ver,header) {
 	YAHOO.namespace("dialog.container");
 
@@ -129,8 +129,12 @@ function dialoginit(key1,key2,ver,header) {
 	var callback = 	{ 
 		success:handleSuccess, 
 		failure: handleFailure 
-	}; 		
-	sUrl = "info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver;
+	}; 
+	if (key2 == "updInfo") {
+		sUrl = "admin/info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver;
+	} else {
+		sUrl = "info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver;
+	}
 	var request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 	
 	if (typeof YAHOO.dialog.container.infodialog == "undefined") {
@@ -150,7 +154,7 @@ function dialoginit(key1,key2,ver,header) {
 	YAHOO.dialog.container.infodialog.show();
 }
 
-<!-- YUI Kalender -->
+<!-- YUI calendar -->
 function calendarinit(lang,start,field,key,cont,obj) { 
 	YAHOO.util.Event.onDOMReady(function(){
 
@@ -201,8 +205,8 @@ function calendarinit(lang,start,field,key,cont,obj) {
 	});	
 }
 	
-// Mutationsdialog oeffnen
-function openMutDlgInit(field,divbox,header,key,langkey1,langkey2) {
+// Open edit dialog for list boxes
+function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,menuid,exclude) {
 	
 	YAHOO.util.Event.onDOMReady(function(){
 			
@@ -222,7 +226,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2) {
 			success:handleSuccess, 
 			failure: handleFailure 
 		}; 		
-		sUrl = "mutdialog.php?object=" + field;
+		sUrl = "mutdialog.php?object=" + field + "&menuid=" + menuid + "&exclude=" + exclude;
 		var request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 		
 		var handleSave = function() {
@@ -237,9 +241,13 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2) {
       		}
       		for (i = 0; i < targetSelect.length; ++i) {
         		for (y = 0; y < source.length; ++y) {
-          			if (source.options[y].value == 
-            			targetSelect.options[i].value) {
+          			var value1 = targetSelect.options[i].value.replace(/^e/g , ''); 
+					var value2 = "e"+value1;
+					if ((source.options[y].value == value1) || (source.options[y].value == value2)) {
             			source.options[y].selected = true;
+						source.options[y].value = targetSelect.options[i].value;
+						source.options[y].text  = targetSelect.options[i].text;
+						source.options[y].className = "ieselected";
           			}
         		}
       		}
@@ -273,7 +281,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2) {
 	});
 }
 
-// Mutieren Dialog Zusatzfunktionen
+// Additional functions for edit dialog
 function getData(field) {
   var source 		= document.getElementById(field);
   var targetSelect 	= document.getElementById(field+'Selected');
@@ -299,7 +307,7 @@ function getData(field) {
 	} 	
   }
 }
-// Auswahl eintragen
+// Insert selection
 function selValue(field) {
   var targetSelect 	= document.getElementById(field+'Selected');
   var targetAvail 	= document.getElementById(field+'Avail');
@@ -319,7 +327,31 @@ function selValue(field) {
 	}
   }
 }
-// Auswahl austragen
+// Insert selection (exclude variant)
+function selValueEx(field) {
+  var targetSelect 	= document.getElementById(field+'Selected');
+  var targetAvail 	= document.getElementById(field+'Avail');
+  if (targetAvail.selectedIndex != -1) {
+	var DelOptions = new Array();
+	for (i = 0; i < targetAvail.length; ++i) {
+	  if (targetAvail.options[i].selected == true) {
+		if ((targetAvail.options[i].text != '*') && (targetAvail.options[i].value != '0')) {
+		  NeuerEintrag = new Option("!"+targetAvail.options[i].text, "e"+targetAvail.options[i].value, false, false);
+		} else {
+		  NeuerEintrag = new Option(targetAvail.options[i].text, targetAvail.options[i].value, false, false);
+		}
+		targetSelect.options[targetSelect.length] = NeuerEintrag;
+		DelOptions.push(i);
+	  }
+	}
+	sort(targetSelect);
+	DelOptions.reverse();
+	for (var i = 0; i < DelOptions.length; ++i) {
+	  targetAvail.options[DelOptions[i]] = null;
+	}
+  }
+}
+// Remove selection
 function desValue(field) {
   var targetSelect 	= document.getElementById(field+'Selected');
   var targetAvail 	= document.getElementById(field+'Avail');
@@ -327,7 +359,9 @@ function desValue(field) {
 	var DelOptions = new Array();
 	for (i = 0; i < targetSelect.length; ++i) {
 	  if (targetSelect.options[i].selected == true) {
-		NeuerEintrag = new Option(targetSelect.options[i].text, targetSelect.options[i].value, false, false);
+		var text  = targetSelect.options[i].text.replace(/^!/g , '');
+		var value = targetSelect.options[i].value.replace(/^e/g , '');
+		NeuerEintrag = new Option(text, value, false, false);
 		targetAvail.options[targetAvail.length] = NeuerEintrag;
 		DelOptions.push(i);
 	  }
@@ -339,42 +373,52 @@ function desValue(field) {
 	}
   }
 }
-// Sortieren
+// Sort entries
 function sort(obj){
   var sortieren = new Array();
   var list = new Array();
   var i;
 
-  // Liste in ein Array lesen
+  // Insert list to array
   for (i=0; i < obj.options.length; i++) {
 	list[i] = new Array();
 	list[i]["text"] = obj.options[i].text;
 	list[i]["value"] = obj.options[i].value;
   }
 
-  // umsortieren in ein eindimensionales Array
+  // Sort into a single dimension array
   for (i=0; i < obj.length; i++){
 	sortieren[i]=list[i]["text"]+";"+list[i]["value"];
   }
 
-  // eigentliches sortieren
+  // Real sort
   sortieren.sort();
 
-  // sortiertes Array wieder zurück in das Listenarray zurücklesen
+  // Make array to list
   for (i=0; i < sortieren.length; i++) {
 	var felder = sortieren[i].split(";");
 	list[i]["text"] = felder[0];
 	list[i]["value"] = felder[1];
   }
 
-  // Listenfeld löschen
+  // Remove list field
   for (i=0; i < obj.options.length; i++) {
 	obj.options[i] = null;
   }
 
-  // sortiertes Listenarray in das Listenobjekt einfügen
+  // insert list to dialog
   for (i=0; i < list.length; i++){
 	NeuerEintrag = new Option(list[i]["text"], list[i]["value"], false, false);
 	obj.options[i] = NeuerEintrag;
   }
+}
+// Show relation data
+function showRelationData(option) {
+	if (option == 1) {
+		document.getElementById("rel_text").className = "elementHide";	
+		document.getElementById("rel_info").className = "elementShow";	
+	} else {
+		document.getElementById("rel_text").className = "elementShow";	
+		document.getElementById("rel_info").className = "elementHide";	
+	}
 }

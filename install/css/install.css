@@ -11,10 +11,10 @@
 /* Project  : NagiosQL
 /* Component: Installer CSS
 /* Website  : http://www.nagiosql.org
-/* Date     : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+/* Date     : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 /* Author   : $LastChangedBy: rouven $
-/* Version  : 3.0.4
-/* Revision : $LastChangedRevision: 827 $
+/* Version  : 3.1.1
+/* Revision : $LastChangedRevision: 1058 $
 /*
 /**********************************************/
 
@@ -88,7 +88,13 @@ body {
   text-align:right;
   top: 56px;
   }
-
+  
+#langselector {
+  position:absolute;
+  left: 650px;
+  text-align:right;
+  top: 50px;
+  }
 /**********************************************/
 /* Step Rows
 /**********************************************/
@@ -106,75 +112,78 @@ body {
     z-index: 4;
     }
 
-    .step1_active {
-      background: url(../images/step1_active.png) no-repeat;
-      height: 75px;
-      width: 150px;
-      color: #FFFFFF;
-      text-align: center;
-      font-weight: bold;
-      padding: 0px 0 0 0;
-      }
+.step1_active {
+  background: url(../images/step1_active.png) no-repeat;
+  height: 75px;
+  width: 150px;
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 0px 0 0 0;
+  }
+  
+ .step1_active a,
+ .step1_active a:hover,
+ .step3_active a,
+ .step3_active a:hover,
+ .step2_active a,
+ .step2_active a:hover {
+	color: #FFFFFF;
+	}
+
+.step1_deactive {
+  background: url(../images/step1_deactive.png) no-repeat;
+  height: 75px;
+  width: 150px;
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 0px 0 0 0;
+  }
+
+.step2_active {
+  background: url(../images/step2_active.png) no-repeat;
+  height: 75px;
+  width: 150px;
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 0px 0 0 0;
+  }
+
+.step2_deactive {
+  background: url(../images/step2_deactive.png) no-repeat;
+  height: 75px;
+  width: 150px;
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 0px 0 0 0;
+  }
+
+  .step3_active {
+  background: url(../images/step3_active.png) no-repeat;
+  height: 75px;
+  width: 150px;
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 0px 0 0 0;
+  }
+
+.step3_deactive {
+  background: url(../images/step3_deactive.png) no-repeat;
+  height: 75px;
+  width: 150px;
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 0px 0 0 0;
+  }
 	  
-	 .step1_active a,
- 	 .step1_active a:hover,
-	 .step3_active a,
- 	 .step3_active a:hover,
-	 .step2_active a,
- 	 .step2_active a:hover {
-		color: #FFFFFF;
-		}
-
-    .step1_deactive {
-      background: url(../images/step1_deactive.png) no-repeat;
-      height: 75px;
-      width: 150px;
-      color: #FFFFFF;
-      text-align: center;
-      font-weight: bold;
-      padding: 0px 0 0 0;
-      }
-
-    .step2_active {
-      background: url(../images/step2_active.png) no-repeat;
-      height: 75px;
-      width: 150px;
-      color: #FFFFFF;
-      text-align: center;
-      font-weight: bold;
-      padding: 0px 0 0 0;
-      }
-
-    .step2_deactive {
-      background: url(../images/step2_deactive.png) no-repeat;
-      height: 75px;
-      width: 150px;
-      color: #FFFFFF;
-      text-align: center;
-      font-weight: bold;
-      padding: 0px 0 0 0;
-      }
-
-      .step3_active {
-      background: url(../images/step3_active.png) no-repeat;
-      height: 75px;
-      width: 150px;
-      color: #FFFFFF;
-      text-align: center;
-      font-weight: bold;
-      padding: 0px 0 0 0;
-      }
-
-    .step3_deactive {
-      background: url(../images/step3_deactive.png) no-repeat;
-      height: 75px;
-      width: 150px;
-      color: #FFFFFF;
-      text-align: center;
-      font-weight: bold;
-      padding: 0px 0 0 0;
-      }
-
+.textmiddle {
+	vertical-align:middle;
+} 
 
 #installmain {
   margin-left: 20%;
@@ -243,7 +252,7 @@ body {
   }
 
   #indexmain_content {
-    padding: 10px 20px 10px 10px;
+    padding: 0px 20px 10px 10px;
     z-index: 2;
     }
 
@@ -364,4 +373,35 @@ input.validation-passed, textarea.validation-passed {
   background-color: #FF3300;
   color : #FFF;
   font-weight: bold;
+}
+
+/*  Text Styles */
+.hint {
+  color: #666;
+  font-size: 0.95em;
+}
+
+/* Tooltip */
+.yh_tt_div {
+ width: 200px;
+ background-color: #ffffff; 
+ padding: 10px; 
+ border: 1px solid #ff6600; 
+}
+
+.yh_tooltip {
+ font-size: 11px; 
+ font-face: arial,helvetica,sans-serif;
+}
+
+.tt_header {
+ position: relative;
+ width: 150px;
+ height: 19px;
+ background-image: url(../images/tip_header.gif);
+ margin-bottom: 3px;
+}
+
+.tooltip {
+ display: none;
 }

@@ -6,1245 +6,182 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
 --  Project   : NagiosQL
---  Component : Update from NagiosQL 2.0.2 to NagiosQL 3.0.2
+--  Component : Complete Database
 --  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+--  Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. MÃ¤r 2011) $
 --  Author    : $LastChangedBy: rouven $
---  Version   : 3.0.4
---  Revision  : $LastChangedRevision: 827 $
+--  Version   : 3.1.1
+--  Revision  : $LastChangedRevision: 1058 $
+--  SVN-ID    : $Id: nagiosQL_v31_db_mysql.sql 1058 2011-03-13 13:00:26Z rouven $
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
+-- 
+-- Tabellenstruktur für Tabelle `tbl_command`
+-- 
 
---
---  Modify existing tbl_user
---
-ALTER TABLE `tbl_user` CHANGE `username` `username` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_user` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_user` CHANGE `password` `password` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_user` ADD `wsauth` ENUM( '0', '1' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0' AFTER `access_rights`;
-ALTER TABLE `tbl_user` ADD `nodelete` ENUM( '0', '1' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0' AFTER `active`;
-UPDATE `tbl_user` SET `nodelete` = '1' WHERE `tbl_user`.`username` = 'Admin' LIMIT 1;
-
---
---  Modify existing tbl_logbook
---
-ALTER TABLE `tbl_logbook` CHANGE `user` `user` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_logbook` ADD `ipadress` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `user`;
-ALTER TABLE `tbl_logbook` ADD `domain` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `ipadress`;
-ALTER TABLE `tbl_logbook` CHANGE `entry` `entry` TINYTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-
---
---  Modify existing tbl_mainmenu
---
-UPDATE `tbl_mainmenu` SET `item` = 'Main page' WHERE `id` =1 LIMIT 1;
-UPDATE `tbl_mainmenu` SET `item` = 'Supervision' WHERE `id` =2 LIMIT 1;
-UPDATE `tbl_mainmenu` SET `item` = 'Alarming' WHERE `id` =3 LIMIT 1;
-UPDATE `tbl_mainmenu` SET `item` = 'Commands' WHERE `id` =4 LIMIT 1;
-UPDATE `tbl_mainmenu` SET `item` = 'Specialties' WHERE `id` =5 LIMIT 1;
-UPDATE `tbl_mainmenu` SET `item` = 'Tools' WHERE `id` =6 LIMIT 1;
-UPDATE `tbl_mainmenu` SET `item` = 'Administration' WHERE `id` =7 LIMIT 1;
-
---
---  Modify existing tbl_submenu
---
-UPDATE `tbl_submenu` SET `item` = 'Hosts' WHERE `id` =1 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Time periods' WHERE `id` =2 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Definitions' WHERE `id` =4 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Contact data' WHERE `id` =5 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Contact groups' WHERE `id` =6 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Services' WHERE `id` =7 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Host groups' WHERE `id` =8 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Service groups' WHERE `id` =9 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Serv. dependency' WHERE `id` =10 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Serv. escalation' WHERE `id` =11 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Host dependency' WHERE `id` =12 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Host escalation' WHERE `id` =13 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Host ext. info' WHERE `id` =14 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Serv. ext. info' WHERE `id` =15 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Data import' WHERE `id` =16 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Delete files' WHERE `id` =17 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'User admin' WHERE `id` =18 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Nagios control' WHERE `id` =19 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'New password' WHERE `id` =20 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Logbook' WHERE `id` =21 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Nagios config' WHERE `id` =22 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'CGI config' WHERE `id` =23 LIMIT 1;
-UPDATE `tbl_submenu` SET `item` = 'Menu access' WHERE `id` =24 LIMIT 1;
-UPDATE `tbl_submenu` SET `link` = 'admin/user.php' WHERE `id` =18 LIMIT 1;
-UPDATE `tbl_submenu` SET `order_id` = '5' WHERE `id` =21 LIMIT 1;
-DELETE FROM `tbl_submenu` WHERE `id` =3 LIMIT 1;
-INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_rights`) VALUES(25, 7, 4, 'Domains', 'admin/domain.php', '00000000');
-INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_rights`) VALUES(26, 2, 5, 'Host templates', 'admin/hosttemplates.php', '00000000');
-INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_rights`) VALUES(27, 2, 6, 'Service templates', 'admin/servicetemplates.php', '00000000');
-INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_rights`) VALUES(28, 3, 4, 'Contact templates', 'admin/contacttemplates.php', '00000000');
-INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_rights`) VALUES(29, 7, 6, 'Settings', 'admin/settings.php', '00000000');
-INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_rights`) VALUES(30, 7, 7, 'Help editor', 'admin/helpedit.php', '00000000');
-
-
---
---  Add new tbl_command
---
-CREATE TABLE `tbl_command` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+DROP TABLE IF EXISTS `tbl_command`;
+CREATE TABLE IF NOT EXISTS `tbl_command` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `command_name` varchar(255) NOT NULL,
   `command_line` text NOT NULL,
-  `command_type` tinyint(3) unsigned NOT NULL default '0',
-  `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `access_rights` varchar(8) default NULL,
-  `config_id` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `command_type` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`command_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
---  Solve relations
--- import misccommands
-INSERT INTO `tbl_command` (`command_name`, `command_line`, `active`, `last_modified`,`access_rights`, `config_id`) SELECT `command_name`, `command_line`, `active`, `last_modified`,`access_rights`, `config_id` FROM `tbl_misccommand`;
-UPDATE `tbl_command` SET `command_type` =2 WHERE `command_type`=0;
--- import checkcommands
-INSERT INTO `tbl_command` (`command_name`, `command_line`, `active`, `last_modified`,`access_rights`, `config_id`) SELECT `command_name`, `command_line`, `active`, `last_modified`,`access_rights`, `config_id` FROM `tbl_checkcommand`;
-UPDATE `tbl_command` SET `command_type` =1 WHERE `command_type`=0;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
---  Add new tbl_timedefinition
---
-CREATE TABLE `tbl_timedefinition` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `tipId` int(10) unsigned NOT NULL,
-  `definition` varchar(255) NOT NULL,
-  `range` TEXT NOT NULL,
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
---
---  Modify existing tbl_timeperiod
---
-ALTER TABLE `tbl_timeperiod` CHANGE `timeperiod_name` `timeperiod_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_timeperiod` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_timeperiod` ADD `exclude` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `alias`;
-ALTER TABLE `tbl_timeperiod` ADD `name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `exclude`;
---  Solve relations
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'sunday', `sunday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`sunday` != "";
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'monday', `monday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`monday` != "";
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'tuesday', `tuesday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`tuesday` != "";
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'wednesday', `wednesday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`wednesday` != "";
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'thursday', `thursday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`thursday` != "";
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'friday', `friday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`friday` != "";
-INSERT INTO `tbl_timedefinition` (`tipId`, `definition`, `range`) SELECT `id` , 'saturday', `saturday` FROM tbl_timeperiod WHERE `tbl_timeperiod`.`saturday` != "";
-ALTER TABLE `tbl_timeperiod` DROP `sunday`, DROP `monday`, DROP `tuesday`, DROP `wednesday`, DROP `thursday`, DROP `friday`, DROP `saturday`;
+-- 
+-- Daten für Tabelle `tbl_command`
+-- 
 
---
---  Add new `tbl_lnkTimeperiodToTimeperiod`
---
-CREATE TABLE `tbl_lnkTimeperiodToTimeperiod` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
---  Modify existing tbl_contact
---
-ALTER TABLE `tbl_contact` CHANGE `contact_name` `contact_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_contact` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_contact` ADD `contactgroups_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `contactgroups`;
-ALTER TABLE `tbl_contact` ADD `host_notifications_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `contactgroups_tploptions`;
-ALTER TABLE `tbl_contact` ADD `service_notifications_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `host_notifications_enabled`;
-ALTER TABLE `tbl_contact` CHANGE `host_notification_options` `host_notification_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_contact` CHANGE `service_notification_options` `service_notification_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_contact` ADD `host_notification_commands_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `host_notification_commands`;
-ALTER TABLE `tbl_contact` ADD `service_notification_commands_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `service_notification_commands`;
-ALTER TABLE `tbl_contact` ADD `can_submit_commands` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `service_notification_commands_tploptions`;
-ALTER TABLE `tbl_contact` ADD `retain_status_information` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `can_submit_commands`;
-ALTER TABLE `tbl_contact` ADD `retain_nonstatus_information` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `retain_status_information`;
-ALTER TABLE `tbl_contact` CHANGE `email` `email` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` CHANGE `pager` `pager` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` CHANGE `address1` `address1` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` CHANGE `address2` `address2` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` CHANGE `address3` `address3` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` CHANGE `address4` `address4` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` CHANGE `address5` `address5` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `tbl_contact` ADD `address6` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `address5`;
-ALTER TABLE `tbl_contact` ADD `name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `address6`;
-ALTER TABLE `tbl_contact` ADD `use_variables` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `name`;
-ALTER TABLE `tbl_contact` ADD `use_template` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `use_variables`;
-ALTER TABLE `tbl_contact` ADD `use_template_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `use_template`;
+-- --------------------------------------------------------
 
---
---  Modify existing tbl_contactgroup
---
-ALTER TABLE `tbl_contactgroup` CHANGE `contactgroup_name` `contactgroup_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_contactgroup` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_contactgroup` ADD `contactgroup_members` INT( 10 ) UNSIGNED NOT NULL AFTER `members`;
+-- 
+-- Tabellenstruktur für Tabelle `tbl_contact`
+-- 
 
---
---  Add new `tbl_lnkContactToContactgroup`
---
-CREATE TABLE `tbl_lnkContactToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContactgroupToContact`
---
-CREATE TABLE `tbl_lnkContactgroupToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContactgroupToContactgroup`
---
-CREATE TABLE `tbl_lnkContactgroupToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContactToCommandHost`
---
-CREATE TABLE `tbl_lnkContactToCommandHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new  `tbl_lnkContactToCommandService`
---
-CREATE TABLE `tbl_lnkContactToCommandService` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---  Solve relations
--- relation contactgroup to contact and vice versa
-INSERT INTO `tbl_lnkContactgroupToContact` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=3 AND `tbl_B`=2 AND `tbl_A_field`="members";
-INSERT INTO `tbl_lnkContactToContactgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=2 AND `tbl_B`=3 AND `tbl_A_field`="contactgroups";
--- misccommands
-INSERT INTO `tbl_lnkContactToCommandHost` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=2 AND `tbl_B`=9 AND `tbl_A_field` = "host_notification_commands";
-INSERT INTO `tbl_lnkContactToCommandService` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=2 AND `tbl_B`=9 AND `tbl_A_field` = "service_notification_commands";
-
---
---  Add new `tbl_contacttemplate`
---
-CREATE TABLE `tbl_contacttemplate` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `template_name` varchar(255) NOT NULL,
+DROP TABLE IF EXISTS `tbl_contact`;
+CREATE TABLE IF NOT EXISTS `tbl_contact` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `contact_name` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
-  `contactgroups` int(10) unsigned NOT NULL default '0',
-  `contactgroups_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `host_notifications_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `service_notifications_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `host_notification_period` int(11) NOT NULL default '0',
-  `service_notification_period` int(11) NOT NULL default '0',
+  `contactgroups` int(10) unsigned NOT NULL DEFAULT '0',
+  `contactgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `host_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `service_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `host_notification_period` int(10) unsigned NOT NULL DEFAULT '0',
+  `service_notification_period` int(10) unsigned NOT NULL DEFAULT '0',
   `host_notification_options` varchar(20) NOT NULL,
   `service_notification_options` varchar(20) NOT NULL,
-  `host_notification_commands` int(10) unsigned NOT NULL default '0',
-  `host_notification_commands_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `service_notification_commands` int(10) unsigned NOT NULL default '0',
-  `service_notification_commands_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `can_submit_commands` tinyint(3) unsigned NOT NULL default '2',
-  `retain_status_information` tinyint(3) unsigned NOT NULL default '2',
-  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL default '2',
-  `email` varchar(255) default NULL,
-  `pager` varchar(255) default NULL,
-  `address1` varchar(255) default NULL,
-  `address2` varchar(255) default NULL,
-  `address3` varchar(255) default NULL,
-  `address4` varchar(255) default NULL,
-  `address5` varchar(255) default NULL,
-  `address6` varchar(255) default NULL,
-  `use_variables` tinyint(3) unsigned NOT NULL default '0',
-  `use_template` tinyint(3) unsigned NOT NULL default '0',
-  `use_template_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `access_rights` varchar(8) default NULL,
-  `config_id` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `config_name` (`template_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `host_notification_commands` int(10) unsigned NOT NULL DEFAULT '0',
+  `host_notification_commands_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `service_notification_commands` int(10) unsigned NOT NULL DEFAULT '0',
+  `service_notification_commands_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `can_submit_commands` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_status_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `email` varchar(255) DEFAULT NULL,
+  `pager` varchar(255) DEFAULT NULL,
+  `address1` varchar(255) DEFAULT NULL,
+  `address2` varchar(255) DEFAULT NULL,
+  `address3` varchar(255) DEFAULT NULL,
+  `address4` varchar(255) DEFAULT NULL,
+  `address5` varchar(255) DEFAULT NULL,
+  `address6` varchar(255) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `use_variables` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`contact_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
---  Add new `tbl_lnkContactToContacttemplate`
---
-CREATE TABLE `tbl_lnkContactToContacttemplate` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  `idSort` int(11) NOT NULL,
-  `idTable` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`,`idTable`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContacttemplateToCommandHost`
---
-CREATE TABLE `tbl_lnkContacttemplateToCommandHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContacttemplateToCommandService`
---
-CREATE TABLE `tbl_lnkContacttemplateToCommandService` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContacttemplateToContactgroup`
---
-CREATE TABLE `tbl_lnkContacttemplateToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContacttemplateToContacttemplate`
---
-CREATE TABLE `tbl_lnkContacttemplateToContacttemplate` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  `idSort` int(11) NOT NULL,
-  `idTable` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`,`idTable`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContacttemplateToVariabledefinition`
---
-CREATE TABLE `tbl_lnkContacttemplateToVariabledefinition` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkContactToVariabledefinition`
---
-CREATE TABLE `tbl_lnkContactToVariabledefinition` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Modify existing tbl_host
---
-ALTER TABLE `tbl_host` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_host` ADD  `display_name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '' AFTER `alias`;
-ALTER TABLE `tbl_host` CHANGE `parents` `parents` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_host` ADD `parents_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `parents`;
-ALTER TABLE `tbl_host` CHANGE `hostgroups` `hostgroups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_host` ADD `hostgroups_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `hostgroups`;
-ALTER TABLE `tbl_host` CHANGE `check_command` `check_command` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
-ALTER TABLE `tbl_host` ADD `use_template` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `check_command`;
-ALTER TABLE `tbl_host` ADD `use_template_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `use_template` ;
-ALTER TABLE `tbl_host` ADD `initial_state` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '' AFTER `use_template_tploptions`;
-ALTER TABLE `tbl_host` CHANGE `max_check_attempts` `max_check_attempts` INT( 11 ) NULL;
-ALTER TABLE `tbl_host` CHANGE `check_interval` `check_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_host` ADD `retry_interval` INT( 11 ) NULL AFTER `check_interval`;
-ALTER TABLE `tbl_host` CHANGE `active_checks_enabled` `active_checks_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `passive_checks_enabled` `passive_checks_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `check_period` `check_period` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_host` CHANGE `obsess_over_host` `obsess_over_host` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `check_freshness` `check_freshness` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `freshness_threshold` `freshness_threshold` INT( 11 ) NULL;
-ALTER TABLE `tbl_host` CHANGE `event_handler` `event_handler` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_host` CHANGE `event_handler_enabled` `event_handler_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `low_flap_threshold` `low_flap_threshold` INT( 11 ) NULL;
-ALTER TABLE `tbl_host` CHANGE `high_flap_threshold` `high_flap_threshold` INT( 11 ) NULL;
-ALTER TABLE `tbl_host` CHANGE `flap_detection_enabled` `flap_detection_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` ADD `flap_detection_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT '' AFTER `flap_detection_enabled`;
-ALTER TABLE `tbl_host` DROP `failure_prediction_enabled`;
-ALTER TABLE `tbl_host` CHANGE `process_perf_data` `process_perf_data` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `retain_status_information` `retain_status_information` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `retain_nonstatus_information` `retain_nonstatus_information` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` ADD `contacts` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `retain_nonstatus_information`;
-ALTER TABLE `tbl_host` ADD `contacts_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `contacts`;
-ALTER TABLE `tbl_host` CHANGE `contact_groups` `contact_groups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_host` ADD `contact_groups_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `contact_groups`;
-ALTER TABLE `tbl_host` CHANGE `notification_interval` `notification_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_host` CHANGE `notification_period` `notification_period` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_host` ADD `first_notification_delay` INT( 11 ) NULL AFTER `notification_period`;
-ALTER TABLE `tbl_host` CHANGE `notification_options` `notification_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-ALTER TABLE `tbl_host` CHANGE `notifications_enabled` `notifications_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_host` CHANGE `stalking_options` `stalking_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-ALTER TABLE `tbl_host` ADD `notes` VARCHAR( 255 ) NULL DEFAULT '' AFTER `stalking_options`;
-ALTER TABLE `tbl_host` ADD `notes_url` VARCHAR( 255 ) NULL DEFAULT '' AFTER `notes`;
-ALTER TABLE `tbl_host` ADD `action_url` VARCHAR( 255 ) NULL DEFAULT '' AFTER `notes_url`;
-ALTER TABLE `tbl_host` ADD `icon_image` VARCHAR( 255 ) NULL DEFAULT '' AFTER `action_url`;
-ALTER TABLE `tbl_host` ADD `icon_image_alt` VARCHAR( 255 ) NULL DEFAULT '' AFTER `icon_image`;
-ALTER TABLE `tbl_host` ADD `vrml_image` VARCHAR( 255 ) NULL DEFAULT '' AFTER `icon_image_alt`;
-ALTER TABLE `tbl_host` ADD `statusmap_image` VARCHAR( 255 ) NULL DEFAULT '' AFTER `vrml_image`;
-ALTER TABLE `tbl_host` ADD `2d_coords` VARCHAR( 255 ) NULL DEFAULT '' AFTER `statusmap_image`;
-ALTER TABLE `tbl_host` ADD `3d_coords` VARCHAR( 255 ) NULL DEFAULT '' AFTER `2d_coords`;
-ALTER TABLE `tbl_host` ADD `use_variables` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `3d_coords`;
-ALTER TABLE `tbl_host` ADD `name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `use_variables`;
-ALTER TABLE `tbl_host` DROP `template`;
-
---
---  Modify existing tbl_hostgroup
---
-ALTER TABLE `tbl_hostgroup` CHANGE `hostgroup_name` `hostgroup_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostgroup` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostgroup` CHANGE `members` `members` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostgroup` ADD `hostgroup_members` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `members`;
-ALTER TABLE `tbl_hostgroup` ADD `notes` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `hostgroup_members`;
-ALTER TABLE `tbl_hostgroup` ADD `notes_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `notes`;
-ALTER TABLE `tbl_hostgroup` ADD `action_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `notes_url`;
-
---
---  Add new `tbl_lnkHostToContact`
---
-CREATE TABLE `tbl_lnkHostToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostToContactgroup`
---
-CREATE TABLE `tbl_lnkHostToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostToHostgroup`
---
-CREATE TABLE `tbl_lnkHostToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostToHosttemplate`
---
-CREATE TABLE `tbl_lnkHostToHosttemplate` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  `idSort` int(11) NOT NULL,
-  `idTable` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`,`idTable`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostToVariabledefinition`
---
-CREATE TABLE `tbl_lnkHostToVariabledefinition` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostgroupToHost`
---
-CREATE TABLE `tbl_lnkHostgroupToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostgroupToHostgroup`
---
-CREATE TABLE `tbl_lnkHostgroupToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostToHost`
---
-CREATE TABLE `tbl_lnkHostToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+-- 
+-- Daten für Tabelle `tbl_contact`
+-- 
 
 
---  Solve relations
--- checkcommands
-UPDATE `tbl_host`, `tbl_command`, `tbl_checkcommand` SET `tbl_host`.`check_command` = CONCAT(`tbl_command`.`id`,SUBSTRING(`tbl_host`.`check_command`, LOCATE('!',`tbl_host`.`check_command`))) WHERE SUBSTRING_INDEX(`tbl_host`.`check_command`,'!',1) = `tbl_checkcommand`.`id` AND `tbl_command`.`command_name` = `tbl_checkcommand`.`command_name`  AND `tbl_command`.`config_id` = `tbl_checkcommand`.`config_id`;
--- misccommands (eventhandler)
-UPDATE `tbl_host`, `tbl_command`, `tbl_misccommand` SET `tbl_host`.`event_handler` =`tbl_command`.`id` WHERE `tbl_misccommand`.`id` = `tbl_host`.`event_handler` AND `tbl_command`.`command_name` = `tbl_misccommand`.`command_name`  AND `tbl_command`.`config_id` = `tbl_misccommand`.`config_id`;
--- relation host to contactgroup
-INSERT INTO `tbl_lnkHostToContactgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=4 AND `tbl_B`=3 AND `tbl_A_field`="contact_groups";
--- relation hostgroup to host and vice versa
-INSERT INTO `tbl_lnkHostToHostgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=4 AND `tbl_B`=8 AND `tbl_A_field`="hostgroups";
-INSERT INTO `tbl_lnkHostgroupToHost` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=8 AND `tbl_B`=4 AND `tbl_A_field`="members";
--- relation host to host (parent)
-INSERT INTO `tbl_lnkHostToHost` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=4 AND `tbl_B`=4 AND `tbl_A_field`="parents";
+-- --------------------------------------------------------
 
---
---  Modify existing tbl_hosttemplate (drop old unused table and a new)
---
-DROP TABLE IF EXISTS `tbl_hosttemplate`;
-CREATE TABLE `tbl_hosttemplate` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+-- 
+-- Tabellenstruktur für Tabelle `tbl_contactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_contactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_contactgroup` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `contactgroup_name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `members` int(10) unsigned NOT NULL DEFAULT '0',
+  `contactgroup_members` int(10) unsigned NOT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`contactgroup_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_contactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_contacttemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_contacttemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_contacttemplate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `template_name` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
-  `parents` tinyint(3) unsigned NOT NULL default '0',
-  `parents_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `hostgroups` tinyint(3) unsigned NOT NULL default '0',
-  `hostgroups_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `check_command` text,
-  `use_template` tinyint(3) unsigned NOT NULL default '0',
-  `use_template_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `initial_state` varchar(20) default '',
-  `max_check_attempts` int(11) default NULL,
-  `check_interval` int(11) default NULL,
-  `retry_interval` int(11) default NULL,
-  `active_checks_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `passive_checks_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `check_period` int(11) NOT NULL default '0',
-  `obsess_over_host` tinyint(3) unsigned NOT NULL default '2',
-  `check_freshness` tinyint(3) unsigned NOT NULL default '2',
-  `freshness_threshold` int(11) default NULL,
-  `event_handler` int(11) NOT NULL default '0',
-  `event_handler_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `low_flap_threshold` int(11) default NULL,
-  `high_flap_threshold` int(11) default NULL,
-  `flap_detection_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `flap_detection_options` varchar(20) default '',
-  `process_perf_data` tinyint(3) unsigned NOT NULL default '2',
-  `retain_status_information` tinyint(3) unsigned NOT NULL default '2',
-  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL default '2',
-  `contacts` tinyint(3) unsigned NOT NULL default '0',
-  `contacts_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `contact_groups` tinyint(3) unsigned NOT NULL default '0',
-  `contact_groups_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `notification_interval` int(11) default NULL,
-  `notification_period` int(11) NOT NULL default '0',
-  `first_notification_delay` int(11) default NULL,
-  `notification_options` varchar(20) default '',
-  `notifications_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `stalking_options` varchar(20) default '',
-  `notes` varchar(255) default '',
-  `notes_url` varchar(255) default '',
-  `action_url` varchar(255) default '',
-  `icon_image` varchar(255) default '',
-  `icon_image_alt` varchar(255) default '',
-  `vrml_image` varchar(255) default '',
-  `statusmap_image` varchar(255) default '',
-  `2d_coords` varchar(255) default '',
-  `3d_coords` varchar(255) default '',
-  `use_variables` tinyint(3) unsigned NOT NULL default '0',
-  `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `access_rights` varchar(8) default NULL,
-  `config_id` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `contactgroups` int(10) unsigned NOT NULL DEFAULT '0',
+  `contactgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `host_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `service_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `host_notification_period` int(11) NOT NULL DEFAULT '0',
+  `service_notification_period` int(11) NOT NULL DEFAULT '0',
+  `host_notification_options` varchar(20) NOT NULL,
+  `service_notification_options` varchar(20) NOT NULL,
+  `host_notification_commands` int(10) unsigned NOT NULL DEFAULT '0',
+  `host_notification_commands_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `service_notification_commands` int(10) unsigned NOT NULL DEFAULT '0',
+  `service_notification_commands_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `can_submit_commands` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_status_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `email` varchar(255) DEFAULT NULL,
+  `pager` varchar(255) DEFAULT NULL,
+  `address1` varchar(255) DEFAULT NULL,
+  `address2` varchar(255) DEFAULT NULL,
+  `address3` varchar(255) DEFAULT NULL,
+  `address4` varchar(255) DEFAULT NULL,
+  `address5` varchar(255) DEFAULT NULL,
+  `address6` varchar(255) DEFAULT NULL,
+  `use_variables` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`template_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
---  Add new `tbl_lnkHosttemplateToContact`
---
-CREATE TABLE `tbl_lnkHosttemplateToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHosttemplateToContactgroup`
---
-CREATE TABLE `tbl_lnkHosttemplateToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHosttemplateToHost`
---
-CREATE TABLE `tbl_lnkHosttemplateToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHosttemplateToHostgroup`
---
-CREATE TABLE `tbl_lnkHosttemplateToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHosttemplateToHosttemplate`
---
-CREATE TABLE `tbl_lnkHosttemplateToHosttemplate` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  `idSort` int(11) NOT NULL,
-  `idTable` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`,`idTable`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHosttemplateToVariabledefinition`
---
-CREATE TABLE `tbl_lnkHosttemplateToVariabledefinition` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+-- 
+-- Daten für Tabelle `tbl_contacttemplate`
+-- 
 
 
---
---  Modify existing tbl_hostextinfo
---
-ALTER TABLE `tbl_hostextinfo` CHANGE `host_name` `host_name` INT( 11 ) DEFAULT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `notes` `notes` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `notes_url` `notes_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `action_url` `action_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `statistik_url` `statistik_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `icon_image` `icon_image` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `icon_image_alt` `icon_image_alt` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `vrml_image` `vrml_image` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `statusmap_image` `statusmap_image` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `2d_coords` `2d_coords` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostextinfo` CHANGE `3d_coords` `3d_coords` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+-- --------------------------------------------------------
 
---
---  Modify existing tbl_hostdependency
---
-ALTER TABLE `tbl_hostdependency` CHANGE `config_name` `config_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostdependency` CHANGE `dependent_host_name` `dependent_host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostdependency` CHANGE `dependent_hostgroup_name` `dependent_hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostdependency` CHANGE `host_name` `host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostdependency` CHANGE `hostgroup_name` `hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostdependency` CHANGE `inherits_parent` `inherits_parent` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostdependency` CHANGE `execution_failure_criteria` `execution_failure_criteria` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-ALTER TABLE `tbl_hostdependency` CHANGE `notification_failure_criteria` `notification_failure_criteria` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-ALTER TABLE `tbl_hostdependency` ADD `dependency_period` INT( 11 ) NOT NULL DEFAULT '0' AFTER `notification_failure_criteria`;
+-- 
+-- Tabellenstruktur für Tabelle `tbl_domain`
+-- 
 
---
---  Add new `tbl_lnkHostdependencyToHost_DH`
---
-CREATE TABLE `tbl_lnkHostdependencyToHost_DH` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostdependencyToHost_H`
---
-CREATE TABLE `tbl_lnkHostdependencyToHost_H` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostdependencyToHostgroup_DH`
---
-CREATE TABLE `tbl_lnkHostdependencyToHostgroup_DH` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostdependencyToHostgroup_H`
---
-CREATE TABLE `tbl_lnkHostdependencyToHostgroup_H` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---  Solve relations
--- relation dependency to host
-INSERT INTO `tbl_lnkHostdependencyToHost_H` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=5 AND `tbl_B`=4 AND `tbl_A_field`="host_name";
--- relation dependency to dependent host
-INSERT INTO `tbl_lnkHostdependencyToHost_DH` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=5 AND `tbl_B`=4 AND `tbl_A_field`="dependent_host_name";
--- relation dependency to hostgroup
-INSERT INTO `tbl_lnkHostdependencyToHostgroup_H` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=5 AND `tbl_B`=8 AND `tbl_A_field`="hostgroup_name";
--- relation dependency to dependent hostgroup
-INSERT INTO `tbl_lnkHostdependencyToHostgroup_DH` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=5 AND `tbl_B`=8 AND `tbl_A_field`="dependent_hostgroup_name";
-
---
---  Modify existing tbl_hostescalation
---
-ALTER TABLE `tbl_hostescalation` CHANGE `config_name` `config_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_hostescalation` CHANGE `host_name` `host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostescalation` CHANGE `hostgroup_name` `hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostescalation` ADD `contacts` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `hostgroup_name`;
-ALTER TABLE `tbl_hostescalation` CHANGE `contact_groups` `contact_groups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostescalation` CHANGE `first_notification` `first_notification` INT( 11 ) NULL;
-ALTER TABLE `tbl_hostescalation` CHANGE `last_notification` `last_notification` INT( 11 ) NULL;
-ALTER TABLE `tbl_hostescalation` CHANGE `notification_interval` `notification_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_hostescalation` CHANGE `escalation_period` `escalation_period` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_hostescalation` CHANGE `escalation_options` `escalation_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-
---
---  Add new `tbl_lnkHostescalationToContact`
---
-CREATE TABLE `tbl_lnkHostescalationToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostescalationToContactgroup`
---
-CREATE TABLE `tbl_lnkHostescalationToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostescalationToHost`
---
-CREATE TABLE `tbl_lnkHostescalationToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkHostescalationToHostgroup`
---
-CREATE TABLE `tbl_lnkHostescalationToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---  Solve relations
--- host escalation to contactgroup
-INSERT INTO `tbl_lnkHostescalationToContactgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=6 AND `tbl_B`=3 AND `tbl_A_field`="contact_groups";
--- host escalation to host
-INSERT INTO `tbl_lnkHostescalationToHost` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=6 AND `tbl_B`=4 AND `tbl_A_field`="host_name";
--- host escalation to hostgroup
-INSERT INTO `tbl_lnkHostescalationToHostgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=6 AND `tbl_B`=8 AND `tbl_A_field`="hostgroup_name";
-
---
---  Modify existing tbl_service
---
-ALTER TABLE `tbl_service` CHANGE `config_name` `config_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_service` CHANGE `host_name` `host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_service` ADD `host_name_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `host_name`;
-ALTER TABLE `tbl_service` CHANGE `hostgroup_name` `hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_service` ADD `hostgroup_name_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `hostgroup_name`;
-ALTER TABLE `tbl_service` CHANGE `service_description` `service_description` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_service` ADD `display_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `service_description`;
-ALTER TABLE `tbl_service` CHANGE `servicegroups` `servicegroups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_service` ADD `servicegroups_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `servicegroups`;
-ALTER TABLE `tbl_service` ADD `use_template` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `servicegroups_tploptions`;
-ALTER TABLE `tbl_service` ADD `use_template_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `use_template`;
--- change order of check_command
-ALTER TABLE `tbl_service` ADD `temp_check_command` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `use_template_tploptions`;
-UPDATE `tbl_service` SET `temp_check_command`=`check_command`;
-ALTER TABLE `tbl_service` DROP `check_command`;
-ALTER TABLE `tbl_service` CHANGE `temp_check_command` `check_command` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
--- order changed
-ALTER TABLE `tbl_service` CHANGE `is_volatile` `is_volatile` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` ADD `initial_state` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `is_volatile`;
-ALTER TABLE `tbl_service` CHANGE `max_check_attempts` `max_check_attempts` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` CHANGE `normal_check_interval` `check_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` CHANGE `retry_check_interval` `retry_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` CHANGE `active_checks_enabled` `active_checks_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `passive_checks_enabled` `passive_checks_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `check_period` `check_period` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_service` CHANGE `parallelize_check` `parallelize_check` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `obsess_over_service` `obsess_over_service` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `check_freshness` `check_freshness` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `freshness_threshold` `freshness_threshold` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` CHANGE `event_handler` `event_handler` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_service` CHANGE `event_handler_enabled` `event_handler_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `low_flap_threshold` `low_flap_threshold` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` CHANGE `high_flap_threshold` `high_flap_threshold` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` CHANGE `flap_detection_enabled` `flap_detection_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` ADD `flap_detection_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `flap_detection_enabled`;
-ALTER TABLE `tbl_service` DROP `failure_prediction_enabled`;
-ALTER TABLE `tbl_service` CHANGE `process_perf_data` `process_perf_data` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `retain_status_information` `retain_status_information` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `retain_nonstatus_information` `retain_nonstatus_information` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` CHANGE `notification_interval` `notification_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_service` ADD `first_notification_delay` INT( 11 ) NULL AFTER `notification_interval`;
-ALTER TABLE `tbl_service` CHANGE `notification_period` `notification_period` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_service` CHANGE `notification_options` `notification_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_service` CHANGE `notifications_enabled` `notifications_enabled` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2';
-ALTER TABLE `tbl_service` ADD `contacts` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `notifications_enabled`;
-ALTER TABLE `tbl_service` ADD `contacts_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `contacts`;
--- change order of contact_groups
-ALTER TABLE `tbl_service` ADD `temp_contact_groups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `contacts_tploptions`;
-UPDATE `tbl_service` SET `temp_contact_groups`=`contact_groups`;
-ALTER TABLE `tbl_service` DROP `contact_groups`;
-ALTER TABLE `tbl_service` CHANGE `temp_contact_groups` `contact_groups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- order changed
-ALTER TABLE `tbl_service` ADD `contact_groups_tploptions` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '2' AFTER `contact_groups`;
-ALTER TABLE `tbl_service` CHANGE `stalking_options` `stalking_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_service` ADD `notes` VARCHAR( 255 ) NOT NULL AFTER `stalking_options`;
-ALTER TABLE `tbl_service` ADD `notes_url` VARCHAR( 255 ) NOT NULL AFTER `notes`;
-ALTER TABLE `tbl_service` ADD `action_url` VARCHAR( 255 ) NOT NULL AFTER `notes_url`;
-ALTER TABLE `tbl_service` ADD `icon_image` VARCHAR( 255 ) NOT NULL AFTER `action_url`;
-ALTER TABLE `tbl_service` ADD `icon_image_alt` VARCHAR( 255 ) NOT NULL AFTER `icon_image`;
-ALTER TABLE `tbl_service` ADD `use_variables` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `icon_image_alt`;
-ALTER TABLE `tbl_service` ADD `name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `use_variables`;
-ALTER TABLE `tbl_service` DROP `template`;
-
---
---  Modify existing tbl_servicegroup
---
-ALTER TABLE `tbl_servicegroup` CHANGE `servicegroup_name` `servicegroup_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_servicegroup` CHANGE `alias` `alias` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_servicegroup` CHANGE `members` `members` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_servicegroup` ADD `servicegroup_members` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `members`;
-ALTER TABLE `tbl_servicegroup` ADD `notes` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `servicegroup_members`;
-ALTER TABLE `tbl_servicegroup` ADD `notes_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `notes`;
-ALTER TABLE `tbl_servicegroup` ADD `action_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `notes_url`;
-
---
---  Add new `tbl_lnkServicegroupToServicegroup`
---
-CREATE TABLE `tbl_lnkServicegroupToServicegroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceToContact`
---
-CREATE TABLE `tbl_lnkServiceToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceToContactgroup`
---
-CREATE TABLE `tbl_lnkServiceToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceToHost`
---
-CREATE TABLE `tbl_lnkServiceToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceToHostgroup`
---
-CREATE TABLE `tbl_lnkServiceToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceToServicegroup`
---
-CREATE TABLE `tbl_lnkServiceToServicegroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicegroupToService`
---
-CREATE TABLE `tbl_lnkServicegroupToService` (
-  `idMaster` int(11) NOT NULL,
-  `idSlaveH` int(11) NOT NULL,
-  `idSlaveHG` int(11) NOT NULL,
-  `idSlaveS` int(11) NOT NULL,
-  PRIMARY KEY ( `idMaster` ,`idSlaveH`,`idSlaveHG`,`idSlaveS`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---  Solve relations
--- checkcommands
-UPDATE `tbl_service`, `tbl_command`, `tbl_checkcommand` SET `tbl_service`.`check_command` = CONCAT(`tbl_command`.`id`,SUBSTRING(`tbl_service`.`check_command`, LOCATE('!',`tbl_service`.`check_command`))) WHERE SUBSTRING_INDEX(`tbl_service`.`check_command`,'!',1) = `tbl_checkcommand`.`id` AND `tbl_command`.`command_name` = `tbl_checkcommand`.`command_name`  AND `tbl_command`.`config_id` = `tbl_checkcommand`.`config_id`;
--- misccommands (eventhandler)
-UPDATE `tbl_service`, `tbl_command`, `tbl_misccommand` SET `tbl_service`.`event_handler` =`tbl_command`.`id` WHERE `tbl_misccommand`.`id` = `tbl_service`.`event_handler` AND `tbl_command`.`command_name` = `tbl_misccommand`.`command_name`  AND `tbl_command`.`config_id` = `tbl_misccommand`.`config_id`;
--- service to contactgroup
-INSERT INTO `tbl_lnkServiceToContactgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=10 AND `tbl_B`=3 AND `tbl_A_field`="contact_groups";
--- service to host
-INSERT INTO `tbl_lnkServiceToHost` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=10 AND `tbl_B`=4 AND `tbl_A_field`="host_name";
--- service to hostgroup
-INSERT INTO `tbl_lnkServiceToHostgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=10 AND `tbl_B`=8 AND `tbl_A_field`="hostgroup_name";
--- service to servicegroup
-INSERT INTO `tbl_lnkServiceToServicegroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=10 AND `tbl_B`=14 AND `tbl_A_field`="servicegroups";
--- servicegroup to service
-INSERT INTO `tbl_lnkServicegroupToService` (`idMaster`, `idSlaveH`, `idSlaveHG`, `idSlaveS`) SELECT `tbl_A_id`, `tbl_B1_id`, '0', `tbl_B2_id` FROM `tbl_relation_special` WHERE `tbl_A`=14 AND `tbl_B1`=4 AND `tbl_B2`=10 AND `tbl_A_field`="members";
-
---
---  Add new `tbl_lnkServiceToServicetemplate`
---
-CREATE TABLE `tbl_lnkServiceToServicetemplate` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  `idSort` int(11) NOT NULL,
-  `idTable` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`,`idTable`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceToVariabledefinition`
---
-CREATE TABLE `tbl_lnkServiceToVariabledefinition` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_servicetemplate`
---
-CREATE TABLE `tbl_servicetemplate` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `template_name` varchar(255) NOT NULL,
-  `host_name` tinyint(3) unsigned NOT NULL default '0',
-  `host_name_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `hostgroup_name` tinyint(3) unsigned NOT NULL default '0',
-  `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `service_description` varchar(255) NOT NULL,
-  `display_name` varchar(255) NOT NULL,
-  `servicegroups` tinyint(3) unsigned NOT NULL default '0',
-  `servicegroups_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `use_template` tinyint(3) unsigned NOT NULL default '0',
-  `use_template_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `check_command` text NOT NULL,
-  `is_volatile` tinyint(3) unsigned NOT NULL default '2',
-  `initial_state` varchar(20) NOT NULL,
-  `max_check_attempts` int(11) default NULL,
-  `check_interval` int(11) default NULL,
-  `retry_interval` int(11) default NULL,
-  `active_checks_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `passive_checks_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `check_period` int(11) NOT NULL default '0',
-  `parallelize_check` tinyint(3) unsigned NOT NULL default '2',
-  `obsess_over_service` tinyint(3) unsigned NOT NULL default '2',
-  `check_freshness` tinyint(3) unsigned NOT NULL default '2',
-  `freshness_threshold` int(11) default NULL,
-  `event_handler` int(11) NOT NULL default '0',
-  `event_handler_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `low_flap_threshold` int(11) default NULL,
-  `high_flap_threshold` int(11) default NULL,
-  `flap_detection_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `flap_detection_options` varchar(20) NOT NULL,
-  `process_perf_data` tinyint(3) unsigned NOT NULL default '2',
-  `retain_status_information` tinyint(3) unsigned NOT NULL default '2',
-  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL default '2',
-  `notification_interval` int(11) default NULL,
-  `first_notification_delay` int(11) default NULL,
-  `notification_period` int(11) NOT NULL default '0',
-  `notification_options` varchar(20) NOT NULL,
-  `notifications_enabled` tinyint(3) unsigned NOT NULL default '2',
-  `contacts` tinyint(3) unsigned NOT NULL default '0',
-  `contacts_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `contact_groups` tinyint(3) unsigned NOT NULL default '0',
-  `contact_groups_tploptions` tinyint(3) unsigned NOT NULL default '2',
-  `stalking_options` varchar(20) NOT NULL default '',
-  `notes` varchar(255) NOT NULL,
-  `notes_url` varchar(255) NOT NULL,
-  `action_url` varchar(255) NOT NULL,
-  `icon_image` varchar(255) NOT NULL,
-  `icon_image_alt` varchar(255) NOT NULL,
-  `use_variables` tinyint(3) unsigned NOT NULL default '0',
-  `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `access_rights` varchar(8) default NULL,
-  `config_id` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `config_name` (`template_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
---  Add new `tbl_lnkServicetemplateToContact`
---
-CREATE TABLE `tbl_lnkServicetemplateToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicetemplateToContactgroup`
---
-CREATE TABLE `tbl_lnkServicetemplateToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicetemplateToHost`
---
-CREATE TABLE `tbl_lnkServicetemplateToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicetemplateToHostgroup`
---
-CREATE TABLE `tbl_lnkServicetemplateToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicetemplateToServicegroup`
---
-CREATE TABLE `tbl_lnkServicetemplateToServicegroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicetemplateToServicetemplate`
---
-CREATE TABLE `tbl_lnkServicetemplateToServicetemplate` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  `idSort` int(11) NOT NULL,
-  `idTable` tinyint(4) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`,`idTable`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicetemplateToVariabledefinition`
---
-CREATE TABLE `tbl_lnkServicetemplateToVariabledefinition` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Modify existing tbl_serviceextinfo
---
-ALTER TABLE `tbl_serviceextinfo` CHANGE `host_name` `host_name` INT( 11 ) DEFAULT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `service_description` `service_description` INT(11) NOT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `notes` `notes` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `notes_url` `notes_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `action_url` `action_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `statistic_url` `statistic_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `icon_image` `icon_image` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_serviceextinfo` CHANGE `icon_image_alt` `icon_image_alt` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
---  Solve relations
--- tbl_relation_special to serviceextinfo
-UPDATE `tbl_serviceextinfo`, `tbl_relation_special` SET `tbl_serviceextinfo`.`host_name` = `tbl_relation_special`.`tbl_B1_id`, `tbl_serviceextinfo`.`service_description` = `tbl_relation_special`.`tbl_B2_id` WHERE `tbl_relation_special`.`tbl_A_id` = `tbl_serviceextinfo`.`id` AND `tbl_relation_special`.`tbl_A`=14 AND `tbl_relation_special`.`tbl_B1`=4 AND `tbl_relation_special`.`tbl_B2`=10 AND `tbl_relation_special`.`tbl_A_field`="members";
-
---
---  Modify existing tbl_serviceescalation
---
-ALTER TABLE `tbl_serviceescalation` CHANGE `config_name` `config_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_serviceescalation` CHANGE `host_name` `host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- change order of hostgroup_name
-ALTER TABLE `tbl_serviceescalation` ADD `temp_hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `host_name`;
-UPDATE `tbl_serviceescalation` SET `temp_hostgroup_name`=`hostgroup_name`;
-ALTER TABLE `tbl_serviceescalation` DROP `hostgroup_name`;
-ALTER TABLE `tbl_serviceescalation` CHANGE `temp_hostgroup_name` `hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- order changed
-ALTER TABLE `tbl_serviceescalation` DROP `servicegroup_name`;
-ALTER TABLE `tbl_serviceescalation` CHANGE `service_description` `service_description` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_serviceescalation` ADD `contacts` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `service_description`;
-ALTER TABLE `tbl_serviceescalation` CHANGE `contact_groups` `contact_groups` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_serviceescalation` CHANGE `first_notification` `first_notification` INT( 11 ) NULL;
-ALTER TABLE `tbl_serviceescalation` CHANGE `last_notification` `last_notification` INT( 11 ) NULL;
-ALTER TABLE `tbl_serviceescalation` CHANGE `notification_interval` `notification_interval` INT( 11 ) NULL;
-ALTER TABLE `tbl_serviceescalation` CHANGE `escalation_period` `escalation_period` INT( 11 ) NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_serviceescalation` CHANGE `escalation_options` `escalation_options` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-
---
---  Add new `tbl_lnkServiceescalationToContact`
---
-CREATE TABLE `tbl_lnkServiceescalationToContact` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceescalationToContactgroup`
---
-CREATE TABLE `tbl_lnkServiceescalationToContactgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceescalationToHost`
---
-CREATE TABLE `tbl_lnkServiceescalationToHost` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceescalationToHostgroup`
---
-CREATE TABLE `tbl_lnkServiceescalationToHostgroup` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServiceescalationToService`
---
-CREATE TABLE `tbl_lnkServiceescalationToService` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---  Solve relations
--- service escalation to contactgroup
-INSERT INTO `tbl_lnkServiceescalationToContactgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=12 AND `tbl_B`=3 AND `tbl_A_field`="contact_groups";
--- service escalation to host
-INSERT INTO `tbl_lnkServiceescalationToHost` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=12 AND `tbl_B`=4 AND `tbl_A_field`="host_name";
--- service escalation to hostgroup
-INSERT INTO `tbl_lnkServiceescalationToHostgroup` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=12 AND `tbl_B`=8 AND `tbl_A_field`="hostgroup_name";
--- service escalation to service
-INSERT INTO `tbl_lnkServiceescalationToService` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=12 AND `tbl_B`=10 AND `tbl_A_field`="service_description";
-
---
---  Modify existing tbl_servicedependency
---
-ALTER TABLE `tbl_servicedependency` CHANGE `config_name` `config_name` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `tbl_servicedependency` CHANGE `dependent_host_name` `dependent_host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- change order of dependent_hostgroup_name
-ALTER TABLE `tbl_servicedependency` ADD `temp_dependent_hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `dependent_host_name`;
-UPDATE `tbl_servicedependency` SET `temp_dependent_hostgroup_name`=`dependent_hostgroup_name`;
-ALTER TABLE `tbl_servicedependency` DROP `dependent_hostgroup_name`;
-ALTER TABLE `tbl_servicedependency` CHANGE `temp_dependent_hostgroup_name` `dependent_hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- order changed
-ALTER TABLE `tbl_servicedependency` CHANGE `dependent_service_description` `dependent_service_description` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_servicedependency` CHANGE `host_name` `host_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- change order of dependent_hostgroup_name
-ALTER TABLE `tbl_servicedependency` ADD `temp_hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `host_name`;
-UPDATE `tbl_servicedependency` SET `temp_hostgroup_name`=`hostgroup_name`;
-ALTER TABLE `tbl_servicedependency` DROP `hostgroup_name`;
-ALTER TABLE `tbl_servicedependency` CHANGE `temp_hostgroup_name` `hostgroup_name` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
--- order changed
-ALTER TABLE `tbl_servicedependency` CHANGE `service_description` `service_description` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_servicedependency` DROP `dependent_servicegroup_name`;
-ALTER TABLE `tbl_servicedependency` DROP `servicegroup_name`;
-ALTER TABLE `tbl_servicedependency` CHANGE `inherits_parent` `inherits_parent` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `tbl_servicedependency` CHANGE `execution_failure_criteria` `execution_failure_criteria` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-ALTER TABLE `tbl_servicedependency` CHANGE `notification_failure_criteria` `notification_failure_criteria` VARCHAR( 20 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';
-ALTER TABLE `tbl_servicedependency` ADD `dependency_period` INT( 11 ) NOT NULL DEFAULT '0' AFTER `notification_failure_criteria`;
-
---
---  Add new `tbl_lnkServicedependencyToHost_H`
---
-CREATE TABLE `tbl_lnkServicedependencyToHost_H` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicedependencyToHost_DH`
---
-CREATE TABLE `tbl_lnkServicedependencyToHost_DH` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicedependencyToHostgroup_H`
---
-CREATE TABLE `tbl_lnkServicedependencyToHostgroup_H` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicedependencyToHostgroup_DH`
---
-CREATE TABLE `tbl_lnkServicedependencyToHostgroup_DH` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicedependencyToService_S`
---
-CREATE TABLE `tbl_lnkServicedependencyToService_S` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
---  Add new `tbl_lnkServicedependencyToService_DS`
---
-CREATE TABLE `tbl_lnkServicedependencyToService_DS` (
-  `idMaster` int(11) NOT NULL,
-  `idSlave` int(11) NOT NULL,
-  PRIMARY KEY  (`idMaster`,`idSlave`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---  Solve relations
--- service dependency to host
-INSERT INTO `tbl_lnkServicedependencyToHost_H` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=11 AND `tbl_B`=4 AND `tbl_A_field`="host_name";
--- service dependency to dependent host
-INSERT INTO `tbl_lnkServicedependencyToHost_DH` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=11 AND `tbl_B`=4 AND `tbl_A_field`="dependent_host_name";
--- service dependency to hostgroup
-INSERT INTO `tbl_lnkServicedependencyToHostgroup_H` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=11 AND `tbl_B`=8 AND `tbl_A_field`="hostgroup_name";
--- service dependency to dependent hostgroup
-INSERT INTO `tbl_lnkServicedependencyToHostgroup_DH` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=11 AND `tbl_B`=8 AND `tbl_A_field`="dependent_hostgroup_name";
--- service dependency to service
-INSERT INTO `tbl_lnkServicedependencyToService_S` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=11 AND `tbl_B`=10 AND `tbl_A_field`="service_description";
--- service dependency to dependent service
-INSERT INTO `tbl_lnkServicedependencyToService_DS` (`idMaster`, `idSlave`) SELECT `tbl_A_id`, `tbl_B_id` FROM `tbl_relation` WHERE `tbl_A`=11 AND `tbl_B`=10 AND `tbl_A_field`="dependent_service_description";
-
---
---  Add new tbl_domain
---
-CREATE TABLE `tbl_domain` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+DROP TABLE IF EXISTS `tbl_domain`;
+CREATE TABLE IF NOT EXISTS `tbl_domain` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `domain` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
   `server` varchar(255) NOT NULL,
   `method` varchar(255) NOT NULL,
   `user` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `ssh_key_path` varchar(255) DEFAULT NULL,
   `basedir` varchar(255) NOT NULL,
   `hostconfig` varchar(255) NOT NULL,
   `serviceconfig` varchar(255) NOT NULL,
@@ -1253,33 +190,344 @@ CREATE TABLE `tbl_domain` (
   `servicebackup` varchar(255) NOT NULL,
   `nagiosbasedir` varchar(255) NOT NULL,
   `importdir` varchar(255) NOT NULL,
+  `picturedir` varchar(255) DEFAULT NULL,
   `commandfile` varchar(255) NOT NULL,
   `binaryfile` varchar(255) NOT NULL,
   `pidfile` varchar(255) NOT NULL,
+  `conffile` varchar(255) NOT NULL,
   `version` tinyint(3) unsigned NOT NULL,
-  `access_rights` varchar(255) NOT NULL,
+  `enable_common` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `utf8_decode` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
   `active` enum('0','1') NOT NULL,
-  `nodelete` enum('0','1') NOT NULL default '0',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`),
+  `nodelete` enum('0','1') NOT NULL DEFAULT '0',
+  `last_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `domain` (`domain`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-INSERT INTO `tbl_domain` (`id`, `domain`, `alias`, `server`, `method`, `user`, `password`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `commandfile`, `binaryfile`, `pidfile`, `version`, `access_rights`, `active`, `nodelete`, `last_modified`) VALUES (1, 'localhost', 'Local installation', 'localhost', '1', '', '', '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagios/', '/etc/nagios/import/', '/var/nagios/rw/nagios.cmd', '/usr/local/nagios/bin/nagios', '/var/nagios/nagios.lock', 3, '00000000', '1', '1', '2008-09-03 18:54:03');
+-- 
+-- Daten für Tabelle `tbl_domain`
+-- 
+
+INSERT INTO `tbl_domain` (`id`, `domain`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `version`, `enable_common`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES(0, 'common', 'administrative global domain', '', '1', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', 3, 0, 0, '1', '1', '2010-01-01 00:00:00');
+UPDATE `tbl_domain` SET `id` = '0' WHERE `tbl_domain`.`domain` ='common';
+ALTER TABLE `tbl_domain`  AUTO_INCREMENT =1;
+INSERT INTO `tbl_domain` (`id`, `domain`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `version`, `enable_common`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES(1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagios/', '/etc/nagios/import/', '', '/var/nagios/rw/nagios.cmd', '/usr/local/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagios/nagios.cfg', 3, 1, 0, '1', '1', '2010-01-01 00:00:00');
+
+
+-- --------------------------------------------------------
 
 --
---  Add new `tbl_info`
+-- Tabellenstruktur für Tabelle `tbl_group`
 --
-CREATE TABLE `tbl_info` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `key1` varchar(200) NOT NULL,
-  `key2` varchar(200) NOT NULL,
+
+CREATE TABLE IF NOT EXISTS `tbl_group` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `groupname` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `users` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL,
+  `last_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Daten für Tabelle `tbl_group`
+--
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_host`
+-- 
+
+DROP TABLE IF EXISTS `tbl_host`;
+CREATE TABLE IF NOT EXISTS `tbl_host` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `host_name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `display_name` varchar(255) DEFAULT '',
+  `address` varchar(255) NOT NULL,
+  `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `hostgroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_command` text,
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `initial_state` varchar(20) DEFAULT '',
+  `max_check_attempts` int(11) DEFAULT NULL,
+  `check_interval` int(11) DEFAULT NULL,
+  `retry_interval` int(11) DEFAULT NULL,
+  `active_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `passive_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_period` int(11) NOT NULL DEFAULT '0',
+  `obsess_over_host` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_freshness` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `freshness_threshold` int(11) DEFAULT NULL,
+  `event_handler` int(11) NOT NULL DEFAULT '0',
+  `event_handler_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `low_flap_threshold` int(11) DEFAULT NULL,
+  `high_flap_threshold` int(11) DEFAULT NULL,
+  `flap_detection_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `flap_detection_options` varchar(20) DEFAULT '',
+  `process_perf_data` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_status_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contacts` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contacts_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contact_groups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contact_groups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `notification_interval` int(11) DEFAULT NULL,
+  `notification_period` int(11) NOT NULL DEFAULT '0',
+  `first_notification_delay` int(11) DEFAULT NULL,
+  `notification_options` varchar(20) DEFAULT '',
+  `notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `stalking_options` varchar(20) DEFAULT '',
+  `notes` varchar(255) DEFAULT '',
+  `notes_url` varchar(255) DEFAULT '',
+  `action_url` varchar(255) DEFAULT '',
+  `icon_image` varchar(255) DEFAULT '',
+  `icon_image_alt` varchar(255) DEFAULT '',
+  `vrml_image` varchar(255) DEFAULT '',
+  `statusmap_image` varchar(255) DEFAULT '',
+  `2d_coords` varchar(255) DEFAULT '',
+  `3d_coords` varchar(255) DEFAULT '',
+  `use_variables` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`host_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_host`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_hostdependency`
+-- 
+
+DROP TABLE IF EXISTS `tbl_hostdependency`;
+CREATE TABLE IF NOT EXISTS `tbl_hostdependency` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(255) NOT NULL,
+  `dependent_host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `dependent_hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `inherits_parent` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `execution_failure_criteria` varchar(20) DEFAULT '',
+  `notification_failure_criteria` varchar(20) DEFAULT '',
+  `dependency_period` int(11) NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`config_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_hostdependency`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_hostescalation`
+-- 
+
+DROP TABLE IF EXISTS `tbl_hostescalation`;
+CREATE TABLE IF NOT EXISTS `tbl_hostescalation` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(255) NOT NULL,
+  `host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contacts` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contact_groups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `first_notification` int(11) DEFAULT NULL,
+  `last_notification` int(11) DEFAULT NULL,
+  `notification_interval` int(11) DEFAULT NULL,
+  `escalation_period` int(11) NOT NULL DEFAULT '0',
+  `escalation_options` varchar(20) DEFAULT '',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`config_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_hostescalation`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_hostextinfo`
+-- 
+
+DROP TABLE IF EXISTS `tbl_hostextinfo`;
+CREATE TABLE IF NOT EXISTS `tbl_hostextinfo` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `host_name` int(11) NOT NULL,
+  `notes` varchar(255) NOT NULL,
+  `notes_url` varchar(255) NOT NULL,
+  `action_url` varchar(255) NOT NULL,
+  `statistik_url` varchar(255) NOT NULL,
+  `icon_image` varchar(255) NOT NULL,
+  `icon_image_alt` varchar(255) NOT NULL,
+  `vrml_image` varchar(255) NOT NULL,
+  `statusmap_image` varchar(255) NOT NULL,
+  `2d_coords` varchar(255) NOT NULL,
+  `3d_coords` varchar(255) NOT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`host_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_hostextinfo`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_hostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_hostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_hostgroup` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `hostgroup_name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `members` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_members` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `notes` varchar(255) DEFAULT NULL,
+  `notes_url` varchar(255) DEFAULT NULL,
+  `action_url` varchar(255) DEFAULT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`hostgroup_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_hostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_hosttemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_hosttemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_hosttemplate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `template_name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `hostgroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_command` text,
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `initial_state` varchar(20) DEFAULT '',
+  `max_check_attempts` int(11) DEFAULT NULL,
+  `check_interval` int(11) DEFAULT NULL,
+  `retry_interval` int(11) DEFAULT NULL,
+  `active_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `passive_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_period` int(11) NOT NULL DEFAULT '0',
+  `obsess_over_host` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_freshness` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `freshness_threshold` int(11) DEFAULT NULL,
+  `event_handler` int(11) NOT NULL DEFAULT '0',
+  `event_handler_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `low_flap_threshold` int(11) DEFAULT NULL,
+  `high_flap_threshold` int(11) DEFAULT NULL,
+  `flap_detection_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `flap_detection_options` varchar(20) DEFAULT '',
+  `process_perf_data` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_status_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contacts` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contacts_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contact_groups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contact_groups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `notification_interval` int(11) DEFAULT NULL,
+  `notification_period` int(11) NOT NULL DEFAULT '0',
+  `first_notification_delay` int(11) DEFAULT NULL,
+  `notification_options` varchar(20) DEFAULT '',
+  `notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `stalking_options` varchar(20) DEFAULT '',
+  `notes` varchar(255) DEFAULT '',
+  `notes_url` varchar(255) DEFAULT '',
+  `action_url` varchar(255) DEFAULT '',
+  `icon_image` varchar(255) DEFAULT '',
+  `icon_image_alt` varchar(255) DEFAULT '',
+  `vrml_image` varchar(255) DEFAULT '',
+  `statusmap_image` varchar(255) DEFAULT '',
+  `2d_coords` varchar(255) DEFAULT '',
+  `3d_coords` varchar(255) DEFAULT '',
+  `use_variables` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`template_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_hosttemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_info`
+-- 
+
+DROP TABLE IF EXISTS `tbl_info`;
+CREATE TABLE IF NOT EXISTS `tbl_info` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key1` varchar(100) NOT NULL,
+  `key2` varchar(100) NOT NULL,
   `version` varchar(50) NOT NULL,
   `language` varchar(50) NOT NULL,
   `infotext` text NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `keypair` (`key1`,`key2`,`version`,`language`)
-) ENGINE=MyISAM AUTO_INCREMENT=223 DEFAULT CHARSET=latin1 AUTO_INCREMENT=223 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_info`
+-- 
 
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (1, 'domain', 'domain', 'all', 'default', 'Common name of this domain. This field is for internal use only.');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (2, 'domain', 'basedir', 'all', 'default', '<p>Absolute path to your NagiosQL configuration directory.<br><br>Examples:<br>/etc/nagiosql/ <br>/usr/local/nagiosql/etc/<br><br>Be sure, that your configuration path settings are matching with your nagios.cfg! (cfg_file=<span style="color: red;">/etc/nagiosql</span>/timeperiods.cfg)</p>');
@@ -1290,12 +538,12 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (7, 'domain', 'backupservicedir', 'all', 'default', 'Absolute path to your NagiosQL service configuration backup directory.<br><br>Examples:<br>/etc/nagios/backup/services <br>/usr/local/nagios/etc/backup/services<br><br>This directory is for internal configuration backups of NagiosQL only and is not used by Nagios itself.');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (8, 'domain', 'commandfile', 'all', 'default', 'Absolute path to your Nagios command file.<br><br>Examples:<br>/var/spool/nagios/nagios.cmd<br>/usr/local/nagios/var/rw/nagios.cmd<br><br>Be sure, that your command file path settings are matching with your nagios.cfg! (command_file=<font color="red">/var/spool/nagios/nagios.cmd</font>)<br>(check_external_commands=1)<br><br>\r\nThis is used to reload Nagios directly from NagiosQL after changing a configuration.');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (9, 'common', 'accesskeys', 'all', 'default', '<p><strong>Access key/keyholes</strong></p>\r\n<p>NagiosQL uses a very simplified access control mechanism by using up to 8 keys.</p>\r\n<p>To access a secure object (menu, domain), a user must have a key for every defined keyhole.</p>\r\n<p><em>Example:</em></p>\r\n<p>User A has key 1,2,5,7 (can be defined in user management)<br>User B has key 3,5,7,8 (can be defined in user management)</p>\r\n<p>Menu 1 has keyhole 3,5<br>Menu 2 has keyhole 2,5,7<br>Menu 3 has no keyhole<br>Menu 4 has keyhole 4<br><br>User A has access to menu 2 and menu 3 (key 3 for menu 1 and key 4 for menu 4 are missing)<br>User B has access to menu 1 and menu 3 (key 2 for menu 2 and key 4 for menu 4 are missing)</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (10, 'user', 'webserverauth', 'all', 'default', '<p><strong>User - webserver authentification</strong></p>\r\n<p>If your webserver uses authentification and the NagiosQL user name is the same which is actually logged in - the NagiosQL login process will passed. This means, that NagiosQL no longer shows a login page if this user is already logged in by webserver authentification.</p>\r\n<p><span style="color: #ff0000;">This function will be implemented in a future NagiosQL version. Actually, this option is not implemented!</span></p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(10, 'user', 'webserverauth', 'all', 'default', '<p><strong>User - webserver authentification</strong></p>\r\n<p>If your webserver uses authentification and the NagiosQL user name is the same which is actually logged in - the NagiosQL login process will passed. This means, that NagiosQL no longer shows a login page if this user is already logged in by webserver authentification.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (11, 'domain', 'nagiosbasedir', 'all', 'default', '<p>Absolute path to your Nagios configuration directory.<br><br>Examples:<br>/etc/nagios/ <br>/usr/local/nagios/etc/</p>\r\n<p>Be sure, that your <span style="color: #ff0000;">nagios.cfg</span> and <span style="color: #ff0000;">cfg.cfg</span> ist located inside this directory. NagiosQL uses this to handle this two files.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (12, 'domain', 'importdir', 'all', 'default', '<p>Absolute path to your configuration import directory.<br><br>Examples:<br>/etc/nagiosql/import/ <br>/usr/local/nagios/etc/import/</p>\r\n<p>You can use this directory to store old or example configuration files in it which should be accessable by the importer of NagiosQL.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (13, 'domain', 'binary', 'all', 'default', '<p>Absolute path to your Nagios binary file.<br><br>Examples:<br>/usr/bin/nagios<br>/usr/local/nagios/bin/nagios<br><br> This is used to verify your configuration.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (14, 'domain', 'pidfile', 'all', 'default', '<p>Absolute path to your Nagios process file.<br><br>Examples:<br>/var/run/nagios/nagios.pid<br>/var/run/nagios/nagios.lock<br><br> This is used to check if nagios is running before sending a reload command to the nagios command file.</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (15, 'domain', 'version', 'all', 'default', '<p>The nagios version which is running in this domain.</p>\r\n<p>Be sure you select the correct version here - otherweise not all configuration options are available or not supported options are shown.</p>\r\n<p>You can change this with a running configuration - NagiosQL will then upgrade or downgrade your configuration. Don''t forget to write your complete configuration after a version change!</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (15, 'domain', 'version', 'all', 'default', '<p>The nagios version which is running in this domain.</p>\r\n<p>Be sure you select the correct version here - otherwise not all configuration options are available or not supported options are shown.</p>\r\n<p>You can change this with a running configuration - NagiosQL will then upgrade or downgrade your configuration. Don''t forget to write your complete configuration after a version change!</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (16, 'host', 'hostname', 'all', 'default', '<p><strong>Host - host name</strong><br><br>This directive is used to define a short name used to identify the host. It is used in host group and service definitions to reference this particular host. Hosts can have multiple services (which are monitored) associated with them. When used properly, the $HOSTNAME$ macro will contain this short name.</p>\r\n<p><em>Parameter name:</em> host_name<br><em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (17, 'host', 'alias', 'all', 'default', '<p><strong>Host - alias</strong><br><br>This directive is used to define a longer name or description used to identify the host. It is provided in order to allow you to more easily identify a particular host. When used properly, the $HOSTALIAS$ macro will contain this alias/description.</p>\r\n<p><em>Parameter name:</em> alias<br><em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (18, 'host', 'address', 'all', 'default', '<p><strong>Host - address</strong></p>\r\n<p>This directive is used to define the address of the host. Normally, this is an IP address, although it could really be anything you want (so long as it can be used to check the status of the host). You can use a FQDN to identify the host instead of an IP address, but if DNS services are not availble this could cause problems. When used properly, the $HOSTADDRESS$ macro will contain this address.</p>\r\n<p><strong>Note:</strong> If you do not specify an address directive in a host definition, the name of the host will be used as its address. A word of caution about doing this, however - if DNS fails, most of your service checks will fail because the plugins will be unable to resolve the host name.</p>\r\n<p><em>Parameter name:</em> address<br><em>Required:</em> yes</p>');
@@ -1305,7 +553,7 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (22, 'common', 'tploptions', '3', 'default', '<p><strong>Cancelling Inheritance of String Values</strong></p>\r\n<p>In some cases you may not want your host, service, or contact definitions to inherit values of string variables from the templates they reference. If this is the case, you can specify "<strong>null</strong>" as the value of the variable that you do not want to inherit.</p>\r\n<p><strong><br>Additive Inheritance of String Values</strong></p>\r\n<p>Nagios gives preference to local variables instead of values inherited from templates. In most cases local variable values override those that are defined in templates. In some cases it makes sense to allow Nagios to use the values of inherited <em>and</em> local variables together.</p>\r\n<p>This "additive inheritance" can be accomplished by prepending the local variable value with a plus sign (<strong>+</strong>).  This features is only available for standard (non-custom) variables that contain string values.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (23, 'host', 'check_command', 'all', 'default', '<p><strong>Host - check command</strong><br><br>This directive is used to specify the <em>short name</em> of the command that should be used to check if the host is up or down. Typically, this command would try and ping the host to see if it is "alive". The command must return a status of OK (0) or Nagios will assume the host is down.</p>\r\n<p>If you leave this argument blank, the host will <em>not</em> be actively checked. Thus, Nagios will likely always assume the host is up (it may show up as being in a "PENDING" state in the web interface). This is useful if you are monitoring printers or other devices that are frequently turned off. The maximum amount of time that the notification command can run is controlled by the host_check_timeout option.</p>\r\n<p><em>Parameter name:</em> check_command<br><em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (24, 'host', 'arguments', 'all', 'default', '<p><strong>Host - arguments</strong></p>\r\n<p>The values defined here will replace the according argument variable behind the selected command. Up to 8 argument variables are supported. Be sure, that you defines a valid value for each required argument variable.</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (25, 'host', 'templateadd', 'all', 'default', '<p><strong>Host - Templates</strong></p>\r\n<p>You can add one or more host templates to a host configuration. Nagios will add the definitions from each template to a host configuration.</p>\r\n<p>If you add more than one template - the templates from the bottom to the top will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (25, 'host', 'templateadd', 'all', 'default', '<p><strong>Host - Templates</strong></p>\r\n<p>You can add one or more host templates to a host configuration. Nagios will add the definitions from each template to a host configuration.</p>\r\n<p>If you add more than one template - the sort order will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (26, 'host', 'initial_state', '3', 'default', '<p><strong>Host - initial state</strong></p>\r\n<p>By default Nagios will assume that all hosts are in UP states when in starts. You can override the initial state for a host by using this directive. Valid options are: <strong><br>o</strong> = UP, <br><strong>d</strong> = DOWN, and <br><strong>u</strong> = UNREACHABLE.</p>\r\n<p><em>Parameter name:</em> initial_state<em><br>Required:</em> no</p>\r\n<p>&nbsp;</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (27, 'host', 'retry_interval', '3', 'default', '<p><strong>Host - retry interval</strong></p>\r\n<p>This directive is used to define the number of "time units" to wait before scheduling a re-check of the hosts. Hosts are rescheduled at the retry interval when they have changed to a non-UP state. Once the host has been retried <strong>max_check_attempts</strong> times without a change in its status, it will revert to being scheduled at its "normal" rate as defined by the <strong>check_interval</strong> value. Unless you''ve changed the interval_length directive from the default value of 60, this number will mean minutes.  More information on this value can be found in the check scheduling documentation.</p>\r\n<p><em>Parameter name:</em> retry_interval<em><br>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (28, 'host', 'max_check_attempts', 'all', 'default', '<p><strong>Host - max check attempts</strong></p>\r\n<p>This directive is used to define the number of times that Nagios will retry the host check command if it returns any state other than an OK state. Setting this value to 1 will cause Nagios to generate an alert without retrying the host check again. Note: If you do not want to check the status of the host, you must still set this to a minimum value of 1. To bypass the host check, just leave the <em>check_command</em> option blank.</p>\r\n<p><em>Parameter name:</em> max_check_attempts<em><br>Required:</em> yes</p>');
@@ -1342,8 +590,8 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (62, 'host', '2d_coords', '3', 'default', '<p><strong>Host - 2D coords<br> </strong></p>\r\n<p>This variable is used to define coordinates to use when drawing the host in the statusmap CGI. Coordinates should be given in positive integers, as they correspond to physical pixels in the generated image. The origin for drawing (0,0) is in the upper left hand corner of the image and extends in the positive x direction (to the right) along the top of the image and in the positive y direction (down) along the left hand side of the image.</p>\r\n<p>For reference, the size of the icons drawn is usually about 40x40 pixels (text takes a little extra space). The coordinates you specify here are for the upper left hand corner of the host icon that is drawn. Note: Don''t worry about what the maximum x and y coordinates that you can use are. The CGI will automatically calculate the maximum dimensions of the image it creates based on the largest x and y coordinates you specify.</p>\r\n<p><em>Parameter name:</em> 2d_coords<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (63, 'host', 'icon_image_alt_text', '3', 'default', '<p><strong>Host - icon image alt<br> </strong></p>\r\n<p>This variable is used to define an optional string that is used in the ALT tag of the image specified by the <em>icon image</em> <em></em> argument.</p>\r\n<p><em>Parameter name:</em> icon_image_alt<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (64, 'host', '3d_coords', '3', 'default', '<p><strong>Host - 3D coords<br> </strong></p>\r\n<p>This variable is used to define coordinates to use when drawing the host in the statuswrl CGI. Coordinates can be positive or negative real numbers. The origin for drawing is (0.0,0.0,0.0). For reference, the size of the host cubes drawn is 0.5 units on each side (text takes a little more space). The coordinates you specify here are used as the center of the host cube.</p>\r\n<p><em>Parameter name:</em> 3d_coords<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (65, 'common', 'free_variables_name', 'all', 'default', '<p><strong>Free variables (custom object variables)<br></strong></p>\r\n<p>NagiosQL supports custom object variables.</p>\r\n<p>There are a few important things that you should note about custom variables:</p>\r\n<ul>\r\n<li>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables </li>\r\n<li>Custom variable names are case-insensitive </li>\r\n<li>Custom variables are inherited from object templates like normal variables </li>\r\n<li>Scripts can reference custom variable values with macros and environment variables </li>\r\n</ul>\r\n<p><em>Examples</em></p>\r\n<p><span style="font-family: courier new,courier;">define host{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name linuxserver<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _mac_address  00:06:5B:A6:AD:AA ; &lt;-- Custom MAC_ADDRESS variable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _rack_number R32   ; &lt;-- Custom RACK_NUMBER variable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>}</span></p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (66, 'common', 'free_variables_value', 'all', 'default', '<p><strong>Free variables (custom object variables)<br></strong></p>\r\n<p>NagiosQL supports custom object variables.</p>\r\n<p>There are a few important things that you should note about custom variables:</p>\r\n<ul>\r\n<li>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables </li>\r\n<li>Custom variable names are case-insensitive </li>\r\n<li>Custom variables are inherited from object templates like normal variables </li>\r\n<li>Scripts can reference custom variable values with macros and environment variables </li>\r\n</ul>\r\n<p><em>Examples</em></p>\r\n<p><span style="font-family: courier new,courier;">define host{<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name linuxserver<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _mac_address 00:06:5B:A6:AD:AA ; &lt;-- Custom MAC_ADDRESS variable<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _rack_number  R32   ; &lt;-- Custom RACK_NUMBER variable<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br> }</span></p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (65, 'common', 'free_variables_name', 'all', 'default', '<p><strong>Free variables (custom object variables)<br></strong></p>\r\n<p>NagiosQL supports custom object variables.</p>\r\n<p>There are a few important things that you should note about custom variables:</p>\r\n<ul>\r\n<li>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables </li>\r\n<li>Custom variable names are case-insensitive </li>\r\n<li>Custom variables are inherited from object templates like normal variables </li>\r\n<li>Scripts can reference custom variable values with macros and environment variables </li>\r\n</ul>\r\n<p><em>Examples</em></p>\r\n<p><span style="font-family: courier new,courier;">define host{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name	linuxserver<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _mac_address	00:06:5B:A6:AD:AA	; &lt;-- Custom MAC_ADDRESS variable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _rack_number	R32		; &lt;-- Custom RACK_NUMBER variable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>}</span></p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (66, 'common', 'free_variables_value', 'all', 'default', '<p><strong>Free variables (custom object variables)<br></strong></p>\r\n<p>NagiosQL supports custom object variables.</p>\r\n<p>There are a few important things that you should note about custom variables:</p>\r\n<ul>\r\n<li>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables </li>\r\n<li>Custom variable names are case-insensitive </li>\r\n<li>Custom variables are inherited from object templates like normal variables </li>\r\n<li>Scripts can reference custom variable values with macros and environment variables </li>\r\n</ul>\r\n<p><em>Examples</em></p>\r\n<p><span style="font-family: courier new,courier;">define host{<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name	linuxserver<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _mac_address	00:06:5B:A6:AD:AA	; &lt;-- Custom MAC_ADDRESS variable<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _rack_number	R32		; &lt;-- Custom RACK_NUMBER variable<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br> }</span></p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (67, 'host', 'genericname', 'all', 'default', '<p><strong>Host - generic name</strong></p>\r\n<p>It is possible to use a host definition as a template for other host configurations. If this definition should be used as template, a generic template name must be defined.</p>\r\n<p>We do not recommend to do this - it is more open to define a separate host template than to use this option.</p>\r\n<p><em>Parameter name:</em> name<em><br>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (68, 'service', 'config_name', 'all', 'default', '<p><strong>Service - config name</strong></p>\r\n<p>This directive is used to specify a common config name for a group of service definitions. This is a NagiosQL parameter and it will not be written to the configuration file. Every service definitions with the same configuration name will stored in one file. The configuration name is also the file name of this configuration set.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (69, 'service', 'hosts', 'all', 'default', '<p><strong>Service - host name<br> </strong></p>\r\n<p>This directive is used to specify the <em>short name(s)</em> of the host(s) that the service "runs" on or is associated with.</p>\r\n<p><em>Parameter name:</em> host_name<br> <em>Required:</em> yes (no, if a hostgroup is defined)</p>');
@@ -1353,7 +601,7 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (73, 'service', 'display_name', 'all', 'default', '<p><strong>Service</strong><strong> - display name<br> </strong></p>\r\n<p>This directive is used to define an alternate name that should be displayed in the web interface for this service. If not specified, this defaults to the value you specify for the <em>service_description</em> directive.  Note:  The current CGIs do not use this option, although future versions of the web interface will.</p>\r\n<p><em>Parameter name:</em> display_name<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (74, 'service', 'check_command', 'all', 'default', '<p><strong>Service</strong><strong> - check command<br> </strong></p>\r\n<p>This directive is used to specify the <em>short name</em> of the command that Nagios will run in order to check the status of the service. The maximum amount of time that the service check command can run is controlled by the service_check_timeout option.</p>\r\n<p><em>Parameter name:</em> check_command<br> <em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (75, 'service', 'argument', 'all', 'default', '<p><strong>Service - arguments</strong></p>\r\n<p>The values defined here will replace the according argument variable behind the selected command. Up to 8 argument variables are supported. Be sure, that you defines a valid value for each required argument variable.</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (76, 'service', 'templateadd', 'all', 'default', '<p><strong>Service - Templates</strong></p>\r\n<p>You can add one or more service templates to a service configuration. Nagios will add the definitions from each template to a service configuration.</p>\r\n<p>If you add more than one template - the templates from the bottom to the top will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (76, 'service', 'templateadd', 'all', 'default', '<p><strong>Service - Templates</strong></p>\r\n<p>You can add one or more service templates to a service configuration. Nagios will add the definitions from each template to a service configuration.</p>\r\n<p>If you add more than one template - the sort order will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (77, 'service', 'initial_state', '3', 'default', '<p><strong>Service - initial state<br> </strong></p>\r\n<p>By default Nagios will assume that all services are in OK states when in starts. You can override the initial state for a service by using this directive. Valid options are: <strong><br>o</strong> = OK,<br> <strong>w</strong> = WARNING, <strong><br>u</strong> = UNKNOWN, and <strong><br>c</strong> = CRITICAL.</p>\r\n<p><em>Parameter name:</em> initial_state<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (78, 'service', 'retry_interval', '3', 'default', '<p><strong>Service - retry interval<br> </strong></p>\r\n<p>This directive is used to define the number of "time units" to wait before scheduling a re-check of the service. Services are rescheduled at the retry interval when they have changed to a non-OK state. Once the service has been retried <strong>max_check_attempts</strong> times without a change in its status, it will revert to being scheduled at its "normal" rate as defined by the <strong>check_interval</strong> value. Unless you''ve changed the interval_length directive from the default value of 60, this number will mean minutes.  More information on this value can be found in the check scheduling documentation.</p>\r\n<p><em>Parameter name:</em> retry_interval<br> <em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (79, 'service', 'max_check_attempts', 'all', 'default', '<p><strong>Service - max check attempts<br> </strong></p>\r\n<p>This directive is used to define the number of times that Nagios will retry the service check command if it returns any state other than an OK state. Setting this value to 1 will cause Nagios to generate an alert without retrying the service check again.</p>\r\n<p><em>Parameter name:</em> max_check_attempts<br> <em>Required:</em> yes</p>');
@@ -1423,20 +671,20 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (143, 'contact', 'retain_status_information', '3', 'default', '<p><strong>Contact - </strong><strong>retain status information</strong></p>\r\n<p>This directive is used to determine whether or not status-related information about the contact is retained across program restarts. This is only useful if you have enabled state retention using the retain_state_information directive.  Value: 0 = disable status information retention, 1 = enable status information retention.</p>\r\n<p>Parameter name: retain_status_information<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (144, 'contact', 'can_submit_commands', '3', 'default', '<p><strong>Contact - </strong><strong>can submit commands</strong></p>\r\n<p>This directive is used to determine whether or not the contact can submit external commands to Nagios from the CGIs. Values: 0 = don''t allow contact to submit commands, 1 = allow contact to submit commands.</p>\r\n<p>Parameter name: can_submit_commands<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (145, 'contact', 'retain_nostatus_information', '3', 'default', '<p><strong>Contact - </strong><strong>retain nonstatus information</strong></p>\r\n<p>This directive is used to determine whether or not non-status information about the contact is retained across program restarts. This is only useful if you have enabled state retention using the retain_state_information directive.  Value: 0 = disable non-status information retention, 1 = enable non-status information retention.</p>\r\n<p>Parameter name: retain_nonstatus_information<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (146, 'contact', 'templateadd', 'all', 'default', '<p><strong>Contact - Templates</strong></p>\r\n<p>You can add one or more contact templates to a contact configuration. Nagios will add the definitions from each template to a contact configuration.</p>\r\n<p>If you add more than one template - the templates from the bottom to the top will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (146, 'contact', 'templateadd', 'all', 'default', '<p><strong>Contact - Templates</strong></p>\r\n<p>You can add one or more contact templates to a contact configuration. Nagios will add the definitions from each template to a contact configuration.</p>\r\n<p>If you add more than one template - the sort order will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (147, 'contact', 'genericname', 'all', 'default', '<p><strong>Contact - generic name</strong></p>\r\n<p>It is possible to use a contact definition as a template for other contact configurations. If this definition should be used as template, a generic template name must be defined.</p>\r\n<p>We do not recommend to do this - it is more open to define a separate contact template than use this option.</p>\r\n<p><em>Parameter name:</em> name<em><br>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (148, 'contactgroup', 'contactgroup_name', 'all', 'default', '<p><strong>Contactgroup - contactgroup name</strong></p>\r\n<p>This directive is a short name used to identify the contact group.</p>\r\n<p><em>Parameter name:</em> contactgroup_name<em><br>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (149, 'contactgroup', 'members', 'all', 'default', '<p><strong>Contactgroup - </strong><strong>members</strong></p>\r\n<p>This directive is used to define a list of the <em>short names</em> of contacts that should be included in this group. Multiple contact names should be separated by commas. This directive may be used as an alternative to (or in addition to) using the <em>contactgroups</em> directive in contact definitions.</p>\r\n<p><strong>NagiosQL:</strong> If you select a contactgroup inside a contact definition using the&nbsp;<em>contactgroups</em> directive in&nbsp;<em>contact definition</em>, this contact will <span style="color: #ff0000;">not be selected</span> here because these are two different ways to specify a contactgroup!</p>\r\n<p><em>Parameter name:</em> members<em><br>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (150, 'contactgroup', 'alias', 'all', 'default', '<p><strong>Contactgroup - </strong><strong>alias</strong></p>\r\n<p>This directive is used to define a longer name or description used to identify the contact group.</p>\r\n<p><em>Parameter name:</em> alias<em><br>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (151, 'contactgroup', 'contactgroup_members', 'all', 'default', '<p><strong>Contactgroup - </strong><strong>contactgroup members</strong></p>\r\n<p>This optional directive can be used to include contacts from other "sub" contact groups in this contact group. Specify a comma-delimited list of short names of other contact groups whose members should be included in this group.</p>\r\n<p><em>Parameter name:</em> contactgroup_members<em><br>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (152, 'timeperiod', 'timeperiod_name', 'all', 'default', '<p><strong>Timeperiod - </strong><strong>timeperiod name</strong></p>\r\n<p>This directives is the short name used to identify the time period.</p>\r\n<p>Parameter name: timeperiod_name<br> <em>Required:</em> yes</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (153, 'timeperiod', 'exclude', '3', 'default', '<p><strong>Timeperiod - </strong><strong>exclude</strong></p>\r\n<p>This directive is used to specify the short names of other timeperiod definitions whose time ranges should be excluded from this timeperiod. Multiple timeperiod names should be separated with a comma.</p>\r\n<p>Parameter name: exclude<br> <em>Required:</em> yes</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (154, 'timeperiod', 'alias', 'all', 'default', '<p><strong>Timeperiod - </strong><strong>alias</strong></p>\r\n<p>This directive is a longer name or description used to identify the time period.</p>\r\n<p>Parameter name: alias<br> <em>Required:</em> yes</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (155, 'timeperiod', 'templatename', '3', 'default', '<p><strong>Timeperiod - </strong><strong>template name</strong></p>\r\n<p>Not yet implemented.</p>\r\n<p>Parameter name: name<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (156, 'timeperiod', 'weekday', '2', 'default', '<p><strong>Timeperiod - </strong><strong>time definition<br></strong></p>\r\n<p>The <em>sunday</em> through <em>saturday</em> directives are comma-delimited lists of time ranges that are "valid" times for a particular day of the week. Notice that there are seven different days for which you can define time ranges (Sunday through Saturday).</p>\r\n<p>Parameter name: [weekday] [exception]<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (157, 'timeperiod', 'timerange', '2', 'default', '<p><strong>Timeperiod - </strong><strong>time range<br></strong></p>\r\n<p>Each time range is in the form of <strong>HH:MM-HH:MM</strong>, where hours are specified on a 24 hour clock.  For example, <strong>00:15-24:00</strong> means 12:15am in the morning for this day until 12:20am midnight (a 23 hour, 45 minute total time range). If you wish to exclude an entire day from the timeperiod, simply do not include it in the timeperiod definition.</p>\r\n<p>Parameter name: [weekday] [exception]<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (158, 'timeperiod', 'weekday', '3', 'default', '<p><strong>Timeperiod - </strong><strong>time definition<br></strong></p>\r\n<p>The weekday directives ("<em>sunday</em>" through "<em>saturday</em>")are comma-delimited lists of time ranges that are "valid" times for a particular day of the week. Notice that there are seven different days for which you can define time ranges (Sunday through Saturday).&nbsp;</p>\r\n<p>You can also specify several different types of exceptions to the standard rotating weekday schedule. Exceptions can take a number of different forms including single days of a specific or generic month, single weekdays in a month, or single calendar dates. You can also specify a range of days/dates and even specify skip intervals to obtain functionality described by "every 3 days between these dates". Rather than list all the possible formats for exception strings, Weekdays and different types of exceptions all have different levels of precedence, so its important to understand how they can affect each other. More information on this can be found in the documentation on timeperiods.</p>\r\n<p>Parameter name: [weekday] [exception]<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (159, 'timeperiod', 'timerange', '3', 'default', '<p><strong>Timeperiod - </strong><strong>time range<br></strong></p>\r\n<p>Each time range is in the form of <strong>HH:MM-HH:MM</strong>, where hours are specified on a 24 hour clock.  For example, <strong>00:15-24:00</strong> means 12:15am in the morning for this day until 12:00am midnight (a 23 hour, 45 minute total time range). If you wish to exclude an entire day from the timeperiod, simply do not include it in the timeperiod definition.</p>\r\n<p>Parameter name: [weekday] [exception]<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(152, 'timeperiod', 'timeperiod_name', 'all', 'default', '<p><strong>Timeperiod - </strong><strong>timeperiod name</strong></p>\r\n<p>This directives is the short name used to identify the time period.</p>\r\n<p><em>Parameter name:</em> timeperiod_name<br> <em>Required:</em> yes</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(153, 'timeperiod', 'exclude', '3', 'default', '<p><strong>Timeperiod - </strong><strong>exclude</strong></p>\r\n<p>This directive is used to specify the short names of other timeperiod definitions whose time ranges should be excluded from this timeperiod. Multiple timeperiod names should be separated with a comma.</p>\r\n<p><em>Parameter name:</em> exclude<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(154, 'timeperiod', 'alias', 'all', 'default', '<p><strong>Timeperiod - </strong><strong>alias</strong></p>\r\n<p>This directive is a longer name or description used to identify the time period.</p>\r\n<p><em>Parameter name:</em> alias<br> <em>Required:</em> yes</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(155, 'timeperiod', 'templatename', '3', 'default', '<p><strong>Timeperiod - </strong><strong>template name</strong></p>\r\n<p>Not yet implemented.</p>\r\n<p><em>Parameter name:</em> name<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(156, 'timeperiod', 'weekday', '2', 'default', '<p><strong>Timeperiod - </strong><strong>time definition<br></strong></p>\r\n<p>The <em>sunday</em> through <em>saturday</em> directives are comma-delimited lists of time ranges that are "valid" times for a particular day of the week. Notice that there are seven different days for which you can define time ranges (Sunday through Saturday).</p>\r\n<p><em>Parameter name:</em> [weekday] [exception]<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(157, 'timeperiod', 'timerange', '2', 'default', '<p><strong>Timeperiod - </strong><strong>time range<br></strong></p>\r\n<p>Each time range is in the form of <strong>HH:MM-HH:MM</strong>, where hours are specified on a 24 hour clock.  For example, <strong>00:15-24:00</strong> means 12:15am in the morning for this day until 12:20am midnight (a 23 hour, 45 minute total time range). If you wish to exclude an entire day from the timeperiod, simply do not include it in the timeperiod definition.</p>\r\n<p><em>Parameter name:</em> [weekday] [exception]<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(158, 'timeperiod', 'weekday', '3', 'default', '<p><strong>Timeperiod - </strong><strong>time definition<br></strong></p>\r\n<p>The weekday directives ("<em>sunday</em>" through "<em>saturday</em>")are comma-delimited lists of time ranges that are "valid" times for a particular day of the week. Notice that there are seven different days for which you can define time ranges (Sunday through Saturday).&nbsp;</p>\r\n<p>You can also specify several different types of exceptions to the standard rotating weekday schedule. Exceptions can take a number of different forms including single days of a specific or generic month, single weekdays in a month, or single calendar dates. You can also specify a range of days/dates and even specify skip intervals to obtain functionality described by "every 3 days between these dates". Rather than list all the possible formats for exception strings, Weekdays and different types of exceptions all have different levels of precedence, so its important to understand how they can affect each other. More information on this can be found in the documentation on timeperiods.</p>\r\n<p><em>Parameter name:</em> [weekday] [exception]<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(159, 'timeperiod', 'timerange', '3', 'default', '<p><strong>Timeperiod - </strong><strong>time range<br></strong></p>\r\n<p>Each time range is in the form of <strong>HH:MM-HH:MM</strong>, where hours are specified on a 24 hour clock.  For example, <strong>00:15-24:00</strong> means 12:15am in the morning for this day until 12:00am midnight (a 23 hour, 45 minute total time range). If you wish to exclude an entire day from the timeperiod, simply do not include it in the timeperiod definition.</p>\r\n<p><em>Parameter name:</em> [weekday] [exception]<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (160, 'contacttemplate', 'template_name', 'all', 'default', '<p><strong>Contacttemplate - template name</strong></p>\r\n<p>This directive is used to define a short name used to identify the contact template.</p>\r\n<p><em>Parameter name:</em> name<br> <em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (161, 'command', 'command_name', 'all', 'default', '<p><strong>Command - </strong><strong>command name</strong></p>\r\n<p>This directive is the short name used to identify the command.  It is referenced in contact, host, and service definitions (in notification, check, and event handler directives), among other places.</p>\r\n<p><em>Parameter name:</em> command_name<br> <em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (162, 'command', 'command_line', 'all', 'default', '<p><strong>Command - </strong><strong>command line</strong></p>\r\n<p>This directive is used to define what is actually executed by Nagios when the command is used for service or host checks, notifications, or event handlers. Before the command line is executed, all valid macros are replaced with their respective values. See the documentation on macros for determining when you can use different macros. Note that the command line is <em>not</em> surrounded in quotes. Also, if you want to pass a dollar sign ($) on the command line, you have to escape it with another dollar sign.</p>\r\n<p><strong>NOTE</strong>: You may not include a <strong>semicolon</strong> (;) in the <em>command_line</em> directive, because everything after it will be ignored as a config file comment. You can work around this limitation by setting one of the <strong>$USER$</strong> macros in your resource file to a semicolon and then referencing the appropriate $USER$ macro in the <em>command_line</em> directive in place of the semicolon.</p>\r\n<p>If you want to pass arguments to commands during runtime, you can use <strong>$ARGn$</strong> macros in the <em>command_line</em> directive of the command definition and then separate individual arguments from the command name (and from each other) using bang (!) characters in the object definition directive (host check command, service event handler command, etc) that references the command. More information on how arguments in command definitions are processed during runtime can be found in the documentation on macros.</p>\r\n<p><em>Parameter name:</em> command_line<br> <em>Required:</em> yes</p>');
@@ -1465,7 +713,7 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (185, 'hostextinfo', 'notes', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>notes</strong><strong></strong></p>\r\n<p>This directive is used to define an optional string of notes pertaining to the host. If you specify a note here, you will see the it in the extended information CGI (when you are viewing information about the specified host).</p>\r\n<p><em>Parameter name:</em> notes<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (186, 'hostextinfo', 'icon_image_alt_text', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>icon image alt</strong><strong></strong></p>\r\n<p>This variable is used to define an optional string that is used in the ALT tag of the image specified by the <em>&lt;icon_image&gt;</em> argument.  The ALT tag is used in the status, extended information and statusmap CGIs.</p>\r\n<p><em>Parameter name:</em> icon_image_alt<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (187, 'hostextinfo', 'notes_url', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>notes url</strong></p>\r\n<p>This variable is used to define an optional URL that can be used to provide more information about the host. If you specify an URL, you will see a link that says "Extra Host Notes" in the extended information CGI (when you are viewing information about the specified host). Any valid URL can be used. If you plan on using relative paths, the base path will the the same as what is used to access the CGIs (i.e. <em>/cgi-bin/nagios/</em>). This can be very useful if you want to make detailed information on the host, emergency contact methods, etc. available to other support staff.</p>\r\n<p><em>Parameter name:</em> notes_url<br> <em>Required:</em> no</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (188, 'hostextinfo', 'vrml_image', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>vrml image</strong><strong></strong></p>\r\n<p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This image will be used as the texture map for the specified host in the <a href="http:-- nagios.sourceforge.net/docs/3_0/cgis.html#statuswrl_cgi">statuswrl</a> CGI.  Unlike the image you use for the <em>icon_image</em> variable, this one should probably <em>not</em> have any transparency.  If it does, the host object will look a bit wierd.</p>\r\n<p>Images for hosts are assumed to be in the <strong>logos/</strong> subdirectory in your HTML images directory (i.e. <em>/usr/local/nagios/share/images/logos</em>).</p>\r\n<p><em>Parameter name:</em> vrml_image<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (188, 'hostextinfo', 'vrml_image', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>vrml image</strong><strong></strong></p>\r\n<p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This image will be used as the texture map for the specified host in the <a href="http://nagios.sourceforge.net/docs/3_0/cgis.html#statuswrl_cgi">statuswrl</a> CGI.  Unlike the image you use for the <em>icon_image</em> variable, this one should probably <em>not</em> have any transparency.  If it does, the host object will look a bit wierd.</p>\r\n<p>Images for hosts are assumed to be in the <strong>logos/</strong> subdirectory in your HTML images directory (i.e. <em>/usr/local/nagios/share/images/logos</em>).</p>\r\n<p><em>Parameter name:</em> vrml_image<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (189, 'hostextinfo', 'action_url', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>action url</strong></p>\r\n<p>This directive is used to define an optional URL that can be used to provide more actions to be performed on the host. If you specify an URL, you will see a link that says "Extra Host Actions" in the extended information CGI (when you are viewing information about the specified host). Any valid URL can be used. If you plan on using relative paths, the base path will the the same as what is used to access the CGIs (i.e. <em>/cgi-bin/nagios/</em>).</p>\r\n<p><em>Parameter name:</em> action_url<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (190, 'hostextinfo', 'status_image', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>statusmap image</strong></p>\r\n<p>This variable is used to define the name of an image that should be associated with this host in the statusmap CGI. You can specify a JPEG, PNG, and GIF image if you want, although I would strongly suggest using a GD2 format image, as other image formats will result in a lot of wasted CPU time when the statusmap image is generated.</p>\r\n<p>GD2 images can be created from PNG images by using the <strong>pngtogd2</strong> utility supplied with Thomas Boutell''s gd library.  The GD2 images should be created in <em>uncompressed</em> format in order to minimize CPU load when the statusmap CGI is generating the network map image.</p>\r\n<p>The image will look best if it is 40x40 pixels in size. You can leave these option blank if you are not using the statusmap CGI. Images for hosts are assumed to be in the <strong>logos/</strong> subdirectory in your HTML images directory (i.e. <em>/usr/local/nagios/share/images/logos</em>).</p>\r\n<p><em>Parameter name:</em> statusmap_image<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (191, 'hostextinfo', '2d_coords', 'all', 'default', '<p><strong>Hostextinfo - </strong><strong>2d coords</strong></p>\r\n<p>This variable is used to define coordinates to use when drawing the host in the statusmap CGI. Coordinates should be given in positive integers, as they correspond to physical pixels in the generated image. The origin for drawing (0,0) is in the upper left hand corner of the image and extends in the positive x direction (to the right) along the top of the image and in the positive y direction (down) along the left hand side of the image. For reference, the size of the icons drawn is usually about 40x40 pixels (text takes a little extra space). The coordinates you specify here are for the upper left hand corner of the host icon that is drawn.</p>\r\n<p>Note: Don''t worry about what the maximum x and y coordinates that you can use are. The CGI will automatically calculate the maximum dimensions of the image it creates based on the largest x and y coordinates you specify.</p>\r\n<p><em>Parameter name:</em> 2d_coords<br> <em>Required:</em> no</p>');
@@ -1499,96 +747,2030 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (220, 'serviceextinfo', 'action_url', 'all', 'default', '<p><strong>Serviceextinfo -</strong><strong> </strong><strong>action url</strong></p>\r\n<p>This directive is used to define an optional URL that can be used to provide more actions to be performed on the service. If you specify an URL, you will see a link that says "Extra Service Actions" in the extended information CGI (when you are viewing information about the specified service). Any valid URL can be used. If you plan on using relative paths, the base path will the the same as what is used to access the CGIs (i.e. <em>/cgi-bin/nagios/</em>).</p>\r\n<p><em>Parameter name:</em> action_url<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (221, 'serviceextinfo', 'notes_url', 'all', 'default', '<p><strong>Serviceextinfo -</strong><strong> </strong><strong>notes url</strong></p>\r\n<p>This directive is used to define an optional URL that can be used to provide more information about the service. If you specify an URL, you will see a link that says "Extra Service Notes" in the extended information CGI (when you are viewing information about the specified service). Any valid URL can be used.</p>\r\n<p>If you plan on using relative paths, the base path will the the same as what is used to access the CGIs (i.e. <em>/cgi-bin/nagios/</em>). This can be very useful if you want to make detailed information on the service, emergency contact methods, etc. available to other support staff.</p>\r\n<p><em>Parameter name:</em> notes_url<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (222, 'serviceextinfo', 'icon_image_alt', 'all', 'default', '<p><strong>Serviceextinfo -</strong><strong> </strong><strong>icon image alt</strong><strong></strong></p>\r\n<p>This variable is used to define an optional string that is used in the ALT tag of the image specified by the <em>&lt;icon_image&gt;</em> argument.  The ALT tag is used in the status, extended information and statusmap CGIs.</p>\r\n<p><em>Parameter name:</em> icon_image_alt<br> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(223, 'host', 'services', 'all', 'default', '<p><strong>Host - service settings</strong></p>\r\n<p><span id="result_box" lang="en"><span>This box can be used to allocate already existing services to a host.&nbsp;</span></span></p>\r\n<p>This is an internal function of NagiosQL.</p>\r\n<p><span id="result_box" lang="en"><span><strong>Note:</strong> To activate the changes, the corresponding service definitions have to be rewritten!</span></span></p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(224, 'timeperiod', 'name', 'all', 'default', '<p><strong>Timeperiod - </strong><strong>name</strong></p>\r\n<p>Its just a "template" name that can be referenced in other object  definitions so they can inherit the objects properties/variables.   Template names must be unique amongst objects of the same type, so you  can''t have two or more time definitions that have "mytemplate" as  their template name.</p>\r\n<p><em>Parameter name:</em> name<br /> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(225, 'timeperiod', 'include', '3', 'default', '<p><strong>Timeperiod - </strong><strong>include</strong></p>\r\n<p>This directive is used to specify the short names (template names) of other timeperiod  definitions whose time ranges should be included to this timeperiod.  Multiple timeperiod names should be separated with a comma.</p>\r\n<p><em>Parameter name:</em> use<br /> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(226, 'user', 'adminenable', 'all', 'default', '<p><strong>User - enable group administration<br /></strong></p>\r\n<p>If this option is selected, the specified user is able to modify the access group for every object definition. This should be restricted only to administrators; otherwise a user might be able to lock himself out.<span id="result_box" lang="en"><span></span></span></p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(228, 'group', 'userrights', 'all', 'default', '<p><strong>Group - user rights</strong></p>\r\n<p>Define the object access rights for a user.</p>\r\n<p><strong>READ</strong> = The user can see the objects belong to this group<br /><strong>WRITE</strong> = The user can modify the objects belong to this group<br /><strong>LINK</strong> = The user can use the objects belong to this group to link them in other objects*<br /><br />* <em>Example:</em> If a time object belongs to this group - the user can user can add (link) this time object to his contact objects.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(230, 'domain', 'conffile', 'all', 'default', '<p>Absolute path to your Nagios config file.<br /><br />Examples:<br />/etc/nagios/nagios.cfg<br />/usr/local/nagios/etc/nagios.cfg<br /><br />This is used to verify your Nagios configuration directly from NagiosQL.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(231, 'domain', 'enable_common', 'all', 'default', '<p>This option is used to enable or disable the global common domain functionality.</p>\r\n<p>If this option is enabled, all objects from the global common domain will be added to this domains configuration files. The global common domain can be used to define objects like timeperiods or contacts that are used in all domains the same.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(232, 'domain', 'utf8_decode', 'all', 'default', '<p>This is an experimental option!</p>\r\n<p>If this option is enabled, UTF8 data from database will be translated to ISO in configuration file. So, the configuration files will be in ISO mode. This could be helpful, if nagios does not understand the UTF8 data from NagiosQL.</p>\r\n<p>Tested only with western european configurations!</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(233, 'domain', 'picturedir', 'all', 'default', '<p><strong>Relative</strong> path to your nagios icon images.<br /><br />Example:<br />/my/own/images/</p>\r\n<p>This path is based on your nagios standard image path. Images are assumed to be in the <strong>logos/</strong> subdirectory in your HTML images directory (i.e. /usr/local/nagios/share/images/logos).</p>\r\n<p>So in the example above, the images are located in:</p>\r\n<p>/usr/local/nagios/share/images/logos<span style="color: #ff0000;">/my/own/images/</span></p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(234, 'common', 'accessgroup', 'all', 'default', '<p><strong>Access group</strong></p>\r\n<p>Select an access group name to restrict this object to the group members.</p>');
+
+-- --------------------------------------------------------
 
 --
---  Add new `tbl_variabledefinition`
+-- Tabellenstruktur für Tabelle `tbl_lnkContactgroupToContact`
 --
-CREATE TABLE `tbl_variabledefinition` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
+
+DROP TABLE IF EXISTS `tbl_lnkContactgroupToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactgroupToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactgroupToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContactgroupToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContactgroupToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactgroupToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactgroupToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContacttemplateToCommandHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContacttemplateToCommandHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContacttemplateToCommandHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContacttemplateToCommandHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContacttemplateToCommandService`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContacttemplateToCommandService`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContacttemplateToCommandService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContacttemplateToCommandService`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContacttemplateToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContacttemplateToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContacttemplateToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContacttemplateToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContacttemplateToContacttemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContacttemplateToContacttemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContacttemplateToContacttemplate` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idSort` int(11) NOT NULL,
+  `idTable` tinyint(4) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`,`idTable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContacttemplateToContacttemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContacttemplateToVariabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContacttemplateToVariabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContacttemplateToVariabledefinition` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContacttemplateToVariabledefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContactToCommandHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContactToCommandHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactToCommandHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactToCommandHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContactToCommandService`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContactToCommandService`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactToCommandService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactToCommandService`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContactToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContactToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContactToContacttemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContactToContacttemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactToContacttemplate` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idSort` int(11) NOT NULL,
+  `idTable` tinyint(4) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`,`idTable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactToContacttemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkContactToVariabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkContactToVariabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkContactToVariabledefinition` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkContactToVariabledefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `tbl_lnkGroupToUser`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_lnkGroupToUser` (
+  `idMaster` int(10) unsigned NOT NULL,
+  `idSlave` int(10) unsigned NOT NULL,
+  `read` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+  `write` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+  `link` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `tbl_lnkGroupToUser`
+--
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostdependencyToHostgroup_DH`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostdependencyToHostgroup_DH`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostdependencyToHostgroup_DH` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostdependencyToHostgroup_DH`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostdependencyToHostgroup_H`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostdependencyToHostgroup_H`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostdependencyToHostgroup_H` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostdependencyToHostgroup_H`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostdependencyToHost_DH`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostdependencyToHost_DH`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostdependencyToHost_DH` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostdependencyToHost_DH`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostdependencyToHost_H`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostdependencyToHost_H`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostdependencyToHost_H` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostdependencyToHost_H`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostescalationToContact`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostescalationToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostescalationToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostescalationToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostescalationToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostescalationToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostescalationToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostescalationToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostescalationToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostescalationToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostescalationToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostescalationToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostescalationToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostescalationToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostescalationToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostescalationToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostgroupToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostgroupToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostgroupToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostgroupToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostgroupToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostgroupToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostgroupToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostgroupToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHosttemplateToContact`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHosttemplateToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHosttemplateToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHosttemplateToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHosttemplateToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHosttemplateToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHosttemplateToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHosttemplateToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHosttemplateToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHosttemplateToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHosttemplateToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHosttemplateToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHosttemplateToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHosttemplateToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHosttemplateToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHosttemplateToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHosttemplateToHosttemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHosttemplateToHosttemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHosttemplateToHosttemplate` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idSort` int(11) NOT NULL,
+  `idTable` tinyint(4) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`,`idTable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHosttemplateToHosttemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHosttemplateToVariabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHosttemplateToVariabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHosttemplateToVariabledefinition` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHosttemplateToVariabledefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostToContact`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostToHosttemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostToHosttemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostToHosttemplate` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idSort` int(11) NOT NULL,
+  `idTable` tinyint(4) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`,`idTable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostToHosttemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkHostToVariabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkHostToVariabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkHostToVariabledefinition` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkHostToVariabledefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicedependencyToHostgroup_DH`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicedependencyToHostgroup_DH`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicedependencyToHostgroup_DH` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicedependencyToHostgroup_DH`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicedependencyToHostgroup_H`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicedependencyToHostgroup_H`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicedependencyToHostgroup_H` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicedependencyToHostgroup_H`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicedependencyToHost_DH`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicedependencyToHost_DH`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicedependencyToHost_DH` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicedependencyToHost_DH`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicedependencyToHost_H`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicedependencyToHost_H`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicedependencyToHost_H` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicedependencyToHost_H`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicedependencyToService_DS`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicedependencyToService_DS`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicedependencyToService_DS` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `strSlave` varchar(255) DEFAULT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicedependencyToService_DS`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicedependencyToService_S`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicedependencyToService_S`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicedependencyToService_S` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `strSlave` varchar(255) DEFAULT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicedependencyToService_S`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceescalationToContact`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceescalationToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceescalationToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceescalationToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceescalationToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceescalationToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceescalationToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceescalationToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceescalationToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceescalationToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceescalationToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceescalationToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceescalationToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceescalationToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceescalationToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceescalationToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceescalationToService`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceescalationToService`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceescalationToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `strSlave` varchar(255) DEFAULT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceescalationToService`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicegroupToService`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicegroupToService`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicegroupToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlaveH` int(11) NOT NULL,
+  `idSlaveHG` int(11) NOT NULL,
+  `idSlaveS` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlaveH`,`idSlaveS`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicegroupToService`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicegroupToServicegroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicegroupToServicegroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicegroupToServicegroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicegroupToServicegroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToContact`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToServicegroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToServicegroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToServicegroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToServicegroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToServicetemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToServicetemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToServicetemplate` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idSort` int(11) NOT NULL,
+  `idTable` tinyint(4) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`,`idTable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToServicetemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServicetemplateToVariabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServicetemplateToVariabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToVariabledefinition` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServicetemplateToVariabledefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToContact`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToContact`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToContact` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToContact`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToContactgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToContactgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToContactgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToContactgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToHost`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToHost`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToHost` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToHost`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToHostgroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToHostgroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToHostgroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToHostgroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToServicegroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToServicegroup`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToServicegroup` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToServicegroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToServicetemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToServicetemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToServicetemplate` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idSort` int(11) NOT NULL,
+  `idTable` tinyint(4) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`,`idTable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToServicetemplate`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToVariabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkServiceToVariabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToVariabledefinition` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkServiceToVariabledefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_lnkTimeperiodToTimeperiod`
+-- 
+
+DROP TABLE IF EXISTS `tbl_lnkTimeperiodToTimeperiod`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkTimeperiodToTimeperiod` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- 
+-- Daten für Tabelle `tbl_lnkTimeperiodToTimeperiod`
+-- 
+
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `tbl_lnkTimeperiodToTimeperiodUse`
+--
+
+DROP TABLE IF EXISTS `tbl_lnkTimeperiodToTimeperiodUse`;
+CREATE TABLE IF NOT EXISTS `tbl_lnkTimeperiodToTimeperiodUse` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `tbl_lnkTimeperiodToTimeperiodUse`
+--
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_logbook`
+-- 
+
+DROP TABLE IF EXISTS `tbl_logbook`;
+CREATE TABLE IF NOT EXISTS `tbl_logbook` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `time` datetime NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `ipadress` varchar(255) NOT NULL,
+  `domain` varchar(255) NOT NULL,
+  `entry` tinytext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_logbook`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_mainmenu`
+-- 
+
+DROP TABLE IF EXISTS `tbl_mainmenu`;
+CREATE TABLE IF NOT EXISTS `tbl_mainmenu` (
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `order_id` tinyint(4) NOT NULL DEFAULT '0',
+  `menu_id` tinyint(4) NOT NULL DEFAULT '0',
+  `item` varchar(20) NOT NULL DEFAULT '',
+  `link` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+-- 
+-- Daten für Tabelle `tbl_mainmenu`
+-- 
+
+
+INSERT INTO `tbl_mainmenu` (`id`, `order_id`, `menu_id`, `item`, `link`) VALUES
+(1, 1, 2, 'Main page', 'admin.php'),
+(2, 2, 2, 'Supervision', 'admin/monitoring.php'),
+(3, 3, 2, 'Alarming', 'admin/alarming.php'),
+(4, 4, 2, 'Commands', 'admin/commands.php'),
+(5, 5, 2, 'Specialties', 'admin/specials.php'),
+(6, 6, 2, 'Tools', 'admin/tools.php'),
+(7, 7, 2, 'Administration', 'admin/administration.php');
+
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `tbl_relationinformation`
+--
+
+DROP TABLE IF EXISTS `tbl_relationinformation`;
+CREATE TABLE IF NOT EXISTS `tbl_relationinformation` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `master` varchar(255) NOT NULL,
+  `tableName1` varchar(255) NOT NULL,
+  `tableName2` varchar(255) NOT NULL,
+  `fieldName` varchar(255) NOT NULL,
+  `linkTable` varchar(255) NOT NULL,
+  `target1` varchar(255) NOT NULL,
+  `target2` varchar(255) NOT NULL,
+  `targetKey` varchar(255) NOT NULL,
+  `fullRelation` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `flags` varchar(255) NOT NULL,
+  `type` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=237 ;
+
+--
+-- Daten für Tabelle `tbl_relationinformation`
+--
+
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES
+(1, 'tbl_timeperiod', 'tbl_timeperiod', '', 'exclude', 'tbl_lnkTimeperiodToTimeperiod', 'timeperiod_name', '', '', 0, '', 2),
+(2, 'tbl_contact', 'tbl_command', '', 'host_notification_commands', 'tbl_lnkContactToCommandHost', 'command_name', '', '', 0, '', 2),
+(3, 'tbl_contact', 'tbl_command', '', 'service_notification_commands', 'tbl_lnkContactToCommandService', 'command_name', '', '', 0, '', 2),
+(4, 'tbl_contact', 'tbl_contactgroup', '', 'contactgroups', 'tbl_lnkContactToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(5, 'tbl_contact', 'tbl_timeperiod', '', 'host_notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(6, 'tbl_contact', 'tbl_timeperiod', '', 'service_notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(7, 'tbl_contact', 'tbl_contacttemplate', 'tbl_contact', 'use_template', 'tbl_lnkContactToContacttemplate', 'template_name', 'name', '', 0, '', 3),
+(8, 'tbl_contact', 'tbl_variabledefinition', '', 'use_variables', 'tbl_lnkContactToVariabledefinition', 'name', '', '', 0, '', 4),
+(9, 'tbl_contacttemplate', 'tbl_command', '', 'host_notification_commands', 'tbl_lnkContacttemplateToCommandHost', 'command_name', '', '', 0, '', 2),
+(10, 'tbl_contacttemplate', 'tbl_command', '', 'service_notification_commands', 'tbl_lnkContacttemplateToCommandService', 'command_name', '', '', 0, '', 2),
+(11, 'tbl_contacttemplate', 'tbl_contactgroup', '', 'contactgroups', 'tbl_lnkContacttemplateToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(12, 'tbl_contacttemplate', 'tbl_timeperiod', '', 'host_notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(13, 'tbl_contacttemplate', 'tbl_timeperiod', '', 'service_notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(14, 'tbl_contacttemplate', 'tbl_contacttemplate', 'tbl_contact', 'use_template', 'tbl_lnkContacttemplateToContacttemplate', 'template_name', 'name', '', 0, '', 3),
+(15, 'tbl_contacttemplate', 'tbl_variabledefinition', '', 'use_variables', 'tbl_lnkContacttemplateToVariabledefinition', 'name', '', '', 0, '', 4),
+(16, 'tbl_contactgroup', 'tbl_contact', '', 'members', 'tbl_lnkContactgroupToContact', 'contact_name', '', '', 0, '', 2),
+(17, 'tbl_contactgroup', 'tbl_contactgroup', '', 'contactgroup_members', 'tbl_lnkContactgroupToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(18, 'tbl_hosttemplate', 'tbl_host', '', 'parents', 'tbl_lnkHosttemplateToHost', 'host_name', '', '', 0, '', 2),
+(19, 'tbl_hosttemplate', 'tbl_hostgroup', '', 'hostgroups', 'tbl_lnkHosttemplateToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(20, 'tbl_hosttemplate', 'tbl_contactgroup', '', 'contact_groups', 'tbl_lnkHosttemplateToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(21, 'tbl_hosttemplate', 'tbl_contact', '', 'contacts', 'tbl_lnkHosttemplateToContact', 'contact_name', '', '', 0, '', 2),
+(22, 'tbl_hosttemplate', 'tbl_timeperiod', '', 'check_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(23, 'tbl_hosttemplate', 'tbl_command', '', 'check_command', '', 'command_name', '', '', 0, '', 1),
+(24, 'tbl_hosttemplate', 'tbl_timeperiod', '', 'notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(25, 'tbl_hosttemplate', 'tbl_command', '', 'event_handler', '', 'command_name', '', '', 0, '', 1),
+(26, 'tbl_hosttemplate', 'tbl_hosttemplate', 'tbl_host', 'use_template', 'tbl_lnkHosttemplateToHosttemplate', 'template_name', 'name', '', 0, '', 3),
+(27, 'tbl_hosttemplate', 'tbl_variabledefinition', '', 'use_variables', 'tbl_lnkHosttemplateToVariabledefinition', 'name', '', '', 0, '', 4),
+(28, 'tbl_host', 'tbl_host', '', 'parents', 'tbl_lnkHostToHost', 'host_name', '', '', 0, '', 2),
+(29, 'tbl_host', 'tbl_hostgroup', '', 'hostgroups', 'tbl_lnkHostToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(30, 'tbl_host', 'tbl_contactgroup', '', 'contact_groups', 'tbl_lnkHostToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(31, 'tbl_host', 'tbl_contact', '', 'contacts', 'tbl_lnkHostToContact', 'contact_name', '', '', 0, '', 2),
+(32, 'tbl_host', 'tbl_timeperiod', '', 'check_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(33, 'tbl_host', 'tbl_command', '', 'check_command', '', 'command_name', '', '', 0, '', 1),
+(34, 'tbl_host', 'tbl_timeperiod', '', 'notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(35, 'tbl_host', 'tbl_command', '', 'event_handler', '', 'command_name', '', '', 0, '', 1),
+(36, 'tbl_host', 'tbl_hosttemplate', 'tbl_host', 'use_template', 'tbl_lnkHostToHosttemplate', 'template_name', 'name', '', 0, '', 3),
+(37, 'tbl_host', 'tbl_variabledefinition', '', 'use_variables', 'tbl_lnkHostToVariabledefinition', 'name', '', '', 0, '', 4),
+(38, 'tbl_hostgroup', 'tbl_host', '', 'members', 'tbl_lnkHostgroupToHost', 'host_name', '', '', 0, '', 2),
+(39, 'tbl_hostgroup', 'tbl_hostgroup', '', 'hostgroup_members', 'tbl_lnkHostgroupToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(40, 'tbl_servicetemplate', 'tbl_host', '', 'host_name', 'tbl_lnkServicetemplateToHost', 'host_name', '', '', 0, '', 2),
+(41, 'tbl_servicetemplate', 'tbl_hostgroup', '', 'hostgroup_name', 'tbl_lnkServicetemplateToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(42, 'tbl_servicetemplate', 'tbl_servicegroup', '', 'servicegroups', 'tbl_lnkServicetemplateToServicegroup', 'servicegroup_name', '', '', 0, '', 2),
+(43, 'tbl_servicetemplate', 'tbl_contactgroup', '', 'contact_groups', 'tbl_lnkServicetemplateToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(44, 'tbl_servicetemplate', 'tbl_contact', '', 'contacts', 'tbl_lnkServicetemplateToContact', 'contact_name', '', '', 0, '', 2),
+(45, 'tbl_servicetemplate', 'tbl_timeperiod', '', 'check_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(46, 'tbl_servicetemplate', 'tbl_command', '', 'check_command', '', 'command_name', '', '', 0, '', 1),
+(47, 'tbl_servicetemplate', 'tbl_timeperiod', '', 'notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(48, 'tbl_servicetemplate', 'tbl_command', '', 'event_handler', '', 'command_name', '', '', 0, '', 1),
+(49, 'tbl_servicetemplate', 'tbl_servicetemplate', 'tbl_service', 'use_template', 'tbl_lnkServicetemplateToServicetemplate', 'template_name', 'name', '', 0, '', 3),
+(50, 'tbl_servicetemplate', 'tbl_variabledefinition', '', 'use_variables', 'tbl_lnkServicetemplateToVariabledefinition', 'name', '', '', 0, '', 4),
+(51, 'tbl_service', 'tbl_host', '', 'host_name', 'tbl_lnkServiceToHost', 'host_name', '', '', 0, '', 2),
+(52, 'tbl_service', 'tbl_hostgroup', '', 'hostgroup_name', 'tbl_lnkServiceToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(53, 'tbl_service', 'tbl_servicegroup', '', 'servicegroups', 'tbl_lnkServiceToServicegroup', 'servicegroup_name', '', '', 0, '', 2),
+(54, 'tbl_service', 'tbl_contactgroup', '', 'contact_groups', 'tbl_lnkServiceToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(55, 'tbl_service', 'tbl_contact', '', 'contacts', 'tbl_lnkServiceToContact', 'contact_name', '', '', 0, '', 2),
+(56, 'tbl_service', 'tbl_timeperiod', '', 'check_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(57, 'tbl_service', 'tbl_command', '', 'check_command', '', 'command_name', '', '', 0, '', 1),
+(58, 'tbl_service', 'tbl_timeperiod', '', 'notification_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(59, 'tbl_service', 'tbl_command', '', 'event_handler', '', 'command_name', '', '', 0, '', 1),
+(60, 'tbl_service', 'tbl_servicetemplate', 'tbl_service', 'use_template', 'tbl_lnkServiceToServicetemplate', 'template_name', 'name', '', 0, '', 3),
+(61, 'tbl_service', 'tbl_variabledefinition', '', 'use_variables', 'tbl_lnkServiceToVariabledefinition', 'name', '', '', 0, '', 4),
+(62, 'tbl_servicegroup', 'tbl_host', 'tbl_service', 'members', 'tbl_lnkServicegroupToService', 'host_name', 'service_description', '', 0, '', 5),
+(63, 'tbl_servicegroup', 'tbl_servicegroup', '', 'servicegroup_members', 'tbl_lnkServicegroupToServicegroup', 'servicegroup_name', '', '', 0, '', 2),
+(64, 'tbl_hostdependency', 'tbl_host', '', 'dependent_host_name', 'tbl_lnkHostdependencyToHost_DH', 'host_name', '', '', 0, '', 2),
+(65, 'tbl_hostdependency', 'tbl_host', '', 'host_name', 'tbl_lnkHostdependencyToHost_H', 'host_name', '', '', 0, '', 2),
+(66, 'tbl_hostdependency', 'tbl_hostgroup', '', 'dependent_hostgroup_name', 'tbl_lnkHostdependencyToHostgroup_DH', 'hostgroup_name', '', '', 0, '', 2),
+(67, 'tbl_hostdependency', 'tbl_hostgroup', '', 'hostgroup_name', 'tbl_lnkHostdependencyToHostgroup_H', 'hostgroup_name', '', '', 0, '', 2),
+(68, 'tbl_hostdependency', 'tbl_timeperiod', '', 'dependency_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(69, 'tbl_hostescalation', 'tbl_host', '', 'host_name', 'tbl_lnkHostescalationToHost', 'host_name', '', '', 0, '', 2),
+(70, 'tbl_hostescalation', 'tbl_hostgroup', '', 'hostgroup_name', 'tbl_lnkHostescalationToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(71, 'tbl_hostescalation', 'tbl_contact', '', 'contacts', 'tbl_lnkHostescalationToContact', 'contact_name', '', '', 0, '', 2),
+(72, 'tbl_hostescalation', 'tbl_contactgroup', '', 'contact_groups', 'tbl_lnkHostescalationToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(73, 'tbl_hostescalation', 'tbl_timeperiod', '', 'escalation_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(74, 'tbl_hostextinfo', 'tbl_host', '', 'host_name', '', 'host_name', '', '', 0, '', 1),
+(75, 'tbl_servicedependency', 'tbl_host', '', 'dependent_host_name', 'tbl_lnkServicedependencyToHost_DH', 'host_name', '', '', 0, '', 2),
+(76, 'tbl_servicedependency', 'tbl_host', '', 'host_name', 'tbl_lnkServicedependencyToHost_H', 'host_name', '', '', 0, '', 2),
+(77, 'tbl_servicedependency', 'tbl_hostgroup', '', 'dependent_hostgroup_name', 'tbl_lnkServicedependencyToHostgroup_DH', 'hostgroup_name', '', '', 0, '', 2),
+(78, 'tbl_servicedependency', 'tbl_hostgroup', '', 'hostgroup_name', 'tbl_lnkServicedependencyToHostgroup_H', 'hostgroup_name', '', '', 0, '', 2),
+(79, 'tbl_servicedependency', 'tbl_service', '', 'dependent_service_description', 'tbl_lnkServicedependencyToService_DS', 'service_description', '', '', 0, '', 6),
+(80, 'tbl_servicedependency', 'tbl_service', '', 'service_description', 'tbl_lnkServicedependencyToService_S', 'service_description', '', '', 0, '', 6),
+(81, 'tbl_servicedependency', 'tbl_timeperiod', '', 'dependency_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(82, 'tbl_serviceescalation', 'tbl_host', '', 'host_name', 'tbl_lnkServiceescalationToHost', 'host_name', '', '', 0, '', 2),
+(83, 'tbl_serviceescalation', 'tbl_hostgroup', '', 'hostgroup_name', 'tbl_lnkServiceescalationToHostgroup', 'hostgroup_name', '', '', 0, '', 2),
+(84, 'tbl_serviceescalation', 'tbl_service', '', 'service_description', 'tbl_lnkServiceescalationToService', 'service_description', '', '', 0, '', 6),
+(85, 'tbl_serviceescalation', 'tbl_contact', '', 'contacts', 'tbl_lnkServiceescalationToContact', 'contact_name', '', '', 0, '', 2),
+(86, 'tbl_serviceescalation', 'tbl_contactgroup', '', 'contact_groups', 'tbl_lnkServiceescalationToContactgroup', 'contactgroup_name', '', '', 0, '', 2),
+(87, 'tbl_serviceescalation', 'tbl_timeperiod', '', 'escalation_period', '', 'timeperiod_name', '', '', 0, '', 1),
+(88, 'tbl_serviceextinfo', 'tbl_host', '', 'host_name', '', 'host_name', '', '', 0, '', 1),
+(89, 'tbl_serviceextinfo', 'tbl_service', '', 'service_description', '', 'service_description', '', '', 0, '', 1),
+(90, 'tbl_command', 'tbl_lnkContacttemplateToCommandHost', '', 'idSlave', '', 'tbl_contacttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(91, 'tbl_command', 'tbl_lnkContacttemplateToCommandService', '', 'idSlave', '', 'tbl_contacttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(92, 'tbl_command', 'tbl_lnkContactToCommandHost', '', 'idSlave', '', 'tbl_contact', '', 'contact_name', 1, '1,1,0,1', 0),
+(93, 'tbl_command', 'tbl_lnkContactToCommandService', '', 'idSlave', '', 'tbl_contact', '', 'contact_name', 1, '1,1,0,1', 0),
+(94, 'tbl_command', 'tbl_host', '', 'check_command', '', '', '', 'host_name', 1, '0,2,2,0', 0),
+(95, 'tbl_command', 'tbl_host', '', 'event_handler', '', '', '', 'host_name', 1, '0,2,2,0', 0),
+(96, 'tbl_command', 'tbl_service', '', 'check_command', '', '', '', 'config_name,service_description', 1, '1,1,2,0', 0),
+(97, 'tbl_command', 'tbl_service', '', 'event_handler', '', '', '', 'config_name,service_description', 1, '0,2,2,0', 0),
+(98, 'tbl_contact', 'tbl_lnkContactgroupToContact', '', 'idSlave', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '1,2,0,1', 0),
+(99, 'tbl_contact', 'tbl_lnkContactToCommandHost', '', 'idMaster', '', 'tbl_command', '', 'command_name', 1, '0,0,0,1', 0),
+(100, 'tbl_contact', 'tbl_lnkContactToCommandService', '', 'idMaster', '', 'tbl_command', '', 'command_name', 1, '0,0,0,1', 0),
+(101, 'tbl_contact', 'tbl_lnkContactToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(102, 'tbl_contact', 'tbl_lnkContactToContacttemplate', '', 'idMaster', '', 'tbl_contacttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(103, 'tbl_contact', 'tbl_lnkContactToVariabledefinition', '', 'idMaster', '', 'tbl_variabledefinition', '', 'name', 1, '0,0,0,2', 0),
+(104, 'tbl_contact', 'tbl_lnkHostescalationToContact', '', 'idSlave', '', 'tbl_hostescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(105, 'tbl_contact', 'tbl_lnkHosttemplateToContact', '', 'idSlave', '', 'tbl_hosttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(106, 'tbl_contact', 'tbl_lnkHostToContact', '', 'idSlave', '', 'tbl_host', '', 'host_name', 1, '1,1,0,1', 0),
+(107, 'tbl_contact', 'tbl_lnkServiceescalationToContact', '', 'idSlave', '', 'tbl_serviceescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(108, 'tbl_contact', 'tbl_lnkServicetemplateToContact', '', 'idSlave', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(109, 'tbl_contact', 'tbl_lnkServiceToContact', '', 'idSlave', '', 'tbl_service', '', 'config_name,service_description', 1, '1,1,0,1', 0),
+(110, 'tbl_contactgroup', 'tbl_lnkContactgroupToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(111, 'tbl_contactgroup', 'tbl_lnkContactgroupToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(112, 'tbl_contactgroup', 'tbl_lnkContactgroupToContactgroup', '', 'idSlave', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(113, 'tbl_contactgroup', 'tbl_lnkContacttemplateToContactgroup', '', 'idSlave', '', 'tbl_contacttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(114, 'tbl_contactgroup', 'tbl_lnkContactToContactgroup', '', 'idSlave', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(115, 'tbl_contactgroup', 'tbl_lnkHostescalationToContactgroup', '', 'idSlave', '', 'tbl_hostescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(116, 'tbl_contactgroup', 'tbl_lnkHosttemplateToContactgroup', '', 'idSlave', '', 'tbl_hosttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(117, 'tbl_contactgroup', 'tbl_lnkHostToContactgroup', '', 'idSlave', '', 'tbl_host', '', 'host_name', 1, '1,1,0,1', 0),
+(118, 'tbl_contactgroup', 'tbl_lnkServiceescalationToContactgroup', '', 'idSlave', '', 'tbl_serviceescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(119, 'tbl_contactgroup', 'tbl_lnkServicetemplateToContactgroup', '', 'idSlave', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(120, 'tbl_contactgroup', 'tbl_lnkServiceToContactgroup', '', 'idSlave', '', 'tbl_service', '', 'config_name,service_description', 1, '1,1,0,1', 0),
+(121, 'tbl_contacttemplate', 'tbl_lnkContacttemplateToCommandHost', '', 'idMaster', '', 'tbl_command', '', 'command_name', 1, '0,0,0,1', 0),
+(122, 'tbl_contacttemplate', 'tbl_lnkContacttemplateToCommandService', '', 'idMaster', '', 'tbl_command', '', 'command_name', 1, '0,0,0,1', 0),
+(123, 'tbl_contacttemplate', 'tbl_lnkContacttemplateToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(124, 'tbl_contacttemplate', 'tbl_lnkContacttemplateToContacttemplate', '', 'idMaster', '', 'tbl_contacttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(125, 'tbl_contacttemplate', 'tbl_lnkContacttemplateToContacttemplate', '', 'idSlave', '', 'tbl_contacttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(126, 'tbl_contacttemplate', 'tbl_lnkContacttemplateToVariabledefinition', '', 'idMaster', '', 'tbl_variabledefinition', '', 'name', 1, '0,0,0,2', 0),
+(127, 'tbl_contacttemplate', 'tbl_lnkContactToContacttemplate', '', 'idSlave', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(128, 'tbl_host', 'tbl_lnkHostdependencyToHost_DH', '', 'idSlave', '', 'tbl_hostdependency', '', 'config_name', 1, '1,1,0,1', 0),
+(129, 'tbl_host', 'tbl_lnkHostdependencyToHost_H', '', 'idSlave', '', 'tbl_hostdependency', '', 'config_name', 1, '1,1,0,1', 0),
+(130, 'tbl_host', 'tbl_lnkHostescalationToHost', '', 'idSlave', '', 'tbl_hostescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(131, 'tbl_host', 'tbl_lnkHosttemplateToHost', '', 'idSlave', '', 'tbl_hosttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(132, 'tbl_host', 'tbl_lnkHostToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(133, 'tbl_host', 'tbl_lnkHostToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(134, 'tbl_host', 'tbl_lnkHostToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(135, 'tbl_host', 'tbl_lnkHostToHost', '', 'idSlave', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(136, 'tbl_host', 'tbl_lnkHostToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(137, 'tbl_host', 'tbl_lnkHostgroupToHost', '', 'idSlave', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(138, 'tbl_host', 'tbl_lnkHostToHosttemplate', '', 'idMaster', '', 'tbl_hosttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(139, 'tbl_host', 'tbl_lnkHostToVariabledefinition', '', 'idMaster', '', 'tbl_variabledefinition', '', 'name', 1, '0,0,0,2', 0),
+(140, 'tbl_host', 'tbl_lnkServicedependencyToHost_DH', '', 'idSlave', '', 'tbl_servicedependency', '', 'config_name', 1, '1,1,0,1', 0),
+(141, 'tbl_host', 'tbl_lnkServicedependencyToHost_H', '', 'idSlave', '', 'tbl_servicedependency', '', 'config_name', 1, '1,1,0,1', 0),
+(142, 'tbl_host', 'tbl_lnkServiceescalationToHost', '', 'idSlave', '', 'tbl_serviceescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(143, 'tbl_host', 'tbl_lnkServicetemplateToHost', '', 'idSlave', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(144, 'tbl_host', 'tbl_lnkServiceToHost', '', 'idSlave', '', 'tbl_service', '', 'config_name,service_description', 1, '1,1,0,1', 0),
+(145, 'tbl_host', 'tbl_lnkServicegroupToService', '', 'idSlaveH', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(146, 'tbl_host', 'tbl_hostextinfo', '', 'host_name', '', '', '', 'host_name', 1, '0,0,0,0', 0),
+(147, 'tbl_host', 'tbl_serviceextinfo', '', 'host_name', '', '', '', 'host_name', 1, '0,0,0,0', 0),
+(148, 'tbl_hostdependency', 'tbl_lnkHostdependencyToHostgroup_DH', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(149, 'tbl_hostdependency', 'tbl_lnkHostdependencyToHostgroup_H', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(150, 'tbl_hostdependency', 'tbl_lnkHostdependencyToHost_DH', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(151, 'tbl_hostdependency', 'tbl_lnkHostdependencyToHost_H', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(152, 'tbl_hostescalation', 'tbl_lnkHostescalationToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(153, 'tbl_hostescalation', 'tbl_lnkHostescalationToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(154, 'tbl_hostescalation', 'tbl_lnkHostescalationToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(155, 'tbl_hostescalation', 'tbl_lnkHostescalationToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(156, 'tbl_hostgroup', 'tbl_lnkHostdependencyToHostgroup_DH', '', 'idSlave', '', 'tbl_hostdependency', '', 'config_name', 1, '0,0,0,1', 0),
+(157, 'tbl_hostgroup', 'tbl_lnkHostdependencyToHostgroup_H', '', 'idSlave', '', 'tbl_hostdependency', '', 'config_name', 1, '0,0,0,1', 0),
+(158, 'tbl_hostgroup', 'tbl_lnkHostescalationToHostgroup', '', 'idSlave', '', 'tbl_hostescalation', '', 'config_name', 1, '0,0,0,1', 0),
+(159, 'tbl_hostgroup', 'tbl_lnkHostgroupToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(160, 'tbl_hostgroup', 'tbl_lnkHostgroupToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(161, 'tbl_hostgroup', 'tbl_lnkHostgroupToHostgroup', '', 'idSlave', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(162, 'tbl_hostgroup', 'tbl_lnkHosttemplateToHostgroup', '', 'idSlave', '', 'tbl_hosttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(163, 'tbl_hostgroup', 'tbl_lnkHostToHostgroup', '', 'idSlave', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(164, 'tbl_hostgroup', 'tbl_lnkServicedependencyToHostgroup_DH', '', 'idSlave', '', 'tbl_servicedependency', '', 'config_name', 1, '0,0,0,1', 0),
+(165, 'tbl_hostgroup', 'tbl_lnkServicedependencyToHostgroup_H', '', 'idSlave', '', 'tbl_servicedependency', '', 'config_name', 1, '0,0,0,1', 0),
+(166, 'tbl_hostgroup', 'tbl_lnkServiceescalationToHostgroup', '', 'idSlave', '', 'tbl_serviceescalation', '', 'config_name', 1, '0,0,0,1', 0),
+(167, 'tbl_hostgroup', 'tbl_lnkServicetemplateToHostgroup', '', 'idSlave', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(168, 'tbl_hostgroup', 'tbl_lnkServiceToHostgroup', '', 'idSlave', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(169, 'tbl_hostgroup', 'tbl_lnkServicegroupToService', '', 'idSlaveHG', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(170, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(171, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(172, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(173, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(174, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToHosttemplate', '', 'idMaster', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(175, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToHosttemplate', '', 'idSlave', '', 'tbl_hosttemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(176, 'tbl_hosttemplate', 'tbl_lnkHosttemplateToVariabledefinition', '', 'idMaster', '', 'tbl_variabledefinition', '', 'name', 1, '0,0,0,2', 0),
+(177, 'tbl_hosttemplate', 'tbl_lnkHostToHosttemplate', '', 'idSlave', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(178, 'tbl_service', 'tbl_lnkServicedependencyToService_DS', '', 'idSlave', '', 'tbl_servicedependency', '', 'config_name', 1, '1,1,0,1', 0),
+(179, 'tbl_service', 'tbl_lnkServicedependencyToService_S', '', 'idSlave', '', 'tbl_servicedependency', '', 'config_name', 1, '1,1,0,1', 0),
+(180, 'tbl_service', 'tbl_lnkServiceescalationToService', '', 'idSlave', '', 'tbl_serviceescalation', '', 'config_name', 1, '1,1,0,1', 0),
+(181, 'tbl_service', 'tbl_lnkServicegroupToService', '', 'idSlaveS', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(182, 'tbl_service', 'tbl_lnkServiceToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(183, 'tbl_service', 'tbl_lnkServiceToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(184, 'tbl_service', 'tbl_lnkServiceToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(185, 'tbl_service', 'tbl_lnkServiceToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(186, 'tbl_service', 'tbl_lnkServiceToServicegroup', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(187, 'tbl_service', 'tbl_lnkServiceToServicetemplate', '', 'idMaster', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(188, 'tbl_service', 'tbl_lnkServiceToVariabledefinition', '', 'idMaster', '', 'tbl_variabledefinition', '', 'name', 1, '0,0,0,2', 0),
+(189, 'tbl_service', 'tbl_serviceextinfo', '', 'service_description', '', '', '', 'host_name', 1, '0,0,0,0', 0),
+(190, 'tbl_servicedependency', 'tbl_lnkServicedependencyToHostgroup_DH', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(191, 'tbl_servicedependency', 'tbl_lnkServicedependencyToHostgroup_H', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(192, 'tbl_servicedependency', 'tbl_lnkServicedependencyToHost_DH', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(193, 'tbl_servicedependency', 'tbl_lnkServicedependencyToHost_H', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(194, 'tbl_servicedependency', 'tbl_lnkServicedependencyToService_DS', '', 'idMaster', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(195, 'tbl_servicedependency', 'tbl_lnkServicedependencyToService_S', '', 'idMaster', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(196, 'tbl_serviceescalation', 'tbl_lnkServiceescalationToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(197, 'tbl_serviceescalation', 'tbl_lnkServiceescalationToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(198, 'tbl_serviceescalation', 'tbl_lnkServiceescalationToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(199, 'tbl_serviceescalation', 'tbl_lnkServiceescalationToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(200, 'tbl_serviceescalation', 'tbl_lnkServiceescalationToService', '', 'idMaster', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(201, 'tbl_servicegroup', 'tbl_lnkServicegroupToService', '', 'idMaster', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(202, 'tbl_servicegroup', 'tbl_lnkServicegroupToServicegroup', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(203, 'tbl_servicegroup', 'tbl_lnkServicegroupToServicegroup', '', 'idSlave', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(204, 'tbl_servicegroup', 'tbl_lnkServicetemplateToServicegroup', '', 'idSlave', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(205, 'tbl_servicegroup', 'tbl_lnkServiceToServicegroup', '', 'idSlave', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(206, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToContact', '', 'idMaster', '', 'tbl_contact', '', 'contact_name', 1, '0,0,0,1', 0),
+(207, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToContactgroup', '', 'idMaster', '', 'tbl_contactgroup', '', 'contactgroup_name', 1, '0,0,0,1', 0),
+(208, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToHost', '', 'idMaster', '', 'tbl_host', '', 'host_name', 1, '0,0,0,1', 0),
+(209, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToHostgroup', '', 'idMaster', '', 'tbl_hostgroup', '', 'hostgroup_name', 1, '0,0,0,1', 0),
+(210, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToServicegroup', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0),
+(211, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToServicetemplate', '', 'idMaster', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(212, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToServicetemplate', '', 'idSlave', '', 'tbl_servicetemplate', '', 'template_name', 1, '0,0,0,1', 0),
+(213, 'tbl_servicetemplate', 'tbl_lnkServicetemplateToVariabledefinition', '', 'idMaster', '', 'tbl_variabledefinition', '', 'name', 1, '0,0,0,2', 0),
+(214, 'tbl_servicetemplate', 'tbl_lnkServiceToServicetemplate', '', 'idSlave', '', 'tbl_service', '', 'config_name,service_description', 1, '0,0,0,1', 0),
+(215, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiod', '', 'idMaster', '', 'tbl_timeperiod', '', 'timeperiod_name', 1, '0,0,0,1', 0),
+(216, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiod', '', 'idSlave', '', 'tbl_timeperiod', '', 'timeperiod_name', 1, '0,0,0,1', 0),
+(217, 'tbl_timeperiod', 'tbl_contact', '', 'host_notification_period', '', '', '', 'contact_name', 1, '1,1,2,0', 0),
+(218, 'tbl_timeperiod', 'tbl_contact', '', 'service_notification_period', '', '', '', 'contact_name', 1, '1,1,2,0', 0),
+(219, 'tbl_timeperiod', 'tbl_contacttemplate', '', 'host_notification_period', '', '', '', 'template_name', 1, '0,2,2,0', 0),
+(220, 'tbl_timeperiod', 'tbl_contacttemplate', '', 'service_notification_period', '', '', '', 'template_name', 1, '0,2,2,0', 0),
+(221, 'tbl_timeperiod', 'tbl_host', '', 'check_period', '', '', '', 'host_name', 1, '1,1,2,0', 0),
+(222, 'tbl_timeperiod', 'tbl_host', '', 'notification_period', '', '', '', 'host_name', 1, '1,1,2,0', 0),
+(223, 'tbl_timeperiod', 'tbl_hosttemplate', '', 'check_period', '', '', '', 'template_name', 1, '0,2,2,0', 0),
+(224, 'tbl_timeperiod', 'tbl_hosttemplate', '', 'notification_period', '', '', '', 'template_name', 1, '0,2,2,0', 0),
+(225, 'tbl_timeperiod', 'tbl_hostdependency', '', 'dependency_period', '', '', '', 'config_name', 1, '0,2,2,0', 0),
+(226, 'tbl_timeperiod', 'tbl_hostescalation', '', 'escalation_period', '', '', '', 'config_name', 1, '0,2,2,0', 0),
+(227, 'tbl_timeperiod', 'tbl_service', '', 'check_period', '', '', '', 'config_name,service_description', 1, '1,1,2,0', 0),
+(228, 'tbl_timeperiod', 'tbl_service', '', 'notification_period', '', '', '', 'config_name,service_description', 1, '0,2,2,0', 0),
+(229, 'tbl_timeperiod', 'tbl_servicetemplate', '', 'check_period', '', '', '', 'template_name', 1, '0,2,2,0', 0),
+(230, 'tbl_timeperiod', 'tbl_servicetemplate', '', 'notification_period', '', '', '', 'template_name', 1, '1,1,2,0', 0),
+(231, 'tbl_timeperiod', 'tbl_servicedependency', '', 'dependency_period', '', '', '', 'config_name', 1, '0,2,2,0', 0),
+(232, 'tbl_timeperiod', 'tbl_serviceescalation', '', 'escalation_period', '', '', '', 'config_name', 1, '0,2,2,0', 0),
+(233, 'tbl_timeperiod', 'tbl_timedefinition', '', 'tipId', '', '', '', 'id', 1, '0,0,0,3', 0),
+(234, 'tbl_timeperiod', 'tbl_timeperiod', '', 'use_template', 'tbl_lnkTimeperiodToTimeperiodUse', 'timeperiod_name', '', '', 0, '', 2),
+(235, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiodUse', '', 'idMaster', '', 'tbl_timeperiod', '', 'timeperiod_name', 1, '0,0,0,1', 0),
+(236, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiodUse', '', 'idSlave', '', 'tbl_timeperiod', '', 'timeperiod_name', 1, '0,0,0,1', 0);
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_service`
+-- 
+
+DROP TABLE IF EXISTS `tbl_service`;
+CREATE TABLE IF NOT EXISTS `tbl_service` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(255) NOT NULL,
+  `host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `host_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `service_description` varchar(255) NOT NULL,
+  `display_name` varchar(255) NOT NULL,
+  `servicegroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `servicegroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_command` text NOT NULL,
+  `is_volatile` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `initial_state` varchar(20) NOT NULL,
+  `max_check_attempts` int(11) DEFAULT NULL,
+  `check_interval` int(11) DEFAULT NULL,
+  `retry_interval` int(11) DEFAULT NULL,
+  `active_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `passive_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_period` int(11) NOT NULL DEFAULT '0',
+  `parallelize_check` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `obsess_over_service` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_freshness` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `freshness_threshold` int(11) DEFAULT NULL,
+  `event_handler` int(11) NOT NULL DEFAULT '0',
+  `event_handler_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `low_flap_threshold` int(11) DEFAULT NULL,
+  `high_flap_threshold` int(11) DEFAULT NULL,
+  `flap_detection_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `flap_detection_options` varchar(20) NOT NULL,
+  `process_perf_data` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_status_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `notification_interval` int(11) DEFAULT NULL,
+  `first_notification_delay` int(11) DEFAULT NULL,
+  `notification_period` int(11) NOT NULL DEFAULT '0',
+  `notification_options` varchar(20) NOT NULL,
+  `notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contacts` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contacts_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contact_groups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contact_groups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `stalking_options` varchar(20) NOT NULL DEFAULT '',
+  `notes` varchar(255) NOT NULL,
+  `notes_url` varchar(255) NOT NULL,
+  `action_url` varchar(255) NOT NULL,
+  `icon_image` varchar(255) NOT NULL,
+  `icon_image_alt` varchar(255) NOT NULL,
+  `use_variables` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
   `last_modified` datetime NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_service`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_servicedependency`
+-- 
+
+DROP TABLE IF EXISTS `tbl_servicedependency`;
+CREATE TABLE IF NOT EXISTS `tbl_servicedependency` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(255) NOT NULL,
+  `dependent_host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `dependent_hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `dependent_service_description` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `service_description` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `inherits_parent` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `execution_failure_criteria` varchar(20) DEFAULT '',
+  `notification_failure_criteria` varchar(20) DEFAULT '',
+  `dependency_period` int(11) NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`config_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_servicedependency`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_serviceescalation`
+-- 
+
+DROP TABLE IF EXISTS `tbl_serviceescalation`;
+CREATE TABLE IF NOT EXISTS `tbl_serviceescalation` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(255) NOT NULL,
+  `host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `service_description` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contacts` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contact_groups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `first_notification` int(11) DEFAULT NULL,
+  `last_notification` int(11) DEFAULT NULL,
+  `notification_interval` int(11) DEFAULT NULL,
+  `escalation_period` int(11) NOT NULL DEFAULT '0',
+  `escalation_options` varchar(20) DEFAULT '',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `config_name` (`config_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_serviceescalation`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_serviceextinfo`
+-- 
+
+DROP TABLE IF EXISTS `tbl_serviceextinfo`;
+CREATE TABLE IF NOT EXISTS `tbl_serviceextinfo` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `host_name` int(11) NOT NULL,
+  `service_description` int(11) NOT NULL,
+  `notes` varchar(255) NOT NULL,
+  `notes_url` varchar(255) NOT NULL,
+  `action_url` varchar(255) NOT NULL,
+  `statistic_url` varchar(255) NOT NULL,
+  `icon_image` varchar(255) NOT NULL,
+  `icon_image_alt` varchar(255) NOT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`host_name`,`service_description`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_serviceextinfo`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_servicegroup`
+-- 
+
+DROP TABLE IF EXISTS `tbl_servicegroup`;
+CREATE TABLE IF NOT EXISTS `tbl_servicegroup` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `servicegroup_name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `members` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `servicegroup_members` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `notes` varchar(255) DEFAULT NULL,
+  `notes_url` varchar(255) DEFAULT NULL,
+  `action_url` varchar(255) DEFAULT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`servicegroup_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_servicegroup`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_servicetemplate`
+-- 
+
+DROP TABLE IF EXISTS `tbl_servicetemplate`;
+CREATE TABLE IF NOT EXISTS `tbl_servicetemplate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `template_name` varchar(255) NOT NULL,
+  `host_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `host_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `hostgroup_name` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `service_description` varchar(255) NOT NULL,
+  `display_name` varchar(255) NOT NULL,
+  `servicegroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `servicegroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_command` text NOT NULL,
+  `is_volatile` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `initial_state` varchar(20) NOT NULL,
+  `max_check_attempts` int(11) DEFAULT NULL,
+  `check_interval` int(11) DEFAULT NULL,
+  `retry_interval` int(11) DEFAULT NULL,
+  `active_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `passive_checks_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_period` int(11) NOT NULL DEFAULT '0',
+  `parallelize_check` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `obsess_over_service` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `check_freshness` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `freshness_threshold` int(11) DEFAULT NULL,
+  `event_handler` int(11) NOT NULL DEFAULT '0',
+  `event_handler_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `low_flap_threshold` int(11) DEFAULT NULL,
+  `high_flap_threshold` int(11) DEFAULT NULL,
+  `flap_detection_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `flap_detection_options` varchar(20) NOT NULL,
+  `process_perf_data` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_status_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `retain_nonstatus_information` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `notification_interval` int(11) DEFAULT NULL,
+  `first_notification_delay` int(11) DEFAULT NULL,
+  `notification_period` int(11) NOT NULL DEFAULT '0',
+  `notification_options` varchar(20) NOT NULL,
+  `notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contacts` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contacts_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `contact_groups` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `contact_groups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `stalking_options` varchar(20) NOT NULL DEFAULT '',
+  `notes` varchar(255) NOT NULL,
+  `notes_url` varchar(255) NOT NULL,
+  `action_url` varchar(255) NOT NULL,
+  `icon_image` varchar(255) NOT NULL,
+  `icon_image_alt` varchar(255) NOT NULL,
+  `use_variables` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `import_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config_name` (`template_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_servicetemplate`
+-- 
+
+
+-- --------------------------------------------------------
 
 --
---  Add new `tbl_settings`
+-- Tabellenstruktur für Tabelle `tbl_settings`
 --
+
+DROP TABLE IF EXISTS `tbl_settings`;
 CREATE TABLE IF NOT EXISTS `tbl_settings` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(20) NOT NULL,
   `name` varchar(30) NOT NULL,
   `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES ('', 'db', 'version', '3.0.3');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
 
 --
--- Set Domain for all new imported entries to 1
+-- Daten für Tabelle `tbl_settings`
 --
+
+INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES
+(1, 'db', 'version', '3.1.1'),
+(2, 'path', 'protocol', 'http'),
+(3, 'path', 'tempdir', '/tmp'),
+(4, 'data', 'locale', 'de_DE'),
+(5, 'data', 'encoding', 'utf-8'),
+(6, 'security', 'logofftime', '3600'),
+(7, 'security', 'wsauth', '1'),
+(8, 'common', 'pagelines', '15'),
+(9, 'common', 'seldisable', '1'),
+(10, 'common', 'tplcheck', '0'),
+(11, 'common', 'updcheck', '0'),
+(12, 'network', 'Proxy', '0'),
+(13, 'network', 'ProxyServer', ''),
+(14, 'network', 'ProxyUser', ''),
+(15, 'network', 'ProxyPasswd', '');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_submenu`
+-- 
+
+DROP TABLE IF EXISTS `tbl_submenu`;
+CREATE TABLE IF NOT EXISTS `tbl_submenu` (
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `id_main` tinyint(4) NOT NULL DEFAULT '0',
+  `order_id` tinyint(4) NOT NULL DEFAULT '0',
+  `item` varchar(20) NOT NULL DEFAULT '',
+  `link` varchar(50) NOT NULL DEFAULT '',
+  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
+
+-- 
+-- Daten für Tabelle `tbl_submenu`
+-- 
+
+INSERT INTO `tbl_submenu` (`id`, `id_main`, `order_id`, `item`, `link`, `access_group`) VALUES
+(1, 2, 1, 'Host', 'admin/hosts.php', 0),
+(2, 3, 3, 'Time periods', 'admin/timeperiods.php', 0),
+(26, 2, 5, 'Host templates', 'admin/hosttemplates.php', 0),
+(4, 4, 1, 'Definitions', 'admin/checkcommands.php', 0),
+(5, 3, 1, 'Contact data', 'admin/contacts.php', 0),
+(6, 3, 2, 'Contact groups', 'admin/contactgroups.php', 0),
+(7, 2, 2, 'Services', 'admin/services.php', 0),
+(8, 2, 3, 'Host groups', 'admin/hostgroups.php', 0),
+(9, 2, 4, 'Service groups', 'admin/servicegroups.php', 0),
+(10, 5, 4, 'Service dependency', 'admin/servicedependencies.php', 0),
+(11, 5, 5, 'Service escalation', 'admin/serviceescalations.php', 0),
+(12, 5, 1, 'Host dependency', 'admin/hostdependencies.php', 0),
+(13, 5, 2, 'Host escalation', 'admin/hostescalations.php', 0),
+(14, 5, 3, 'Extended Host', 'admin/hostextinfo.php', 0),
+(15, 5, 6, 'Extended Service', 'admin/serviceextinfo.php', 0),
+(16, 6, 1, 'Data import', 'admin/import.php', 0),
+(17, 6, 2, 'Delete backup files', 'admin/delbackup.php', 0),
+(18, 7, 2, 'User admin', 'admin/user.php', 0),
+(19, 6, 6, 'Nagios control', 'admin/verify.php', 0),
+(20, 7, 1, 'New password', 'admin/password.php', 0),
+(21, 7, 6, 'Logbook', 'admin/logbook.php', 0),
+(22, 6, 4, 'Nagios config', 'admin/nagioscfg.php', 0),
+(23, 6, 5, 'CGI config', 'admin/cgicfg.php', 0),
+(24, 7, 4, 'Menu access', 'admin/menuaccess.php', 0),
+(25, 7, 5, 'Domains', 'admin/domain.php', 0),
+(27, 2, 6, 'Service templates', 'admin/servicetemplates.php', 0),
+(28, 3, 4, 'Contact templates', 'admin/contacttemplates.php', 0),
+(29, 7, 7, 'Settings', 'admin/settings.php', 0),
+(30, 7, 8, 'Help editor', 'admin/helpedit.php', 0),
+(31, 7, 3, 'Group admin', 'admin/group.php', 0),
+(32, 6, 3, 'Delete config files', 'admin/delconfig.php', 0);
+
+
+-- --------------------------------------------------------
+
 --
---  Set config_id 1 for entries in tbl_command
+-- Tabellenstruktur für Tabelle `tbl_tablestatus`
 --
-UPDATE `tbl_command` SET `config_id` = '1' WHERE `config_id` =0;
+
+DROP TABLE IF EXISTS `tbl_tablestatus`;
+CREATE TABLE IF NOT EXISTS `tbl_tablestatus` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tableName` varchar(255) NOT NULL,
+  `domainId` int(11) NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
 --
---  Set config_id 1 for entries in tbl_contact
+-- Daten für Tabelle `tbl_tablestatus`
 --
-UPDATE `tbl_contact` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_contactgroup
---
-UPDATE `tbl_contactgroup` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_host
---
-UPDATE `tbl_host` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_hostdependency
---
-UPDATE `tbl_hostdependency` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_hostescalation
---
-UPDATE `tbl_hostescalation` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_hostextinfo
---
-UPDATE `tbl_hostextinfo` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_hostgroup
---
-UPDATE `tbl_hostgroup` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_service
---
-UPDATE `tbl_service` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_servicedependency
---
-UPDATE `tbl_servicedependency` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_serviceescalation
---
-UPDATE `tbl_serviceescalation` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_serviceextinfo
---
-UPDATE `tbl_serviceextinfo` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_servicegroup
---
-UPDATE `tbl_servicegroup` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Set config_id 1 for entries in tbl_timeperiod
---
-UPDATE `tbl_timeperiod` SET `config_id` = '1' WHERE `config_id` =0;
---
---  Drop old tables
---
-DROP TABLE `tbl_language`;
-DROP TABLE `tbl_misccommand`;
-DROP TABLE `tbl_checkcommand`;
-DROP TABLE `tbl_relation`;
-DROP TABLE `tbl_relation_special`;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_timedefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_timedefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_timedefinition` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tipId` int(10) unsigned NOT NULL,
+  `definition` varchar(255) NOT NULL,
+  `range` text NOT NULL,
+  `last_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_timedefinition`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_timeperiod`
+-- 
+
+DROP TABLE IF EXISTS `tbl_timeperiod`;
+CREATE TABLE IF NOT EXISTS `tbl_timeperiod` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `timeperiod_name` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL,
+  `active` enum('0','1') NOT NULL DEFAULT '1',
+  `last_modified` datetime NOT NULL,
+  `access_group` int(8) unsigned NOT NULL DEFAULT '0',
+  `config_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `timeperiod_name` (`timeperiod_name`,`config_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_timeperiod`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- Allow invalid dates temporary for MySQL strict mode
+SET SESSION sql_mode='ALLOW_INVALID_DATES';
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_user`
+-- 
+DROP TABLE IF EXISTS `tbl_user`;
+CREATE TABLE IF NOT EXISTS `tbl_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `access_rights` varchar(8) DEFAULT NULL,
+  `admin_enable` enum('0','1') NOT NULL DEFAULT '0',
+  `wsauth` enum('0','1') NOT NULL DEFAULT '0',
+  `active` enum('0','1') NOT NULL DEFAULT '0',
+  `nodelete` enum('0','1') NOT NULL DEFAULT '0',
+  `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `tbl_variabledefinition`
+-- 
+
+DROP TABLE IF EXISTS `tbl_variabledefinition`;
+CREATE TABLE IF NOT EXISTS `tbl_variabledefinition` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `last_modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `tbl_variabledefinition`
+-- 

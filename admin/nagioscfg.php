@@ -5,140 +5,153 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2011 by Martin Willisegger
+//
 // Project   : NagiosQL
 // Component : Admin timeperiod definitions
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.4
-// Revision  : $LastChangedRevision: 827 $
+// Version   : 3.1.1
+// Revision  : $LastChangedRevision: 1058 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Variabeln deklarieren
-// =====================
-$intMain      = 6;
-$intSub       = 22;
-$intMenu      = 2;
-$preContent   = "admin/nagioscfg.tpl.htm";
-$strConfig    = "";
-$strMessage   = "";
-$intRemoveTmp = 0;
+// Define common variables
+// =======================
+$intMain      	= 6;
+$intSub       	= 22;
+$intMenu      	= 2;
+$preContent   	= "admin/nagioscfg.tpl.htm";
+$strConfig    	= "";
+$strMessage   	= "";
+$intRemoveTmp 	= 0;
 //
-// Vorgabedatei einbinden
-// ======================
-$preAccess    = 1;
-$preFieldvars = 1;
+// Include preprocessing file
+// ==========================
+$preAccess    	= 1;
+$preFieldvars 	= 1;
 require("../functions/prepend_adm.php");
 $myConfigClass->getConfigData("method",$intMethod);
 //
-// Übergabeparameter
-// =================
+// Process post parameters
+// =======================
 $chkNagiosConf  = isset($_POST['taNagiosCfg'])  ? $_POST['taNagiosCfg'] : "";
 //
-// Datenbankeintrag vorbereiten bei Sonderzeichen
-// ==============================================
-if (ini_get("magic_quotes_gpc") == 0) {
-  $chkNagiosConf    = addslashes($chkNagiosConf);
+// Quote special characters
+// ==========================
+if (get_magic_quotes_gpc() == 0) {
+  	$chkNagiosConf    = addslashes($chkNagiosConf);
 }
 //
-// Dateinamen festlegen
-// ====================
+// Define paths
+// ============
 $myConfigClass->getConfigData("nagiosbasedir",$strBaseDir);
+$myConfigClass->getConfigData("conffile",$strConfigfile);
 $strOldDate     = date("YmdHis",mktime());
-$strConfigfile  = $strBaseDir."/nagios.cfg";
-$strTempfile  = "/nagiosql_config_temp.dat";
-$strLocalBackup = $strBaseDir."/nagios.cfg_old_".$strOldDate;
+$strLocalBackup = $strConfigfile."_old_".$strOldDate;
 //
-// Daten verarbeiten
-// =================
+// Process data
+// ============
 if ($chkNagiosConf != "") {
-  // Konfiguration schreiben
-  if ($intMethod == 1) {
-    if (file_exists($strConfigfile) && (is_writable($strConfigfile))) {
-      $myConfigClass->moveFile("nagiosbasic","nagios.cfg");
-      // Neue Konfiguration schreiben
-      $resFile = fopen($strConfigfile,"w");
-      $chkNagiosConf = stripslashes($chkNagiosConf);
-      fputs($resFile,$chkNagiosConf);
-      fclose($resFile);
-      $strMessage .= "<span style=\"color:green\">".gettext('Configuration file successfully written!')."</span>";
-      $myDataClass->writeLog(gettext('Configuration successfully written:')." ".$strConfigfile);
-    } else {
-      $strMessage = gettext('Cannot open/overwrite the configuration file (check the permissions)!');
-      $myDataClass->writeLog(gettext('Configuration write failed:')." ".$strConfigfile);
-    }
-  } else if ($intMethod == 2) {
-    $strFileName = $SETS['path']['tempdir']."/".$strTempfile;
-    $resFile = fopen($strFileName,"w");
-    $chkNagiosConf = stripslashes($chkNagiosConf);
-    fputs($resFile,$chkNagiosConf);
-    fclose($resFile);
-    // Temporäre Datei auf FTP Server kopieren
-    $intReturn = $myConfigClass->configCopy("nagios.cfg",$strTempfile,"basic",1,1);
-    if ($intReturn == 0) {
-      $strMessage .= "<span style=\"color:green\">".gettext('Configuration file successfully written!')."</span>";
-      $myDataClass->writeLog(gettext('Configuration successfully written:')." ".$strConfigfile);
-      unlink($SETS['path']['tempdir']."/nagiosql_config_temp.dat");
-    } else {
-      $strMessage = gettext('Cannot open/overwrite the configuration file (check the permissions on FTP remote system)!');
-      $myDataClass->writeLog(gettext('Configuration write failed (FTP remote):')." ".$strConfigfile);
-    }
-  }
+	if ($intMethod == 1) {
+    	if (file_exists($strBaseDir) && (is_writable($strBaseDir) && (is_writable($strConfigfile)))) {
+			// Backup config file
+	 		$myConfigClass->moveFile("nagiosbasic",basename($strConfigfile));
+			// Write configuration
+      		$resFile = fopen($strConfigfile,"w");
+      		$chkNagiosConf = stripslashes($chkNagiosConf);
+			fputs($resFile,$chkNagiosConf);
+			fclose($resFile);
+			$myVisClass->processMessage("<span style=\"color:green\">".translate('Configuration file successfully written!')."</span>",$strMessage);
+			$myDataClass->writeLog(translate('Configuration successfully written:')." ".$strConfigfile);
+		} else {
+			$myVisClass->processMessage(translate('Cannot open/overwrite the configuration file (check the permissions)!'),$strMessage);
+			$myDataClass->writeLog(translate('Configuration write failed:')." ".$strConfigfile);	
+		}
+	} else if (($intMethod == 2) || ($intMethod == 3)) {
+		// Backup config file
+	 	$myConfigClass->moveFile("nagiosbasic",basename($strConfigfile));
+		// Write file to temporary
+		$strFileName = tempnam(sys_get_temp_dir(), 'nagiosql_conf');	
+		$resFile = fopen($strFileName,"w");
+		$chkNagiosConf = stripslashes($chkNagiosConf);
+		fputs($resFile,$chkNagiosConf);
+		fclose($resFile);
+		// Copy configuration to remoty system
+		$intReturn = $myConfigClass->configCopy($strConfigfile,$strFileName,1);
+		if ($intReturn == 0) {
+			$myVisClass->processMessage("<span style=\"color:green\">".translate('Configuration file successfully written!')."</span>",$strMessage);
+			$myDataClass->writeLog(translate('Configuration successfully written:')." ".$strConfigfile);
+			unlink($strFileName);			
+		} else {
+			$myVisClass->processMessage(translate('Cannot open/overwrite the configuration file (check the permissions on remote system)!'),$strMessage);
+			$myDataClass->writeLog(translate('Configuration write failed (remote):')." ".$strConfigfile);	
+			unlink($strFileName);
+		}
+	}
 }
 //
-// Menu aufbauen
-// =============
+// Build content menu
+// ==================
 $myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
-// Content einbinden
-// =================
-$conttp->setVariable("TITLE",gettext('Nagios main configuration file'));
+// Include content
+// ===============
+$conttp->setVariable("TITLE",translate('Nagios main configuration file'));
 $conttp->parse("header");
 $conttp->show("header");
 //
-// Eingabeformular
-// ===============
-$conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
+// Include input form
+// ===================
+$conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
 $conttp->setVariable("MAINSITE",$SETS['path']['root']."admin.php");
 foreach($arrDescription AS $elem) {
-  $conttp->setVariable($elem['name'],$elem['string']);
+  	$conttp->setVariable($elem['name'],$elem['string']);
 }
 //
-// Konfigurationsdatei öffnen
-// ==========================
-$myConfigClass->getConfigData("basedir",$strBaseDir);
+// Open configuration
+// ==================
 if ($intMethod == 1) {
-  if (file_exists($strConfigfile) && is_readable($strConfigfile)) {
-    $resFile = fopen($strConfigfile,"r");
-    if ($resFile) {
-      while(!feof($resFile)) {
-        $strConfig .= fgets($resFile,1024);
-      }
-    }
-  } else {
-    $strMessage = gettext('Cannot open the data file (check the permissions)!');
-  }
-} else if ($intMethod == 2) {
-  $intReturn = $myConfigClass->configCopy("nagios.cfg","nagiosql_config_temp.dat","basic",0);
-  if ($intReturn == 0) {
-    $resFile = fopen($SETS['path']['tempdir']."/nagiosql_config_temp.dat","r");
-    if ($resFile) {
-      while(!feof($resFile)) {
-        $strConfig .= fgets($resFile,1024);
-      }
-    }
-    unlink($SETS['path']['tempdir']."/nagiosql_config_temp.dat");
-  }
+	if (file_exists($strConfigfile) && is_readable($strConfigfile)) {
+		$resFile = fopen($strConfigfile,"r");
+		if ($resFile) {
+			while(!feof($resFile)) {
+				$strConfig .= fgets($resFile,1024);
+			}
+		}
+	} else {
+		$myVisClass->processMessage(translate('Cannot open the data file (check the permissions)!'),$strMessage);
+	}
+} else if (($intMethod == 2) || ($intMethod == 3)) {
+	// Write file to temporary
+	$strFileName = tempnam(sys_get_temp_dir(), 'nagiosql_conf');	
+	// Copy configuration from remoty system
+	$intReturn = $myConfigClass->configCopy($strConfigfile,$strFileName,0);
+	if ($intReturn == 0) {
+		$resFile = fopen($strFileName,"r");
+		if (is_resource($resFile)) {
+			while(!feof($resFile)) {
+				$strConfig .= fgets($resFile,1024);
+			}
+			unlink($strFileName);
+		} else {
+			$myVisClass->processMessage(translate('Cannot open the temporary file'),$strMessage);
+		}
+	} else {
+		$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
+		$myDataClass->writeLog(translate('Configuration read failed (remote):')." ".$strConfigfile);	
+		unlink($strFileName);
+	}
 }
 if ($strMessage != "") $conttp->setVariable("MESSAGE",$strMessage);
 $conttp->setVariable("DAT_NAGIOS_CONFIG",$strConfig);
 $conttp->parse("naginsert");
 $conttp->show("naginsert");
 //
-// Footer ausgeben
-// ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+// Process footer
+// ==============
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

@@ -1,9 +1,8 @@
-<!-- BEGIN config -->
-###############################################################################
+<!-- BEGIN config -->###############################################################################
 #
-# Hostgroup configuration file
+# Host group configuration file
 #
-# Created by: Nagios QL Version 3.0.4
+# Created by: Nagios QL Version {NAGIOS_QL_VERSION}
 # Date:	      {CREATE_DATE}
 # Version:    {VERSION}
 #
@@ -14,11 +13,11 @@
 <!-- BEGIN configset -->
 define hostgroup {
 <!-- BEGIN configline -->	{ITEM_TITLE}	{ITEM_VALUE}
-<!-- END configline -->	}	
+<!-- END configline -->}
 <!-- END configset -->
 ###############################################################################
 #
-# Timeperiod configuration file
+# Host group configuration file
 #
 # END OF FILE
 #

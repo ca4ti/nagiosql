@@ -1,0 +1,3465 @@
+# #############################################################################
+# #
+# # Project   : NagiosQL
+# # Component : Translation File Dutch
+# # Website   : http://www.nagiosql.org
+# # Date      : $LastChangedDate: 2011-04-10 16:59:17 +0200 (So, 10. Apr 2011) $
+# # Author    : $LastChangedBy: rouven $
+# # Version   : 3.1.1
+# # Revision  : $LastChangedRevision: 1069 $
+# #
+# #############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: NagiosQL 3.1.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-10 15:46+0100\n"
+"PO-Revision-Date: 2011-04-10 15:46+0100\n"
+"Last-Translator: NagiosQL <http://www.nagiosql.org>\n"
+"Language-Team: Jan Dijk <www.nagiosql.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.1.5\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: C:\\Development\\NagiosQL3.1\\\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin.php:42
+msgid "NagiosQL Administration"
+msgstr "NagiosQL - Configuratie Beheer"
+
+#: admin.php:45
+msgid "Welcome to NagiosQL, the administration module that can be used to easily create, modify and delete configuration files for Nagios and Icinga. The data is stored in a MySQL database and can be written directly to the standard files at any time you want."
+msgstr "Welkom bij NagiosQL, een beheermodule om gemakkelijk configuratiebestanden voor Nagios of Icinga aan te maken, te importeren, te bewerken of te verwijderen. Alle configuratie details worden gestructureerd opgeslagen in een MySQL databank en kunnen op elk moment weer rechtstreeks terug naar standaard configuratiebestanden geschreven worden."
+
+#: admin.php:68
+msgid "Could not connect to Updateserver"
+msgstr "Verbinding met updateserver is mislukt"
+
+#: admin.php:69
+msgid "Error"
+msgstr "Fout"
+
+#: admin.php:103
+msgid "An error occured during the version check"
+msgstr "Een fout trad op bij de versiecontrole"
+
+#: admin.php:111
+msgid "Checking for NagiosQL Updates"
+msgstr "Controleren van NagiosQL updates"
+
+#: admin.php:113
+msgid "Installed"
+msgstr "Geïnstalleerd"
+
+#: admin.php:114
+msgid "Available"
+msgstr "Beschikbaar"
+
+#: admin.php:115
+msgid "Information"
+msgstr "Informatie"
+
+#: admin.php:123
+msgid "You already have the latest version installed"
+msgstr "De laatste versie is al geïnstalleerd."
+
+#: admin.php:129
+msgid "You already have the latest development version installed"
+msgstr "De laatste ontwikkel-versie is al geïnstalleerd."
+
+#: admin.php:134
+msgid "You are using an older development version. Please update to the latest development version"
+msgstr "Je gebruikt een oudere ontwikkel-versie. Update naar de nieuwste versie a.u.b."
+
+#: admin.php:142
+msgid "You are using an old NagiosQL version. Please update to the latest stable version"
+msgstr "U gebruikt een oudere versie van NagiosQL. Gelieve te updaten naar de nieuwste stabiele versie."
+
+#: index.php:48
+msgid "Welcome to"
+msgstr "Welkom bij"
+
+#: index.php:49
+msgid "Welcome"
+msgstr "Welkom"
+
+#: index.php:50
+msgid "Please enter your username and password to access NagiosQL.<br>If you forgot one of them, please contact your Administrator."
+msgstr "Vul uw gebruikersnaam en wachtwoord in om toegang te krijgen tot NagiosQL. <br>Neem contact op met de beheerder als u uw logingegevens vergeten bent."
+
+#: index.php:51
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: index.php:52
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: index.php:53
+msgid "Login"
+msgstr "Inloggen"
+
+#: admin/administration.php:37
+msgid "Administration"
+msgstr "Beheer"
+
+#: admin/administration.php:40
+msgid "Functions to administrate NagiosQL V3"
+msgstr "Functies om NagiosQL V3 te beheren"
+
+#: admin/alarming.php:37
+msgid "Alarming"
+msgstr "Alarmering"
+
+#: admin/alarming.php:40
+msgid "To define contact data, contact templates and contact groups and time periods."
+msgstr "Om contactgegevens, contact-sjablonen, contact-groepen en tijdsperioden te definiëren."
+
+#: admin/alarming.php:41
+#: admin/commands.php:41
+msgid "Statistical datas"
+msgstr "Configuratie overzicht:"
+
+#: admin/alarming.php:42
+#: admin/commands.php:42
+msgid "Group"
+msgstr "Groep"
+
+#: admin/alarming.php:43
+#: admin/commands.php:43
+msgid "Active"
+msgstr "Actief"
+
+#: admin/alarming.php:44
+#: admin/commands.php:44
+msgid "Inactive"
+msgstr "Inactief"
+
+#: admin/alarming.php:48
+msgid "Contact data"
+msgstr "Contact gegevens"
+
+#: admin/alarming.php:52
+msgid "Contact groups"
+msgstr "Contact groepen"
+
+#: admin/alarming.php:56
+msgid "Time periods"
+msgstr "Tijdsperiodes"
+
+#: admin/alarming.php:60
+msgid "Contact templates"
+msgstr "Contact sjablonen"
+
+#: admin/cgicfg.php:66
+#: admin/cgicfg.php:84
+msgid "Configuration file successfully written!"
+msgstr "Configuratiebestand is succesvol opgeslagen!"
+
+#: admin/cgicfg.php:67
+#: admin/cgicfg.php:85
+msgid "Configuration successfully written:"
+msgstr "Configuratie succesvol opgeslagen:"
+
+#: admin/cgicfg.php:69
+msgid "Cannot open/overwrite the configuration file (check the permissions)!"
+msgstr "Kan het configuratiebestand niet openen of overschrijven (bekijk de rechten)!"
+
+#: admin/cgicfg.php:70
+msgid "Configuration write failed:"
+msgstr "Het opslaan van de configuratie is mislukt:"
+
+#: admin/cgicfg.php:88
+msgid "Cannot open/overwrite the configuration file (check the permissions on remote system)!"
+msgstr "Kan het configuratiebestand niet openen of overschrijven (bekijk de rechten)!"
+
+#: admin/cgicfg.php:89
+msgid "Configuration write failed (remote):"
+msgstr "Het opslaan van de configuratie is mislukt (elders):"
+
+#: admin/cgicfg.php:101
+msgid "CGI configuration file"
+msgstr "CGI configuratiebestand"
+
+#: admin/cgicfg.php:124
+msgid "Cannot open the data file (check the permissions)!"
+msgstr "Kan het gegevensbestand niet openen (controleer de rechten)!"
+
+#: admin/cgicfg.php:139
+msgid "Cannot open the temporary file"
+msgstr "Kan het tijdelijke bestand niet openen"
+
+#: admin/cgicfg.php:143
+msgid "Configuration read failed (remote):"
+msgstr "Het opslaan van de configuratie is mislukt (elders):"
+
+#: admin/checkcommands.php:79
+msgid "New command inserted:"
+msgstr "Nieuw commando toegevoegd:"
+
+#: admin/checkcommands.php:80
+msgid "Command modified:"
+msgstr "Commando aangepast:"
+
+#: admin/checkcommands.php:84
+#: admin/contactgroups.php:113
+#: admin/contacts.php:262
+#: admin/contacttemplates.php:262
+#: admin/domain.php:180
+#: admin/group.php:98
+msgid "Database entry failed! Not all necessary data filled in!"
+msgstr "Databank invoer is mislukt! Niet alle verplichte velden zijn ingevuld!"
+
+# prepend.adm
+#: admin/checkcommands.php:123
+#: admin/checkcommands.php:232
+#: admin/checkcommands.php:250
+#: admin/contactgroups.php:152
+#: admin/contactgroups.php:277
+#: admin/contactgroups.php:295
+#: admin/contacts.php:301
+#: admin/contacts.php:500
+#: admin/contacts.php:518
+#: admin/contacttemplates.php:301
+#: admin/contacttemplates.php:498
+#: admin/contacttemplates.php:516
+#: admin/domain.php:202
+#: admin/domain.php:371
+#: admin/domain.php:389
+#: admin/group.php:115
+#: admin/group.php:198
+#: admin/group.php:216
+msgid "Error while selecting data from database:"
+msgstr "Fout opgetreden bij het opvragen van gegevens uit de database:"
+
+#: admin/checkcommands.php:129
+#: admin/contactgroups.php:158
+#: admin/contacts.php:307
+#: admin/contacttemplates.php:307
+#: admin/domain.php:208
+msgid "No permission to open configuration!"
+msgstr "Geen rechten om de configuratie te openen!"
+
+#: admin/checkcommands.php:154
+msgid "Command definitions"
+msgstr "Opdracht-definities"
+
+#: admin/checkcommands.php:171
+#: admin/contactgroups.php:210
+#: admin/contacts.php:390
+#: admin/contacttemplates.php:390
+msgid "Saving not possible!"
+msgstr "Opslaan niet mogelijk!"
+
+#: admin/checkcommands.php:176
+msgid "unclassified"
+msgstr "niet geclassificeerd"
+
+#: admin/checkcommands.php:177
+msgid "check command"
+msgstr "controle-opdracht"
+
+#: admin/checkcommands.php:178
+msgid "misc command"
+msgstr "speciale opdracht"
+
+#: admin/checkcommands.php:192
+#: admin/contactgroups.php:240
+#: admin/contacttemplates.php:450
+msgid "Entry cannot be activated because it is used by another configuration"
+msgstr "Invoer kan niet gebruikt worden om het al in gebruik is door een andere configuratie"
+
+#: admin/checkcommands.php:212
+msgid "Command name"
+msgstr "Opdracht naam"
+
+#: admin/checkcommands.php:213
+msgid "Command line"
+msgstr "Opdrachtregel"
+
+#: admin/checkcommands.php:244
+#: admin/contactgroups.php:289
+#: admin/contacts.php:512
+#: admin/contacttemplates.php:510
+#: admin/domain.php:383
+#: admin/group.php:210
+msgid "No data"
+msgstr "Geen gegevens"
+
+#: admin/checkcommands.php:256
+#: admin/contactgroups.php:301
+#: admin/contacts.php:524
+#: admin/contacttemplates.php:522
+#: admin/domain.php:395
+#: admin/group.php:222
+msgid "No"
+msgstr "Nee"
+
+#: admin/checkcommands.php:256
+#: admin/contactgroups.php:301
+#: admin/contacts.php:524
+#: admin/contacttemplates.php:522
+#: admin/domain.php:395
+#: admin/group.php:222
+msgid "Yes"
+msgstr "Ja"
+
+#: admin/checkcommands.php:301
+#: admin/contactgroups.php:346
+#: admin/contacts.php:568
+#: admin/contacttemplates.php:566
+msgid "Last database update:"
+msgstr "Laatste database update:"
+
+#: admin/checkcommands.php:302
+#: admin/contactgroups.php:347
+#: admin/contacts.php:569
+#: admin/contacttemplates.php:567
+msgid "Last change of the configuration file:"
+msgstr "Laatste aanpassing van het configuratiebestand:"
+
+#: admin/commands.php:37
+#: admin/commands.php:48
+msgid "Check commands"
+msgstr "Check commando's"
+
+#: admin/commands.php:40
+msgid "To define check and misc commands, notification commands and special commands."
+msgstr "Om controle en overige commando's, notificatie commando's en speciale commando's te definiëren."
+
+#: admin/contactgroups.php:86
+msgid "New contact group inserted:"
+msgstr "Nieuwe contact groep toegevoegd:"
+
+#: admin/contactgroups.php:87
+msgid "Contact group modified:"
+msgstr "Contact-groep aangepast:"
+
+#: admin/contactgroups.php:183
+msgid "Define contact groups (contactgroups.cfg)"
+msgstr "Contact-groepen definiëren (contactgroups.cfg)"
+
+#: admin/contactgroups.php:194
+msgid "Attention, no contacts defined!"
+msgstr "Let op, geen contacten gedefinieerd!"
+
+#: admin/contactgroups.php:257
+msgid "Contact group"
+msgstr "Contactgroep"
+
+#: admin/contactgroups.php:258
+#: admin/contacts.php:476
+#: admin/contacttemplates.php:475
+#: admin/domain.php:362
+#: admin/group.php:187
+msgid "Description"
+msgstr "Beschrijving"
+
+#: admin/contacts.php:175
+msgid "New contact inserted:"
+msgstr "Nieuw contact toegevoegd:"
+
+#: admin/contacts.php:176
+msgid "Contact modified:"
+msgstr "Contact is aangepast:"
+
+#: admin/contacts.php:332
+msgid "Define contacts (contacts.cfg)"
+msgstr "Contacten definiëren (contacts.cfg)"
+
+#: admin/contacts.php:368
+msgid "Attention, no time periods defined!"
+msgstr "Attentie, geen tijd periode gedefineerd!"
+
+#: admin/contacts.php:374
+msgid "Attention, no commands defined!"
+msgstr "Let op, geen opdrachten gedefinieerd!"
+
+#: admin/contacts.php:451
+msgid "Entry cannot be deactivated because it is used by another configuration"
+msgstr "Invoer kan niet gebruikt worden omdat deze al gebruikt wordt door een andere configuratie"
+
+#: admin/contacts.php:475
+#: admin/contacttemplates.php:474
+msgid "Contact name"
+msgstr "Contact-naam"
+
+#: admin/contacttemplates.php:175
+msgid "New contact template inserted:"
+msgstr "Nieuw contact-sjabloon toegevoegd:"
+
+#: admin/contacttemplates.php:176
+msgid "Contact template modified:"
+msgstr "Contact-sjabloon aangepast:"
+
+#: admin/contacttemplates.php:332
+msgid "Define contact templates (contacttemplates.cfg)"
+msgstr "Contact-sjablonen definiëren (contacttemplates.cfg)"
+
+#: admin/delbackup.php:54
+#: admin/delconfig.php:54
+msgid "Could not open directory"
+msgstr "Kan de map niet openen"
+
+#: admin/delbackup.php:88
+#: admin/delconfig.php:88
+msgid "File deleted"
+msgstr "Bestand is verwijderd"
+
+#: admin/delbackup.php:89
+#: admin/delconfig.php:89
+msgid "successfully deleted"
+msgstr "succesvol verwijderd"
+
+#: admin/delbackup.php:91
+#: admin/delconfig.php:91
+msgid "could not be deleted (check the permissions)"
+msgstr "kon niet verwijderd worden (controleer de rechten)"
+
+#: admin/delbackup.php:103
+msgid "Delete backup files"
+msgstr "Verwijder de backup bestanden"
+
+#: admin/delbackup.php:106
+#: admin/delconfig.php:106
+msgid "Filter string"
+msgstr "Filter tekst"
+
+#: admin/delbackup.php:107
+#: admin/delconfig.php:107
+msgid "Search"
+msgstr "Zoeken"
+
+#: admin/delbackup.php:108
+#: admin/delbackup.php:113
+#: admin/delconfig.php:108
+#: admin/delconfig.php:113
+#: admin/group.php:188
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: admin/delbackup.php:109
+#: admin/delconfig.php:109
+msgid "Reset filter"
+msgstr "Filter opnieuw instellen"
+
+#: admin/delbackup.php:111
+#: admin/delconfig.php:111
+msgid "Backup file"
+msgstr "Backup bestand"
+
+#: admin/delbackup.php:112
+#: admin/delconfig.php:112
+msgid "required"
+msgstr "vereist"
+
+#: admin/delbackup.php:114
+#: admin/delconfig.php:114
+msgid "Abort"
+msgstr "Annuleren"
+
+#: admin/delbackup.php:115
+#: admin/delconfig.php:115
+msgid "Hold CTRL to select<br>more than one entry"
+msgstr "Gebruik CTRL om <br>meer dan 1 item te selecteren"
+
+#: admin/delconfig.php:103
+msgid "Delete config files"
+msgstr "Verwijder configuratie bestanden"
+
+#: admin/domain.php:96
+#: admin/domain.php:101
+#: admin/domain.php:106
+#: admin/domain.php:111
+#: admin/domain.php:116
+#: admin/domain.php:121
+#: admin/domain.php:128
+#: admin/domain.php:132
+msgid "is not writeable"
+msgstr "is niet beschrijfbaar"
+
+#: admin/domain.php:127
+msgid "Nagios config file"
+msgstr "Nagios configuratiebestand"
+
+#: admin/domain.php:138
+msgid "SSH module not loaded!"
+msgstr "SSH module niet geladen!"
+
+#: admin/domain.php:143
+msgid "FTP module not loaded!"
+msgstr "FTP module niet geladen!"
+
+#: admin/domain.php:150
+msgid "Warning, at least one error occured, please check!"
+msgstr "Waarschuwing, minstens één fout is opgetreden, controleer deze!"
+
+#: admin/domain.php:177
+msgid "New Domain inserted:"
+msgstr "Nieuw domein toegevoegd:"
+
+#: admin/domain.php:178
+msgid "Domain modified:"
+msgstr "Domein gewijzigd:"
+
+#: admin/domain.php:189
+msgid "Localhost can't be deleted"
+msgstr "Localhost kan niet worden verwijderd"
+
+#: admin/domain.php:226
+msgid "Domain administration"
+msgstr "Domein beheer"
+
+#: admin/domain.php:241
+msgid "In order for a user to get access, he needs to be member of the group selected here."
+msgstr "Een gebruiker moet lid zijn van de hier geselecteerde groep, om toegang te krijgen."
+
+#: admin/domain.php:248
+#: admin/group.php:164
+msgid "Please fill in all fields marked with an *"
+msgstr "Vul alle velden gemarkeerd met een * in"
+
+#: admin/domain.php:249
+#: admin/group.php:165
+msgid "The following field contains not permitted characters:"
+msgstr "Het volgende veld bevat niet toegestane tekens:"
+
+#: admin/domain.php:251
+msgid "Enable"
+msgstr "Inschakelen"
+
+#: admin/domain.php:252
+msgid "Disable"
+msgstr "Uitschakelen"
+
+#: admin/domain.php:361
+msgid "Domain"
+msgstr "Domein"
+
+#: admin/download.php:67
+msgid "Download"
+msgstr "Downloaden"
+
+#: admin/group.php:69
+msgid "A new group added:"
+msgstr "Een nieuwe groep toegevoegd:"
+
+#: admin/group.php:70
+msgid "User modified:"
+msgstr "Gebruiker aangepast:"
+
+#: admin/group.php:128
+msgid "Group administration"
+msgstr "Groepen beheer"
+
+#: admin/group.php:159
+msgid "Read"
+msgstr "Lees"
+
+#: admin/group.php:160
+msgid "Write"
+msgstr "Schrijf"
+
+#: admin/group.php:161
+msgid "Link"
+msgstr "Link"
+
+#: admin/group.php:186
+msgid "Groupname"
+msgstr "Groep-naam"
+
+#: admin/group.php:190
+msgid "Copy"
+msgstr "Kopiëren"
+
+#: admin/group.php:192
+msgid "Do you really want to delete this database entry:"
+msgstr "Weet u zeker dat u dit database item wilt verwijderen:"
+
+#: admin/group.php:193
+msgid "Do you really want to delete all marked entries?"
+msgstr "Weet u zeker dat u alle gemarkeerde onderdelen wilt verwijderen?"
+
+#: admin/helpedit.php:80
+msgid "Help text editor"
+msgstr "Help tekst editor"
+
+#: admin/helpedit.php:91
+msgid "Main key"
+msgstr "Hoofdsleutel"
+
+#: admin/helpedit.php:92
+msgid "Sub key"
+msgstr "Subsleutel"
+
+#: admin/helpedit.php:93
+msgid "Language"
+msgstr "Taal"
+
+#: admin/helpedit.php:94
+msgid "Nagios version"
+msgstr "Nagios versie"
+
+#: admin/helpedit.php:95
+msgid "Load default text"
+msgstr "Standaard tekst laden"
+
+#: admin/hostdependencies.php:108
+msgid "New host dependency inserted:"
+msgstr "Nieuwe host-afhankelijkheid toegevoegd:"
+
+#: admin/hostdependencies.php:109
+msgid "Host dependency modified:"
+msgstr "Host afhankelijkheid aangepast:"
+
+#: admin/hostdependencies.php:227
+msgid "Define host dependencies (hostdependencies.cfg)"
+msgstr "Definieer host afhankelijkheden (hostdependencies.cfg)"
+
+#: admin/hostdependencies.php:251
+#: admin/hostescalations.php:234
+msgid "Attention, no hosts and hostgroups defined!"
+msgstr "Attentie, geen hosts en hostgroepen gedefinieerd!"
+
+#: admin/hostdependencies.php:308
+#: admin/hostescalations.php:299
+msgid "Config name"
+msgstr "Configuratienaam"
+
+#: admin/hostdependencies.php:309
+msgid "Dependent hosts"
+msgstr "Afhankelijke hosts"
+
+#: admin/hostdependencies.php:309
+msgid "Dependent hostgroups"
+msgstr "Afhankelijke host groepen"
+
+#: admin/hostescalations.php:102
+msgid "New host escalation inserted:"
+msgstr "Nieuw host-escalatie toegevoegd:"
+
+#: admin/hostescalations.php:103
+msgid "Host escalation modified:"
+msgstr "Host-escalatie aangepast:"
+
+#: admin/hostescalations.php:220
+msgid "Define host escalation (hostescalations.cfg)"
+msgstr "Definieer host-escalatie (hostescalations.cfg)"
+
+#: admin/hostescalations.php:245
+msgid "Attention, no contacts and contactgroups defined!"
+msgstr "Let op, geen contacten en contact-groepen gedefinieerd!"
+
+#: admin/hostescalations.php:300
+#: admin/monitoring.php:48
+msgid "Hosts"
+msgstr "Hosts"
+
+#: admin/hostescalations.php:300
+#: admin/monitoring.php:56
+msgid "Host groups"
+msgstr "Host-groepen"
+
+#: admin/hostextinfo.php:94
+msgid "New host extended information inserted:"
+msgstr "Nieuwe host-informatie toegevoegd:"
+
+#: admin/hostextinfo.php:95
+msgid "Host extended information modified:"
+msgstr "Host-informatie gewijzigd:"
+
+#: admin/hostextinfo.php:169
+msgid "Define host extended information (hostextinfo.cfg)"
+msgstr "Definieer host-informatie (hostextinfo.cfg)"
+
+#: admin/hostextinfo.php:180
+#: admin/hostgroups.php:201
+msgid "Attention, no hosts defined!"
+msgstr "Attentie, geen hosts gedefinieerd!"
+
+#: admin/hostextinfo.php:219
+#: admin/hosts.php:641
+msgid "Host name"
+msgstr "Host naam"
+
+#: admin/hostextinfo.php:220
+msgid "Notes"
+msgstr "Notities"
+
+#: admin/hostgroups.php:93
+msgid "New host group inserted:"
+msgstr "Nieuwe host groep toegevoegd:"
+
+#: admin/hostgroups.php:94
+msgid "Host group modified:"
+msgstr "Host-groep aangepast:"
+
+#: admin/hostgroups.php:190
+msgid "Define host groups (hostgroups.cfg)"
+msgstr "Definieer host-groepen (hostgroups.cfg)"
+
+#: admin/hostgroups.php:262
+msgid "Host group"
+msgstr "Host groepen"
+
+#: admin/hosts.php:219
+msgid "New host inserted:"
+msgstr "Nieuwe host toegevoegd:"
+
+#: admin/hosts.php:220
+msgid "Host modified:"
+msgstr "Host aangepast:"
+
+#: admin/hosts.php:265
+msgid "The assigned, no longer used configuration files were deleted successfully!"
+msgstr "De toegekende, niet langer gebruikte configuratiebestanden zijn met succes verwijderd!"
+
+#: admin/hosts.php:266
+msgid "Host file deleted:"
+msgstr "Host bestand verwijderd:"
+
+#: admin/hosts.php:269
+msgid "Common files cannot be removed from target systems - please check manually"
+msgstr "Algemene bestanden kunnen niet verwijderd worden van het system - controleer aub handmatig"
+
+#: admin/hosts.php:271
+msgid "Errors while deleting the old configuration file - please check!:"
+msgstr "Fout, tijdens het verwijderen van het oude configuratie bestand - a.u.b. nakijken!:"
+
+#: admin/hosts.php:455
+msgid "Define hosts (hosts.cfg)"
+msgstr "Host definiëren (hosts.cfg)"
+
+#: admin/hosts.php:517
+msgid "Attention, no contact groups defined!"
+msgstr "Attentie, geen contact-groepen gedefinieerd!"
+
+#: admin/hosts.php:710
+msgid "out-of-date"
+msgstr "verouderd"
+
+#: admin/hosts.php:719
+msgid "up-to-date"
+msgstr "actueel"
+
+#: admin/hosts.php:720
+msgid "missed"
+msgstr "gemist"
+
+#: admin/hosttemplates.php:208
+msgid "New host template inserted:"
+msgstr "Nieuw host-sjabloon toegevoegd:"
+
+#: admin/hosttemplates.php:209
+msgid "Host template modified:"
+msgstr "Host-sjabloon aangepast:"
+
+#: admin/hosttemplates.php:373
+msgid "Host template definition (hosttemplates.cfg)"
+msgstr "Host-sjabloon definitie (hosttemplates.cfg)"
+
+#: admin/hosttemplates.php:548
+msgid "Host template name"
+msgstr "Host-sjabloon naam"
+
+#: admin/import.php:92
+msgid "File upload error:"
+msgstr "Fout bij upload van bestand:"
+
+#: admin/import.php:100
+#: admin/import.php:112
+msgid "File imported - File [overwite flag]:"
+msgstr "Bestand geïmporteerd - Bestand [overwrite flag]:"
+
+#: admin/import.php:123
+msgid "Configuration import"
+msgstr "Configuratie import"
+
+#: admin/import.php:131
+msgid "Template definition"
+msgstr "Sjabloon definitie"
+
+#: admin/import.php:132
+msgid "Import file"
+msgstr "Import bestand"
+
+#: admin/import.php:133
+msgid "Local import file"
+msgstr "Lokaal import bestand"
+
+#: admin/import.php:134
+msgid "Overwrite database"
+msgstr "Database overschrijven"
+
+#: admin/import.php:135
+msgid "Import"
+msgstr "Importeren"
+
+#: admin/import.php:138
+msgid "Hold CTRL to select<br>more than one"
+msgstr "Gebruik CTRL om <br>meer dan 1 te selecteren"
+
+#: admin/import.php:142
+msgid "To prevent errors or misconfigurations, you should import your configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br><span style=\"color:#FF0000\"><b>Check your configuration after import!</b><br>In cause of an error or an uncomplete configuration, re-importing the wrong configuration can solve the problem.</span>"
+msgstr "Om fouten of misconfiguratie te voorkomen, dient u uw configuratiebestanden in een bruikbare volgorde te importeren. We raden de volgende volgorde aan:<br><br><b><i>commands -> timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br><span style=\"color:#FF0000\"><b>Controleer de configuratie na de import!</b><br>In het geval van een foute of incomplete configuratie kan het opnieuw importeren van uw configuratiebestanden het probleem oplossen.</span>"
+
+#: admin/info.php:39
+msgid "This is relative path of your NagiosQL Installation"
+msgstr "Dit is het relatieve pad van uw NagiosQL installatie"
+
+#: admin/info.php:40
+msgid "This is the absolut path to your NagiosQL Installation"
+msgstr "Dit is het absolute pad naar uw NagiosQL installatie"
+
+#: admin/info.php:41
+msgid "If you need a secure connection, select HTTPS instead of HTTP"
+msgstr "Als een beveiligde verbinding gewenst is, selecteer HTTPS in plaats van HTTP"
+
+#: admin/info.php:42
+msgid "Please choose a temporary directory with write permissions. The default is the temp directory provided by your OS"
+msgstr "Kies een tijdelijke map met schrijf rechten. Standaard waarde is de temp map die gedefinieerd is door uw besturingssysteem"
+
+#: admin/info.php:43
+msgid "Please choose your application language"
+msgstr "Kies uw programma taal"
+
+#: admin/info.php:44
+msgid "Encoding should be set to nothing else than utf-8. Any changes at your own risk"
+msgstr "Codering hoort niet anders ingesteld te zijn dan utf-8. Wijzigingen zijn op uw eigen risico"
+
+#: admin/info.php:45
+msgid "IP-Address or hostname of the database server<br>e.g. localhost"
+msgstr "IP-adres of hostnaam van de databaseserver<br>b.v. localhost"
+
+#: admin/info.php:46
+msgid "MySQL Server Port, default is 3306"
+msgstr "MySQL server poort, standaard is 3306"
+
+#: admin/info.php:47
+msgid "Name of the NagiosQL database<br>e.g. db_nagiosql_v3"
+msgstr "Naam van de NagiosQL database<br>b.v. db_nagiosql_v3"
+
+#: admin/info.php:48
+msgid "User with sufficient permission for the NagiosQL database<br>At least this user should have SELECT, INSERT, UPDATE, DELETE permissions"
+msgstr "Gebruiker met voldoende rechten op de NagiosQL database<br>Minimale rechten zijn:SELECT, INSERT, UPDATE, DELETE"
+
+#: admin/info.php:49
+msgid "Password for the above mentioned user"
+msgstr "Wachtwoord voor de hierboven genoemde gebruiker"
+
+#: admin/info.php:50
+msgid "After the defined amount of seconds the session will terminate for security reasons"
+msgstr "Als extra veiligheid, zal de sessie na de gedefinieerde seconden verbroken worden."
+
+#: admin/info.php:51
+msgid "Decide between authentication based on your Webserver<br>e.g. Apache configuration (config file or htaccess) or NagiosQL"
+msgstr "Kies tussen de authenticatie methoden<br> b.v. Apache configuratie (config file of htaccess) of NagiosQL"
+
+#: admin/info.php:52
+msgid "How many entries per side should be visibile (e.g. services or hosts)"
+msgstr "Hoeveel regels per kant moeten zichtbaar zijn (b.v. services of hosts)"
+
+#: admin/info.php:53
+msgid "Selection of multiple entries by using the new dialog or by holding CTRL + left click like in NagiosQL2"
+msgstr "Selectie van meerdere items door gebruik van het nieuw scherm of met CTRL + linkermuisknop zoals in NagiosQL2"
+
+#: admin/info.php:54
+msgid "Enable or disable the warning if a required field contains no data in objects with templates"
+msgstr "Schakel de waarschuwing in of uit, als bij objecten met voorbeelden een verplicht veld geen gegevens bevat."
+
+#: admin/info.php:55
+msgid "Enable or disable the automatic online version check."
+msgstr "In-of uitschakelen van de automatische online versie te controleren."
+
+#: admin/info.php:56
+msgid "If you require a Proxyserver to connect to the Internet (Port 80), please define one."
+msgstr "Als een proxyserver nodig is om verbinding te maken met Internet (poort 80), gelieve dat op te geven."
+
+#: admin/info.php:57
+msgid "Address of your Proxyserver e.g. proxy.yourdomain.com:3128"
+msgstr "Adres van de proxyserver; bijvoorbeeld proxy.yourdomain.com:3128"
+
+#: admin/info.php:58
+msgid "Username to connect through your proxy (optional)"
+msgstr "Gebruikersnaam voor verbinding via de proxyserver (optioneel)"
+
+#: admin/info.php:59
+msgid "Password to connect through your proxy (optional)"
+msgstr "Wachtwoord voor verbinding via de proxyserver (optioneel)"
+
+#: admin/info.php:78
+msgid "Information PopUp"
+msgstr "Informatie popup"
+
+#: admin/info.php:91
+msgid "No information available"
+msgstr "Geen informatie beschikbaar"
+
+#: admin/logbook.php:58
+msgid "Dataset successfully deleted. Affected rows:"
+msgstr "Gegevens set met succes verwijderd. Beïnvloede rijen:"
+
+#: admin/logbook.php:87
+msgid "View logbook"
+msgstr "Logboek bekijken"
+
+#: admin/logbook.php:91
+msgid "Delete logentries between:"
+msgstr "Verwijderen van logs tussen:"
+
+#: admin/logbook.php:93
+msgid "Please at least fill in a start or a stop time"
+msgstr "Vul op zijn minst een start of stop tijd in"
+
+#: admin/logbook.php:94
+msgid "Do you really want to delete all log entries between the selected dates?"
+msgstr "Weet u zeker dat u alle log regels tussen de geselecteerde datums wilt verwijderen?"
+
+#: admin/logbook.php:99
+msgid "previous 20 entries"
+msgstr "vorige 20"
+
+#: admin/logbook.php:105
+msgid "next 20 entries"
+msgstr "volgende 20"
+
+#: admin/menuaccess.php:47
+msgid "Error while inserting the data to the data base:"
+msgstr "Fout tijdens het invoegen van gegevens in de database:"
+
+#: admin/menuaccess.php:50
+msgid "Data were successfully inserted to the data base!"
+msgstr "Gegevens zijn succesvol toegevoegd aan de database!"
+
+#: admin/menuaccess.php:51
+msgid "Access group set for menu item:"
+msgstr "Toegangs groep ingesteld voor menu onderdeel:"
+
+#: admin/menuaccess.php:61
+msgid "Define Menu Accessrights"
+msgstr "Definieer Menu toegangsrechten"
+
+#: admin/monitoring.php:37
+msgid "Monitoring"
+msgstr "Monitoring"
+
+#: admin/monitoring.php:40
+msgid "To define host and service supervisions as well as host and service groups."
+msgstr "Het definiëren van host- en service supervisions net als host en service groepen."
+
+#: admin/monitoring.php:52
+msgid "Services"
+msgstr "Services"
+
+#: admin/monitoring.php:60
+msgid "Service groups"
+msgstr "Service groepen"
+
+#: admin/monitoring.php:64
+msgid "Host templates"
+msgstr "Host sjablonen"
+
+#: admin/monitoring.php:68
+msgid "Service templates"
+msgstr "Service sjablonen"
+
+#: admin/mutdialog.php:53
+msgid "Selected"
+msgstr "Geselecteerd"
+
+#: admin/nagioscfg.php:101
+msgid "Nagios main configuration file"
+msgstr "Nagios hoofd-configuratiebestand"
+
+#: admin/password.php:57
+msgid "Password successfully modified"
+msgstr "Wachtwoord is succesvol gewijzigd"
+
+#: admin/password.php:70
+msgid "Password too short or password fields unequally!"
+msgstr "Wachtwoord is te kort of de wachtwoord velden ongelijk!"
+
+#: admin/password.php:74
+msgid "Old password is wrong"
+msgstr "Oud wachtwoord is niet correct"
+
+#: admin/password.php:94
+msgid "Save"
+msgstr "Opslaan"
+
+#: admin/password.php:97
+msgid "The new passwords are not equal!"
+msgstr "De nieuwe wachtwoorden zijn niet gelijk!"
+
+#: admin/password.php:98
+msgid "The new password is too short - use at least 6 characters!"
+msgstr "Het nieuwe wachtwoord is te kort - gebruik minimaal 6 tekens!"
+
+#: admin/servicedependencies.php:117
+msgid "New service dependency inserted:"
+msgstr "Nieuwe service-afhankelijkheid toegevoegd:"
+
+#: admin/servicedependencies.php:118
+msgid "Service dependency modified:"
+msgstr "Service-afhankelijkheid aangepast:"
+
+#: admin/servicedependencies.php:251
+msgid "Define service dependencies (servicedependencies.cfg)"
+msgstr "Definieer service-afhankelijkheden (servicedependencies.cfg)"
+
+#: admin/servicedependencies.php:442
+#: config/fieldvars.php:214
+msgid "Dependent services"
+msgstr "Afhankelijke services"
+
+#: admin/serviceescalations.php:108
+msgid "New service escalation inserted:"
+msgstr "Nieuwe service-escalatie toegevoegd:"
+
+#: admin/serviceescalations.php:109
+msgid "Service escalation modified:"
+msgstr "Service-escalatie aangepast:"
+
+#: admin/serviceescalations.php:234
+msgid "Define service escalation (serviceescalations.cfg)"
+msgstr "Definieer service-escalatie (serviceescalations.cfg)"
+
+#: admin/serviceextinfo.php:86
+msgid "New service extended information inserted:"
+msgstr "Nieuwe service-informatie toegevoegd:"
+
+#: admin/serviceextinfo.php:87
+msgid "Service extended information modified:"
+msgstr "Service-informatie aangepast:"
+
+#: admin/serviceextinfo.php:171
+msgid "Define service extended information (serviceextinfo.cfg)"
+msgstr "Definieer service-informatie (serviceextinfo.cfg)"
+
+#: admin/serviceextinfo.php:254
+msgid "Hostname"
+msgstr "Hostnaam"
+
+#: admin/serviceextinfo.php:255
+msgid "Service"
+msgstr "Service"
+
+#: admin/servicegroups.php:93
+msgid "New service group inserted:"
+msgstr "Nieuwe service-groep toegevoegd:"
+
+#: admin/servicegroups.php:94
+msgid "Service group modified:"
+msgstr "Service-groep aangepast:"
+
+#: admin/servicegroups.php:190
+msgid "Define service groups (servicegroups.cfg)"
+msgstr "Definieer service-groepen (servicegroups.cfg)"
+
+#: admin/servicegroups.php:201
+msgid "Attention, no services defined!"
+msgstr "Attentie, geen services gedefinieerd!"
+
+#: admin/servicegroups.php:262
+msgid "Service group"
+msgstr "Service-groep"
+
+#: admin/services.php:150
+#: admin/services.php:692
+msgid "All configs"
+msgstr "Alle configuraties"
+
+#: admin/services.php:227
+msgid "New service inserted:"
+msgstr "Nieuwe service toegevoegd:"
+
+#: admin/services.php:228
+msgid "Service modified:"
+msgstr "Service aangepast:"
+
+#: admin/services.php:285
+#: admin/services.php:460
+msgid "Service file deleted:"
+msgstr "Service bestand is verwijderd:"
+
+#: admin/services.php:488
+msgid "Define services (services.cfg)"
+msgstr "Definieer services (services.cfg)"
+
+#: admin/services.php:525
+msgid "Attention, no hosts or hostgroups defined!"
+msgstr "Attentie, geen hosts of host-groepen gedefinieerd!"
+
+#: admin/services.php:537
+msgid "Attention, no check commands defined!"
+msgstr "Attentie, geen controle-opdrachten gedefinieerd!"
+
+#: admin/services.php:680
+#: admin/servicetemplates.php:560
+msgid "Service name"
+msgstr "Service naam"
+
+#: admin/servicetemplates.php:209
+msgid "New service template inserted:"
+msgstr "Nieuw service-sjabloon toegevoegd:"
+
+#: admin/servicetemplates.php:210
+msgid "Service template modified:"
+msgstr "Service-sjabloon aangepast:"
+
+#: admin/servicetemplates.php:380
+msgid "Define service templates (servicetemplates.cfg)"
+msgstr "Definieer service-sjablonen (servicetemplates.cfg)"
+
+#: admin/servicetemplates.php:559
+#: config/fieldvars.php:113
+#: config/fieldvars.php:197
+msgid "Template name"
+msgstr "Sjabloon naam"
+
+#: admin/settings.php:85
+msgid "Curl module not loaded, Proxy will be deactivated!"
+msgstr "Curl module is niet geladen, Proxy zal worden gedeactiveerd!"
+
+#: admin/settings.php:100
+msgid "An error occured while writing settings to database"
+msgstr "Bij het schrijven van de instellingen naar de database is een fout opgetreden"
+
+#: admin/settings.php:135
+msgid "Error in setting the correct locale, please report this error with the associated output of 'locale -a'"
+msgstr "Fout in het declareren van de omgevingsvariabelen. A.u.b. deze fout melden met het resultaat van 'locale -a'"
+
+#: admin/settings.php:142
+msgid "Settings were changed"
+msgstr "Instellingen zijn gewijzigd"
+
+#: admin/settings.php:144
+msgid "An error occured while writing settings.php, please check permissions!"
+msgstr "Een fout is opgetreden tijdens het opslaan van settings.php, controleer de rechten!"
+
+#: admin/settings.php:154
+msgid "Configure Settings"
+msgstr "Configureer Instellingen"
+
+#: admin/settings.php:161
+msgid "Change your current NagiosQL settings (e.g. Database user, Language)."
+msgstr "Wijzig de huidige NagiosQL instellingen (b.v. Database gebruiker, Taal)."
+
+#: admin/settings.php:165
+msgid "Path"
+msgstr "Pad"
+
+#: admin/settings.php:166
+msgid "Temporary Directory"
+msgstr "Tijdelijke Map"
+
+#: admin/settings.php:168
+msgid "Server protocol"
+msgstr "Server protocol"
+
+#: admin/settings.php:195
+msgid "Encoding"
+msgstr "Codering"
+
+#: admin/settings.php:200
+msgid "Database"
+msgstr "Database"
+
+#: admin/settings.php:201
+msgid "MySQL Server"
+msgstr "MySQL Server"
+
+#: admin/settings.php:203
+msgid "MySQL Server Port"
+msgstr "MySQL Server Poort"
+
+#: admin/settings.php:205
+msgid "Database name"
+msgstr "Database naam"
+
+#: admin/settings.php:207
+msgid "Database user"
+msgstr "Database gebruiker"
+
+#: admin/settings.php:209
+msgid "Database password"
+msgstr "Database wachtwoord"
+
+#: admin/settings.php:214
+msgid "Security"
+msgstr "Beveiliging"
+
+#: admin/settings.php:215
+msgid "Session auto logoff time"
+msgstr "Sessie automatische uitlogtijd"
+
+#: admin/settings.php:217
+msgid "Authentication type"
+msgstr "Authenticatie type"
+
+#: admin/settings.php:233
+msgid "Common"
+msgstr "Algemeen"
+
+#: admin/settings.php:234
+msgid "Data lines per page"
+msgstr "Gegevens regels per pagina"
+
+#: admin/settings.php:237
+msgid "Selection method"
+msgstr "Selectiemethode"
+
+#: admin/settings.php:251
+msgid "Template warn message"
+msgstr "Sjabloon waarschuwingsbericht"
+
+#: admin/settings.php:267
+msgid "Automatically check for online updates (internet access required!)"
+msgstr "Automatisch controleren op online updates (internettoegang vereist!)"
+
+#: admin/settings.php:281
+msgid "Proxyserver"
+msgstr "Proxyserver"
+
+#: admin/settings.php:289
+msgid "Proxy Address"
+msgstr "Proxy-adres"
+
+#: admin/settings.php:291
+msgid "Proxy Username (optional)"
+msgstr "Proxyserver gebruikersnaam (optioneel)"
+
+#: admin/settings.php:293
+msgid "Proxy Password (optional)"
+msgstr "Proxyserver wachtwoord (optioneel)"
+
+#: admin/specials.php:37
+msgid "Misc commands"
+msgstr "Diverse opdrachten"
+
+#: admin/specials.php:40
+msgid "To define host and service dependencies, host and service escalations as well as host and service additional data."
+msgstr "Om host- en service-afhankelijkheden, host- en service-escalaties en ook host- en service-informatie te definiëren."
+
+#: admin/specials.php:48
+msgid "Host dependencies"
+msgstr "Host-afhankelijkheden"
+
+#: admin/specials.php:52
+msgid "Host escalations"
+msgstr "Host-escalaties"
+
+#: admin/specials.php:56
+msgid "Host ext. info"
+msgstr "Host-informatie"
+
+#: admin/specials.php:60
+msgid "Service dependencies"
+msgstr "Service-afhankelijkheden"
+
+#: admin/specials.php:64
+msgid "Service escalations"
+msgstr "Service-escalaties"
+
+#: admin/specials.php:68
+msgid "Service ext. info"
+msgstr "Service-informatie"
+
+#: admin/templatedefinitions.php:227
+msgid "Up"
+msgstr "Omhoog"
+
+#: admin/templatedefinitions.php:227
+msgid "Down"
+msgstr "Omlaag"
+
+#: admin/timedefinitions.php:168
+#: admin/variabledefinitions.php:134
+#: config/fieldvars.php:68
+msgid "Modify"
+msgstr "Wijzigen"
+
+#: admin/timeperiods.php:87
+msgid "New time period inserted:"
+msgstr "Nieuwe tijdsperiode toegevoegd:"
+
+#: admin/timeperiods.php:88
+msgid "Time period modified:"
+msgstr "Tijdsperiode aangepast:"
+
+#: admin/timeperiods.php:207
+msgid "Timeperiod definitions"
+msgstr "Tijdsperiode definities"
+
+#: admin/timeperiods.php:236
+msgid "Please insert a time definition and a time range"
+msgstr "Vul een tijd definitie en een tijdsperiode in"
+
+#: admin/timeperiods.php:281
+#: config/fieldvars.php:83
+msgid "Time period"
+msgstr "Tijdsperiode"
+
+#: admin/tools.php:37
+msgid "Different tools"
+msgstr "Diverse gereedschappen"
+
+#: admin/tools.php:40
+msgid "Useful functions for data import, main configuration, daemon control and so on."
+msgstr "Nuttige functies voor gegevens import, hoofd configuratie, daemon beheer enz."
+
+#: admin/user.php:81
+msgid "A new user added:"
+msgstr "Nieuwe gebruiker toegevoegd:"
+
+#: admin/user.php:98
+msgid "Admin can't be deleted"
+msgstr "Admin kan niet verwijderd worden"
+
+#: admin/user.php:123
+msgid "User administration"
+msgstr "Gebruiker beheer"
+
+#: admin/user.php:142
+msgid "The passwords are not equal!"
+msgstr "De wachtwoorden zijn niet gelijk!"
+
+#: admin/user.php:143
+msgid "Please fill in the password"
+msgstr "Vul het wachtwoord in"
+
+#: admin/user.php:144
+msgid "The password is too short - use at least 6 characters!"
+msgstr "Het wachtwoord is te kort - gebruik minimaal 6 tekens!"
+
+#: admin/user.php:145
+msgid "Webserver authentification"
+msgstr "Webserver authenticatie"
+
+#: admin/verify.php:54
+msgid "Cannot find the Nagios binary or no rights for execution!"
+msgstr "Kan de Nagios binary niet vinden of geen rechten om die uit te voeren!"
+
+#: admin/verify.php:65
+msgid "Remote execution (FTP SITE EXEC) is not supported on your system!"
+msgstr "Uitvoer op afstand (FTP SITE EXEC) wordt niet ondersteund door uw systeem!"
+
+#: admin/verify.php:81
+msgid "Remote execution of nagios verify command failed (remote SSH)!"
+msgstr "Op afstand uitvoeren van het nagios verificatie commando mislukt (remote SSH)!"
+
+# config_class.php
+#: admin/verify.php:84
+msgid "Nagios binary or configuration file not found (remote SSH)!"
+msgstr "Nagios binary of configuratie bestand niet gevonden (remote SSH)!"
+
+#: admin/verify.php:114
+msgid "Nagios daemon successfully restarted"
+msgstr "Nagios daemon is succesvol opnieuw gestart"
+
+#: admin/verify.php:115
+msgid "Restart command successfully send to Nagios"
+msgstr "Herstart commando is succesvol gestuurd naar Nagios"
+
+#: admin/verify.php:117
+#: admin/verify.php:121
+#: admin/verify.php:122
+msgid "Restart failed - Nagios command file not found or no rights to execute"
+msgstr "Herstart mislukt - Nagios opdrachtbestand niet gevonden of geen rechten om het uit te voeren"
+
+#: admin/verify.php:118
+msgid "Nagios command file not found or no rights to write!"
+msgstr "Nagios opdrachtbestand niet gevonden of geen rechten om op te slaan!!"
+
+#: admin/verify.php:125
+msgid "Restart failed - Nagios daemon was not running"
+msgstr "Herstart mislukt - Nagios daemon was niet gestart"
+
+#: admin/verify.php:126
+msgid "Nagios daemon is not running, cannot send restart command!"
+msgstr "Nagios daemon is niet gestart, kan herstart opdracht niet sturen!"
+
+#: admin/verify.php:129
+msgid "Restart failed - FTP restrictions"
+msgstr "Herstart mislukt - FTP restricties"
+
+#: admin/verify.php:130
+msgid "Nagios restart is not possible via FTP remote connection!"
+msgstr "Nagios herstart niet mogelijk via FTP remote verbinding!"
+
+#: admin/verify.php:147
+msgid "Restart failed - Nagios command file not found or no rights to execute (remote SSH)!"
+msgstr "Herstart mislukt - Nagios commando bestand niet gevonden of geen rechten om uit te voeren (remote SSH)!"
+
+#: admin/verify.php:149
+msgid "Nagios daemon successfully restarted (remote SSH)"
+msgstr "Nagios daemon succesvol opnieuw gestart (remote SSH)"
+
+#: admin/verify.php:150
+msgid "Restart command successfully send to Nagios (remote SSH)"
+msgstr "Herstart commando succesvol gestuurd naar Nagios (remote SSH)"
+
+#: admin/verify.php:153
+msgid "Nagios command file not found (remote SSH)!"
+msgstr "Nagios commando bestand niet gevonden (remote SSH)!"
+
+#: admin/verify.php:160
+msgid "Write host configurations"
+msgstr "Sla host configuraties op"
+
+#: admin/verify.php:175
+#: admin/verify.php:193
+msgid "No configuration items defined!"
+msgstr "Geen configuratie onderdelen gedefinieerd!"
+
+#: admin/verify.php:178
+msgid "Write service configurations"
+msgstr "Sla service configuraties op"
+
+#: admin/verify.php:250
+msgid "Check written configuration files"
+msgstr "Controleer geschreven configuratiebestanden"
+
+#: admin/verify.php:253
+msgid "Check configuration files:"
+msgstr "Controleer configuratiebestanden:"
+
+#: admin/verify.php:254
+msgid "Restart Nagios:"
+msgstr "Herstart Nagios:"
+
+#: admin/verify.php:255
+msgid "Write monitoring data"
+msgstr "Sla monitoring gegevens op"
+
+#: admin/verify.php:256
+msgid "Write additional data"
+msgstr "Sla additionele gegevens op"
+
+#: admin/verify.php:257
+msgid "Warning, always check the configuration files before restart Nagios!"
+msgstr "Waarschuwing, controleer altijd de configuratiebestanden alvorens Nagios te herstarten!"
+
+#: admin/verify.php:258
+#: config/fieldvars.php:53
+msgid "Do it"
+msgstr "Doe het"
+
+#: admin/verify.php:286
+#: admin/verify.php:315
+msgid "Written Nagios configuration checked - Warnings/Errors:"
+msgstr "Controle van geschreven Nagios configuratiebestanden- Waarschuwingen/Fouten:"
+
+#: admin/verify.php:290
+#: admin/verify.php:318
+msgid "Written configuration files are valid, Nagios can be restarted!"
+msgstr "Geschreven configuratiebestanden zijn geldig, Nagios kan opnieuw gestart worden!"
+
+#: config/fieldvars.php:24
+#: config/fieldvars.php:29
+msgid "Server name"
+msgstr "Servernaam"
+
+#: config/fieldvars.php:25
+msgid "Method"
+msgstr "Methode"
+
+#: config/fieldvars.php:28
+msgid "Directory with SSH key pair"
+msgstr "Map met SSH key pair"
+
+#: config/fieldvars.php:30
+msgid "Configuration directories"
+msgstr "Configuratie mappen"
+
+#: config/fieldvars.php:31
+msgid "Base directory"
+msgstr "Basis map"
+
+#: config/fieldvars.php:32
+msgid "Host directory"
+msgstr "Host map"
+
+#: config/fieldvars.php:33
+msgid "Service directory"
+msgstr "Service map"
+
+#: config/fieldvars.php:34
+msgid "Backup directory"
+msgstr "Backup map"
+
+#: config/fieldvars.php:35
+msgid "Host backup directory"
+msgstr "Host backup map"
+
+#: config/fieldvars.php:36
+msgid "Service backup directory"
+msgstr "Service backup map"
+
+#: config/fieldvars.php:37
+msgid "Picture base directory"
+msgstr "Afbeelding basis map"
+
+#: config/fieldvars.php:38
+msgid "Nagios command file"
+msgstr "Nagios commando bestand"
+
+#: config/fieldvars.php:39
+msgid "Nagios binary file"
+msgstr "Nagios binary bestand"
+
+#: config/fieldvars.php:40
+msgid "Nagios process file"
+msgstr "Nagios process bestand"
+
+#: config/fieldvars.php:43
+msgid "Use common domain"
+msgstr "Gebruik algemeen domein"
+
+#: config/fieldvars.php:44
+msgid "Decode UTF8 data in config files"
+msgstr "Decodeer UTF8 gegevens in configuratie bestanden"
+
+#: config/fieldvars.php:45
+msgid "Access key holes"
+msgstr "Access key holes"
+
+#: config/fieldvars.php:46
+msgid "Access keys"
+msgstr "Toegangs sleutels"
+
+#: config/fieldvars.php:51
+msgid "Function"
+msgstr "Functie"
+
+#: config/fieldvars.php:52
+msgid "Marked"
+msgstr "Gemarkeerd"
+
+#: config/fieldvars.php:54
+msgid "Add"
+msgstr "Toevoegen"
+
+#: config/fieldvars.php:55
+msgid "Formcheck"
+msgstr "Formuliercontrole"
+
+#: config/fieldvars.php:56
+msgid "Secure question"
+msgstr "Beveiligde vraag"
+
+#: config/fieldvars.php:59
+msgid "Time"
+msgstr "Tijd"
+
+#: config/fieldvars.php:60
+msgid "User"
+msgstr "Gebruiker"
+
+#: config/fieldvars.php:61
+msgid "IP"
+msgstr "IP"
+
+#: config/fieldvars.php:62
+msgid "Entry"
+msgstr "Invoer"
+
+#: config/fieldvars.php:63
+msgid "From"
+msgstr "Van"
+
+#: config/fieldvars.php:64
+msgid "To"
+msgstr "Aan"
+
+#: config/fieldvars.php:65
+msgid "Delete log entries"
+msgstr "Verwijder log regels"
+
+#: config/fieldvars.php:69
+msgid "Confirm password"
+msgstr "Bevestig wachtwoord"
+
+#: config/fieldvars.php:70
+msgid "Old password"
+msgstr "Oud wachtwoord"
+
+#: config/fieldvars.php:71
+#: config/fieldvars.php:275
+msgid "New password"
+msgstr "Nieuw wachtwoord"
+
+#: config/fieldvars.php:72
+msgid "Change password"
+msgstr "Wijzig wachtwoord"
+
+#: config/fieldvars.php:73
+msgid "Menu page"
+msgstr "Menu pagina"
+
+#: config/fieldvars.php:74
+msgid "Search string"
+msgstr "Zoek tekst"
+
+#: config/fieldvars.php:77
+#: config/fieldvars.php:171
+msgid "Write config file"
+msgstr "Sla configuratiebestand op"
+
+#: config/fieldvars.php:80
+msgid "Command"
+msgstr "Opdracht"
+
+#: config/fieldvars.php:82
+msgid "Command type"
+msgstr "Opdrachttype"
+
+#: config/fieldvars.php:84
+msgid "Exclude"
+msgstr "Uitsluiten"
+
+#: config/fieldvars.php:85
+msgid "Include"
+msgstr "Insluiten"
+
+#: config/fieldvars.php:86
+msgid "Time definitions"
+msgstr "Tijd definities"
+
+#: config/fieldvars.php:87
+msgid "Weekday"
+msgstr "Weekdag"
+
+#: config/fieldvars.php:88
+msgid "Time range"
+msgstr "Tijd bereik"
+
+#: config/fieldvars.php:89
+msgid "Time definition"
+msgstr "Tijd definitie"
+
+#: config/fieldvars.php:90
+msgid "Insert"
+msgstr "Toevoegen"
+
+#: config/fieldvars.php:91
+msgid "Modify selection"
+msgstr "Wijzig selectie"
+
+#: config/fieldvars.php:94
+msgid "Time period hosts"
+msgstr "Tijdsperiode hosts"
+
+#: config/fieldvars.php:95
+msgid "Time period services"
+msgstr "Tijd periode services"
+
+#: config/fieldvars.php:96
+msgid "Host options"
+msgstr "Host opties"
+
+#: config/fieldvars.php:97
+msgid "Service options"
+msgstr "Service opties"
+
+#: config/fieldvars.php:98
+msgid "Host command"
+msgstr "Host commando"
+
+#: config/fieldvars.php:99
+msgid "Service command"
+msgstr "Service opdracht"
+
+#: config/fieldvars.php:100
+msgid "EMail address"
+msgstr "E-mail adres"
+
+#: config/fieldvars.php:101
+msgid "Pager number"
+msgstr "Pieper nummer"
+
+#: config/fieldvars.php:102
+msgid "Addon address"
+msgstr "Adres toevoegsel"
+
+#: config/fieldvars.php:103
+msgid "Host notif. enable"
+msgstr "Host kennisgevingen inschakelen"
+
+#: config/fieldvars.php:104
+msgid "Service notif. enable"
+msgstr "Service kennisgevingen inschakelen"
+
+#: config/fieldvars.php:105
+msgid "Can submit commands"
+msgstr "Kan opdrachten indienen"
+
+#: config/fieldvars.php:106
+msgid "Retain status info"
+msgstr "Behoud status info"
+
+#: config/fieldvars.php:107
+msgid "Retain nonstatus info"
+msgstr "Behoud nonstatus info"
+
+#: config/fieldvars.php:108
+msgid "Members"
+msgstr "Leden"
+
+#: config/fieldvars.php:109
+msgid "Group members"
+msgstr "Groepsleden"
+
+#: config/fieldvars.php:110
+msgid "Common settings"
+msgstr "Algemene instellingen"
+
+#: config/fieldvars.php:111
+msgid "Service settings"
+msgstr "Service instelingen"
+
+#: config/fieldvars.php:112
+msgid "Add this host configuration to existing service definitions"
+msgstr "Voeg deze host configuratie toe aan bestaande service definities"
+
+#: config/fieldvars.php:114
+msgid "Parents"
+msgstr "Ouders"
+
+#: config/fieldvars.php:116
+msgid "Check command"
+msgstr "Controle commando"
+
+#: config/fieldvars.php:117
+msgid "Command view"
+msgstr "Opdracht weergave"
+
+#: config/fieldvars.php:118
+msgid "Additional templates"
+msgstr "Additionele sjablonen"
+
+#: config/fieldvars.php:119
+msgid "Check settings"
+msgstr "Controle instellingen"
+
+#: config/fieldvars.php:120
+msgid "Initial state"
+msgstr "Initiële toestand"
+
+#: config/fieldvars.php:121
+msgid "Retry interval"
+msgstr "Opnieuw proberen interval"
+
+#: config/fieldvars.php:122
+msgid "Max check attempts"
+msgstr "Max controle pogingen"
+
+#: config/fieldvars.php:123
+msgid "Check interval"
+msgstr "Controle interval"
+
+#: config/fieldvars.php:124
+msgid "Active checks enabled"
+msgstr "Actieve controles ingeschakeld"
+
+#: config/fieldvars.php:125
+msgid "Passive checks enabled"
+msgstr "Passieve controles ingeschakeld"
+
+#: config/fieldvars.php:126
+msgid "Check period"
+msgstr "Controle periode"
+
+#: config/fieldvars.php:127
+msgid "Freshness treshold"
+msgstr "Freshness grenswaarde"
+
+#: config/fieldvars.php:128
+msgid "Check freshness"
+msgstr "Controle versheid"
+
+#: config/fieldvars.php:129
+msgid "Obsess over host"
+msgstr "Beschik over host"
+
+#: config/fieldvars.php:130
+msgid "Obsess over service"
+msgstr "Beschik over service"
+
+#: config/fieldvars.php:131
+msgid "Event handler"
+msgstr "Event handler"
+
+#: config/fieldvars.php:132
+msgid "Event handler enabled"
+msgstr "Event handler ingeschakeld"
+
+#: config/fieldvars.php:133
+msgid "Low flap threshold"
+msgstr "Low flap grenswaarde"
+
+#: config/fieldvars.php:134
+msgid "High flap threshold"
+msgstr "High flap grenswaarde"
+
+#: config/fieldvars.php:135
+msgid "Flap detection enabled"
+msgstr "Flap detectie ingeschakeld"
+
+#: config/fieldvars.php:136
+msgid "Flap detection options"
+msgstr "Flap detectie opties"
+
+#: config/fieldvars.php:137
+msgid "Retain status information"
+msgstr "Bewaar status informatie"
+
+#: config/fieldvars.php:138
+msgid "Retain nostatus information"
+msgstr "Bewaar nonstatus informatie"
+
+#: config/fieldvars.php:139
+msgid "Process perf data"
+msgstr "Verwerk prestatie gegevens"
+
+#: config/fieldvars.php:140
+msgid "Alarm settings"
+msgstr "Alarm instellingen"
+
+#: config/fieldvars.php:141
+msgid "Contacts"
+msgstr "Contacten"
+
+#: config/fieldvars.php:143
+msgid "Notification period"
+msgstr "Notificatie periode"
+
+#: config/fieldvars.php:144
+msgid "Notification options"
+msgstr "Notificatie opties"
+
+#: config/fieldvars.php:145
+msgid "Notification interval"
+msgstr "Notificatie interval"
+
+#: config/fieldvars.php:146
+msgid "First notification delay"
+msgstr "Eerste notificatie vertraging"
+
+#: config/fieldvars.php:147
+msgid "Notification enabled"
+msgstr "Notificaties ingeschakeld"
+
+#: config/fieldvars.php:148
+msgid "Stalking options"
+msgstr "Stalking opties"
+
+#: config/fieldvars.php:149
+msgid "Addon settings"
+msgstr "Addon instellingen"
+
+#: config/fieldvars.php:151
+msgid "VRML image"
+msgstr "VRML afbeelding"
+
+#: config/fieldvars.php:152
+msgid "Notes URL"
+msgstr "Notities URL"
+
+#: config/fieldvars.php:153
+msgid "Status image"
+msgstr "Status afbeelding"
+
+#: config/fieldvars.php:154
+msgid "Icon image"
+msgstr "Icoon afbeelding"
+
+#: config/fieldvars.php:155
+msgid "Action URL"
+msgstr "Actie URL"
+
+#: config/fieldvars.php:156
+msgid "2D coords"
+msgstr "2D coördinaten"
+
+#: config/fieldvars.php:157
+msgid "3D coords"
+msgstr "3D coördinaten"
+
+#: config/fieldvars.php:158
+msgid "Icon image ALT text"
+msgstr "Icoon afbeelding ALT tekst"
+
+#: config/fieldvars.php:159
+msgid "standard"
+msgstr "standaard"
+
+#: config/fieldvars.php:160
+msgid "on"
+msgstr "aan"
+
+#: config/fieldvars.php:161
+msgid "off"
+msgstr "uit"
+
+#: config/fieldvars.php:162
+msgid "skip"
+msgstr "overslaan"
+
+#: config/fieldvars.php:163
+msgid "Free variable definitions"
+msgstr "Vrije variabele definities"
+
+#: config/fieldvars.php:164
+msgid "Variable name"
+msgstr "Variabele naam"
+
+#: config/fieldvars.php:165
+msgid "Variable value"
+msgstr "Variabele waarde"
+
+#: config/fieldvars.php:168
+msgid "Activate"
+msgstr "Activeren"
+
+#: config/fieldvars.php:169
+msgid "Deactivate"
+msgstr "Deactiveren"
+
+#: config/fieldvars.php:174
+msgid "Mark all shown datasets"
+msgstr "Markeer alle weergegeven gegevens sets"
+
+#: config/fieldvars.php:175
+msgid "File"
+msgstr "Bestand"
+
+#: config/fieldvars.php:176
+msgid "Write all config files"
+msgstr "Schrijf alle configuratie bestanden"
+
+#: config/fieldvars.php:177
+msgid "Address"
+msgstr "Adres"
+
+#: config/fieldvars.php:178
+msgid "Display name"
+msgstr "Weergave naam"
+
+#: config/fieldvars.php:179
+msgid "Use this configuration as template"
+msgstr "Gebruik deze configuratie als sjabloon"
+
+#: config/fieldvars.php:180
+msgid "Generic name"
+msgstr "Algemene naam"
+
+#: config/fieldvars.php:184
+msgid "Please check at least one option from:"
+msgstr "Vink minimaal 1 van de volgende opties aan:"
+
+#: config/fieldvars.php:185
+msgid "Host group name"
+msgstr "Host-groep naam"
+
+#: config/fieldvars.php:186
+msgid "Host group members"
+msgstr "Host-groep leden"
+
+#: config/fieldvars.php:188
+msgid "Service description"
+msgstr "Service omschrijving"
+
+#: config/fieldvars.php:190
+msgid "Is volatile"
+msgstr "Is vluchtig"
+
+#: config/fieldvars.php:191
+msgid "Parallelize checks"
+msgstr "Paralleliseer controles"
+
+#: config/fieldvars.php:192
+msgid "Config name filter"
+msgstr "Config naam filter"
+
+#: config/fieldvars.php:194
+msgid "Import directory"
+msgstr "Import map"
+
+#: config/fieldvars.php:195
+msgid "Please insert a variable name and a variable definition"
+msgstr "Vul een variabele naam en een variabele definitie in"
+
+#: config/fieldvars.php:196
+#: config/fieldvars.php:200
+msgid "Warning:"
+msgstr "Waarschuwing:"
+
+#: config/fieldvars.php:196
+msgid "You have not filled in some required fields!<br><br>If this values are set by a template, you can save anyway - otherwise you will get an invalid configuration!"
+msgstr "U heeft niet alle vereiste velden ingevuld!<br><br>Als deze waardes door een sjabloon ingevuld worden dan kunt u opslaan - anders krijgt u een ongeldige configuratie!"
+
+#: config/fieldvars.php:198
+msgid "Nagios base directory"
+msgstr "Nagios basis map"
+
+#: config/fieldvars.php:199
+msgid "Write config"
+msgstr "Schrijf config"
+
+#: config/fieldvars.php:200
+msgid "You have not filled in all command arguments (ARGx) for your selected command!<br><br>If this arguments are optional, you can save anyway - otherwise you will get an invalid configuration!"
+msgstr "U heeft niet alle comanndo argumenten (ARGx) ingevuld voor het geselecteerde commando!<br><br>Als deze argumenten optioneel zijn, dan kun u opslaan - anders krijgt u een ongeldige configuratie!"
+
+#: config/fieldvars.php:201
+msgid "Service group members"
+msgstr "Service groep leden"
+
+#: config/fieldvars.php:202
+msgid "Service group name"
+msgstr "Service groep naam"
+
+#: config/fieldvars.php:205
+msgid "Hostgroups"
+msgstr "Host-groepen"
+
+#: config/fieldvars.php:206
+msgid "Inherit parents"
+msgstr "Neem over van bovenliggende"
+
+#: config/fieldvars.php:207
+msgid "Execution failure criteria"
+msgstr "Uitvoer fout criteria"
+
+#: config/fieldvars.php:208
+msgid "Nofification failure criteria"
+msgstr "Notificatie fout criteria"
+
+#: config/fieldvars.php:209
+msgid "Dependency period"
+msgstr "Afhankelijkheden periode"
+
+#: config/fieldvars.php:210
+msgid "Escalation period"
+msgstr "Escalatie periode"
+
+#: config/fieldvars.php:211
+msgid "Escalation options"
+msgstr "Escalatie opties"
+
+#: config/fieldvars.php:212
+msgid "First notification"
+msgstr "Eerste notificatie"
+
+#: config/fieldvars.php:213
+msgid "Last notification"
+msgstr "Laatste notificatie"
+
+#: config/fieldvars.php:216
+msgid "Help"
+msgstr "Help"
+
+#: config/fieldvars.php:217
+msgid "Calendar"
+msgstr "Kalender"
+
+#: config/fieldvars.php:218
+msgid "Group name"
+msgstr "Groep naam"
+
+#: config/fieldvars.php:219
+msgid "Users"
+msgstr "Gebruikers"
+
+#: config/fieldvars.php:220
+msgid "Access group"
+msgstr "Toegangs groep"
+
+#: config/fieldvars.php:221
+msgid "User definitions"
+msgstr "Gebruiker definities"
+
+#: config/fieldvars.php:222
+msgid "User name"
+msgstr "Gebruikersnaam"
+
+#: config/fieldvars.php:223
+msgid "User rights"
+msgstr "Gebruiker rechten"
+
+#: config/fieldvars.php:224
+msgid "Object access restrictions"
+msgstr "Object toegangs restricties"
+
+#: config/fieldvars.php:225
+msgid "Enable group administration"
+msgstr "Groep beheer inschakelen"
+
+#: config/fieldvars.php:226
+msgid "Show relation data"
+msgstr "Toon relatie gegevens"
+
+#: config/fieldvars.php:227
+msgid "Hide relation data"
+msgstr "Verberg relatie gegevens"
+
+#: config/fieldvars.php:229
+msgid "Monday"
+msgstr "Maandag"
+
+#: config/fieldvars.php:230
+msgid "Tuesday"
+msgstr "Dinsdag"
+
+#: config/fieldvars.php:231
+msgid "Wednesday"
+msgstr "Woensdag"
+
+#: config/fieldvars.php:232
+msgid "Thursday"
+msgstr "Donderdag"
+
+#: config/fieldvars.php:233
+msgid "Friday"
+msgstr "Vrijdag"
+
+#: config/fieldvars.php:234
+msgid "Saturday"
+msgstr "Zaterdag"
+
+#: config/fieldvars.php:235
+msgid "Sunday"
+msgstr "Zondag"
+
+# is geen hoofdpagina
+#: config/fieldvars.php:246
+msgid "Main page"
+msgstr "Inleiding"
+
+#: config/fieldvars.php:247
+msgid "Supervision"
+msgstr "Configuratie"
+
+#: config/fieldvars.php:250
+msgid "Commands"
+msgstr "Opdrachten"
+
+#: config/fieldvars.php:251
+msgid "Specialties"
+msgstr "Speciale Configuratie"
+
+#: config/fieldvars.php:252
+msgid "Tools"
+msgstr "Gereedschap"
+
+#: config/fieldvars.php:263
+msgid "Service dependency"
+msgstr "Service-afhankelijkheden"
+
+#: config/fieldvars.php:264
+msgid "Service escalation"
+msgstr "Service escalatie"
+
+#: config/fieldvars.php:265
+msgid "Host dependency"
+msgstr "Host-afhankelijkheid"
+
+#: config/fieldvars.php:266
+msgid "Host escalation"
+msgstr "Host-escalatie"
+
+# moet met host beginnen
+#: config/fieldvars.php:267
+msgid "Extended Host"
+msgstr "Uitgebreide Host"
+
+# moet met service beginnen
+#: config/fieldvars.php:268
+msgid "Extended Service"
+msgstr "Service-informatie"
+
+#: config/fieldvars.php:269
+msgid "Data import"
+msgstr "Importeer gegevens"
+
+#: config/fieldvars.php:272
+msgid "User admin"
+msgstr "Gebruikersbeheer"
+
+#: config/fieldvars.php:273
+msgid "Group admin"
+msgstr "Groepsbeheer"
+
+#: config/fieldvars.php:274
+msgid "Nagios control"
+msgstr "Nagios beheer"
+
+#: config/fieldvars.php:276
+msgid "Logbook"
+msgstr "Logboek"
+
+#: config/fieldvars.php:277
+msgid "Nagios config"
+msgstr "Nagios config"
+
+#: config/fieldvars.php:278
+msgid "Settings"
+msgstr "Instellingen"
+
+#: config/fieldvars.php:279
+msgid "Definitions"
+msgstr "Definities"
+
+#: config/fieldvars.php:280
+msgid "CGI config"
+msgstr "CGI config"
+
+#: config/fieldvars.php:281
+msgid "Menu access"
+msgstr "Menu toegang"
+
+#: config/fieldvars.php:282
+msgid "Domains"
+msgstr "Domeinen"
+
+#: config/fieldvars.php:286
+msgid "Help editor"
+msgstr "Help editor"
+
+# config_class.php
+#: functions/config_class.php:155
+#: functions/config_class.php:158
+msgid "Warning: configuration file is out of date!"
+msgstr "Waarschuwing: het configuratiebestand is verouderd!"
+
+#: functions/config_class.php:301
+msgid "Cannot backup and delete the old configuration file (check the permissions)!"
+msgstr "Kan het oude configuratiebestand niet back-uppen en verwijderen. (controleer de rechten)!"
+
+#: functions/config_class.php:317
+msgid "Cannot backup the old configuration file because the permissions are wrong (remote FTP)!"
+msgstr "Kan geen backup maken van het oude configuratiebestand omdat de rechten fout staan (remote FTP)!"
+
+#: functions/config_class.php:337
+msgid "Cannot backup the old configuration file because the permissions are wrong (remote SFTP)!"
+msgstr "Kan geen backup maken van het oude configuratiebestand omdat de rechten fout staan (remote SFTP)!"
+
+#: functions/config_class.php:365
+msgid "Cannot delete the file (check the permissions)!"
+msgstr "Kan het bestand niet verwijderen (controleer de rechten)!"
+
+#: functions/config_class.php:380
+msgid "Cannot delete file because the permissions are wrong (remote FTP)!"
+msgstr "Kan het bestand niet verwijderen omdat de rechten fout zijn (remote FTP)!"
+
+#: functions/config_class.php:383
+msgid "Cannot delete file because it does not exists (remote FTP)!"
+msgstr "Kan het bestand niet verwijderen omdat het niet bestaat (remote FTP)!"
+
+#: functions/config_class.php:396
+msgid "Cannot delete file because the permissions are wrong (remote SFTP)!"
+msgstr "Kan het bestand niet verwijderen omdat de rechten fout zijn (remote FTP)!"
+
+#: functions/config_class.php:399
+msgid "Cannot delete file because it does not exists (remote SFTP)!"
+msgstr "Kan het bestand niet verwijderen omdat het niet bestaat (remote SFTP)!"
+
+#: functions/config_class.php:430
+msgid "Cannot get the configuration file (FTP connection failed)!"
+msgstr "Kan het configuratie bestand niet ophalen (FTP verbinding mislukt)!"
+
+#: functions/config_class.php:437
+msgid "Cannot write the configuration file (FTP connection failed)!"
+msgstr "Kan het configuratie bestand niet opslaan (FTP verbinding mislukt)!"
+
+#: functions/config_class.php:452
+msgid "Cannot get the configuration file (SSH connection failed)!"
+msgstr "Kan het configuratie bestand niet ophalen (SSH verbinding mislukt)!"
+
+#: functions/config_class.php:456
+msgid "Cannot get the configuration file (remote file does not exist)!"
+msgstr "Kan het configuratiebestand niet ophalen (bestand op afstand bestaat niet)!"
+
+#: functions/config_class.php:463
+msgid "Cannot write the configuration file (SSH connection failed)!"
+msgstr "Kan het configuratiebestand niet opslaan (SSH verbinding mislukt)!"
+
+#: functions/config_class.php:491
+#: functions/config_class.php:662
+msgid "It is not possible to write config files directly from the common domain!"
+msgstr "Het is niet mogelijk om configuratie bestanden direct vanaf het algemene domein te schrijven!"
+
+#: functions/config_class.php:822
+msgid "Configuration write failed - Dataset not found"
+msgstr "Configuratie opslaan mislukt - gegevens-set niet gevonden"
+
+#: functions/config_class.php:938
+msgid "Configuration write failed (FTP connection failed):"
+msgstr "Het opslaan van de configuratie is mislukt (FTP verbinding mislukt):"
+
+#: functions/config_class.php:939
+#: functions/config_class.php:989
+msgid "Cannot open/overwrite the configuration file (FTP connection failed)!"
+msgstr "Kan het configuratiebestand niet openen of opslaan (FTP verbinding mislukt)!"
+
+#: functions/config_class.php:1005
+msgid "Cannot open/overwrite the configuration file (remote SFTP)!"
+msgstr "Kan het configuratiebestand niet openen of opslaan (remote SFTP)!"
+
+#: functions/config_class.php:1403
+#: functions/config_class.php:1435
+msgid "Connection to remote system failed (SSH2 connection):"
+msgstr "Verbinding met remote systeem mislukt (SSH2 verbinding):"
+
+#: functions/config_class.php:1404
+#: functions/config_class.php:1436
+msgid "Connection to remote system failed (SSH2 connection)!"
+msgstr "Verbinding met remote systeem mislukt (SSH2 verbinding)!"
+
+#: functions/config_class.php:1416
+#: functions/config_class.php:1417
+msgid "SSH public key does not exist or is not readable"
+msgstr "SSH public key bestaat niet of is niet leesbaar"
+
+#: functions/config_class.php:1421
+#: functions/config_class.php:1422
+msgid "SSH private key does not exist or is not readable"
+msgstr "SSH private key bestaat niet of is niet leesbaar"
+
+#: functions/config_class.php:1497
+msgid "Connection to remote system failed (FTP connection):"
+msgstr "Verbinding met remote systeem mislukt (FTP verbinding):"
+
+#: functions/config_class.php:1498
+msgid "Connection to remote system failed (FTP connection)!"
+msgstr "Verbinding met remote systeem mislukt (FTP verbinding)!"
+
+#: functions/data_class.php:125
+#: functions/data_class.php:149
+msgid "Delete failed because a database error:"
+msgstr "Verwijderen mislukt door een database fout:"
+
+#: functions/data_class.php:128
+#: functions/data_class.php:158
+#: functions/data_class.php:167
+msgid "No data deleted. Probably the dataset does not exist or it is protected from delete."
+msgstr "Geen gegevens verwijderd. Waarschijnlijk bestaat de gegevens set niet of is beveiligd tegen verwijderen."
+
+#: functions/data_class.php:132
+msgid "Delete dataset id:"
+msgstr "Verwijder gegevens set met id:"
+
+#: functions/data_class.php:132
+msgid "- from table:"
+msgstr "- van tabel:"
+
+#: functions/data_class.php:132
+#: functions/data_class.php:162
+#: functions/data_class.php:301
+#: functions/data_class.php:582
+#: functions/data_class.php:645
+msgid "- with affected rows:"
+msgstr "- aantal aangepaste rijen:"
+
+#: functions/data_class.php:162
+#: functions/data_class.php:301
+msgid "Delete data from table:"
+msgstr "Gegevens verwijderd uit de tabel:"
+
+#: functions/data_class.php:297
+msgid "No data deleted. Probably the dataset does not exist, is protected from deletion or has relations to other configurations which cannot be deleted. Use the \"info\" function for detailed informations about relations!"
+msgstr "Geen gegevens verwijderd. Waarschijnlijk bestaat de gegevens-set niet, is beveiligd tegen verwijderen of heeft relaties naar andere configuraties die niet verwijderd kunnen worden. Gebruik de \"info\" functie voor meer details over de relaties!"
+
+#: functions/data_class.php:307
+msgid "No data deleted. Probably the dataset does not exist or it is protected from deletion."
+msgstr "Geen gegevens verwijderd. Waarschijnlijk bestaat de gegevens-set niet of is beveiligd tegen verwijderen."
+
+#: functions/data_class.php:508
+msgid "Data set copy failed - table [new name]:"
+msgstr "Gegevens-set kopiëren is mislukt - tabel [new name]:"
+
+#: functions/data_class.php:511
+msgid "Data set copied - table [new name]:"
+msgstr "Gegevens-set gekopieerd - tabel [nieuwe naam]:"
+
+#: functions/data_class.php:578
+msgid "No dataset activated. Probably the dataset does not exist or no dataset was selected"
+msgstr "Geen gegevens-set geactiveerd. Waarschijnlijk bestaat de gegevens-set niet of er is geen selectie gemaakt"
+
+#: functions/data_class.php:581
+msgid "Dataset successfully activated. Affected rows:"
+msgstr "Gegevens-set succesvol geactiveerd. Beïnvloede rijen:"
+
+#: functions/data_class.php:582
+#: functions/data_class.php:645
+msgid "Activate dataset from table:"
+msgstr "Activeer gegevens-set van tabel:"
+
+#: functions/data_class.php:587
+msgid "No dataset activated. Probably the dataset does not exist"
+msgstr "Geen gegevens-set geactiveerd. Waarschijnlijk bestaat de gegevens-set niet"
+
+#: functions/data_class.php:641
+msgid "No dataset deactivated. Probably the dataset does not exist, is protected from deactivation or no dataset was selected. Use the \"info\" function for detailed informations about relations!"
+msgstr "Geen gegevens verwijderd. Waarschijnlijk bestaat de gegevens-set niet, is beveiligd tegen verwijderen of heeft relaties naar andere configuraties die niet verwijderd kunnen worden. Gebruik de \"info\" functie voor meer details over de relaties!"
+
+#: functions/data_class.php:644
+msgid "Dataset successfully deactivated. Affected rows:"
+msgstr "Gegevens-set succesvol gedeactiveerd. Beïnvloede rijen:"
+
+#: functions/data_class.php:650
+msgid "No dataset deactivated. Probably the dataset does not exist"
+msgstr "Geen gegevens-set gedeactiveerd. Waarschijnlijk bestaat de gegevens-set niet"
+
+#: functions/data_class.php:834
+msgid "<span style=\"color:#0000FF;\">Relation information for <b>"
+msgstr "<span style=\"color:#0000FF;\">Relatie informatie voor <b>"
+
+#: functions/data_class.php:834
+msgid "</b> of table <b>"
+msgstr "</b> van de tabel <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:890
+#: functions/data_class.php:894
+#: functions/data_class.php:910
+#: functions/data_class.php:913
+msgid "Relation to <b>"
+msgstr "Relatie naar <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:890
+#: functions/data_class.php:894
+#: functions/data_class.php:910
+#: functions/data_class.php:913
+msgid "</b>, entry <b>"
+msgstr "</b>, invoer <b>"
+
+#: functions/data_class.php:888
+#: functions/data_class.php:894
+#: functions/data_class.php:913
+msgid "deletion <b>possible</b>"
+msgstr "verwijderen <b>mogelijk</b>"
+
+#: functions/data_class.php:890
+#: functions/data_class.php:910
+msgid "deletion <b>not possible</b>"
+msgstr "verwijderen <b>niet mogelijk</b>"
+
+#: functions/import_class.php:99
+msgid "Cannot receive the configuration file (FTP connection)!"
+msgstr "Kan het configuratiebestand niet ontvangen (FTP verbinding)!"
+
+#: functions/import_class.php:112
+msgid "Cannot receive the configuration file (SSH connection)!"
+msgstr "Kan het configuratiebestand niet ontvangen (SSH verbinding)!"
+
+#: functions/import_class.php:178
+msgid "No valid configuration found!"
+msgstr "Geen geldige configuratie gevonden!"
+
+#: functions/import_class.php:250
+msgid "Table for import definition"
+msgstr "Tabel voor de importeer definities"
+
+#: functions/import_class.php:250
+msgid "is not available!"
+msgstr "is niet beschikbaar!"
+
+#: functions/import_class.php:292
+#: functions/import_class.php:297
+#: functions/import_class.php:609
+#: functions/import_class.php:610
+#: functions/import_class.php:613
+#: functions/import_class.php:614
+msgid "inside"
+msgstr "binnen"
+
+#: functions/import_class.php:292
+msgid "exists and were not overwritten"
+msgstr "bestaat al en werd niet overschreven"
+
+#: functions/import_class.php:297
+msgid "were not written"
+msgstr "kon niet opgeslagen worden"
+
+#: functions/import_class.php:609
+#: functions/import_class.php:610
+msgid "could not be inserted:"
+msgstr "kon niet ingevoegd worden:"
+
+#: functions/import_class.php:613
+#: functions/import_class.php:614
+msgid "successfully inserted"
+msgstr "succesvol ingevoegd"
+
+#: functions/import_class.php:1199
+msgid "Error: wrong number of arguments - cannot import service group members"
+msgstr "Fout: verkeerd aantal argumenten - kan de service-groep leden niet importeren"
+
+#: functions/mysql_class.php:274
+msgid "Missing server connection parameter!"
+msgstr "Verbindings parameter van server ontbreekt!!"
+
+#: functions/mysql_class.php:281
+#: functions/mysql_class.php:310
+msgid "Connection to the database server has failed by reason:"
+msgstr "Verbinding met de databaseserver is mislukt met reden:"
+
+#: functions/mysql_class.php:303
+msgid "Missing database connection parameter!"
+msgstr "Verbindings parameter van database ontbreekt!!"
+
+#: functions/nag_class.php:187
+msgid "Hide menu"
+msgstr "Menu verbergen"
+
+#: functions/nag_class.php:192
+msgid "Show menu"
+msgstr "Menu tonen"
+
+#: functions/nag_class.php:402
+msgid "Page"
+msgstr "Pagina"
+
+#: functions/nag_class.php:811
+msgid "Unrestricted access"
+msgstr "Onbeperkte toegang"
+
+# prepend.adm
+#: functions/prepend_adm.php:98
+#: install/index.php:148
+msgid "Error while connecting to database:"
+msgstr "Fout tijdens het verbinden met de database:"
+
+#: functions/prepend_adm.php:124
+msgid "Error in setting the correct locale, please report this error with the associated output of  'locale -a' to bugs@nagiosql.org"
+msgstr "Fout bij het declareren van de omgevingsvariabelen. A.u.b. deze fout melden met het resultaat van 'locale -a' aan bugs@nagiosql.org"
+
+#: functions/prepend_adm.php:210
+msgid "Webserver login successfull"
+msgstr "Webserver login succesvol"
+
+#: functions/prepend_adm.php:235
+msgid "Login successfull"
+msgstr "Login succesvol"
+
+#: functions/prepend_adm.php:240
+#: functions/prepend_adm.php:241
+msgid "Login failed!"
+msgstr "Login mislukt!"
+
+#: functions/prepend_adm.php:260
+msgid "Session timeout reached - Seconds:"
+msgstr "Sessie timeout bereikt - Seconden:"
+
+#: functions/prepend_adm.php:270
+msgid "Restricted site accessed:"
+msgstr "Beveiligde sitetoegang:"
+
+#: functions/prepend_adm.php:282
+msgid "User not found in database"
+msgstr "Gebruiker niet in de database gevonden"
+
+#: functions/prepend_adm.php:307
+msgid "Admin"
+msgstr "Admin"
+
+#: functions/prepend_adm.php:352
+msgid "Logged in:"
+msgstr "Ingelogd:"
+
+#: functions/prepend_adm.php:353
+msgid "Logout"
+msgstr "Afmelden"
+
+#: functions/prepend_adm.php:369
+msgid "Warning - template file not found or not readable, please check your file permissions! - File: "
+msgstr "Waarschuwing - sjabloonbestand niet gevonden of niet leesbaar, controleer de bestandsrechten! - Bestand: "
+
+#: functions/translator.php:56
+msgid "English"
+msgstr "Engels"
+
+#: functions/translator.php:60
+msgid "German"
+msgstr "Duits"
+
+#: functions/translator.php:64
+msgid "Chinese (Simplified)"
+msgstr "Chinees (Vereenvoudigd)"
+
+#: functions/translator.php:68
+msgid "Polish"
+msgstr "Pools"
+
+#: functions/translator.php:72
+msgid "Italian"
+msgstr "Italiaans"
+
+#: functions/translator.php:76
+msgid "French"
+msgstr "Frans"
+
+#: functions/translator.php:80
+msgid "Russian"
+msgstr "Russisch"
+
+#: functions/translator.php:84
+msgid "Spanish"
+msgstr "Spaans"
+
+#: functions/translator.php:88
+msgid "Portuguese (Brazilian)"
+msgstr "Portugees (Braziliaans)"
+
+#: functions/translator.php:92
+msgid "Japanese"
+msgstr "Japans"
+
+#: functions/translator.php:96
+msgid "Dutch"
+msgstr "Nederlands"
+
+#: functions/translator.php:100
+msgid "Spanish (Argentina)"
+msgstr "Spaans (Argentinie)"
+
+#: functions/translator.php:104
+msgid "Danish"
+msgstr "Deens"
+
+#: install/index.php:74
+#: install/install.php:88
+msgid "Online Documentation"
+msgstr "Online Documentatie"
+
+#: install/index.php:98
+msgid "Welcome to the NagiosQL Installation Wizard"
+msgstr "Welkom bij de NagiosQL Installatie Assistent"
+
+#: install/index.php:99
+msgid "This wizard will help you to install and configure NagiosQL."
+msgstr "Deze Assistent zal u helpen om NagiosQL te installeren en configureren."
+
+#: install/index.php:100
+msgid "For questions please visit"
+msgstr "Voor vragen bezoek a.u.b"
+
+#: install/index.php:102
+msgid "First let's check your local environment and find out if everything NagiosQL needs is available."
+msgstr "Als eerste wordt uw lokale omgeving gecontroleerd om te bepalen of alle vereisten voor NagiosQL aanwezig zijn."
+
+#: install/index.php:103
+msgid "The basic requirements are:"
+msgstr "De basis vereisten zijn:"
+
+#: install/index.php:105
+msgid "PHP 5.2.0 or greater including:"
+msgstr "PHP 5.2.0 of hoger inclusief:"
+
+#: install/index.php:107
+#: install/index.php:108
+#: install/index.php:109
+#: install/index.php:110
+#: install/index.php:111
+#: install/index.php:112
+#: install/index.php:113
+#: install/index.php:114
+msgid "PHP Module:"
+msgstr "PHP Module:"
+
+#: install/index.php:113
+#: install/index.php:114
+#: install/index.php:115
+msgid "(optional)"
+msgstr "(optioneel)"
+
+#: install/index.php:115
+msgid "PECL Extension:"
+msgstr "PECL Extensie:"
+
+#: install/index.php:118
+msgid "php.ini options"
+msgstr "php.ini opties"
+
+#: install/index.php:120
+msgid "file_uploads on (for upload features)"
+msgstr "file_uploads aan (voor upload mogelijkheden)"
+
+#: install/index.php:121
+msgid "session.auto_start needs to be off"
+msgstr "session.auto_start moet uit zijn"
+
+#: install/index.php:124
+msgid "A MySQL database server"
+msgstr "Een MySQL database server"
+
+#: install/index.php:125
+msgid "Nagios 2.x/3.x or Icinga 1.x"
+msgstr "Nagios 2.x/3.x of lcinga 1.x"
+
+#: install/index.php:198
+msgid "START UPDATE"
+msgstr "START UPDATE"
+
+#: install/index.php:201
+#: install/index.php:204
+msgid "START INSTALLATION"
+msgstr "START INSTALLATIE"
+
+#: install/status.php:23
+msgid "Requirements"
+msgstr "Benodigheden"
+
+#: install/status.php:25
+#: install/step3.php:371
+msgid "Finish"
+msgstr "Einde"
+
+#: install/step1.php:86
+msgid "Checking requirements"
+msgstr "Vereisten aan het nakijken"
+
+#: install/step1.php:87
+msgid "Checking Client"
+msgstr "Controleren Client"
+
+#: install/step1.php:89
+msgid "ENABLED"
+msgstr "INGESCHAKELD"
+
+#: install/step1.php:91
+msgid "NOT ENABLED"
+msgstr "UITGESCHAKELD"
+
+#: install/step1.php:94
+msgid "Checking PHP version"
+msgstr "Controleren PHP versie"
+
+#: install/step1.php:97
+#: install/step1.php:99
+msgid "Version"
+msgstr "Versie"
+
+#: install/step1.php:97
+#: install/step1.php:109
+#: install/step1.php:121
+#: install/step1.php:135
+#: install/step1.php:167
+#: install/step1.php:173
+#: install/step1.php:187
+#: install/step1.php:193
+#: install/step1.php:205
+#: install/step1.php:215
+#: install/step1.php:217
+#: install/step1.php:229
+#: install/step1.php:238
+#: install/step1.php:247
+#: install/step1.php:256
+#: install/step1.php:265
+#: install/step1.php:274
+msgid "OK"
+msgstr "OK"
+
+#: install/step1.php:97
+#: install/step1.php:99
+msgid "detected"
+msgstr "gedetecteerd"
+
+#: install/step1.php:99
+msgid "or greater is required"
+msgstr "of hoger is vereist"
+
+#: install/step1.php:102
+msgid "Checking PHP extensions"
+msgstr "Controleren PHP extensies"
+
+#: install/step1.php:103
+msgid "The following modules/extensions are <em>required</em> to run NagiosQL"
+msgstr "De volgende modules/extensies zijn <em>vereist</em> om NagiosQL te kunnen gebruiken"
+
+#: install/step1.php:112
+#: install/step1.php:125
+#: install/step1.php:139
+msgid "Could be loaded. Please add in php.ini"
+msgstr "Kon niet worden geladen. Voeg toe in php.ini"
+
+#: install/step1.php:113
+#: install/step1.php:126
+#: install/step1.php:140
+#: install/step1.php:164
+msgid "NOT AVAILABLE"
+msgstr "NIET BESCHIKBAAR"
+
+#: install/step1.php:118
+msgid "The next couple of extensions are <em>optional</em> but recommended"
+msgstr "De volgende extensies zijn <em>optioneel</em> maar aanbevolen"
+
+#: install/step1.php:130
+msgid "Checking available database interfaces"
+msgstr "Controleren van beschikbare database interfaces"
+
+#: install/step1.php:131
+msgid "Check which of the supported extensions are installed. At least one of them is required."
+msgstr "Controle welke van de ondersteunde extensies geïnstalleerd zijn. Minimaal 1 is vereist."
+
+#: install/step1.php:139
+msgid "Not installed"
+msgstr "Niet geïnstalleerd"
+
+#: install/step1.php:158
+msgid "Checking php.ini/.htaccess settings"
+msgstr "Controleren php.ini/.htaccess settings"
+
+#: install/step1.php:159
+msgid "The following settings are <em>required</em> to run NagiosQL"
+msgstr "De volgens instellingen zijn <em>vereist</em> om NagiosSQL te kunnen gebruiken"
+
+#: install/step1.php:164
+msgid "cannot be empty and needs to be set"
+msgstr "kan niet leeg zijn en moet ingesteld zijn"
+
+#: install/step1.php:175
+msgid "should be"
+msgstr "dient te zijn"
+
+#: install/step1.php:180
+msgid "The following settings are <em>optional</em> but recommended"
+msgstr "De volgende instellingen zijn wel <em>optioneel</em> maar ook aanbevolen"
+
+# contacts.php
+#: install/step1.php:185
+msgid "Could be set"
+msgstr "Kan worden ingesteld"
+
+#: install/step1.php:195
+msgid "Could be"
+msgstr "Zou kunnen"
+
+#: install/step1.php:200
+msgid "Checking System Permission"
+msgstr "Controleren van Systeem permissies"
+
+#: install/step1.php:205
+#: install/step1.php:207
+msgid "Read test on settings file (config/settings.php)"
+msgstr "Lees test op het configuratiebestand (config/settings.php"
+
+#: install/step1.php:207
+#: install/step1.php:219
+#: install/step1.php:222
+#: install/step1.php:231
+#: install/step1.php:240
+#: install/step1.php:249
+#: install/step1.php:258
+#: install/step1.php:267
+#: install/step1.php:276
+#: install/step3.php:67
+#: install/step3.php:89
+#: install/step3.php:102
+#: install/step3.php:116
+#: install/step3.php:123
+#: install/step3.php:139
+#: install/step3.php:151
+#: install/step3.php:163
+#: install/step3.php:177
+#: install/step3.php:183
+#: install/step3.php:199
+#: install/step3.php:210
+#: install/step3.php:222
+#: install/step3.php:234
+#: install/step3.php:284
+#: install/step3.php:296
+#: install/step3.php:308
+#: install/step3.php:322
+#: install/step3.php:328
+#: install/step3.php:344
+#: install/step3.php:355
+msgid "failed"
+msgstr "mislukt"
+
+#: install/step1.php:210
+msgid "Settings file does not exists (config/settings.php)"
+msgstr "Configuratiebestand bestaat niet (config/settings.php)"
+
+#: install/step1.php:210
+msgid "will be created"
+msgstr "zal aangemaakt worden"
+
+#: install/step1.php:215
+#: install/step1.php:219
+msgid "Write test on settings file (config/settings.php)"
+msgstr "Schrijf test op het configuratiebestand (config/settings.php)"
+
+#: install/step1.php:217
+#: install/step1.php:222
+msgid "Write test on settings directory (config/)"
+msgstr "Schrijf test op de configuratie directory (config/)"
+
+#: install/step1.php:229
+#: install/step1.php:231
+msgid "Read test on a class file (functions/nag_class.php)"
+msgstr "Lees test op een klassificatie bestand (functions/nag_class.php)"
+
+#: install/step1.php:238
+#: install/step1.php:240
+msgid "Read test on startsite file (admin.php)"
+msgstr "Lees test op het start site bestand (admin.php)"
+
+#: install/step1.php:247
+#: install/step1.php:249
+msgid "Read test on a template file (templates/index.tpl.htm)"
+msgstr "Lees test op een template bestand (templates/index.tpl.htm)"
+
+#: install/step1.php:256
+#: install/step1.php:258
+msgid "Read test on a admin template file (templates/admin/admin_master.tpl.htm)"
+msgstr "Lees test op een admin template bestand (templates/admin/admin_master.tpl.htm)"
+
+#: install/step1.php:265
+#: install/step1.php:267
+msgid "Read test on a file template (templates/files/contacts.tpl.dat)"
+msgstr "Lees test op een template bestand (templates/files/contacts.tpl.dat)"
+
+#: install/step1.php:274
+#: install/step1.php:276
+msgid "Read test on a image file (images/pixel.gif)"
+msgstr "Lees test op een beeld bestand (images/pixel.gif)"
+
+#: install/step1.php:283
+msgid "There are some errors - please check your system settings and read the requirements of NagiosQL!"
+msgstr "Er zijn een aantal fouten opgetreden, kijk a.u.b de systeem instellingen na en lees de systeem vereisten van NagiosQL!"
+
+#: install/step1.php:284
+msgid "Read the INSTALLATION file from NagiosQL to find out, how to fix them."
+msgstr "Lees het bestand INSTALLATION van NagiosQL om uit te vinden hoe de fouten op te lossen."
+
+#: install/step1.php:285
+msgid "After that - refresh this page to proceed"
+msgstr "Na dit gedaan te hebben, ververs deze pagina om verder te gaan"
+
+#: install/step1.php:288
+msgid "Refresh"
+msgstr "Verversen"
+
+#: install/step1.php:292
+msgid "Environment test sucessfully passed"
+msgstr "Omgevings test successvol verwerkt"
+
+#: install/step1.php:297
+#: install/step2.php:103
+msgid "Next"
+msgstr "Volgende"
+
+#: install/step2.php:55
+msgid "Setup"
+msgstr "Installatie"
+
+#: install/step2.php:58
+msgid "Please complete the form below. Mandatory fields marked <em>*</em>"
+msgstr "Vul het formulier hieronder in. Verplichte velden zijn gemarkeerd met <em>*</em>"
+
+#: install/step2.php:59
+msgid "Please backup your database before proceeding!"
+msgstr "Maak eerst een backup van uw database voordat u verder gaat!"
+
+#: install/step2.php:61
+msgid "Database Configuration"
+msgstr "Database Configuratie"
+
+#: install/step2.php:67
+msgid "NagiosQL DB User"
+msgstr "NagiosQL Database Gebruiker"
+
+#: install/step2.php:68
+msgid "NagiosQL DB Password"
+msgstr "NagiosQL Database Wachtwoord"
+
+#: install/step2.php:73
+msgid "Administrative MySQL User"
+msgstr "Administratief MySQL Gebruiker"
+
+#: install/step2.php:74
+msgid "Administrative MySQL Password"
+msgstr "Administratief MySQL Wachtwoord"
+
+#: install/step2.php:76
+msgid "Drop database if already exists?"
+msgstr "Database verwijderen als deze al bestaat?"
+
+#: install/step2.php:86
+msgid "NagiosQL User Setup"
+msgstr "NagiosSQL Gebruiker Setup"
+
+#: install/step2.php:88
+msgid "Initial NagiosQL User"
+msgstr "Eerste NagiosQL Gebruiker"
+
+#: install/step2.php:89
+msgid "Initial NagiosQL Password"
+msgstr "Eerste NagiosQL Wachtwoord"
+
+#: install/step2.php:90
+msgid "Please repeat the password"
+msgstr "Wachtwoord nogmaals herhalen"
+
+#: install/step2.php:94
+msgid "Nagios Configuration"
+msgstr "Nagios Configuratie"
+
+#: install/step2.php:96
+msgid "Import Nagios sample config?"
+msgstr "Importeren van de Nagios voorbeeld configuratie?"
+
+#: install/step3.php:41
+msgid "Finishing Setup"
+msgstr "Setup Afronden"
+
+#: install/step3.php:47
+msgid "Create new NagiosQL database"
+msgstr "Nieuwe NagiosQL database aanmaken"
+
+#: install/step3.php:55
+msgid "Database already exists and drop database was not selected, please correct or manage manually"
+msgstr "Database bestaat al en het verwijderen van de database was niet geselecteerd, pas de optie aan of verwijder de database handmatig"
+
+#: install/step3.php:63
+msgid "MySQL server connection (privileged user)"
+msgstr "MySQL server connectie (gebruiker met rechten)"
+
+#: install/step3.php:70
+#: install/step3.php:174
+#: install/step3.php:319
+msgid "passed"
+msgstr "werkt"
+
+#: install/step3.php:71
+msgid "MySQL server version"
+msgstr "MySQL server versie"
+
+#: install/step3.php:81
+msgid "MySQL server support"
+msgstr "MySQL server ondersteuning"
+
+#: install/step3.php:83
+msgid "supported"
+msgstr "ondersteund"
+
+#: install/step3.php:85
+msgid "not supported"
+msgstr "niet ondersteund"
+
+#: install/step3.php:96
+msgid "Delete existing NagiosQL database"
+msgstr "Verwijder bestaande NagiosQL database"
+
+#: install/step3.php:99
+#: install/step3.php:119
+#: install/step3.php:136
+#: install/step3.php:148
+#: install/step3.php:160
+#: install/step3.php:196
+#: install/step3.php:207
+#: install/step3.php:219
+#: install/step3.php:231
+#: install/step3.php:281
+#: install/step3.php:293
+#: install/step3.php:305
+#: install/step3.php:341
+#: install/step3.php:352
+msgid "done"
+msgstr "klaar"
+
+#: install/step3.php:108
+msgid "Creating new database"
+msgstr "Nieuwe database aanmaken"
+
+# contacts.php
+#: install/step3.php:127
+#: install/functions/func_installer.php:291
+#: install/functions/func_installer.php:312
+msgid "Could not access"
+msgstr "Toegang niet mogelijk"
+
+#: install/step3.php:133
+msgid "Create NagiosQL MySQL user"
+msgstr "Aanmaken van een NagiosQL MySQL gebruiker"
+
+#: install/step3.php:145
+msgid "Update MySQL permissions"
+msgstr "MySQL permissies bijwerken"
+
+#: install/step3.php:157
+msgid "Reloading MySQL User Table"
+msgstr "Herladen van de MySQL gebruikers tabel"
+
+#: install/step3.php:169
+#: install/step3.php:314
+msgid "Testing database connection to"
+msgstr "Testen van de database verbinding naar"
+
+#: install/step3.php:192
+#: install/step3.php:337
+msgid "Deploy NagiosQL settings"
+msgstr "Verspreid NagiosQL instellingen"
+
+#: install/step3.php:194
+#: install/step3.php:339
+msgid "Writing global settings to database"
+msgstr "Globale instellingen worden in de database opgeslagen"
+
+#: install/step3.php:205
+#: install/step3.php:350
+msgid "Writing database configuration to settings.php"
+msgstr "Database configuratie wordt in settings.php opgeslagen"
+
+#: install/step3.php:216
+msgid "Set initial NagiosQL Administrator"
+msgstr "Initiëele NagiosQL Beheerder"
+
+#: install/step3.php:228
+msgid "Import Nagios sample data"
+msgstr "Importeer Nagios vooorbeeld gegevens"
+
+#: install/step3.php:243
+msgid "Updating existing NagiosQL database"
+msgstr "Werk de bestaande NagiosQL database bij"
+
+#: install/step3.php:246
+msgid "Installed NagiosQL version"
+msgstr "Geïnstalleerde NagiosQL versie"
+
+#: install/step3.php:252
+msgid "is not supported!"
+msgstr "wordt niet ondersteund!"
+
+#: install/step3.php:256
+#: install/step3.php:270
+msgid "error"
+msgstr "fout"
+
+#: install/step3.php:263
+msgid "Upgrading from version"
+msgstr "Vernieuwen van versie"
+
+#: install/step3.php:263
+msgid "to"
+msgstr "naar"
+
+#: install/step3.php:278
+msgid "Converting database to utf8 character set"
+msgstr "Converteren database naar utf8 teken set"
+
+#: install/step3.php:290
+msgid "Converting database tables to utf8 character set"
+msgstr "Converteren database tabellen naar utf8 teken set"
+
+#: install/step3.php:302
+msgid "Converting database fields to utf8 character set"
+msgstr "Converteren database velden naar utf8 teken set"
+
+#: install/step3.php:369
+msgid "Please delete the install directory to continue!"
+msgstr "Verwijder a.u.b. de installatie map om verder te gaan!"
+
+#: install/step3.php:377
+msgid "Back"
+msgstr "Terug"
+
+# contacts.php
+#: install/functions/func_installer.php:64
+msgid "Could not create"
+msgstr "Kan niet aangemaakt worden"
+
+#: install/functions/func_installer.php:64
+#: install/functions/func_installer.php:70
+msgid "database in MySQL"
+msgstr "database in MySQL"
+
+# contacts.php
+#: install/functions/func_installer.php:70
+msgid "Could not select"
+msgstr "Kan niet selecteren"
+
+#: install/functions/func_installer.php:169
+msgid "Could not open settings.php in config directory for writing!"
+msgstr "Kan settings.php in de config map niet openen om te schrijven!"
+
+#: install/functions/func_installer.php:277
+msgid "Unknown version!"
+msgstr "Onbekende versie!"
+
+#: install/functions/func_installer.php:325
+msgid "Cannot connect to the database."
+msgstr "Kan geen verbinding maken met de database."
+
+#: install/functions/func_installer.php:325
+#: install/functions/func_installer.php:334
+#: install/functions/func_installer.php:337
+msgid "MySQL Error"
+msgstr "MySQL Fout"
+
+#: install/functions/func_installer.php:334
+msgid "Cannot select the database."
+msgstr "Kan de database niet selecteren."
+
+# contacts.php
+#: install/functions/func_installer.php:337
+msgid "Cannot set"
+msgstr "Kan niet instellen"
+
+#~ msgid "Serv. dependency"
+#~ msgstr "Serv. afhankelijkheid"
+
+#~ msgid "Serv. escalation"
+#~ msgstr "Serv. escalatie"
+
+#~ msgid "Serv. ext. info"
+#~ msgstr "Serv. extra info"
+
+#~ msgid "Admin description"
+#~ msgstr "Admin omschrijving"
+
+#, fuzzy
+#~ msgid "Now"
+#~ msgstr "Nee"
+
+#~ msgid "NagiosQL Plugins"
+#~ msgstr "NagiosQL Plugins"
+
+#~ msgid "Plugin description"
+#~ msgstr "Plugin omschrijving"
+
+#~ msgid "Administrate Plugins"
+#~ msgstr "Beheer Plugins"
+
+#~ msgid "Manage your NagiosQL Plugins"
+#~ msgstr "Beheer uw NagiosQL Plugins"
+
+#~ msgid "Community Plugins"
+#~ msgstr "Community Plugins"
+
+#~ msgid "Functions to administrate NagiosQL Community Admins"
+#~ msgstr "Functies om NagiosQL Community Admins te beheren"
+
+#~ msgid "Official Plugins"
+#~ msgstr "Officiële Plugins"
+
+#~ msgid "Additional Features provided by official Plugins"
+#~ msgstr "Aanvullende mogelijkheden geboden door officiële Plugins"
+
+#~ msgid "SVN Server changed to:"
+#~ msgstr "SVN Server gewijzigd naar:"
+
+#~ msgid "Commiting files"
+#~ msgstr "Commiting bestanden"
+
+#~ msgid "Checkout files"
+#~ msgstr "Checkout bestanden"
+
+#~ msgid "Revision"
+#~ msgstr "Revisie"
+
+#~ msgid "selected"
+#~ msgstr "geselecteerd"
+
+#~ msgid "Please select a revision!"
+#~ msgstr "Selecteer een revisie!"
+
+#~ msgid "Checkout database"
+#~ msgstr "Checkout database"
+
+#~ msgid "Importing base directories"
+#~ msgstr "Importeren basis mappen"
+
+#~ msgid "SVN Version Control of Nagios(QL) config files."
+#~ msgstr "SVN Version Control van Nagios(QL) config bestanden."
+
+#~ msgid "Fresh-Import Nagios, NagiosQL and NagiosQL-db dump."
+#~ msgstr "Fresh-Import Nagios, NagiosQL en NagiosQL-db dump."
+
+#~ msgid "Commit config files and NagiosQL-db dump."
+#~ msgstr "Commit config bestanden en NagiosQL-db dump."
+
+#~ msgid "Checkout Nagios and NagiosQL config files."
+#~ msgstr "Checkout Nagios en NagiosQL config bestanden."
+
+#~ msgid "Warning, database checkout may destroy NagiosQL!"
+#~ msgstr ""
+#~ "Waarschuwing, database checkout kan ervoor zorgen dat NagiosQL niet meer "
+#~ "correct werkt!"
+
+#~ msgid "Server"
+#~ msgstr "Server"
+
+#~ msgid "Subversion Repository"
+#~ msgstr "Subversion Repository"
+
+#~ msgid "Database Dump Directory"
+#~ msgstr "Database Dump map"
+
+#~ msgid "Cancel"
+#~ msgstr "Annuleren"
+
+#~ msgid "Report Generator"
+#~ msgstr "Rapport Generator"
+
+#~ msgid "Report"
+#~ msgstr "Rapport"
+
+#, fuzzy
+#~ msgid "Plugins"
+#~ msgstr "Pools"
+
+#~ msgid "Basic Settings"
+#~ msgstr "Basis instellingen"
+
+#~ msgid "Setup Language"
+#~ msgstr "Taal"
+
+#~ msgid "does not exist!"
+#~ msgstr "Bestaat niet!"
+
+#~ msgid ""
+#~ "Please create an empty file called ENABLE_INSTALLER in the install "
+#~ "directory to continue!"
+#~ msgstr ""
+#~ "Maak eerst een leeg bestand genoemd ENABLE_INSTALLER in de installatie "
+#~ "directory om verder te gaan."
+
+#, fuzzy
+#~ msgid "Start new installation"
+#~ msgstr "Installatie"
+
+#~ msgid ""
+#~ "does not exist, please create a file in the install directory to continue!"
+#~ msgstr ""
+#~ "bestaat niet, maak eerst een leeg ENABLE_INSTALLER bestand in de "
+#~ "configuratie directory voordat u verder gaat."
+
+#~ msgid "PHP mysql support (mysql or mysqli)"
+#~ msgstr "PHP MySQL ondersteuning (mysql or mysqli)"
+
+#~ msgid "PHP session support (session)"
+#~ msgstr "PHP sessie ondresteuning (sessie)"
+
+#~ msgid "PHP gettext support (gettext)"
+#~ msgstr "PHP gettext ondersteuning (gettext)"
+
+#~ msgid "PHP FTP support (ftp)"
+#~ msgstr "PHP FTP ondersteuning (ftp)"
+
+#~ msgid "PHP HTML_Template_IT support (pear module)"
+#~ msgstr "PHP HTML_Template_IT ondresteuning (pear module)"
+
+#~ msgid "Database Setup"
+#~ msgstr "Database Inrichting."
+
+#~ msgid "New Installation of NagiosQL"
+#~ msgstr "Nieuwe Installatie van NagiosQL"
+
+#~ msgid "Parameter"
+#~ msgstr "Instelling"
+
+#~ msgid "Value"
+#~ msgstr "Waarde"
+
+#~ msgid ""
+#~ "this option will drop an existing database with the same name during a "
+#~ "new installation!"
+#~ msgstr ""
+#~ "Deze optie zal een bestaande database met dezelfde naam verwijderen en "
+#~ "opnieuw aanmaken tijdens een nieuwe installatie."
+
+#~ msgid "Initial NagiosQL Login"
+#~ msgstr "Eerste NagiosQL Login"
+
+#~ msgid "Nagios sample config files"
+#~ msgstr "Nagios voorbeeld configuratie bestanden."
+
+#~ msgid "Update NagiosQL"
+#~ msgstr "Bijwerken van NagiosQL"
+
+#~ msgid "Note: Upgrades from NagiosQL before v2.0.0 are not possible!"
+#~ msgstr ""
+#~ "Opmerking: Het bijwerken van NagiosQL bestanden van voor v2.0.0zijn niet "
+#~ "mogelijk!"
+
+#~ msgid "Old"
+#~ msgstr "Oud"
+
+#~ msgid "Modify Settings"
+#~ msgstr "Instellingen Aanpassen"
+
+#~ msgid "Connect to source server"
+#~ msgstr "verbinding met de bron server"
+
+#~ msgid "Server not found!"
+#~ msgstr "Server niet gevonden"
+
+#~ msgid "Copying old database to new database"
+#~ msgstr "Kopieer oude database naar een nieuwe"
+
+#~ msgid "Copy table"
+#~ msgstr "Kopieer tabel"
+
+#~ msgid "db in mysql"
+#~ msgstr "db in MySQL"
+
+#~ msgid "Host not active!"
+#~ msgstr "Host is niet aktief!"
+
+#~ msgid "Reading remote configuration failed (FTP connection failed):"
+#~ msgstr ""
+#~ "Lezen van het remote configuratie bestand is mislukt (FTP verbinding "
+#~ "mislukt):"
+
+#~ msgid "Cannot read the remote configuration file (FTP connection failed)!"
+#~ msgstr ""
+#~ "Kan het remote configuratie bestand niet lezen (FTP verbinding mislukt)!"
+
+#~ msgid "Configuration backup failed (FTP connection failed):"
+#~ msgstr "Configuratie backup is mislukt (FTP verbinding mislukt):"
+
+#~ msgid ""
+#~ "Cannot backup and delete the old configuration file (FTP connection "
+#~ "failed)!"
+#~ msgstr ""
+#~ "Kan geen backup maken en het het oude configuratie bestand verwijderen "
+#~ "(FTP verbinding mislukt)!"
+
+#~ msgid "File deletion failed (FTP connection failed):"
+#~ msgstr "Bestand verwijder aktie mislukt (FTP connectie mislukt):"
+
+#~ msgid ""
+#~ "Cannot backup the configuration file because the permissions are wrong "
+#~ "(remote FTP)!"
+#~ msgstr ""
+#~ "Kan geen backup van het configuratie bestand maken omdat de rechten fout "
+#~ "staan (remote FTP)!"
+
+#~ msgid ""
+#~ "Cannot open/overwrite the configuration file - check the permissions of "
+#~ "the temp directory:"
+#~ msgstr ""
+#~ "Kan het configuratie bestand niet openen of overschrijven - bekijk de "
+#~ "rechten van de temp directory:"
+
+#~ msgid "Cannot backup the configuration file (check the permissions)!"
+#~ msgstr ""
+#~ "Kan geen backup maken van het configuratie bestand (bekijk de rechten)!"
+
+#~ msgid "</b> - deletion <b>possible</b>"
+#~ msgstr "</b> - verwijderen <b>mogelijk</b>"
+
+#~ msgid "Cannot open the configuration file (FTP connection failed)!"
+#~ msgstr "Kan het configuratie bestand niet openen (FTP verbinding mislukt)!"
+
+#~ msgid "Update"
+#~ msgstr "Bijwerken"

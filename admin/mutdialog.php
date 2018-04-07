@@ -5,50 +5,56 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2011 by Martin Willisegger
+//
 // Project   : NagiosQL
 // Component : Admin timeperiod definitions
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.4
-// Revision  : $LastChangedRevision: 827 $
+// Version   : 3.1.1
+// Revision  : $LastChangedRevision: 1058 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Variabeln deklarieren
-// =====================
+// Define common variables
+// =======================
 $preContent   = "admin/mutdialog.tpl.htm";
 //
-// Vorgabedatei einbinden
-// ======================
+// Process post parameters
+// =======================
+$chkObject  	= isset($_GET['object']) 	?  htmlspecialchars($_GET['object'], ENT_QUOTES, 'utf-8')  	: "";
+$intSub     	= isset($_GET['menuid']) 	?  htmlspecialchars($_GET['menuid'], ENT_QUOTES, 'utf-8') 	: 2;
+$intExclude 	= isset($_GET['exclude']) ?  htmlspecialchars($_GET['exclude'], ENT_QUOTES, 'utf-8')  : 0;
+//
+// Include preprocessing file
+// ==========================
 $preAccess    = 1;
 $preFieldvars = 1;
-$intSub       = 2;
 $preNoMain    = 1;
 require("../functions/prepend_adm.php");
 //
-// Übergabeparameter
-// =================
-$chkObject  = isset($_GET['object']) ?  $_GET['object'] : "";
-//
-// Content einbinden
-// =================
+// Include content
+// ===============
 $conttp->setVariable("BASE_PATH",$SETS['path']['root']);
 $conttp->setVariable("OPENER_FIELD",$chkObject);
 $conttp->parse("header");
 $conttp->show("header");
 //
-// Formular
-// ========
-// Feldbeschriftungen setzen
+// Form
+// ====
 foreach($arrDescription AS $elem) {
-  $conttp->setVariable($elem['name'],$elem['string']);
+  	$conttp->setVariable($elem['name'],$elem['string']);
 }
 $conttp->setVariable("OPENER_FIELD",$chkObject);
-$conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
+$conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
 $conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-$conttp->setVariable("AVAILABLE",gettext('Available'));
-$conttp->setVariable("SELECTED",gettext('Selected'));
+$conttp->setVariable("AVAILABLE",translate('Available'));
+$conttp->setVariable("SELECTED",translate('Selected'));
+if ($intExclude == 1) {
+	$conttp->setVariable("DISABLE_HTML_BEGIN","<!--");
+	$conttp->setVariable("DISABLE_HTML_END","-->");
+}
 $conttp->parse("datainsert");
 $conttp->show("datainsert");
 ?>

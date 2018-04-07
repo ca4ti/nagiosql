@@ -5,13 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2011 by Martin Willisegger
+//
 // Project   : NagiosQL
 // Component : CSS Main definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2010-10-25 15:45:55 +0200 (Mo, 25 Okt 2010) $
+// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.0.4
-// Revision  : $LastChangedRevision: 827 $
+// Version   : 3.1.1
+// Revision  : $LastChangedRevision: 1058 $
 //
 /////////////////////////////////////////////////////////////////////////////*/
 body {
@@ -47,23 +49,39 @@ body {
 			text-align: left;
 			padding-left: 10px;
 		}
+		.headerleft a {
+			color: #002C52;
+			background-color: #FFFFFF;
+			}
+			
+		.headerleft a:hover {
+			color: #002C52;
+			background-color: #E5E9ED ;
+			}
+		.headerleft a:active {
+			color: #002C52;
+			background-color: #E5E9ED ;
+			}
 		
 		.top-link {
-			color: #FFFFFF;
+			color: #002C52;
 			font-size: 10pt;
 			text-decoration: none;
 			font-weight: bold;
-			}
+			background-color: #FFFFFF;
+			padding: 2px 3px 0px 3px;
+			border-top:1px solid #002C52;
+			border-left:1px solid #002C52;
+			border-right:1px solid #002C52;
+			}		
 		
 		.headermiddle {
-
 			vertical-align: bottom;
 			height: 40px;
 			width: 200px;
 		}
 		
 		.headerright {
-
 			text-align: right;
 			vertical-align: bottom;
 			padding-right: 20px;
@@ -103,7 +121,6 @@ h1 {
 	
 h2 {
 	font-size: 14px;
-	color: #1962a2;
 	}
 	
 h3 {
@@ -270,7 +287,6 @@ h3 {
 	color: #FFFFFF;
 	font-weight: bold;
 }
-
 .main input.inputlock {
 	border: 1px solid #053056;
 	background: #5d5d5d url(../images/inputlock.png);
@@ -285,6 +301,11 @@ h3 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	color: #FFFFFF;
 	font-weight: bold;
+}
+
+.main option.ieselected {
+	background-color:#3399FF;
+	color:#000000;
 }
 
 .main option.inpmust {
@@ -385,6 +406,11 @@ h3 {
 .main .warnmessage {
 	font-size: 12px;
 	color: #FF9900;
+	font-weight: bold;
+}
+.main .errormessage {
+	font-size: 12px;
+	color: #FF0000;
 	font-weight: bold;
 }
 .main .greenmessage {
@@ -502,3 +528,31 @@ h3 {
 		padding-left:5px;
 		padding-right:5px;
 	}
+	
+/* Page links / site numbers */
+.sitenumber {
+	background-color:#4080BE;
+	width:25px;
+	height:25px;
+	color:#d6d6d6;
+	border:1px solid #FFF;
+	text-align:center;
+	cursor:pointer;
+}
+.sitenumber a {
+	color:#d6d6d6;
+	text-decoration:none;
+}
+.sitenumber a:hover {
+	color:#d6d6d6;
+	text-decoration:none;
+}
+.sitenumber-sel {
+	background-color:#CCC;;
+	color:#00396a;
+	width:25px;
+	height:25px;
+	border:1px solid #FFF;
+	text-align:center;
+	font-weight:bold;
+}

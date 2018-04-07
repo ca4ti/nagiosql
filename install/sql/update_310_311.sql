@@ -1,0 +1,20 @@
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+--  NagiosQL
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+--  Project   : NagiosQL
+--  Component : Update from NagiosQL 3.1.0 to NagiosQL 3.1.1
+--  Website   : www.nagiosql.org
+--  Date      : $LastChangedDate: 2011-04-10 17:08:11 +0200 (So, 10. Apr 2011) $
+--  Author    : $LastChangedBy: rouven $
+--  Version   : 3.1.1
+--  Revision  : $LastChangedRevision: 1070 $
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+--  Modify existing tbl_settings
+--
+UPDATE `tbl_settings` SET `value` = '3.1.1' WHERE `tbl_settings`.`name` = 'version' LIMIT 1;
