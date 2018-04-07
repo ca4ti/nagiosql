@@ -11,14 +11,14 @@ exit;
 ; Component: Initial configuration settings
 ; Website  : http://www.nagiosql.org
 ; Date     : May 27, 2011, 2:35 pm
-; Version  : 3.2.0
-; $LastChangedRevision: 1058 $
+; Version  : 3.3.0
+; $LastChangedRevision: 2 $
 ;
 ; DO NOT USE THIS FILE AS NAGIOSQL SETTINGS FILE!
 ;
 ;///////////////////////////////////////////////////////////////////////////////
 [db]
-type			= mysql
+type			= mysqli
 server			= localhost
 port			= 3306
 database		= db_nagiosql_v32

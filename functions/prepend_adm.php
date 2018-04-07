@@ -4,15 +4,15 @@
 // NagiosQL
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Preprocessing script
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2013-01-10 09:46:11 +0100 (Thu, 10 Jan 2013) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1351 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //error_reporting(E_ALL);
@@ -46,7 +46,7 @@ $chkDomainId 		= 0;
 $chkGroupAdm 		= 0;
 $intError 			= 0;
 $setDBVersion 		= "unknown";
-$setFileVersion		= "3.2.0";
+$setFileVersion		= "3.3.0";
 //
 // Start PHP session
 // =================
@@ -91,15 +91,17 @@ if (!isset($_SESSION['SETS']['db'])) $_SESSION['SETS']['db'] = $SETS['db'];
 //
 // Include external function/class files - part 1
 // ==============================================
-include("mysql_class.php");
+include("mysqli_class.php");
 require("translator.php");
 //
 // Initialize classes - part 1
 // ===========================
-$myDBClass = new mysqldb;
+$myDBClass  = new mysqlidb;
+$myDBClass->arrParams = $SETS['db'];
+$myDBClass->getDatabase();
 if ($myDBClass->error == true) {
-  	$strErrorMessage .= translate('Error while connecting to database:')."::".$myDBClass->strErrorMessage;
-  	$intError = 1;
+	$strDBMessage = $myDBClass->strErrorMessage;
+	$booError     = $myDBClass->error;
 }
 //
 // Get additional configuration from the table tbl_settings
@@ -264,7 +266,7 @@ if (isset($_SERVER['REMOTE_USER']) && ($_SERVER['REMOTE_USER'] != "") && ($_SESS
 			$SETS['data']['locale'] 			= $strUserLocale;
 		}
 		// Update last login time
-		$strSQLUpdate = "UPDATE `tbl_user` SET `last_login`=NOW() WHERE `username`='".mysql_real_escape_string($chkInsName)."'";
+		$strSQLUpdate = "UPDATE `tbl_user` SET `last_login`=NOW() WHERE `username`='".$myDBClass->real_escape($chkInsName)."'";
 		$booReturn    = $myDBClass->insertData($strSQLUpdate);
 		$myDataClass->writeLog(translate('Webserver login successfull'));
 		$_SESSION['strLoginMessage'] = ""; 
@@ -273,8 +275,8 @@ if (isset($_SERVER['REMOTE_USER']) && ($_SERVER['REMOTE_USER'] != "") && ($_SESS
   	}
 }
 if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") && ($intError == 0)) {
-	$chkInsName   = mysql_real_escape_string($chkInsName);
-	$chkInsPasswd = mysql_real_escape_string($chkInsPasswd);
+	$chkInsName   = $myDBClass->real_escape($chkInsName);
+	$chkInsPasswd = $myDBClass->real_escape($chkInsPasswd);
 	$strSQL    = "SELECT * FROM `tbl_user` WHERE `username`='".$chkInsName."' 
 				  AND `password`=MD5('".$chkInsPasswd."') AND `active`='1'";
   	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataUser,$intDataCount);
@@ -299,7 +301,7 @@ if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") &
 			$SETS['data']['locale'] 			= $strUserLocale;
 		}
     	// Update last login time
-    	$strSQLUpdate = "UPDATE `tbl_user` SET `last_login`=NOW() WHERE `username`='".mysql_real_escape_string($chkInsName)."'";
+    	$strSQLUpdate = "UPDATE `tbl_user` SET `last_login`=NOW() WHERE `username`='".$myDBClass->real_escape($chkInsName)."'";
     	$booReturn    = $myDBClass->insertData($strSQLUpdate);
     	$myDataClass->writeLog(translate('Login successfull'));
     	$_SESSION['strLoginMessage'] = "";
@@ -322,7 +324,7 @@ if (!isset($_SESSION['userid']) && ($_SESSION['logged_in'] == 1)) {
 // Review and update login
 // =======================
 if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
-  	$strSQL  = "SELECT * FROM `tbl_user` WHERE `username`='".mysql_real_escape_string($_SESSION['username'])."'";
+  	$strSQL  = "SELECT * FROM `tbl_user` WHERE `username`='".$myDBClass->real_escape($_SESSION['username'])."'";
   	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataUser,$intDataCount);
   	if ($booReturn == false) {
     	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);

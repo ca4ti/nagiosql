@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2013-01-10 09:46:11 +0100 (Thu, 10 Jan 2013) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1351 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -50,7 +50,7 @@ class nagconfig {
   	//  Activities during initialisation
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-  	function nagconfig() {
+  	function __construct() {
     	if (isset($_SESSION) && isset($_SESSION['SETS'])) {
     		// Read global settings
     		$this->arrSettings = $_SESSION['SETS'];
@@ -123,7 +123,7 @@ class nagconfig {
 		if ($arrConfigId != 1) {
 			// Define variables
 			$strTimeFile  	= "unknown";
-			$intFileStamp   = mktime();
+			$intFileStamp   = time();
 			foreach($arrConfigId AS $intConfigId) {
 				// Get configuration file data
 				$this->getConfigData($intConfigId,"target",$strTarget);
@@ -226,7 +226,7 @@ class nagconfig {
 		if ($arrConfigId != 1) {
 			// Define variables
 			$strTimeFile  	= "unknown";
-			$intFileStamp   = mktime();
+			$intFileStamp   = time();
 			foreach($arrConfigId AS $intConfigId) {
 				// Get configuration file data
 				$this->getConfigData($intConfigId,"target",$strTarget);
@@ -333,7 +333,7 @@ class nagconfig {
 		if ($strMethod == 1) {
       		// Save configuration file
       		if (file_exists($strConfigDir."/".$strName) && is_writable($strBackupDir) && is_writable($strConfigDir)) {
-       			$strOldDate = date("YmdHis",mktime());
+       			$strOldDate = date("YmdHis",time());
         		copy($strConfigDir."/".$strName,$strBackupDir."/".$strName."_old_".$strOldDate);
         		unlink($strConfigDir."/".$strName);
       		} else if (!is_writable($strBackupDir)) {
@@ -350,7 +350,7 @@ class nagconfig {
         	// Save configuration file
         	$intFileStamp = ftp_mdtm($this->resConnectId, $strConfigDir."/".$strName);
         	if ($intFileStamp > -1) {
-          		$strOldDate = date("YmdHis",mktime());
+          		$strOldDate = date("YmdHis",time());
 				$intErrorReporting = error_reporting();
 				error_reporting(0);
           		$intReturn  = ftp_rename($this->resConnectId,$strConfigDir."/".$strName,$strBackupDir."/".$strName."_old_".$strOldDate);
@@ -374,7 +374,7 @@ class nagconfig {
 				$intFileStamp = $arrInfo['mtime'];
         		if ($intFileStamp > -1) {
 				
-          			$strOldDate = date("YmdHis",mktime());
+          			$strOldDate = date("YmdHis",time());
           			$intReturn  = ssh2_sftp_rename($this->resSFTP,$strConfigDir."/".$strName,$strBackupDir."/".$strName."_old_".$strOldDate);
 					if (!$intReturn) {
 						$this->processClassMessage(translate('Cannot backup the old configuration file because the permissions are wrong (remote SFTP)!')."::",$this->strErrorMessage);
@@ -583,7 +583,7 @@ class nagconfig {
 				$configtp = new HTML_Template_IT($this->arrSettings['path']['base_path']."/templates/files/");
 				$configtp->loadTemplatefile($setTemplate, true, true);
 				$configtp->setOptions($arrTplOptions);
-				$configtp->setVariable("CREATE_DATE",date("Y-m-d H:i:s",mktime()));
+				$configtp->setVariable("CREATE_DATE",date("Y-m-d H:i:s",time()));
 				$this->getConfigData($intConfigID,"version",$this->intNagVersion);
 				$configtp->setVariable("NAGIOS_QL_VERSION",$this->arrSettings['db']['version']);
 				if ($this->intNagVersion == 3) $strVersion = "Nagios 3.x config file";
@@ -812,7 +812,7 @@ class nagconfig {
 							$configtp = new HTML_Template_IT($this->arrSettings['path']['base_path']."/templates/files/");
 							$configtp->loadTemplatefile($setTemplate, true, true);
 							$configtp->setOptions($arrTplOptions);
-							$configtp->setVariable("CREATE_DATE",date("Y-m-d H:i:s",mktime()));
+							$configtp->setVariable("CREATE_DATE",date("Y-m-d H:i:s",time()));
 							if ($this->intNagVersion == 0) {
 								$this->getConfigData($intConfigID,"version",$this->intNagVersion);
 							}

@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-10-03 10:00:02 +0200 (Wed, 03 Oct 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1349 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -46,7 +46,7 @@ class nagvisual {
   	//  Activities during initialisation
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-  	function nagvisual() {
+  	function __construct() {
     	// Read global settings
     	$this->arrSettings = $_SESSION['SETS'];
     	if (isset($_SESSION['domain'])) $this->intDomainId = $_SESSION['domain'];
@@ -229,7 +229,7 @@ class nagvisual {
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function tfSecure($strKey) {
 		$strKey = stripslashes($strKey);
-		$strKey = mysql_real_escape_string($strKey);
+		$strKey = $this->myDBClass->real_escape($strKey);
     	return($strKey);
   	}
 	

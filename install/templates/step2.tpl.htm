@@ -1,12 +1,12 @@
-<!-- (c) 2005-2012 by Martin Willisegger -->
+<!-- (c) 2005-2017 by Martin Willisegger -->
 <!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : Installer template -->
 <!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2011-11-25 13:12:50 +0100 (Fri, 25 Nov 2011) $ -->
+<!-- Date       : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $ -->
 <!-- Author     : $LastChangedBy: martin $ -->
-<!-- Version    : 3.2.0 -->
-<!-- Revision   : $LastChangedRevision: 1134 $ -->
+<!-- Version    : 3.3.0 -->
+<!-- Revision   : $LastChangedRevision: 2 $ -->
 <script language="JavaScript" type="text/JavaScript">
 	<!--
 	// Send form
@@ -40,6 +40,19 @@
 		}
 		return true;
 	}
+	// Modify port value
+	function modifyPort(db) {
+		if ((db == 'mysql') || (db == 'mysqli')) {
+			document.frmSetup.tfDBport.value = '3306';
+			document.frmSetup.tfDBport.className = 'required';
+		} else if (db == 'pgsql') {
+			document.frmSetup.tfDBport.value = '5432';
+			document.frmSetup.tfDBport.className = 'required';
+		} else {
+			document.frmSetup.tfDBport.value = '';
+			document.frmSetup.tfDBport.className = '';
+		}
+	}
 	//-->
 </script>   
 <div id="installmenu">
@@ -59,8 +72,12 @@
                 <legend><b>{STEP2_TEXT2_1}</b></legend>
                 <table cellpadding="0" cellspacing="1" border="0">
                 	<tr>
-                    	<td style="width:250px;">{STEP2_TEXT2_2}</td>
-                        <td><input type="text" name="tfDBtype" id="tfDBtype" class="locked" value="{STEP2_VALUE2_2}" disabled="disabled"></td>
+                    	<td style="width:250px;">{STEP2_TEXT2_2} <em>*</em></td>
+                        <td>
+                        	<select name="selDBtype" id="selDBtype" class="required" onchange="modifyPort(this.value)">
+                            	{STEP2_VALUE2_2}
+                            </select>
+                        </td>
 					</tr>
                 	<tr>
                     	<td>{STEP2_TEXT2_3} <em>*</em></td>

@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : File editor cgi.cfg
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-03-07 10:38:34 +0100 (Wed, 07 Mar 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1275 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -38,7 +38,7 @@ $intConfigId    = $arrConfigSet[0];
 $myConfigClass->getConfigData($intConfigId,"method",$intMethod);
 $myConfigClass->getConfigData($intConfigId,"nagiosbasedir",$strBaseDir);
 $strConfigfile 	= str_replace("//","/",$strBaseDir."/cgi.cfg");
-$strLocalBackup	= str_replace("//","/",$strBaseDir."/cgi.cfg_old_").date("YmdHis",mktime());
+$strLocalBackup	= str_replace("//","/",$strBaseDir."/cgi.cfg_old_").date("YmdHis",time());
 //
 // Convert Windows to UNIX 		
 // =======================

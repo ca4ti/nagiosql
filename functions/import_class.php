@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Import Class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-09-18 10:44:22 +0200 (Tue, 18 Sep 2012) $
+// Date      : $LastChangedDate: 2017-06-22 13:39:15 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1346 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 7 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -45,7 +45,7 @@ class nagimport {
   	//  Activities during initialisation
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-	function nagimport() {
+  	function __construct() {
     	if (isset($_SESSION) && isset($_SESSION['SETS'])) {
     		// Read global settings
     		$this->arrSettings = $_SESSION['SETS'];
@@ -632,8 +632,8 @@ class nagimport {
     	if ($strKeyField == "") {$strKey = $strConfigName;} else {$strKey = $strKeyField;}
     	if ($booResult != true) {
       		$this->strErrorMessage .= $this->myDBClass->strErrorMessage;
-      		if ($strKeyField != "") $this->strErrorMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKey." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('could not be inserted:')." ".mysql_error()."::";
-      		if ($strKeyField == "") $this->strErrorMessage .= translate('Entry')." <b class=\"blackmessage\">".$strTemp1." -> ".$strTemp2.translate('inside')."</b> ".$strTable." <b class=\"blackmessage\">".$strTable."</b> ".translate('could not be inserted:')." ".mysql_error()."::";
+      		if ($strKeyField != "") $this->strErrorMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKey." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('could not be inserted:')." ".$this->myDBClass->strErrorMessage."::";
+      		if ($strKeyField == "") $this->strErrorMessage .= translate('Entry')." <b class=\"blackmessage\">".$strTemp1." -> ".$strTemp2.translate('inside')."</b> ".$strTable." <b class=\"blackmessage\">".$strTable."</b> ".translate('could not be inserted:')." ".$this->myDBClass->strErrorMessage."::";
       		return(1);
     	} else {
       		if ($strKeyField != "") $this->strInfoMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKey." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('successfully inserted')."::";
@@ -1236,7 +1236,7 @@ class nagimport {
         		// Update data in master table
         		$arrCommand[0] 	= $intSlaveId;
         		$strValue     	= implode("!",$arrCommand);
-        		$strSQL   		= "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = '".mysql_real_escape_string($strValue)."' WHERE `id` = ".$intDataId;
+        		$strSQL   		= "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = '".$this->myDBClass->real_escape($strValue)."' WHERE `id` = ".$intDataId;
         		$booResult  	= $this->myDBClass->insertData($strSQL);
 				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
       		}

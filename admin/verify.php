@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Configuration verification
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-09-24 14:42:29 +0200 (Mon, 24 Sep 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1347 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -342,7 +342,7 @@ if ($chkButValue4 != "") {
 		}
 		if (file_exists($strPidfile) && isset($arrExec[0])) {
       		if (file_exists($strCommandfile) && is_writable($strCommandfile)) {
-        		$strCommandString = "[".mktime()."] RESTART_PROGRAM;".mktime();
+        		$strCommandString = "[".time()."] RESTART_PROGRAM;".time()."\n";
         		$timeout = 3;
         		$old = ini_set('default_socket_timeout', $timeout);
         		$resCmdFile = fopen($strCommandfile,"w");
@@ -379,7 +379,7 @@ if ($chkButValue4 != "") {
       		$myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
 		} else {
 			if (is_array($myConfigClass->sendSSHCommand('ls '.$strCommandfile))) {
-				$strCommandString = "[".mktime()."] RESTART_PROGRAM;".mktime();
+				$strCommandString = "[".time()."] RESTART_PROGRAM;".time()."\n";
 				$arrInfo = ssh2_sftp_stat($myConfigClass->resSFTP, $strCommandfile);
 				$intFileStamp1 = $arrInfo['mtime'];
 				$arrResult = $myConfigClass->sendSSHCommand('echo "'.$strCommandString.'" >> '.$strCommandfile);

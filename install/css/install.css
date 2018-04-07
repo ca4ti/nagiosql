@@ -11,10 +11,10 @@
 /* Project  : NagiosQL
 /* Component: Installer CSS
 /* Website  : http://www.nagiosql.org
-/* Date     : $LastChangedDate: 2012-02-23 07:49:34 +0100 (Thu, 23 Feb 2012) $
+/* Date     : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 /* Author   : $LastChangedBy: martin $
-/* Version  : 3.1.1
-/* Revision : $LastChangedRevision: 1237 $
+/* Version  : 3.3.0
+/* Revision : $LastChangedRevision: 2 $
 /*
 /**********************************************/
 
@@ -412,6 +412,16 @@ input[type=submit][disabled] {
 	padding-right:10px;
 	margin:0px;
 	padding-bottom:2px;
+}
+select.required {
+	width:202px;
+	border: 1px solid #053056;
+	background: #941616 url(../images/inputmust.png);
+	font-family:Verdana, Helvetica, sans-serif;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size:12px;
+	height:22px;
 }
 .validation-advice {
   margin: 5px 0;

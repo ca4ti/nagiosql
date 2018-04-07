@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Installer Class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-12-08 07:35:31 +0100 (Do, 08. Dez 2011) $
+// Date      : $LastChangedDate: 2017-06-22 11:54:45 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1141 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 6 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -31,7 +31,8 @@
 class naginstall {
   	// Define class variables
 	var $filTemplate = "";		// template file
-
+	var $myDBClass;				// Database class
+	
 	///////////////////////////////////////////////////////////////////////////////////////////
   	//  Class constructor
   	///////////////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ class naginstall {
   	//  Activities during class initialization
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-  	function naginstall() {
+  	function __construct() {
 
   	}
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +69,248 @@ class naginstall {
 			}
 			return($strTemplate);
 		} else {
-			echo "File not found";	
+			echo $this->translate("Template file not found").": ".$strTplFile;	
+		}
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//  Function: Translate text
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//  Parameter:  		$strLangString  String to translate
+	//   
+  	//  Return values:		Translated string
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////
+	function translate($strLangString) {
+		$strLangString = gettext($strLangString);
+		$strLangString = str_replace('"','&quot;',$strLangString);
+		$strLangString = str_replace("'",'&#039;',$strLangString);
+		return $strLangString;
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//  Function: Return supported languages
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//  Parameter:  		none
+	//   
+  	//  Return values:		Array including supported languages
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////
+	function getLangData() {
+		unset($arrLangSupported);
+		// English
+		$arrLangSupported['en_GB']['description'] = $this->translate('English');
+		$arrLangSupported['en_GB']['nativedescription'] = 'English';
+		
+		// German
+		$arrLangSupported['de_DE']['description'] = $this->translate('German');
+		$arrLangSupported['de_DE']['nativedescription'] = 'Deutsch';
+		
+		// Chinese (Simplified)
+		$arrLangSupported['zh_CN']['description'] = $this->translate('Chinese (Simplified)');
+		$arrLangSupported['zh_CN']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
+		
+		// Italian
+		$arrLangSupported['it_IT']['description'] = $this->translate('Italian');
+		$arrLangSupported['it_IT']['nativedescription'] = 'Italiano';
+		
+		// French
+		$arrLangSupported['fr_FR']['description'] = $this->translate('French');
+		$arrLangSupported['fr_FR']['nativedescription'] = 'Fran&#231;ais';
+		
+		// Russian
+		$arrLangSupported['ru_RU']['description'] = $this->translate('Russian');
+		$arrLangSupported['ru_RU']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
+		
+		// Spanish
+		$arrLangSupported['es_ES']['description'] = $this->translate('Spanish');
+		$arrLangSupported['es_ES']['nativedescription'] = 'Espa&#241;ol';
+		
+		// Brazilian Portuguese
+		$arrLangSupported['pt_BR']['description'] = $this->translate('Portuguese (Brazilian)');
+		$arrLangSupported['pt_BR']['nativedescription'] = 'Portugu&#234;s do Brasil';
+		
+		// Dutch
+		$arrLangSupported['nl_NL']['description'] = $this->translate('Dutch');
+		$arrLangSupported['nl_NL']['nativedescription'] = 'Nederlands';
+		
+		// Danish
+		$arrLangSupported['da_DK']['description'] = $this->translate('Danish');
+		$arrLangSupported['da_DK']['nativedescription'] = 'Dansk';
+		
+		// No longer supported language due to missing translators
+		//
+		//  // Japanese
+		//  $arrLangSupported['ja_JP']['description'] = $this->translate('Japanese');
+		//  $arrLangSupported['ja_JP']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
+		//
+		//  // Polish
+		//  $arrLangSupported['pl_PL']['description'] = $this->translate('Polish');
+		//  $arrLangSupported['pl_PL']['nativedescription'] = 'Polski';
+		//
+		//  // Spanish (Argentina)
+		//  $arrLangSupported['es_AR']['description'] = $this->translate('Spanish (Argentina)');
+		//   $arrLangSupported['es_AR']['nativedescription'] = 'Espa&#241;ol Argentina';
+		///
+		/// Currently not supported languages
+		//
+		//  // Albanian
+		//  $arrLangSupported['sq']['description'] = $clang->$this->translate('Albanian');
+		//  $arrLangSupported['sq']['nativedescription'] = 'Shqipe';
+		//   
+		//  // Basque
+		//  $arrLangSupported['eu']['description'] = $this->translate('Basque');
+		//  $arrLangSupported['eu']['nativedescription'] = 'Euskara';
+		//
+		//  // Bosnian
+		//  $arrLangSupported['bs']['description'] = $this->translate('Bosnian');
+		//  $arrLangSupported['bs']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
+		//
+		//  // Bulgarian
+		//  $arrLangSupported['bg']['description'] = $this->translate('Bulgarian');
+		//  $arrLangSupported['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
+		//
+		//  // Catalan
+		//  $arrLangSupported['ca']['description'] = $this->translate('Catalan');
+		//  $arrLangSupported['ca']['nativedescription'] = 'Catal&#940;';
+		//
+		//  // Welsh
+		//  $arrLangSupported['cy']['description'] = $this->translate('Welsh');
+		//  $arrLangSupported['cy']['nativedescription'] = 'Cymraeg';
+		//
+		//  // Chinese (Traditional - Hong Kong)
+		//  $arrLangSupported['zh-Hant-HK']['description'] = $this->translate('Chinese (Traditional - Hong Kong)');
+		//  $arrLangSupported['zh-Hant-HK']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#35486;&#31995;';
+		//
+		//  // Chinese (Traditional - Taiwan)
+		//  $arrLangSupported['zh-Hant-TW']['description'] = $this->translate('Chinese (Traditional - Taiwan)');
+		//  $arrLangSupported['zh-Hant-TW']['nativedescription'] = 'Chinese (Traditional - Taiwan)';
+		//
+		//  // Croatian
+		//  $arrLangSupported['hr']['description'] = $this->translate('Croatian');
+		//  $arrLangSupported['hr']['nativedescription'] = 'Hrvatski';
+		//
+		//  // Czech
+		//  $arrLangSupported['cs']['description'] = $this->translate('Czech');
+		//  $arrLangSupported['cs']['nativedescription'] = '&#x010c;esky';
+		//
+		//  // Estonian
+		//  $arrLangSupported['et']['description'] = $this->translate('Estonian');
+		//  $arrLangSupported['et']['nativedescription'] = 'Eesti';
+		//
+		//  // Finnish
+		//  $arrLangSupported['fi']['description'] = $this->translate('Finnish');
+		//  $arrLangSupported['fi']['nativedescription'] = 'Suomi';
+		//
+		//  // Galician
+		//  $arrLangSupported['gl']['description'] = $this->translate('Galician');
+		//  $arrLangSupported['gl']['nativedescription'] = 'Galego';
+		//
+		//  // German informal
+		//  $arrLangSupported['de-informal']['description'] = $this->translate('German informal');
+		//  $arrLangSupported['de-informal']['nativedescription'] = 'Deutsch (Du)';
+		//
+		//  // Greek
+		//  $arrLangSupported['el']['description'] = $this->translate('Greek');
+		//  $arrLangSupported['el']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
+		//
+		//  // Hebrew
+		//  $arrLangSupported['he']['description'] = $this->translate('Hebrew');
+		//  $arrLangSupported['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
+		//
+		//  // Hungarian
+		//  $arrLangSupported['hu']['description'] = $this->translate('Hungarian');
+		//  $arrLangSupported['hu']['nativedescription'] = 'Magyar';
+		//
+		//  // Indonesian
+		//  $arrLangSupported['id']['description'] = $this->translate('Indonesian');
+		//  $arrLangSupported['id']['nativedescription'] = 'Bahasa Indonesia';
+		//
+		//  // Lithuanian
+		//  $arrLangSupported['lt']['description'] = $this->translate('Lithuanian');
+		//  $arrLangSupported['lt']['nativedescription'] = 'Lietuvi&#371;';
+		//
+		//  // Macedonian
+		//  $arrLangSupported['mk']['description'] = $this->translate('Macedonian');
+		//  $arrLangSupported['mk']['nativedescription'] = '&#1052;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;';
+		//
+		//  // Norwegian Bokml
+		//  $arrLangSupported['nb']['description'] = $this->translate('Norwegian (Bokmal)');
+		//  $arrLangSupported['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
+		//
+		//  // Norwegian Nynorsk
+		//  $arrLangSupported['nn']['description'] = $this->translate('Norwegian (Nynorsk)');
+		//  $arrLangSupported['nn']['nativedescription'] = 'Norsk Nynorsk';
+		//
+		//  // Portuguese
+		//  $arrLangSupported['pt']['description'] = $this->translate('Portuguese');
+		//  $arrLangSupported['pt']['nativedescription'] = 'Portugu&#234;s';
+		//
+		//  // Romanian
+		//  $arrLangSupported['ro']['description'] = $this->translate('Romanian');
+		//  $arrLangSupported['ro']['nativedescription'] = 'Rom&#226;nesc';
+		//
+		//  // Slovak
+		//  $arrLangSupported['sk']['description'] = $this->translate('Slovak');
+		//  $arrLangSupported['sk']['nativedescription'] = 'Slov&aacute;k';
+		//
+		//  // Slovenian
+		//  $arrLangSupported['sl']['description'] = $this->translate('Slovenian');
+		//  $arrLangSupported['sl']['nativedescription'] = 'Sloven&#353;&#269;ina';
+		//
+		//  // Serbian
+		//  $arrLangSupported['sr']['description'] = $this->translate('Serbian');
+		//  $arrLangSupported['sr']['nativedescription'] = 'Srpski';
+		//
+		//  // Spanish (Mexico)
+		//  $arrLangSupported['es-MX']['description'] = $this->translate('Spanish (Mexico)');
+		//  $arrLangSupported['es-MX']['nativedescription'] = 'Espa&#241;ol Mejicano';
+		//
+		//  // Swedish
+		//  $arrLangSupported['sv']['description'] = $this->translate('Swedish');
+		//  $arrLangSupported['sv']['nativedescription'] = 'Svenska';
+		//
+		//  // Turkish
+		//  $arrLangSupported['tr']['description'] = $this->translate('Turkish');
+		//  $arrLangSupported['tr']['nativedescription'] = 'T&#252;rk&#231;e';
+		//
+		//  // Thai
+		//  $arrLangSupported['th']['description'] = $this->translate('Thai');
+		//  $arrLangSupported['th']['nativedescription'] = '&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;';
+		//
+		//  // Vietnamese
+		//  $arrLangSupported['vi']['description'] = $this->translate('Vietnamese');
+		//  $arrLangSupported['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
+		
+		
+		foreach ($arrLangSupported as $key => $row) {
+   			$description[$key]  	 = $row['description'];
+    		$nativedescription[$key] = $row['nativedescription'];
+		}
+		array_multisort($description, SORT_ASC, $nativedescription, SORT_ASC, $arrLangSupported);
+		//uasort($arrLangSupported,"user_sort");
+		return $arrLangSupported;
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//  Function: Translate text
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//  Parameter:  		$strCode  	Language code
+	//						$booNative	Native code true/false
+	//   
+  	//  Return values:		Language name if found / false if not exist
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////
+	function getLangNameFromCode($strCode, $booNative=true) {
+		$arrLanguages = $this->getLangData();
+		if (isset($arrLanguages[$strCode]['description'])) {
+			if ($booNative) {
+				return $arrLanguages[$strCode]['description'].' - '.$arrLanguages[$strCode]['nativedescription'];
+			} else {
+				return $arrLanguages[$strCode]['description'];}
+		} else  {
+			// else return false
+			return false;
 		}
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -83,39 +325,17 @@ class naginstall {
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function openAdmDBSrv(&$strStatusMessage,&$strErrorMessage,$intMode=0) {
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$intStatus  = 0;
-			// Connect to database server
-			if ($intMode == 1 ) {
-				$resDBSLink = @mysql_connect($_SESSION['install']['dbserver'].":".$_SESSION['install']['dbport'],$_SESSION['install']['dbuser'],$_SESSION['install']['dbpass']);
-			} else {
-				$resDBSLink = @mysql_connect($_SESSION['install']['dbserver'].":".$_SESSION['install']['dbport'],$_SESSION['install']['admuser'],$_SESSION['install']['admpass']);
-			}
-			if (!$resDBSLink) {
-				$strErrorMessage .= translate('Error while connecting to database:')."<br>".mysql_error()."<br>\n";
-				$intStatus = 1;
-			}
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			// Connect to database server
-			if ($intMode == 1 ) {
-				$resDBSLink = @pg_connect("host=".$_SESSION['install']['dbserver']." port=".$_SESSION['install']['dbport']." user=".$_SESSION['install']['dbuser']." password=".$_SESSION['install']['dbpass']);
-			} else {
-				$resDBSLink = @pg_connect("host=".$_SESSION['install']['dbserver']." port=".$_SESSION['install']['dbport']." user=".$_SESSION['install']['admuser']." password=".$_SESSION['install']['admpass']);
-			}
-			if (!$resDBSLink) {
-				$strErrorMessage .= translate('Error while connecting to database:')."<br>".pg_last_error()."<br>\n";
-				$intStatus = 1;
-			}
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
-		}
+		$intStatus  = 0;
+		$this->myDBClass->dbconnect();
+    	if ($this->myDBClass->error == true) {
+			$strErrorMessage .= str_replace("::","<br>",$this->myDBClass->strErrorMessage);
+      		$intStatus = 1;
+    	}
 		if ($intStatus == 0) {
-			$strStatusMessage = "<span class=\"green\">".translate("passed")."</span>";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("passed")."</span>";
 			return(0);
 		} else {
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			return(1);
 		}
 	}
@@ -131,35 +351,19 @@ class naginstall {
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function openDatabase(&$strStatusMessage,&$strErrorMessage,$intMode=0) {
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$intStatus  = 0;
-			// Connect to database
-			$resDBId = @mysql_select_db($_SESSION['install']['dbname']);	
-			if (!$resDBId) {
-				$strErrorMessage .= translate('Error while connecting to database:')."<br>".mysql_error()."<br>\n";
-				$intStatus = 1;
-			}
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			// Connect to database
-			if ($intMode == 1 ) {
-				$resDBSLink = @pg_connect("host=".$_SESSION['install']['dbserver']." port=".$_SESSION['install']['dbport']." dbname=".$_SESSION['install']['dbname']." user=".$_SESSION['install']['dbuser']." password=".$_SESSION['install']['dbpass']);
-			} else {
-				$resDBSLink = @pg_connect("host=".$_SESSION['install']['dbserver']." port=".$_SESSION['install']['dbport']." dbname=".$_SESSION['install']['dbname']." user=".$_SESSION['install']['admuser']." password=".$_SESSION['install']['admpass']);
-			}
-			if (!$resDBSLink) {
-				$strErrorMessage .= translate('Error while connecting to database:')."<br>".pg_last_error()."<br>\n";
-				$intStatus = 1;
-			}
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
-		}
+		$intStatus  = 0;
+		// Connect to database
+		$booDB      = $this->myDBClass->dbselect();
+		if (!$booDB) {
+			$strErrorMessage .= $this->translate('Error while connecting to database:')."<br>";
+			$strErrorMessage .= str_replace("::","<br>",$this->myDBClass->strErrorMessage)."\n";
+			$intStatus = 1;
+		}		
 		if ($intStatus == 0) {
-			$strStatusMessage = "<span class=\"green\">".translate("passed")."</span>";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("passed")."</span>";
 			return(0);
 		} else {
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			return(1);
 		}
 	}
@@ -176,31 +380,24 @@ class naginstall {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function checkDBVersion(&$strStatusMessage,&$strErrorMessage,&$setVersion) {
 		// Read version string from DB
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$setVersion = @mysql_result(@mysql_query("SHOW VARIABLES LIKE 'version'"),0,1);
-			$strDBError = mysql_error();
+		if (($_SESSION['install']['dbtype'] == "mysql") || ($_SESSION['install']['dbtype'] == "mysqli")) {
+			$this->myDBClass->getSingleDataset("SHOW VARIABLES LIKE 'version'",$arrDataset);
+			$setVersion = $arrDataset['Value'];
+			$strDBError = str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 			$intVersion = version_compare($setVersion,"4.1.0");
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$setVersion = @pg_fetch_result(@pg_query("SHOW VARIABLES LIKE 'version'"),0,1);
-			$strDBError = pg_last_error();
-			$intVersion = version_compare($setVersion,"4.1.0");
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
 		}
 		if ($strDBError == "") {
 			// Is the currrent version supported?
 			if ($intVersion >=0) {
-				$strStatusMessage = "<span class=\"green\">".translate("supported")."</span>";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("supported")."</span>";
 				return(0);
 			} else {
-				$strStatusMessage = "<span class=\"red\">".translate("not supported")."</span>";
+				$strStatusMessage = "<span class=\"red\">".$this->translate("not supported")."</span>";
 				return(1);
 			}
 		} else {
 			$strErrorMessage .=	$strDBError."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			$setVersion		  = "unknown";
 			return(1);
 		}
@@ -218,18 +415,9 @@ class naginstall {
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function checkQLVersion(&$strStatusMessage,&$strErrorMessage,&$arrUpdate,&$setVersion) {
-		// Read version string from DB
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$setVersion = @mysql_result(@mysql_query("SELECT `value` FROM `tbl_settings` WHERE `category`='db' AND `name`='version'"),0,0);
-			$strDBError = mysql_error();
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$setVersion = @pg_fetch_result(@pg_query("SELECT `value` FROM `tbl_settings` WHERE `category`='db' AND `name`='version'"),0,0);
-			$strDBError = pg_last_error();
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
-		}
+		$strSQL		= "SELECT `value` FROM `tbl_settings` WHERE `category`='db' AND `name`='version'";
+		$setVersion = $this->myDBClass->getFieldData($strSQL);
+		$strDBError = str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 		// Process result
 		if (($strDBError == "") && ($setVersion != "")) {
 			// NagiosQL version supported?
@@ -256,28 +444,30 @@ class naginstall {
 								break;	
 				case '3.1.1': 	$arrUpdate[] = "sql/update_311_320.sql";
 								break;
-				case '3.2.0': 	$intVersionError = 2;
+				case '3.2.0':	$intVersionError = 2;
+								break;
+				case '3.3.0':	$intVersionError = 2;
 								break;
 				default:		$intVersionError = 1;
 								break;
 			}
 			if ($intVersionError == 0) {
-				$strStatusMessage = "<span class=\"green\">".translate("supported")."</span> (".$setVersion.")";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("supported")."</span> (".$setVersion.")";
 				return(0);
 			} else if ($intVersionError == 2) {
-				$strErrorMessage .=	translate("Your NagiosQL installation is up to date - no further actions are needed!")."<br>\n";
-				$strStatusMessage = "<span class=\"green\">".translate("up-to-date")."</span> (".$setVersion.")";
+				$strErrorMessage .=	$this->translate("Your NagiosQL installation is up to date - no further actions are needed!")."<br>\n";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("up-to-date")."</span> (".$setVersion.")";
 				return(1);
 			} else {
-				$strErrorMessage .=	translate("Updates to NagiosQL 3.2 and above are only supported from NagiosQL 3.0.0 and above!")."<br>\n";
-				$strStatusMessage = "<span class=\"red\">".translate("failed")."</span> (".$setVersion.")";
+				$strErrorMessage .=	$this->translate("Updates to NagiosQL 3.2 and above are only supported from NagiosQL 3.0.0 and above!")."<br>\n";
+				$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".$setVersion.")";
 				return(1);
 			}
 		} else {
-			$strErrorMessage .=	translate("Error while selecting settings table.")."<br>\n";
+			$strErrorMessage .=	$this->translate("Error while selecting settings table.")."<br>\n";
 			$strErrorMessage .=	$strDBError."<br>\n";
-			$strErrorMessage .=	translate("Updates to NagiosQL 3.2 and above are only supported from NagiosQL 3.0.0 and above!")."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strErrorMessage .=	$this->translate("Updates to NagiosQL 3.2 and above are only supported from NagiosQL 3.0.0 and above!")."<br>\n";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			return(1);
 		}
 	}
@@ -292,24 +482,14 @@ class naginstall {
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function dropDB(&$strStatusMessage,&$strErrorMessage) {
-		// Drop database
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$booReturn  = @mysql_query("DROP DATABASE `".$_SESSION['install']['dbname']."`");
-			$strDBError = mysql_error();
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$setVersion = @pg_query("DROP DATABASE `".$_SESSION['install']['dbname']."`");
-			$strDBError = pg_last_error();
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
-		}
+		$booReturn  = $this->myDBClass->insertData("DROP DATABASE ".$_SESSION['install']['dbname']);
+		$strDBError = str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 		if ($booReturn) {
-			$strStatusMessage = "<span class=\"green\">".translate("done")."</span> (".$_SESSION['install']['dbname'].")";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".$_SESSION['install']['dbname'].")";
 			return(0);
 		} else {
 			$strErrorMessage .=	$strDBError."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span> (".$_SESSION['install']['dbname'].")";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".$_SESSION['install']['dbname'].")";
 			return(1);
 		}
 	}
@@ -325,26 +505,24 @@ class naginstall {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function createDB(&$strStatusMessage,&$strErrorMessage) {
 		// Create database
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$booReturn  = @mysql_query("CREATE DATABASE `".$_SESSION['install']['dbname']."` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci");
-			$strDBError = mysql_error();
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$setVersion = @pg_query("CREATE DATABASE `".$_SESSION['install']['dbname']."` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci");
-			$strDBError = pg_last_error();
+		if (($_SESSION['install']['dbtype'] == "mysql") || ($_SESSION['install']['dbtype'] == "mysqli")) {
+			$strSQL = "CREATE DATABASE ".$_SESSION['install']['dbname']." DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci";
 		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
+			$strErrorMessage .=	$this->translate("Unsupported database type.")."<br>\n";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".$_SESSION['install']['dbname'].")";
+			return(1);
 		}
+		$booReturn  = $this->myDBClass->insertData($strSQL);
+		$strDBError = str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 		if ($booReturn) {
-			$strStatusMessage = "<span class=\"green\">".translate("done")."</span> (".$_SESSION['install']['dbname'].")";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".$_SESSION['install']['dbname'].")";
 			return(0);
 		} else {
 			$strErrorMessage .=	$strDBError."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span> (".$_SESSION['install']['dbname'].")";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".$_SESSION['install']['dbname'].")";
 			return(1);
 		}
-	}	
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  Function: Grant user to database
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -357,76 +535,51 @@ class naginstall {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function grantDBUser(&$strStatusMessage,&$strErrorMessage) {
 		// Grant user
-		if ($_SESSION['install']['dbtype'] == "mysql") {
+		if (($_SESSION['install']['dbtype'] == "mysql") || ($_SESSION['install']['dbtype'] == "mysqli")) {
 			// does the user exist?
-			$intUserError = 0;
-			$resQuery  = @mysql_query("FLUSH PRIVILEGES");
-			$resQuery1 = @mysql_query("SELECT * FROM `mysql`.`user` WHERE `Host`='".$_SESSION['install']['localsrv']."' AND `User`='".$_SESSION['install']['dbuser']."'");
-			if ($resQuery1 && (mysql_num_rows($resQuery1) == 0)) {
-				$resQuery2 = @mysql_query("CREATE USER '".$_SESSION['install']['dbuser']."'@'".$_SESSION['install']['localsrv']."' IDENTIFIED BY '".$_SESSION['install']['dbpass']."'");
-				if (!$resQuery2) {
+			$intUserError = 0;	
+			$booReturn  = $this->myDBClass->insertData("FLUSH PRIVILEGES");
+			$strSQL     = "SELECT * FROM `mysql`.`user` 
+						   WHERE  `Host`='".$_SESSION['install']['localsrv']."' AND `User`='".$_SESSION['install']['dbuser']."'";
+			$intCount   = $this->myDBClass->countRows($strSQL);
+			if ($intCount == 0) {
+				$strSQL    = "CREATE USER '".$_SESSION['install']['dbuser']."'@'".$_SESSION['install']['localsrv']."' IDENTIFIED BY '".$_SESSION['install']['dbpass']."'";
+				$booReturn = $this->myDBClass->insertData($strSQL );
+				if ($booReturn == false) {
 					$intUserError 	= 1;
-					$strDBError 	= mysql_error();
+					$strDBError 	= str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 				}
-			} else if (mysql_error() == ""){
-				$intUserError = 2;
+			} else if ($this->myDBClass->strErrorMessage == "") {
+				$intUserError   = 2;
 			} else {
 				$intUserError 	= 1;
-				$strDBError 	= mysql_error();
+				$strDBError 	= str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 			}
 			if ($intUserError != 1) {
-				$resQuery = @mysql_query("FLUSH PRIVILEGES");
-				$resQuery = @mysql_query("GRANT SELECT, INSERT, UPDATE, DELETE, LOCK TABLES ON `".$_SESSION['install']['dbname']."`.* TO '".$_SESSION['install']['dbuser']."'@'".$_SESSION['install']['localsrv']."'");
-				if (!$resQuery) {
+				$booReturn = $this->myDBClass->insertData("FLUSH PRIVILEGES");
+				$strSQL    = "GRANT SELECT, INSERT, UPDATE, DELETE, LOCK TABLES ON `".$_SESSION['install']['dbname']."`.* 
+							  TO '".$_SESSION['install']['dbuser']."'@'".$_SESSION['install']['localsrv']."'";
+				$booReturn = $this->myDBClass->insertData($strSQL);
+				if ($booReturn == false) {
 					$intUserError 	= 1;
-					$strDBError 	= mysql_error();
+					$strDBError 	= str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 				}
-				$resQuery = @mysql_query("FLUSH PRIVILEGES");
+				$booReturn = $this->myDBClass->insertData("FLUSH PRIVILEGES");
 			}
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			// does the user exist?
-			$intUserError = 0;
-			$resQuery  = @pg_query("FLUSH PRIVILEGES");
-			$resQuery1 = @pg_query("SELECT * FROM `mysql`.`user WHERE `Host`='".$_SESSION['install']['localsrv']."' AND `User`='".$_SESSION['install']['dbuser']."'");
-			if ($resQuery1 && (pg_num_rows($resQuery) != 0)) {
-				$resQuery2 = @pg_query("CREATE USER '".$_SESSION['install']['dbuser']."'@'".$_SESSION['install']['localsrv']."' IDENTIFIED BY '".$_SESSION['install']['dbpass']."'");
-				if (!$resQuery2) {
-					$intUserError 	= 1;
-					$strDBError 	= pg_last_error();
-				}
-			} else if (mysql_error() == ""){
-				$intUserError = 2;
-			} else {
-				$intUserError 	= 1;
-				$strDBError 	= pg_last_error();
-			}
-			if ($intUserError != 1) {
-				$resQuery = @pg_query("FLUSH PRIVILEGES");
-				$resQuery = @pg_query("GRANT SELECT, INSERT, UPDATE, DELETE, LOCK TABLES ON `".$_SESSION['install']['dbname']."`.* TO '".$_SESSION['install']['dbuser']."'@'".$_SESSION['install']['localsrv']."'");
-				if (!$resQuery) {
-					$intUserError 	= 1;
-					$strDBError 	= pg_last_error();
-				}
-				$resQuery = @pg_query("FLUSH PRIVILEGES");
-			}
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
 		}
 		if ($intUserError != 1) {
 			if ($intUserError == 2) {
-				$strStatusMessage = "<span class=\"green\">".translate("done")."</span> (".translate("Only added rights to existing user").": ".$_SESSION['install']['dbuser'].")";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".$this->translate("Only added rights to existing user").": ".$_SESSION['install']['dbuser'].")";
 			} else {
-				$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 			}
 			return(0);
 		} else {
 			$strErrorMessage .=	$strDBError."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			return(1);
 		}
-	}	
+	}		
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  Function: Update NagiosQL database
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -450,23 +603,19 @@ class naginstall {
 							$strSqlCommand = "";
 							$intSQLError   = 0;
 							$intLineCount  = 0;
-							if ($_SESSION['install']['dbtype'] == "mysql") $booReturn = @mysql_query("SET NAMES `utf8`");
-							if ($_SESSION['install']['dbtype'] == "pgsql") $booReturn = @pg_query("SET NAMES `utf8`");
 							while (!feof($filSqlNew)) {
 								$strLine = fgets($filSqlNew);
 								$strLine = trim($strLine);								
 								if ($intSQLError == 1)  continue;			// skip if an error was found
 								$intLineCount++;
-								if ($strLine     == "") continue; 			// skip empty lines
+								if ($strLine == "") continue; 				// skip empty lines
 								if (substr($strLine,0,2) == "--") continue; // skip comment lines
 								$strSqlCommand .= $strLine;								
 								if (substr($strSqlCommand,-1) == ";") {
-									if ($_SESSION['install']['dbtype'] == "mysql") $booReturn = @mysql_query($strSqlCommand);
-									if ($_SESSION['install']['dbtype'] == "pgsql") $booReturn = @pg_query($strSqlCommand);
-									if (!$booReturn) {
+									$booReturn = $this->myDBClass->insertData($strSqlCommand);
+									if ($booReturn == false) {
 										$intSQLError = 1;
-										if ($_SESSION['install']['dbtype'] == "mysql") $strErrorMessage .= mysql_error()."<br>\n";
-										if ($_SESSION['install']['dbtype'] == "pgsql") $strErrorMessage .= pg_last_error()."<br>\n";
+										$strErrorMessage .= str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 										$intError = 1;
 									}
 									$strSqlCommand = "";
@@ -475,30 +624,30 @@ class naginstall {
 							if ($intSQLError == 0) {
 								$intUpdateOk++;
 							} else {
-								$strStatusMessage = "<span class=\"red\">".translate("failed")."</span> (Line: ".$intLineCount." in file: ".$elem.")";
+								$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (Line: ".$intLineCount." in file: ".$elem.")";
 								$intUpdateError++;
 							}
 						} else {
-							$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-							$strErrorMessage .=	translate("SQL file is not readable or empty")." (".$elem.")<br>\n";
+							$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+							$strErrorMessage .=	$this->translate("SQL file is not readable or empty")." (".$elem.")<br>\n";
 							$intUpdateError++;
 						}
 					} else {
-						$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-						$strErrorMessage .=	translate("SQL file is not readable or empty")." (".$elem.")<br>\n";
+						$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+						$strErrorMessage .=	$this->translate("SQL file is not readable or empty")." (".$elem.")<br>\n";
 						$intUpdateError++;
 					}
 				}					
 			} 
 			if ($intUpdateError == 0) {
-				$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 				return(0);
 			} else {
 				return(1);
 			}
 		} else {
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			$strErrorMessage .=	translate("No SQL update files available")."<br>\n";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+			$strErrorMessage .=	$this->translate("No SQL update files available")."<br>\n";
 			return(1);
 		}
 	}
@@ -514,28 +663,21 @@ class naginstall {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function createNQLAdmin(&$strStatusMessage,&$strErrorMessage) {
 		// Create admin user
-		$strSQL  = "SELECT `id` FROM `tbl_language` WHERE `locale`='".$_SESSION['install']['locale']."'";
-		$intLang = @mysql_result(@mysql_query($strSQL),0,0)+0;
+		$strSQL  = "SELECT `id` FROM `tbl_language` WHERE `locale`='".$_SESSION['install']['locale']."'";	
+		$intLang	= $this->myDBClass->getFieldData($strSQL)+0;
 		if ($intLang == 0) $intLang = 1;
-		$strSQL  = "INSERT INTO `tbl_user` (`id`, `username`, `alias`, `password`, `admin_enable`, `wsauth`, `active`, `nodelete`, `language`, `domain`, `last_login`, `last_modified`)
-					VALUES (1, '".$_SESSION['install']['qluser']."', 'Administrator', md5('".$_SESSION['install']['qlpass']."'), '1', '0', '1', '1', '".$intLang."', '1', '', NOW());";
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$booReturn  = @mysql_query($strSQL);
-			$strDBError = mysql_error();
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$setVersion = @pg_query($strSQL);
-			$strDBError = pg_last_error();
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
-		}
+		$strSQL  = "INSERT INTO `tbl_user` (`id`, `username`, `alias`, `password`, `admin_enable`, `wsauth`, `active`, 
+								`nodelete`, `language`, `domain`, `last_login`, `last_modified`)
+					VALUES (1, '".$_SESSION['install']['qluser']."', 'Administrator', md5('".$_SESSION['install']['qlpass']."'),
+						   '1', '0', '1', '1', '".$intLang."', '1', '', NOW());";	
+		$booReturn  = $this->myDBClass->insertData($strSQL);
+		$strDBError = str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 		if ($booReturn) {
-			$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 			return(0);
 		} else {
 			$strErrorMessage .=	$strDBError."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			return(1);
 		}
 	}	
@@ -553,43 +695,31 @@ class naginstall {
 		// Checking initial settings
 		$arrInitial[] = array('category'=>'db','name'=>'version','value'=>$_SESSION['install']['version']);
 		$arrInitial[] = array('category'=>'db','name'=>'type','value'=>$_SESSION['install']['dbtype']);
-		foreach ($_SESSION['init_settings'] AS $key=>$elem) {
+		foreach ($_SESSION['init_settings'] AS $key => $elem) {
 			if ($key == 'db') continue; // do not store db values to database
 			foreach ($elem AS $key2=>$elem2) {
 				$arrInitial[] = array('category'=>$key,'name'=>$key2,'value'=>$elem2);
 			}
 		}
 		foreach ($arrInitial AS $elem) {
-			$strSQL1 = "SELECT `value` FROM `tbl_settings` WHERE `category`='".$elem['category']."' AND `name`='".$elem['name']."'";
-			$strSQL2 = "INSERT INTO `tbl_settings` (`category`, `name`, `value`) VALUES ('".$elem['category']."', '".$elem['name']."', '".$elem['value']."')";
-			if ($_SESSION['install']['dbtype'] == "mysql") {
-				$resQuery1 = @mysql_query($strSQL1);
-				if ($resQuery1 && (mysql_num_rows($resQuery1) == 0)) {	
-					$resQuery2 = @mysql_query($strSQL2);
-					if (!$resQuery2) {
-						$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-						$strErrorMessage .=	translate("Inserting initial data to settings database has failed:")."<br>".mysql_error()."<br>\n";
-						return(1);
-					}
-				} else if (!$resQuery1) {
-					$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-					$strErrorMessage .=	translate("Inserting initial data to settings database has failed:")." ".mysql_error()."<br>\n";
+			$strSQL1 = "SELECT `value` FROM `tbl_settings` WHERE `category`='".$elem['category']."'
+					    AND `name`='".$elem['name']."'";	
+			$strSQL2 = "INSERT INTO `tbl_settings` (`category`, `name`, `value`) 
+						VALUES ('".$elem['category']."', '".$elem['name']."', '".$elem['value']."')";
+			$intCount   = $this->myDBClass->countRows($strSQL1);
+			if ($intCount == 0) {
+				$booReturn  = $this->myDBClass->insertData($strSQL2);
+				if ($booReturn == false) {
+					$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+					$strErrorMessage .=	$this->translate("Inserting initial data to settings database has failed:")."1<br>";
+					$strErrorMessage .=	str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 					return(1);
-				}
-			} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-				$resQuery1 = @pg_query($strSQL1);
-				if ($resQuery1 && (pg_num_rows($resQuery1) == 0)) {	
-					$resQuery2 = @pg_query($strSQL2);
-					if (!$resQuery2) {
-						$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-						$strErrorMessage .=	translate("Inserting initial data to settings database has failed:")."<br>".pg_last_error()."<br>\n";
-						return(1);
-					}
-				} else if (!$resQuery1) {
-					$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-					$strErrorMessage .=	translate("Inserting initial data to settings database has failed:")." ".pg_last_error()."<br>\n";
-					return(1);
-				}
+				}				
+			} else if ($this->myDBClass->strErrorMessage != "") {
+				$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+				$strErrorMessage .=	$this->translate("Inserting initial data to settings database has failed:")."2<br>";
+				$strErrorMessage .=	str_replace("::","<br>",$this->myDBClass->strErrorMessage);
+				return(1);		
 			}
 		}
 		// Update some values
@@ -599,30 +729,23 @@ class naginstall {
 		} else {
 			$arrSettings[] = array('category'=>'path','name'=>'protocol','value'=>'http');	
 		}
-		$strBaseURL  	= str_replace("install/install.php","",$_SERVER["PHP_SELF"]);
-		$arrSettings[] 	= array('category'=>'path','name'=>'base_url','value'=>$strBaseURL);	
-		$strBasePath	= substr(realpath('.'),0,-7);
-		$arrSettings[] 	= array('category'=>'path','name'=>'base_path','value'=>$strBasePath);
+		//$strBaseURL  	= str_replace("install/install.php","",$_SERVER["PHP_SELF"]);
+		//$arrSettings[] 	= array('category'=>'path','name'=>'base_url','value'=>$strBaseURL);	
+		//$strBasePath	= substr(realpath('.'),0,-7);
+		//$arrSettings[] 	= array('category'=>'path','name'=>'base_path','value'=>$strBasePath);
 		$arrSettings[] 	= array('category'=>'data','name'=>'locale','value'=>$_SESSION['install']['locale']);
 		foreach ($arrSettings AS $elem) {
-			$strSQL	= "UPDATE `tbl_settings` SET `value`='".$elem['value']."' WHERE `category` = '".$elem['category']."' AND `name` = '".$elem['name']."'";
-			if ($_SESSION['install']['dbtype'] == "mysql") {
-				$resQuery = @mysql_query($strSQL);
-				if (mysql_error() != '') {
-					$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-					$strErrorMessage .=	translate("Inserting initial data to settings database has failed:")." ".mysql_error()."<br>\n";
-					return(1);
-				}
-			} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-				$resQuery = @pg_query($strSQL);
-				if (pg_last_error() != '') {
-					$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-					$strErrorMessage .=	translate("Inserting initial data to settings database has failed:")." ".pg_last_error()."<br>\n";
-					return(1);
-				}
+			$strSQL	= "UPDATE `tbl_settings` SET `value`='".$elem['value']."' 
+					   WHERE `category` = '".$elem['category']."' AND `name` = '".$elem['name']."'";
+			$booReturn  = $this->myDBClass->insertData($strSQL);
+			if ($booReturn == false) {
+				$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+				$strErrorMessage .=	$this->translate("Inserting initial data to settings database has failed:");
+				$strErrorMessage .=	str_replace("::","<br>",$this->myDBClass->strErrorMessage);
+				return(1);				
 			}
 		}
-		$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+		$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 		return(0);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -672,11 +795,11 @@ class naginstall {
 			fwrite($filSettings,"base_url     = ".$strBaseURL."\n");
 			fwrite($filSettings,"base_path    = ".$strBasePath."\n");
 			fclose($filSettings);	
-			$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 			return(0);
 		} else {
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			$strErrorMessage .=	translate("Connot open/write to config/settings.php")."<br>\n";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+			$strErrorMessage .=	$this->translate("Connot open/write to config/settings.php")."<br>\n";
 			return(1);
 		}
 	}
@@ -694,32 +817,23 @@ class naginstall {
 		// Update configuration target database
 		$strNagiosQLpath	= str_replace("//","/",$_SESSION['install']['qlpath']."/");
 		$strNagiosPath		= str_replace("//","/",$_SESSION['install']['nagpath']."/");
-		$strSQL = "UPDATE `tbl_configtarget` SET 
-					`basedir`='".$strNagiosQLpath."', 
-					`hostconfig`='".$strNagiosQLpath."hosts/',
-					`serviceconfig`='".$strNagiosQLpath."services/',
-					`backupdir`='".$strNagiosQLpath."backup/',
-					`hostbackup`='".$strNagiosQLpath."backup/hosts/',
-					`servicebackup`='".$strNagiosQLpath."backup/services/',
-					`nagiosbasedir`='".$strNagiosPath."',
-					`importdir`='".$strNagiosPath."objects/',
-					`conffile`='".$strNagiosPath."nagios.cfg',
-					`last_modified`=NOW()
-				   WHERE `target`='localhost'";
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$resQuery1 = @mysql_query($strSQL);
-			if (!$resQuery1) {	
-				$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-				$strErrorMessage .=	translate("Inserting path data to database has failed:")." ".mysql_error()."<br>\n";
-				return(1);
-			}
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$resQuery1 = @pg_query($strSQL);
-			if (!$resQuery1) {
-				$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-				$strErrorMessage .=	translate("Inserting path data to database has failed:")." ".pg_last_error()."<br>\n";
-				return(1);
-			}
+		$strSQL 			= "UPDATE `tbl_configtarget` SET 
+									  `basedir`='".$strNagiosQLpath."', 
+									  `hostconfig`='".$strNagiosQLpath."hosts/',
+									  `serviceconfig`='".$strNagiosQLpath."services/',
+									  `backupdir`='".$strNagiosQLpath."backup/',
+									  `hostbackup`='".$strNagiosQLpath."backup/hosts/',
+									  `servicebackup`='".$strNagiosQLpath."backup/services/',
+									  `nagiosbasedir`='".$strNagiosPath."',
+									  `importdir`='".$strNagiosPath."objects/',
+									  `conffile`='".$strNagiosPath."nagios.cfg',
+									  `last_modified`=NOW()
+							  WHERE `target`='localhost'";
+		$booReturn			= $this->myDBClass->insertData($strSQL);
+		if ($booReturn == false) {
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+			$strErrorMessage .=	$this->translate("Inserting path data to database has failed:")." ".str_replace("::","<br>",$this->myDBClass->strErrorMessage)."\n";
+			return(1);			
 		}
 		// Create real paths
 		if ($_SESSION['install']['createpath'] == 1) {
@@ -729,23 +843,17 @@ class naginstall {
 				if (!file_exists($strNagiosQLpath."backup")) 			mkdir($strNagiosQLpath."backup",0755);
 				if (!file_exists($strNagiosQLpath."backup/hosts")) 		mkdir($strNagiosQLpath."backup/hosts",0755);
 				if (!file_exists($strNagiosQLpath."backup/services")) 	mkdir($strNagiosQLpath."backup/services",0755);
-				$strStatusMessage = "<span class=\"green\">".translate("done")."</span> (".translate("Check the permissions of the created paths!").")";
+				$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".$this->translate("Check the permissions of the created paths!").")";
 				return(0);
 			} else {
-				$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-				$strErrorMessage .=	translate("NagiosQL config path is not writeable - only database values updated")."<br>\n";
+				$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+				$strErrorMessage .=	$this->translate("NagiosQL config path is not writeable - only database values updated")."<br>\n";
 				return(1);
 			}
 		}
-		$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+		$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 		return(0);
 	}
-	
-	
-	
-	
-	
-	
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  Function: Converting NagiosQL database to utf-8
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -757,24 +865,18 @@ class naginstall {
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function convQLDB(&$strStatusMessage,&$strErrorMessage) {
-		// Read version string from DB
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$resQuery   = @mysql_query("ALTER DATABASE `".$_SESSION['install']['dbname']."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-			$strDBError = mysql_error();
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$resQuery   = @pg_query("ALTER DATABASE `".$_SESSION['install']['dbname']."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-			$strDBError = pg_last_error();
-		} else {
-			$strErrorMessage .= translate("Database type not defined!")." (".$_SESSION['install']['dbtype'].")<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
-			return(1);	
+		$strDBError = "";
+		if ($_SESSION['install']['dbtype'] == "mysqli") {
+		    $strSQL     = "ALTER DATABASE `".$_SESSION['install']['dbname']."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+			$booReturn  = $this->myDBClass->insertData($strSQL);
+			$strDBError = str_replace("::","<br>",$this->myDBClass->strErrorMessage);
 		}
 		if ($strDBError == "") {
-			$strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+			$strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
 			return(0);
 		} else {
-			$strErrorMessage .= translate("Database errors while converting to utf-8:")."<br>".$strDBError."<br>\n";
-			$strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+			$strErrorMessage .= $this->translate("Database errors while converting to utf-8:")."<br>".$strDBError."<br>\n";
+			$strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
 			return(1);
 		}
 	}
@@ -790,24 +892,18 @@ class naginstall {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function convQLDBTables(&$strStatusMessage,&$strErrorMessage) {
 		// Read version string from DB
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$resQuery  = @mysql_query("SHOW TABLES FROM `".$_SESSION['install']['dbname']);
-			$strDBError = mysql_error();
-			if ($resQuery && ($strDBError == "")) {
-				while ($elem = mysql_fetch_row($resQuery)) {
-					if ($strDBError != "") continue;
-					$resQueryTable  = @mysql_query("ALTER TABLE `".$elem[0]."` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-					$strDBError    .= mysql_error();
-				}
-			}
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$resQuery  = @pg_query("SHOW TABLES FROM `".$_SESSION['install']['dbname']);
-			$strDBError = pg_last_error();
-			if ($resQuery && ($strDBError == "")) {
-				while ($elem = pg_fetch_row($resQuery)) {
-					if ($strDBError != "") continue;
-					$resQueryTable  = @pg_query("ALTER TABLE `".$elem[0]."` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-					$strDBError    .= pg_last_error();
+		if ($_SESSION['install']['dbtype'] == "mysqli") {
+		    $strSQL    = "SHOW TABLES FROM `".$_SESSION['install']['dbname']."`";
+			$booReturn  = $this->myDBClass->getDataArray($strSQL,$arrDataset,$intDataCount);
+			if ($intDataCount != 0) {
+				foreach ($arrDataset AS $elem) {
+					if ($intError == 1) continue;
+					$strSQL    = "ALTER TABLE `".$elem[0]."` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+					$booReturn = $this->myDBClass->insertData($strSQL);
+					if ($booReturn == false) {
+						$intError 		= 1;
+						$strDBError 	= str_replace("::","<br>",$this->myDBClass->strErrorMessage);
+					}
 				}
 			}
 		} else {
@@ -836,65 +932,33 @@ class naginstall {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function convQLDBFields(&$strStatusMessage,&$strErrorMessage) {
 		// Read version string from DB
-		if ($_SESSION['install']['dbtype'] == "mysql") {
-			$resQuery  = @mysql_query("SHOW TABLES FROM `".$_SESSION['install']['dbname']);
-			$strDBError = mysql_error();
-			if ($resQuery && ($strDBError == "")) {
-				while ($elem = mysql_fetch_row($resQuery)) {
-					if ($strDBError != "") continue;
-					$resQueryTable  = @mysql_query("SHOW FULL FIELDS FROM `".$elem[0]."` WHERE (`Type` LIKE '%varchar%' OR `Type` LIKE '%enum%' 
-													OR `Type` LIKE '%text%') AND Collation <> 'utf8_unicode_ci'");
-					$strDBError = mysql_error();
-					if ($resQueryTable && ($strDBError == "")) {
-						while ($elem2 = mysql_fetch_row($resQueryTable)) {
-							if ($strDBError != "") continue;
-							if (($elem2[5] === NULL) && ($elem2[3] == 'YES')){
-								$strDefault = "DEFAULT NULL";
-							} else if ($elem2[5] != '') {
-								$strDefault = "DEFAULT '".$elem2[5]."'";
-							} else {
-								$strDefault = "";
-							}
-							if ($elem2[3] == 'YES') { $strNull = 'NULL'; } else { $strNull = 'NOT NULL'; }
-							$strSQL = "ALTER TABLE `".$elem[0]."` CHANGE `".$elem2[0]."` `".$elem2[0]."` ".$elem2[1]." CHARACTER SET 'utf8' 
-									   COLLATE 'utf8_unicode_ci' $strNull $strDefault";
-							$resQueryField = @mysql_query($strSQL);
-							$strMySQLError = mysql_error();
-							if ($strMySQLError != "") {
-								if (substr_count($strMySQLError,"Specified key was too long") == 0) {
-									$strDBError .= "Table:".$elem[0]." - Field: ".$elem2[0]." ".mysql_error();
-								}						
-							}
+		$strSQL1   = "SHOW TABLES FROM `".$_SESSION['install']['dbname']."`";
+		$booReturn  = $this->myDBClass->getDataArray($strSQL1,$arrDataset1,$intDataCount1);
+		if ($intDataCount1 != 0) {
+			foreach ($arrDataset1 AS $elem1) {
+				if ($intError == 1) continue;
+				$strSQL2	= "SHOW FULL FIELDS FROM `".$elem1[0]."` WHERE (`Type` LIKE '%varchar%' OR `Type` LIKE '%enum%' 
+												OR `Type` LIKE '%text%') AND Collation <> 'utf8_unicode_ci'";
+				$booReturn  = $this->myDBClass->getDataArray($strSQL2,$arrDataset2,$intDataCount2);
+				if ($intDataCount2 != 0) {
+					foreach ($arrDataset2 AS $elem2) {
+						if ($intError2 == 1) continue;
+						if (($elem2[5] === NULL) && ($elem2[3] == 'YES')){
+							$strDefault = "DEFAULT NULL";
+						} else if ($elem2[5] != '') {
+							$strDefault = "DEFAULT '".$elem2[5]."'";
+						} else {
+							$strDefault = "";
+						}
+						if ($elem2[3] == 'YES') { $strNull = 'NULL'; } else { $strNull = 'NOT NULL'; }
+						$strSQL3 	= "ALTER TABLE `".$elem[0]."` CHANGE `".$elem2[0]."` `".$elem2[0]."` ".$elem2[1]." 
+												   CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' $strNull $strDefault";
+						$booReturn = $this->myDBClass->insertData($strSQL3);
+						if ($booReturn == false) {
+							$intError2 		= 1;
+							$strDBError 	= "Table:".$elem[0]." - Field: ".$elem2[0]." ".$this->myDBClass->strErrorMessage;
 						}
 					}
-				}
-			}
-		} else if ($_SESSION['install']['dbtype'] == "pgsql") {
-			$resQuery  = @pg_query("SHOW TABLES FROM `".$_SESSION['install']['dbname']);
-			$strDBError = pg_last_error();
-			if ($resQuery && ($strDBError == "")) {
-				while ($elem = pg_fetch_row($resQuery)) {
-					if ($strDBError != "") continue;
-					$resQueryTable  = @pg_query("SHOW FULL FIELDS FROM `".$elem[0]."` WHERE `Type` LIKE '%varchar%' AND Collation <> 'utf8_unicode_ci'");
-					$strDBError = pg_last_error();
-					if ($resQueryTable && ($strDBError == "")) {
-						while ($elem2 = pg_fetch_row($resQueryTable)) {
-							if (($elem2[5] === NULL) && ($elem2[3] == 'YES')){
-								$strDefault = "DEFAULT NULL";
-							} else if ($elem2[5] != '') {
-								$strDefault = "DEFAULT '".$elem2[5]."'";
-							} else {
-								$strDefault = "";
-							}
-							if ($elem2[3] == 'YES') { $strNull = 'NULL'; } else { $strNull = 'NOT NULL'; }
-							$strSQL = "ALTER TABLE `".$elem[0]."` CHANGE `".$elem2[0]."` `".$elem2[0]."` ".$elem2[1]." CHARACTER SET 'utf8' 
-									   COLLATE 'utf8_unicode_ci' $strNull $strDefault";
-							if ($strDBError != "") continue;
-							$resQueryField = @pg_query($strSQL);
-							$strDBError   .= pg_last_error();
-						}
-					}
-					$strDBError .= pg_last_error();
 				}
 			}
 		} else {

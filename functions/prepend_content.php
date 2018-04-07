@@ -4,15 +4,15 @@
 // NagiosQL
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Preprocessing script for content pages
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-12-08 07:35:31 +0100 (Do, 08. Dez 2011) $
+// Date      : $LastChangedDate: 2017-06-22 09:53:38 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1141 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 5 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -321,7 +321,7 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
 		if ($intSuccess != 0) $myVisClass->processMessage(translate('Configuration files successfully written!'),$strInfoMessage);
 		if ($intError   != 0) $myVisClass->processMessage(translate('Some configuration files were not written. Dataset not activated, not found or you do not have write permission!'),$strErrorMessage);
 	} else if ($preTableName == 'tbl_service') {
-  		$strSQL  = "SELECT `id`, `$preKeyField` FROM `$preTableName` WHERE $strDomainWhere AND `access_group` IN ($strAccess) AND `active`='1' GROUP BY `$preKeyField`";
+  		$strSQL  = "SELECT `id`, `$preKeyField` FROM `$preTableName` WHERE $strDomainWhere AND `access_group` IN ($strAccess) AND `active`='1' GROUP BY `$preKeyField`, `id`";
   		$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
 		if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   		if ($booReturn && ($intDataCount != 0)) {

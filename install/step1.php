@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Installer script - step 1
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-02-25 17:48:16 +0100 (Sat, 25 Feb 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1252 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -38,15 +38,17 @@ $arrRequiredExt = array (
 $arrOptionalExt = array (
 	'FTP'		=> 'ftp',
 	'SSH2'		=> 'ssh2'
-);	
-//$arrSupportedDBs = array (
-//	'MySQL'		=> 'mysql',
-//	'Postgres'	=> 'pgsql'
-//);
-$arrSupportedDBs = array (
-	'MySQL'		=> 'mysql'
 );
-
+/*	
+$arrSupportedDBs = array (
+	'MySQL'		=> 'mysql',
+	'MySQLi'	=> 'mysqli',
+	'Postgres'	=> 'pgsql'
+);
+*/
+$arrSupportedDBs = array (
+	'MySQLi'	=> 'mysqli'
+);
 $arrIniCheck = array (
 	'file_uploads'				=> 1,
 	'session.auto_start'		=> 0,
@@ -69,7 +71,7 @@ $arrSourceURLs = array(
 	'XML'       	=> 'http://www.php.net/manual/en/book.xml.php',
 	'SimpleXML' 	=> 'http://www.php.net/manual/en/book.simplexml.php',
 	'FTP'       	=> 'http://www.php.net/manual/en/book.ftp.php',
-	'MySQL'     	=> 'http://php.net/manual/de/book.mysql.php',
+	'MySQL'     	=> 'http://php.net/manual/de/book.mysqli.php',
 	'PEAR'      	=> 'http://pear.php.net',
 	'date.timezone' => 'http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone',
 	'SSH2'      	=> 'http://pecl.php.net/package/ssh2'
@@ -77,20 +79,20 @@ $arrSourceURLs = array(
 //
 // Build content
 // =============
-$arrTemplate['STEP1_BOX'] 		= translate('Requirements');
-$arrTemplate['STEP2_BOX']		= translate($_SESSION['install']['mode']);
-$arrTemplate['STEP3_BOX'] 		= translate('Finish');
-$arrTemplate['STEP1_TITLE'] 	= "NagiosQL ".translate($_SESSION['install']['mode']).": ".translate("Checking requirements");
-$arrTemplate['STEP1_SUBTITLE1'] = translate("Checking Client");
-$arrTemplate['STEP1_SUBTITLE2'] = translate("Checking PHP version");
-$arrTemplate['STEP1_SUBTITLE3'] = translate("Checking PHP extensions");
-$arrTemplate['STEP1_SUBTITLE4'] = translate("Checking available database interfaces");
-$arrTemplate['STEP1_SUBTITLE5'] = translate("Checking php.ini/.htaccess settings");
-$arrTemplate['STEP1_SUBTITLE6'] = translate("Checking System Permission");
-$arrTemplate['STEP1_TEXT3_1'] 	= translate("The following modules/extensions are <em>required</em> to run NagiosQL");
-$arrTemplate['STEP1_TEXT3_2'] 	= translate("The next couple of extensions are <em>optional</em> but recommended");
-$arrTemplate['STEP1_TEXT4_1'] 	= translate("Check which of the supported extensions are installed. At least one of them is required.");
-$arrTemplate['STEP1_TEXT5_1'] 	= translate("The following settings are <em>required</em> to run NagiosQL");
+$arrTemplate['STEP1_BOX'] 		= $myInstClass->translate('Requirements');
+$arrTemplate['STEP2_BOX']		= $myInstClass->translate($_SESSION['install']['mode']);
+$arrTemplate['STEP3_BOX'] 		= $myInstClass->translate('Finish');
+$arrTemplate['STEP1_TITLE'] 	= "NagiosQL ".$myInstClass->translate($_SESSION['install']['mode']).": ".$myInstClass->translate("Checking requirements");
+$arrTemplate['STEP1_SUBTITLE1'] = $myInstClass->translate("Checking Client");
+$arrTemplate['STEP1_SUBTITLE2'] = $myInstClass->translate("Checking PHP version");
+$arrTemplate['STEP1_SUBTITLE3'] = $myInstClass->translate("Checking PHP extensions");
+$arrTemplate['STEP1_SUBTITLE4'] = $myInstClass->translate("Checking available database interfaces");
+$arrTemplate['STEP1_SUBTITLE5'] = $myInstClass->translate("Checking php.ini/.htaccess settings");
+$arrTemplate['STEP1_SUBTITLE6'] = $myInstClass->translate("Checking System Permission");
+$arrTemplate['STEP1_TEXT3_1'] 	= $myInstClass->translate("The following modules/extensions are <em>required</em> to run NagiosQL");
+$arrTemplate['STEP1_TEXT3_2'] 	= $myInstClass->translate("The next couple of extensions are <em>optional</em> but recommended");
+$arrTemplate['STEP1_TEXT4_1'] 	= $myInstClass->translate("Check which of the supported extensions are installed. At least one of them is required.");
+$arrTemplate['STEP1_TEXT5_1'] 	= $myInstClass->translate("The following settings are <em>required</em> to run NagiosQL");
 //
 // Conditional checks
 // =======================
@@ -104,19 +106,21 @@ $strHTMLPart7 = "<img src=\"images/onlinehelp.png\" alt=\"online help\" title=\"
 
 // Javascript check
 if ($_SESSION['install']['jscript'] == "yes") {
-	$arrTemplate['CHECK_1_PIC'] = "valid"; 		$arrTemplate['CHECK_1_CLASS'] = "green";	$arrTemplate['CHECK_1_VALUE'] = translate("ENABLED");
+	$arrTemplate['CHECK_1_PIC']  = "valid"; 		$arrTemplate['CHECK_1_CLASS'] = "green";	$arrTemplate['CHECK_1_VALUE'] = $myInstClass->translate("ENABLED");
+	$arrTemplate['CHECK_1_INFO'] = "";
 } else {
-	$arrTemplate['CHECK_1_PIC'] = "invalid"; 	$arrTemplate['CHECK_1_CLASS'] = "green";	$arrTemplate['CHECK_1_VALUE'] = translate("NOT ENABLED");
+	$arrTemplate['CHECK_1_PIC']  = "invalid"; 	$arrTemplate['CHECK_1_CLASS'] = "green";	$arrTemplate['CHECK_1_VALUE'] = $myInstClass->translate("NOT ENABLED");
+	$arrTemplate['CHECK_1_INFO'] = "(".$myInstClass->translate("After enabling Javascript, the page must be updated twice so that the status changes").")";
 }
 // PHP version check
 define('MIN_PHP_VERSION', '5.2.0');
-$arrTemplate['CHECK_2_TEXT'] = translate("Version");
+$arrTemplate['CHECK_2_TEXT'] = $myInstClass->translate("Version");
 if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '>=')) {
-	$arrTemplate['CHECK_2_PIC']  = "valid";		$arrTemplate['CHECK_2_CLASS'] = "green";	$arrTemplate['CHECK_2_VALUE'] = translate("OK");
-	$arrTemplate['CHECK_2_INFO'] = "(PHP ". PHP_VERSION ." ".translate("detected").")";
+	$arrTemplate['CHECK_2_PIC']  = "valid";		$arrTemplate['CHECK_2_CLASS'] = "green";	$arrTemplate['CHECK_2_VALUE'] = $myInstClass->translate("OK");
+	$arrTemplate['CHECK_2_INFO'] = "(PHP ". PHP_VERSION ." ".$myInstClass->translate("detected").")";
 } else {
-	$arrTemplate['CHECK_2_PIC']  = "invalid"; 	$arrTemplate['CHECK_2_CLASS'] = "green";	$arrTemplate['CHECK_2_VALUE'] = "PHP ". PHP_VERSION ." ".translate("detected");
-	$arrTemplate['CHECK_2_INFO'] = "(PHP ". MIN_PHP_VERSION ." ".translate("or greater is required").")";
+	$arrTemplate['CHECK_2_PIC']  = "invalid"; 	$arrTemplate['CHECK_2_CLASS'] = "green";	$arrTemplate['CHECK_2_VALUE'] = "PHP ". PHP_VERSION ." ".$myInstClass->translate("detected");
+	$arrTemplate['CHECK_2_INFO'] = "(PHP ". MIN_PHP_VERSION ." ".$myInstClass->translate("or greater is required").")";
 	$intError = 1;
 }
 // PHP modules / extensions
@@ -125,11 +129,11 @@ $strPrefix 	= (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
 $strHTML	= "";
 foreach ($arrRequiredExt as $key => $elem) {
 	if (extension_loaded($elem)) {
-		$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.translate("OK")."</span>\n";
+		$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate("OK")."</span>\n";
 	} else {
 		$strPath = $strExtPath."/".$strPrefix.$elem.".".PHP_SHLIB_SUFFIX;
-		$strMsg  = @is_readable($strPath) ? translate("Could be loaded. Please add in php.ini") : "<a href=\"".$arrSourceURLs[$key]."\" target=\"_blank\">".$strHTMLPart7."</a>";
-		$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.translate("NOT AVAILABLE")." (".$strMsg.")</span>\n";
+		$strMsg  = @is_readable($strPath) ? $myInstClass->translate("Could be loaded. Please add in php.ini") : "<a href=\"".$arrSourceURLs[$key]."\" target=\"_blank\">".$strHTMLPart7."</a>";
+		$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.$myInstClass->translate("NOT AVAILABLE")." (".$strMsg.")</span>\n";
 		$intError = 1;
 	}
 	$strHTML .= "<br>\n";
@@ -138,11 +142,11 @@ $arrTemplate['CHECK_3_CONTENT_1'] = $strHTML;
 $strHTML	= "";
 foreach ($arrOptionalExt as $key => $elem) {
 	if (extension_loaded($elem)) {
-		$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.translate("OK")."</span>\n";
+		$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate("OK")."</span>\n";
 	} else {
 		$strPath = $strExtPath."/".$strPrefix.$elem.".".PHP_SHLIB_SUFFIX;
-		$strMsg  = @is_readable($strPath) ? translate("Could be loaded. Please add in php.ini") : "<a href=\"".$arrSourceURLs[$key]."\" target=\"_blank\">".$strHTMLPart7."</a>";
-		$strHTML .= $strHTMLPart3.$key.$strHTMLPart6.translate("NOT AVAILABLE")." (".$strMsg.")</span>\n";
+		$strMsg  = @is_readable($strPath) ? $myInstClass->translate("Could be loaded. Please add in php.ini") : "<a href=\"".$arrSourceURLs[$key]."\" target=\"_blank\">".$strHTMLPart7."</a>";
+		$strHTML .= $strHTMLPart3.$key.$strHTMLPart6.$myInstClass->translate("NOT AVAILABLE")." (".$strMsg.")</span>\n";
 		//$intError = 1;
 	}
 	$strHTML .= "<br>\n";
@@ -151,16 +155,22 @@ $arrTemplate['CHECK_3_CONTENT_2'] = $strHTML;
 // PHP database interfaces
 $strHTML = "";
 $intTemp = 0;
+$_SESSION['install']['dbtype_available'] = array();
 foreach ($arrSupportedDBs as $key => $elem) {
 	if (extension_loaded($elem)) {
 		$strNewInstallOnly = "";
-		if (($_SESSION['install']['dbtype'] != $elem) && ($_SESSION['install']['mode'] == "Update")) $strNewInstallOnly = " (".translate("New installation only - updates are only supported using the same database interface!").")";
-		$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.translate("OK")."</span>  $strNewInstallOnly\n";
+		if (isset($_SESSION['install']['dbtype']) && ($_SESSION['install']['mode'] == "Update")) { 
+			if (($_SESSION['install']['dbtype'] != $elem) && (substr($_SESSION['install']['dbtype'],0,5) != substr($elem,0,5))) {
+				$strNewInstallOnly = " (".$myInstClass->translate("New installation only - updates are only supported using the same database interface!").")";
+			}
+		}
+		$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate("OK")."</span>  $strNewInstallOnly\n";
+		if ($strNewInstallOnly == "") $_SESSION['install']['dbtype_available'][] = $elem;
 		$intTemp++;
 	} else {
 		$strPath = $strExtPath."/".$strPrefix.$elem.".".PHP_SHLIB_SUFFIX;
-		$strMsg  = @is_readable($strPath) ? translate("Could be loaded. Please add in php.ini") : "<a href=\"".$arrSourceURLs[$key]."\" target=\"_blank\">".$strHTMLPart7."</a>";
-		$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.translate("NOT AVAILABLE")." (".$strMsg.")</span>\n";
+		$strMsg  = @is_readable($strPath) ? $myInstClass->translate("Could be loaded. Please add in php.ini") : "<a href=\"".$arrSourceURLs[$key]."\" target=\"_blank\">".$strHTMLPart7."</a>";
+		$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.$myInstClass->translate("NOT AVAILABLE")." (".$strMsg.")</span>\n";
 	}
 	$strHTML .= "<br>\n";
 }
@@ -172,16 +182,16 @@ foreach ($arrIniCheck as $key => $elem) {
 	$strStatus = ini_get($key);
 	if ($elem === '-NOTEMPTY-') {
 		if (empty($strStatus)) {
-			$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.translate("NOT AVAILABLE")." (".translate("cannot be empty and needs to be set").")</span>\n";
+			$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.$myInstClass->translate("NOT AVAILABLE")." (".$myInstClass->translate("cannot be empty and needs to be set").")</span>\n";
 			$intError = 1;
 		} else {
-			$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.translate("OK")."</span>\n";
+			$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate("OK")."</span>\n";
 		}
 	} else {
 		if ($strStatus == $elem) {
-			$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.translate("OK")."</span>\n";
+			$strHTML .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate("OK")."</span>\n";
 		} else {
-			$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.$status." (".translate("should be")." ".$elem.")</span>\n";
+			$strHTML .= $strHTMLPart2.$key.$strHTMLPart5.$status." (".$myInstClass->translate("should be")." ".$elem.")</span>\n";
 			$intError = 1;
 		}
 	}
@@ -191,77 +201,79 @@ $arrTemplate['CHECK_5_CONTENT_1'] = $strHTML;
 // File access checks
 $strConfigFile = "../config/settings.php";
 if (file_exists($strConfigFile) && is_readable($strConfigFile)) {
-	$arrTemplate['CHECK_6_CONTENT_1'] = $strHTMLPart1.translate("Read test on settings file (config/settings.php)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_1'] = $strHTMLPart1.$myInstClass->translate("Read test on settings file (config/settings.php)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else if (file_exists($strConfigFile)&& !is_readable($strConfigFile)) {
-	$arrTemplate['CHECK_6_CONTENT_1'] = $strHTMLPart2.translate("Read test on settings file (config/settings.php)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_1'] = $strHTMLPart2.$myInstClass->translate("Read test on settings file (config/settings.php)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 } elseif (!file_exists($strConfigFile)) {
-	$arrTemplate['CHECK_6_CONTENT_1'] = $strHTMLPart3.translate("Settings file does not exists (config/settings.php)").$strHTMLPart6.translate("will be created")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_1'] = $strHTMLPart3.$myInstClass->translate("Settings file does not exists (config/settings.php)").$strHTMLPart6.$myInstClass->translate("will be created")."</span><br>\n";
 }
 if(file_exists($strConfigFile) && is_writable($strConfigFile)) {
-	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart1.translate("Write test on settings file (config/settings.php)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart1.$myInstClass->translate("Write test on settings file (config/settings.php)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else if (is_writable("../config") && !file_exists($strConfigFile)) {
-	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart1.translate("Write test on settings directory (config/)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart1.$myInstClass->translate("Write test on settings directory (config/)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else if (file_exists($strConfigFile) && !is_writable($strConfigFile)) {
-	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart2.translate("Write test on settings file (config/settings.php)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart2.$myInstClass->translate("Write test on settings file (config/settings.php)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 } else {
-	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart2.translate("Write test on settings directory (config/)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_2'] = $strHTMLPart2.$myInstClass->translate("Write test on settings directory (config/)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strClassFile = "../functions/nag_class.php";
 if(file_exists($strClassFile) && is_readable($strClassFile)) {
-	$arrTemplate['CHECK_6_CONTENT_3'] = $strHTMLPart1.translate("Read test on a class file (functions/nag_class.php)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_3'] = $strHTMLPart1.$myInstClass->translate("Read test on a class file (functions/nag_class.php)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_3'] = $strHTMLPart2.translate("Read test on a class file (functions/nag_class.php)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_3'] = $strHTMLPart2.$myInstClass->translate("Read test on a class file (functions/nag_class.php)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strFile = "../admin.php";
 if(file_exists($strFile) && is_readable($strFile)) {
-	$arrTemplate['CHECK_6_CONTENT_4'] = $strHTMLPart1.translate("Read test on startsite file (admin.php)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_4'] = $strHTMLPart1.$myInstClass->translate("Read test on startsite file (admin.php)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_4'] = $strHTMLPart2.translate("Read test on startsite file (admin.php)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_4'] = $strHTMLPart2.$myInstClass->translate("Read test on startsite file (admin.php)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strFile = "../templates/index.tpl.htm";
 if(file_exists($strFile) && is_readable($strFile)) {
-	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart1.translate("Read test on a template file (templates/index.tpl.htm)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart1.$myInstClass->translate("Read test on a template file (templates/index.tpl.htm)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart2.translate("Read test on a template file (templates/index.tpl.htm)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart2.$myInstClass->translate("Read test on a template file (templates/index.tpl.htm)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strFile = "../templates/admin/admin_master.tpl.htm";
 if(file_exists($strFile) && is_readable($strFile)) {
-	$arrTemplate['CHECK_6_CONTENT_6'] = $strHTMLPart1.translate("Read test on a admin template file (templates/admin/admin_master.tpl.htm)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_6'] = $strHTMLPart1.$myInstClass->translate("Read test on a admin template file (templates/admin/admin_master.tpl.htm)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_6'] = $strHTMLPart2.translate("Read test on a admin template file (templates/admin/admin_master.tpl.htm)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_6'] = $strHTMLPart2.$myInstClass->translate("Read test on a admin template file (templates/admin/admin_master.tpl.htm)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strFile = "../templates/files/contacts.tpl.dat";
 if(file_exists($strFile) && is_readable($strFile)) {
-	$arrTemplate['CHECK_6_CONTENT_7'] = $strHTMLPart1.translate("Read test on a file template (templates/files/contacts.tpl.dat)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_7'] = $strHTMLPart1.$myInstClass->translate("Read test on a file template (templates/files/contacts.tpl.dat)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_7'] = $strHTMLPart2.translate("Read test on a file template (templates/files/contacts.tpl.dat)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_7'] = $strHTMLPart2.$myInstClass->translate("Read test on a file template (templates/files/contacts.tpl.dat)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strFile = "../images/pixel.gif";
 if(file_exists($strFile) && is_readable($strFile)) {
-	$arrTemplate['CHECK_6_CONTENT_8'] = $strHTMLPart1.translate("Read test on a image file (images/pixel.gif)").$strHTMLPart4.translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_8'] = $strHTMLPart1.$myInstClass->translate("Read test on a image file (images/pixel.gif)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_9'] = $strHTMLPart2.translate("Read test on a image file (images/pixel.gif)").$strHTMLPart5.translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_9'] = $strHTMLPart2.$myInstClass->translate("Read test on a image file (images/pixel.gif)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 if ($intError != 0) {
-	$arrTemplate['MESSAGE']	 = "<span class=\"red\">".translate("There are some errors - please check your system settings and read the requirements of NagiosQL!")."</span><br><br>\n";
-	$arrTemplate['MESSAGE']	.= translate("Read the INSTALLATION file from NagiosQL to find out, how to fix them.") ."<br>\n";
-	$arrTemplate['MESSAGE']	.= translate("After that - refresh this page to proceed") ."...<br>\n";
+	$arrTemplate['MESSAGE']	 = "<span class=\"red\">".$myInstClass->translate("There are some errors - please check your system settings and read the requirements of NagiosQL!")."</span><br><br>\n";
+	$arrTemplate['MESSAGE']	.= $myInstClass->translate("Read the INSTALLATION file in the NagiosQL doc directory or the installation PDF file on our");
+	$arrTemplate['MESSAGE']	.= " <a href=\"http://www.nagiosql.org/documentation.html\" target=\"_blank\">";
+	$arrTemplate['MESSAGE']	.= $myInstClass->translate("online documentation")."</a><br>".$myInstClass->translate("site to find out, how to fix them.") ."<br>\n";
+	$arrTemplate['MESSAGE']	.= $myInstClass->translate("After that - refresh this page to proceed") ."...<br>\n";
 	$arrTemplate['DIV_ID']	 = "install-center";
 	$arrTemplate['FORM_CONTENT']  = "<input type=\"image\" src=\"images/reload.png\" title=\"refresh\" value=\"Submit\" alt=\"refresh\" onClick=\"window.location.reload()\"><br>";
-	$arrTemplate['FORM_CONTENT'] .= translate("Refresh")."\n";
+	$arrTemplate['FORM_CONTENT'] .= $myInstClass->translate("Refresh")."\n";
 } else {
-	$arrTemplate['MESSAGE']  = "<span class=\"green\">".translate("Environment test sucessfully passed")."</span><br><br>\n";
+	$arrTemplate['MESSAGE']  = "<span class=\"green\">".$myInstClass->translate("Environment test sucessfully passed")."</span><br><br>\n";
 	$arrTemplate['DIV_ID']   = "install-next";
 	$arrTemplate['FORM_CONTENT']  = "<input type=\"hidden\" name=\"hidStep\" id=\"hidStep\" value=\"2\">\n";
-	$arrTemplate['FORM_CONTENT'] .= "<input type=\"image\" src=\"images/next.png\" value=\"Submit\" title=\"next\" alt=\"next\"><br>".translate("Next")."\n";
+	$arrTemplate['FORM_CONTENT'] .= "<input type=\"image\" src=\"images/next.png\" value=\"Submit\" title=\"next\" alt=\"next\"><br>".$myInstClass->translate("Next")."\n";
 }
 //
 // Write content

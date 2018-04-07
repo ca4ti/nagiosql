@@ -5,13 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// (c) 2005-2017 by Martin Willisegger
+//
 // Project   : NagiosQL
 // Component : Translation Functions
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-02-23 08:02:21 +0100 (Thu, 23 Feb 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1238 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //

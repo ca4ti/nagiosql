@@ -23,7 +23,7 @@
  * @package  HTML_Template_IT
  * @author   Ulf Wendel <uw@netuse.de>
  * @license  BSD http://www.opensource.org/licenses/bsd-license.php
- * @version  CVS: $Id: IT_Error.php 295117 2010-02-15 23:25:21Z clockwerx $
+ * @version  CVS: $Id: IT_Error.php 3 2017-06-22 07:32:17Z martin $
  * @link     http://pear.php.net/packages/HTML_Template_IT
  * @access   public
  */

@@ -23,12 +23,13 @@
  * @package  HTML_Template_IT
  * @author   Ulf Wendel <uw@netuse.de>
  * @license  BSD http://www.opensource.org/licenses/bsd-license.php
- * @version  CVS: $Id: IT.php 295605 2010-02-28 22:48:07Z gregorycu $
+ * @version  CVS: $Id: IT.php 3 2017-06-22 07:32:17Z martin $
  * @link     http://pear.php.net/packages/HTML_Template_IT
  * @access   public
  */
 
-require_once (dirname(__FILE__)  .'/../../PEAR.php' );
+require_once 'PEAR.php';
+$myPEAR = new PEAR();
 
 define('IT_OK', 1);
 define('IT_ERROR', -1);
@@ -407,7 +408,7 @@ class HTML_Template_IT
      * @see      setRoot()
      * @access   public
      */
-    function HTML_Template_IT($root = '', $options = null)
+    function __construct($root = '', $options = null)
     {
         if (!is_null($options)) {
             $this->setOptions($options);
@@ -439,7 +440,8 @@ class HTML_Template_IT
      */
     function setOption($option, $value)
     {
-        switch ($option) {
+        global $myPEAR;
+		switch ($option) {
             case 'removeEmptyBlocks':
                 $this->removeEmptyBlocks = $value;
                 return IT_OK;
@@ -450,7 +452,7 @@ class HTML_Template_IT
             return IT_OK;
         }
 
-        return PEAR::raiseError(
+        return $myPEAR->raiseError(
             $this->errorMessage(IT_UNKNOWN_OPTION) . ": '{$option}'",
             IT_UNKNOWN_OPTION
         );
@@ -470,10 +472,12 @@ class HTML_Template_IT
      */
     function setOptions($options)
     {
+		global $myPEAR;
         if (is_array($options)) {
             foreach ($options as $option => $value) {
                 $error = $this->setOption($option, $value);
-                if (PEAR::isError($error)) {
+				if ($myPEAR->isError($error)) {
+                
                     return $error;
                 }
             }
@@ -508,12 +512,13 @@ class HTML_Template_IT
      */
     function get($block = '__global__')
     {
-        if ($block == '__global__'  && !$this->flagGlobalParsed) {
+         global $myPEAR;
+		 if ($block == '__global__'  && !$this->flagGlobalParsed) {
             $this->parse('__global__');
         }
 
         if (!isset($this->blocklist[$block])) {
-            $this->err[] = PEAR::raiseError(
+            $this->err[] = $myPEAR->raiseError(
                 $this->errorMessage(IT_BLOCK_NOT_FOUND) . '"' . $block . "'",
                 IT_BLOCK_NOT_FOUND
             );
@@ -557,10 +562,11 @@ class HTML_Template_IT
      */
     function parse($block = '__global__', $flag_recursion = false)
     {
-        static $regs, $values;
+        global $myPEAR;
+		static $regs, $values;
 
         if (!isset($this->blocklist[$block])) {
-            return PEAR::raiseError(
+            return $myPEAR->raiseError(
                 $this->errorMessage(IT_BLOCK_NOT_FOUND) . '"' . $block . "'",
                 IT_BLOCK_NOT_FOUND
             );
@@ -785,9 +791,9 @@ class HTML_Template_IT
      */
     function setCurrentBlock($block = '__global__')
     {
-
+		global $myPEAR;
         if (!isset($this->blocklist[$block])) {
-            return PEAR::raiseError(
+            return $myPEAR->raiseError(
                 $this->errorMessage(IT_BLOCK_NOT_FOUND)
                 . '"' . $block . "'",
                 IT_BLOCK_NOT_FOUND
@@ -811,8 +817,9 @@ class HTML_Template_IT
      */
     function touchBlock($block)
     {
-        if (!isset($this->blocklist[$block])) {
-            return PEAR::raiseError(
+        global $myPEAR;
+		if (!isset($this->blocklist[$block])) {
+            return $myPEAR->raiseError(
                 $this->errorMessage(IT_BLOCK_NOT_FOUND) . '"' . $block . "'",
                 IT_BLOCK_NOT_FOUND
             );
@@ -1012,7 +1019,8 @@ class HTML_Template_IT
      */
     function findBlocks($string)
     {
-        $blocklist = array();
+        global $myPEAR;
+		$blocklist = array();
 
         if (preg_match_all($this->blockRegExp, $string, $regs, PREG_SET_ORDER)) {
             foreach ($regs as $k => $match) {
@@ -1022,7 +1030,7 @@ class HTML_Template_IT
                 if (isset($this->blocklist[$blockname])) {
                     $msg = $this->errorMessage(IT_BLOCK_DUPLICATE, $blockname);
 
-                    $this->err[] = PEAR::raiseError($msg, IT_BLOCK_DUPLICATE);
+                    $this->err[] = $myPEAR->raiseError($msg, IT_BLOCK_DUPLICATE);
 
                     $this->flagBlocktrouble = true;
                 }
@@ -1065,14 +1073,15 @@ class HTML_Template_IT
      */
     function getFile($filename)
     {
-        if ($filename{0} == '/' && substr($this->fileRoot, -1) == '/') {
+        global $myPEAR;
+		if ($filename{0} == '/' && substr($this->fileRoot, -1) == '/') {
             $filename = substr($filename, 1);
         }
 
         $filename = $this->fileRoot . $filename;
 
         if (!($fh = @fopen($filename, 'r'))) {
-            $this->err[] = PEAR::raiseError(
+            $this->err[] = $myPEAR->raiseError(
                 $this->errorMessage(IT_TPL_NOT_FOUND) . ': "' .$filename .'"',
                 IT_TPL_NOT_FOUND
             );
@@ -1088,8 +1097,9 @@ class HTML_Template_IT
         $content = fread($fh, $fsize);
         fclose($fh);
 
-        return preg_replace(
-            "#<!-- INCLUDE (.*) -->#ime",
+        // "#<!-- INCLUDE (.*) -->#ime", wma/PEAR error
+		return preg_replace(
+            "#<!-- INCLUDE (.*) -->#im",
             "\$this->getFile('\\1')",
             $content
         );
@@ -1159,7 +1169,8 @@ class HTML_Template_IT
      */
     function errorMessage($value, $blockname = '')
     {
-        static $errorMessages;
+        global $myPEAR;
+		static $errorMessages;
         if (!isset($errorMessages)) {
             $errorMessages = array(
                 IT_OK                       => '',
@@ -1175,7 +1186,7 @@ class HTML_Template_IT
             );
         }
 
-        if (PEAR::isError($value)) {
+        if ($myPEAR->isError($value)) {
             $value = $value->getCode();
         }
 

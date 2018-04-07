@@ -2,17 +2,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // NagiosQL
+//
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Preprocessing script for scripting files
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-02-29 09:54:45 +0100 (Wed, 29 Feb 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:48:25 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1262 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 4 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 error_reporting(E_ALL);
@@ -41,7 +42,7 @@ define('BASE_PATH', str_replace("functions","",dirname(__FILE__)));
 //
 // Read settings file
 // ==================
-$preBasePath = str_replace("scripts","",getcwd());
+$preBasePath = str_replace("functions","",dirname(__FILE__));
 $preIniFile  = $preBasePath.'config/settings.php';
 //
 // Read file settings
@@ -50,16 +51,16 @@ $SETS = parse_ini_file($preIniFile,true);
 //
 // Include external function/class files - part 1
 // ==============================================
-include("mysql_class.php");
+include("mysqli_class.php");
 //
 // Initialize classes - part 1
 // ===========================
-$myDBClass = new mysqldb;
-$myDBClass->arrSettings = $SETS;
-$myDBClass->getDatabase($SETS['db']);
+$myDBClass  = new mysqlidb;
+$myDBClass->arrParams = $SETS['db'];
+$myDBClass->getDatabase();
 if ($myDBClass->error == true) {
-  	echo str_replace("::","\n","Error while connecting to database: ".$myDBClass->strErrorMessage);
-  	$intError 	 = 1;
+	$strDBMessage = $myDBClass->strErrorMessage;
+	$booError     = $myDBClass->error;
 }
 //
 // Get additional configuration from the table tbl_settings

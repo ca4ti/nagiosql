@@ -6,15 +6,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Configuration scripting interface
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-03-08 08:40:12 +0100 (Thu, 08 Mar 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1280 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -129,7 +129,7 @@ if ($argFunction == "restart") {
   	if ($intMethod == 1) {
     	if (file_exists($strPidfile)) {
       		if (file_exists($strCommandfile) && is_writable($strCommandfile)) {
-        		$strCommandString = "[".mktime()."] RESTART_PROGRAM;".mktime();
+        		$strCommandString = "[".time()."] RESTART_PROGRAM;".time()."\n";
         		$timeout = 3;
         		$old = ini_set('default_socket_timeout', $timeout);
         		$resCmdFile = fopen($strCommandfile,"w");
@@ -161,7 +161,7 @@ if ($argFunction == "restart") {
       		$myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
 		} else {
 			if (is_array($myConfigClass->sendSSHCommand('ls '.$strCommandfile))) {
-				$strCommandString = "[".mktime()."] RESTART_PROGRAM;".mktime();
+				$strCommandString = "[".time()."] RESTART_PROGRAM;".time()."\n";;
 				$arrResult = $myConfigClass->sendSSHCommand('echo "'.$strCommandString.'" >> '.$strCommandfile);
 				if ($arrResult == false) {
 					echo "Restart failed - Nagios command file not found or no rights to execute (remote SSH)!\n";

@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-03-05 07:55:49 +0100 (Mon, 05 Mar 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1271 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -44,7 +44,7 @@ class nagdata {
   	//  Activities during initialisation
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-  	function nagdata() {
+  	function __construct() {
     	if (isset($_SESSION) && isset($_SESSION['SETS'])) {
     		// Read global settings
     		$this->arrSettings = $_SESSION['SETS'];
@@ -113,7 +113,7 @@ class nagdata {
       		$strSQL 	= "DELETE FROM `".$strTableName."` WHERE `id` = $intDataId $strNoDelete";
       		$booReturn 	= $this->myDBClass->insertData($strSQL);
       		if ($booReturn == false) {
-				$this->processClassMessage(translate('Delete failed because a database error:')."::".mysql_error()."::",$this->strInfoMessage);
+				$this->processClassMessage(translate('Delete failed because a database error:')."::".$this->myDBClass->strErrorMessage."::",$this->strInfoMessage);
         		return(1);
       		} else if ($this->myDBClass->intAffectedRows == 0) {
 				$this->processClassMessage(translate('No data deleted. Probably the dataset does not exist or it is protected from delete.')."::",$this->strErrorMessage);
@@ -137,7 +137,7 @@ class nagdata {
             			$strSQL = "DELETE FROM `".$strTableName."` WHERE `id` = ".$elem['id'];
             			$booReturn = $this->myDBClass->insertData($strSQL);
             			if ($booReturn == false) {
-							$this->processClassMessage(translate('Delete failed because a database error:')."::".mysql_error()."::",$this->strInfoMessage);
+							$this->processClassMessage(translate('Delete failed because a database error:')."::".$this->myDBClass->strErrorMessage."::",$this->strInfoMessage);
               				return(1);
             			} else {
               				$intDeleteCount = $intDeleteCount + $this->myDBClass->intAffectedRows;

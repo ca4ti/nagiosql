@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Installer main script
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-02-28 18:14:54 +0100 (Tue, 28 Feb 2012) $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1261 $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -25,18 +25,18 @@ $preLocale 	= "../config/locale";
 $filConfig  = "../config/settings.php";
 $preDBType  = "mysql";
 $strLangOpt = "";
-$intError 	= 0;
+$strVersion = "3.3.0";
 $intUpdate  = 0;
+$intError   = 0;
 //
 // Include preprocessing file
 // ==========================
 require("functions/prepend_install.php");
-require("../functions/translator.php");
 //
 // Restart session
 // ===============
 session_destroy();
-session_start('nagiosql_install');
+session_start([ 'name' => 'nagiosql_install']);
 //
 // POST parameters
 // ===============
@@ -60,11 +60,11 @@ if (extension_loaded('gettext')) {
 	bindtextdomain($chkLocale, $preLocale);
 	bind_textdomain_codeset($chkLocale, $preEncode);
 	textdomain($chkLocale);
-	$arrTemplate['NAGIOS_FAQ'] = translate("Online Documentation");
+	$arrTemplate['NAGIOS_FAQ'] = $myInstClass->translate("Online Documentation");
 	// Language selection field
-	$arrTemplate['LANGUAGE'] = translate("Language");
-	foreach(getLanguageData() AS $key => $elem) {
-		$strLangOpt .= "<option value='".$key."' {sel}>".getLanguageNameFromCode($key,false)."</option>\n";
+	$arrTemplate['LANGUAGE']   = $myInstClass->translate("Language");
+	foreach($myInstClass->getLangData() AS $key => $elem) {
+		$strLangOpt .= "<option value='".$key."' {sel}>".$myInstClass->getLangNameFromCode($key,false)."</option>\n";
 		if ($key != $chkLocale) { $strLangOpt = str_replace(" {sel}","",$strLangOpt); } else { $strLangOpt = str_replace(" {sel}"," selected",$strLangOpt); }
 	}
 	$arrTemplate['LANG_OPTION'] = $strLangOpt;
@@ -76,7 +76,6 @@ if (extension_loaded('gettext')) {
 // Checking current installation
 // =============================
 // Does the settings file exist?
-$_SESSION['install']['dbtype'] = $preDBType;
 if (file_exists($filConfig) && is_readable($filConfig)) {
 	$preSettings = parse_ini_file($filConfig,true);
 	// Are there any connection data?
@@ -89,49 +88,70 @@ if (file_exists($filConfig) && is_readable($filConfig)) {
 			$preDBType = "pgsql";
 			$_SESSION['install']['dbtype'] = $preDBType;
 		}
-		if ($preDBType == "mysql") {
-			if (extension_loaded('mysql')) {
+		// Select database
+		$intDBFallback = 0;
+		if (isset($preSettings['db']['type'])) {
+			if ($preSettings['db']['type'] == "mysqli") {
+				if (extension_loaded('mysqli')) {
+					// Include mysqli class
+					include("../functions/mysqli_class.php");
+					// Initialize mysqli class
+					$myDBClass = new mysqlidb;
+				} else {
+					$intDBFallback = 1;
+				}
+				$_SESSION['install']['dbtype'] = 'mysqli';
+			} else {
+				$intDBFallback = 1;
+			}
+		} else {
+			if (extension_loaded('mysqli')) {
 				// Include mysql class
-				include("../functions/mysql_class.php");
+				include("../functions/mysqli_class.php");
 				// Initialize mysql class
 				$myDBClass = new mysqldb;
-				if ($myDBClass->error == true) {
-					$strErrorMessage .= translate("Database connection failed. Upgrade not available!")."<br>";
-					$strErrorMessage .= translate('Error while connecting to database:')."<br>".$myDBClass->strErrorMessage."<br>";
-				} else {
-					$strSQL    = "SELECT `category`,`name`,`value` FROM `tbl_settings`";
-					$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-					if ($booReturn == false) {
-						$strErrorMessage .= translate("Settings table not available or wrong. Upgrade not available!")."<br>";
-						$strErrorMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
-					} else if ($intDataCount != 0) {
-						foreach ($arrDataLines AS $elem) {
-							$preSettings[$elem['category']][$elem['name']] = $elem['value'];
-						}
-						$intUpdate = 1;
-					}
-				}
-				$_SESSION['install']['dbtype'] = $preDBType;
 			} else {
-				$strErrorMessage .= translate("Installation cannot continue, please make sure you have the mysql extension loaded!");
-				$intError 		  = 1;
+				$intDBFallback = 1;
 			}
-		} else if ($preDBType == "pgsql") {
-			if (extension_loaded('pgsql')) {
-				$strErrorMessage .= translate("Installation cannot continue, postgres is not yet available in beta!");
-				$intError 		  = 1;
-			} else {
-				$strErrorMessage .= translate("Installation cannot continue, please make sure you have the pgsql extension loaded!");
-				$intError 		  = 1;
-			}	
+			$_SESSION['install']['dbtype'] = 'mysqli';
+			$preSettings['db']['type']     = 'mysqli';
+		}
+		// Set DB parameters
+		$myDBClass->arrParams['server']		= $preSettings['db']['server'];
+		$myDBClass->arrParams['port']		= $preSettings['db']['port'];
+		$myDBClass->arrParams['username']	= $preSettings['db']['username'];
+		$myDBClass->arrParams['password']	= $preSettings['db']['password'];
+		$myDBClass->arrParams['database']	= $preSettings['db']['database'];
+		$myDBClass->getdatabase();
+		// DB failure
+		if ($intDBFallback == 1) {
+			$_SESSION['install']['dbtype'] = 'mysqli';
+			$preSettings['db']['type']   = 'mysqli';
+			$intUpdate 					   = 0;
 		} else {
-			$strErrorMessage .= translate("Database type in settings file is wrong (config/settings.php). Upgrade not available!");
+			if ($myDBClass->error == true) {
+				$strErrorMessage .= $myInstClass->translate("Database connection failed. Upgrade not available!")."<br>";
+				$strErrorMessage .= str_replace("::","<br>",$myDBClass->strErrorMessage)."<br>";
+			} else {
+				$strSQL    = "SELECT category,name,value FROM tbl_settings";
+				$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
+				if ($booReturn == false) {
+					$strErrorMessage .= $myInstClass->translate("Settings table not available or wrong. Upgrade not available!")."<br>";
+					$strErrorMessage .= str_replace("::","<br>",$myDBClass->strErrorMessage)."<br>";
+																												  
+				} else if ($intDataCount != 0) {
+					foreach ($arrDataLines AS $elem) {
+						$preSettings[$elem['category']][$elem['name']] = $elem['value'];
+					}
+					$intUpdate = 1;
+				}
+			}
 		}
 	} else {
-		$strErrorMessage .= translate("Database values in settings file are missing (config/settings.php). Upgrade not available!");
+		$strErrorMessage .= $myInstClass->translate("Database values in settings file are missing (config/settings.php). Upgrade not available!");
 	}
 } else {
-	$strErrorMessage .= translate("Settings file not found or not readable (config/settings.php). Upgrade not available!");
+	$strErrorMessage .= $myInstClass->translate("Settings file not found or not readable (config/settings.php). Upgrade not available!");
 }
 //
 // Initial settings (new installation)
@@ -141,40 +161,38 @@ if (file_exists($filInit) && is_readable($filInit)) {
 	$preInit = parse_ini_file($filInit,true);
 	$_SESSION['init_settings'] = $preInit;
 } else {
-	$strErrorMessage .= translate("Default values file is not available or not readable (install/functions/initial_settings.php). Installation possible, but without predefined data!");
+	$strErrorMessage .= $myInstClass->translate("Default values file is not available or not readable (install/functions/initial_settings.php). Installation possible, but without predefined data!");
 }
 //
 // Build content
 // =============
-$arrTemplate['PAGETITLE'] 		= "[NagiosQL] Installation Wizard";
-$arrTemplate['MAIN_TITLE']  	= translate("Welcome to the NagiosQL Installation Wizard");
-$arrTemplate['TEXT_PART_1'] 	= translate("This wizard will help you to install and configure NagiosQL.");
-$arrTemplate['TEXT_PART_2'] 	= translate("For questions please visit");
-$arrTemplate['TEXT_PART_3']		= translate("First let's check your local environment and find out if everything NagiosQL needs is available.");
-$arrTemplate['TEXT_PART_4']		= translate("The basic requirements are:");
-$arrTemplate['TEXT_PART_5']		= translate("PHP 5.2.0 or greater including:");
-$arrTemplate['TEXT_PHP_REQ_1']	= translate("PHP Module:")." Session";
-$arrTemplate['TEXT_PHP_REQ_2']	= translate("PHP Module:")." gettext";
-$arrTemplate['TEXT_PHP_REQ_3']	= translate("PHP Module:")." filter";
-//$arrTemplate['TEXT_PHP_REQ_4']	= translate("PHP Module:")." XML";
-//$arrTemplate['TEXT_PHP_REQ_5']	= translate("PHP Module:")." SimpleXML";
-$arrTemplate['TEXT_PHP_REQ_6']	= translate("PHP Module:")." MySQL";
-//$arrTemplate['TEXT_PHP_REQ_7']	= translate("PHP Module:")." PgSQL ".translate("(optional)");
-$arrTemplate['TEXT_PHP_REQ_8']	= translate("PHP Module:")." FTP ".translate("(optional)");
-$arrTemplate['TEXT_PHP_REQ_9']	= translate("PHP Module:")." curl ".translate("(optional)");
-$arrTemplate['TEXT_PHP_REQ_10']	= translate("PECL Extension:")." SSH ".translate("(optional)");
-$arrTemplate['TEXT_PART_6']		= translate("php.ini options").":";
-$arrTemplate['TEXT_INI_REQ_1']	= translate("file_uploads on (for upload features)");
-$arrTemplate['TEXT_INI_REQ_2']	= translate("session.auto_start needs to be off");
-$arrTemplate['TEXT_PART_7']		= translate("A MySQL database server");
-$arrTemplate['TEXT_PART_8']		= translate("Nagios 2.x/3.x");
+$arrTemplate['PAGETITLE'] 		= "[NagiosQL] ".$myInstClass->translate("Installation wizard");
+$arrTemplate['MAIN_TITLE']  	= $myInstClass->translate("Welcome to the NagiosQL installation wizard");
+$arrTemplate['TEXT_PART_1'] 	= $myInstClass->translate("This wizard will help you to install and configure NagiosQL.");
+$arrTemplate['TEXT_PART_2'] 	= $myInstClass->translate("For questions please visit").": ";
+$arrTemplate['TEXT_PART_3']		= $myInstClass->translate("First let's check your local environment and find out if everything NagiosQL needs is available.");
+$arrTemplate['TEXT_PART_4']		= $myInstClass->translate("The basic requirements are:");
+$arrTemplate['TEXT_PART_5']		= $myInstClass->translate("PHP 5.2.0 or greater including:");
+$arrTemplate['TEXT_PHP_REQ_1']	= $myInstClass->translate("PHP database module:")." ".
+								  $myInstClass->translate("supported types are")." <b>mysqli</b>";
+$arrTemplate['TEXT_PHP_REQ_2']	= $myInstClass->translate("PHP module:")." <b>session</b>";
+$arrTemplate['TEXT_PHP_REQ_3']	= $myInstClass->translate("PHP module:")." <b>gettext</b>";
+$arrTemplate['TEXT_PHP_REQ_6']	= $myInstClass->translate("PHP module:")." <b>filter</b>";
+$arrTemplate['TEXT_PHP_REQ_8']	= $myInstClass->translate("PHP module:")." <b>FTP</b> ".$myInstClass->translate("(optional)");
+$arrTemplate['TEXT_PHP_REQ_10']	= $myInstClass->translate("PECL extension:")." <b>SSH</b> ".$myInstClass->translate("(optional)");
+$arrTemplate['TEXT_PART_6']		= $myInstClass->translate("php.ini options").":";
+$arrTemplate['TEXT_INI_REQ_1']	= $myInstClass->translate("file_uploads on (for upload features)");
+$arrTemplate['TEXT_INI_REQ_2']	= $myInstClass->translate("session.auto_start needs to be off");
+$arrTemplate['TEXT_PART_7']		= $myInstClass->translate("A database server");
+$arrTemplate['TEXT_PART_8']		= $myInstClass->translate("Nagios 2.x/3.x/4.x");
+$arrTemplate['TEXT_PART_9']		= $myInstClass->translate("NagiosQL version")." ".$strVersion;
 $arrTemplate['LOCALE']			= $chkLocale;
-$arrTemplate['ONLINE_DOC'] 		= translate("Online Documentation");
+$arrTemplate['ONLINE_DOC'] 		= $myInstClass->translate("Online documentation");
 //
 // New installation or upgrade
 // ===========================
-$arrTemplate['NEW_INSTALLATION'] = translate("START INSTALLATION");
-$arrTemplate['UPDATE'] 			 = translate("START UPDATE");
+$arrTemplate['NEW_INSTALLATION'] = $myInstClass->translate("START INSTALLATION");
+$arrTemplate['UPDATE'] 			 = $myInstClass->translate("START UPDATE");
 $arrTemplate['DISABLE_NEW'] 	 = "";
 $arrTemplate['UPDATE_ERROR']   	 = "<font style=\"color:red;\">".$strErrorMessage."</font>";
 if ($intUpdate == 1) {

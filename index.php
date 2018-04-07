@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2012 by Martin Willisegger
+// (c) 2005-2017 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Start script
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2012-03-14 13:43:23 +0100 (Wed, 14 Mar 2012) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.2.0
-// Revision  : $LastChangedRevision: 1296 $
+// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.3.0
+// Revision  : $LastChangedRevision: 2 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
