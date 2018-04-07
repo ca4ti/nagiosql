@@ -5,35 +5,29 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Übersicht Administration
-// Datei:	admin/administration.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Admin administration overview
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: administration.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
 // 
-// Menuvariabeln für diese Seite
+// Menuvariabeln fÃ¼r diese Seite
 // =============================
 $intMain 		= 7;
 $intSub  		= 0;
 $intMenu 		= 2;
-$preContent 	= "mainpages.tpl.htm";
+$preContent 	= "admin/mainpages.tpl.htm";
 //
 // Vorgabedatei einbinden
 // ======================
-$SETS 		= parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
-//
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm7']);
-$maintp->parse("header");
-$maintp->show("header");
+require("../functions/prepend_adm.php");
 //
 // Menu aufbauen
 // =============
@@ -41,16 +35,16 @@ $myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Content einbinden
 // =================
-$conttp->setVariable("TITLE",$LANG['title']['administration']);
+$conttp->setVariable("TITLE",gettext('Administration'));
 $conttp->parse("header");
 $conttp->show("header");
-$conttp->setVariable("DESC",$LANG['admincontent']['administration']);
+$conttp->setVariable("DESC",gettext('Functions to administrate NagiosQL V3'));
 $conttp->parse("main");
 $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

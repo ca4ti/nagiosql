@@ -5,35 +5,29 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Überwachungsdefinitionen
-// Datei:	admin/monitoring.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Admin specials overview
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: monitoring.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-//error_reporting(E_ALL);
 // 
-// Menuvariabeln für diese Seite
+// Menuvariabeln fÃ¼r diese Seite
 // =============================
 $intMain 		= 2;
 $intSub  		= 0;
 $intMenu 		= 2;
-$preContent 	= "mainpages.tpl.htm";
+$preContent 	= "admin/mainpages.tpl.htm";
 //
 // Vorgabedatei einbinden
 // ======================
-$SETS 		= parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
-//
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm2']);
-$maintp->parse("header");
-$maintp->show("header");
+require("../functions/prepend_adm.php");
 //
 // Menu aufbauen
 // =============
@@ -41,32 +35,40 @@ $myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Content einbinden
 // =================
-$conttp->setVariable("TITLE",$LANG['title']['monitor']);
+$conttp->setVariable("TITLE",gettext('Monitoring'));
 $conttp->parse("header");
 $conttp->show("header");
-$conttp->setVariable("DESC",$LANG['admincontent']['monitortext']);
-$conttp->setVariable("STATISTICS",$LANG['admincontent']['statistic']);
-$conttp->setVariable("TYPE",$LANG['admincontent']['group']);
-$conttp->setVariable("ACTIVE",$LANG['admintable']['active']);
-$conttp->setVariable("INACTIVE",$LANG['admincontent']['inactive']);
+$conttp->setVariable("DESC",gettext('To define host and service supervisions as well as host and service groups.'));
+$conttp->setVariable("STATISTICS",gettext('Statistical datas'));
+$conttp->setVariable("TYPE",gettext('Group'));
+$conttp->setVariable("ACTIVE",gettext('Active'));
+$conttp->setVariable("INACTIVE",gettext('Inactive'));
 //
 // Statistische Daten zusammenstellen
 // ==================================
-$conttp->setVariable("NAME",$LANG['menu']['item_admsub1']);
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_host WHERE active='1'"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_host WHERE active='0'"));
+$conttp->setVariable("NAME",gettext('Hosts'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_host` WHERE `active`='1' AND `config_id`=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_host` WHERE `active`='0' AND `config_id`=$chkDomainId"));
 $conttp->parse("statisticrow");
-$conttp->setVariable("NAME",$LANG['menu']['item_admsub7']);
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_service WHERE active='1'"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_service WHERE active='0'"));
+$conttp->setVariable("NAME",gettext('Services'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_service` WHERE `active`='1' AND `config_id`=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_service` WHERE `active`='0' AND `config_id`=$chkDomainId"));
 $conttp->parse("statisticrow");
-$conttp->setVariable("NAME",$LANG['menu']['item_admsub8']);
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_hostgroup WHERE active='1'"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_hostgroup WHERE active='0'"));
+$conttp->setVariable("NAME",gettext('Host groups'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_hostgroup` WHERE `active`='1' AND `config_id`=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_hostgroup` WHERE `active`='0' AND `config_id`=$chkDomainId"));
 $conttp->parse("statisticrow");
-$conttp->setVariable("NAME",$LANG['menu']['item_admsub9']);
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_servicegroup WHERE active='1'"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_servicegroup WHERE active='0'"));
+$conttp->setVariable("NAME",gettext('Service groups'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicegroup` WHERE `active`='1' AND `config_id`=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicegroup` WHERE `active`='0' AND `config_id`=$chkDomainId"));
+$conttp->parse("statisticrow");
+$conttp->setVariable("NAME",gettext('Host templates'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_hosttemplate` WHERE `active`='1' AND `config_id`=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_hosttemplate` WHERE `active`='0' AND `config_id`=$chkDomainId"));
+$conttp->parse("statisticrow");
+$conttp->setVariable("NAME",gettext('Service templates'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicetemplate` WHERE `active`='1' AND `config_id`=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicetemplate` WHERE `active`='0' AND `config_id`=$chkDomainId"));
 $conttp->parse("statisticrow");
 $conttp->parse("statistics");
 $conttp->parse("main");
@@ -74,7 +76,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

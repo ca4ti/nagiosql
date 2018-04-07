@@ -5,66 +5,91 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	CGI Konfiguration
-// Datei:	admin/cgicfg.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Admin cgi configuration
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: cgicfg.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
 // 
 // Variabeln deklarieren
 // =====================
 $intMain 		= 6;
 $intSub  		= 23;
 $intMenu 		= 2;
-$preContent 	= "nagioscfg.tpl.htm";
+$preContent 	= "admin/nagioscfg.tpl.htm";
 $strConfig		= "";
 $strMessage		= "";
+$intRemoveTmp 	= 0;
 //
 // Vorgabedatei einbinden
 // ======================
-$preAccess	= 1;
-$SETS 		= parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
+$preAccess		= 1;
+$preFieldvars 	= 1;
+
+require("../functions/prepend_adm.php");
+$myConfigClass->getConfigData("method",$intMethod);
 //
-// Übergabeparameter
+// Ãœbergabeparameter
 // =================
-$chkCgiConf 	= isset($_POST['taNagiosCfg']) 	? $_POST['taNagiosCfg'] : "";
+$chkNagiosConf 	= isset($_POST['taNagiosCfg']) 	? $_POST['taNagiosCfg'] : "";
+//
+// Datenbankeintrag vorbereiten bei Sonderzeichen
+// ==============================================
+if (ini_get("magic_quotes_gpc") == 0) {
+  $chkNagiosConf    = addslashes($chkNagiosConf);
+}
+//
+// Dateinamen festlegen
+// ====================
+$myConfigClass->getConfigData("nagiosbasedir",$strBaseDir);
+$strOldDate    	= date("YmdHis",mktime());
+$strConfigfile 	= $strBaseDir."/cgi.cfg";
+$strTempfile 	= "/nagiosql_config_temp.dat";
+$strLocalBackup	= $strBaseDir."/cgi.cfg_old_".$strOldDate;
 //
 // Daten verarbeiten
 // =================
-if ($chkCgiConf != "") {
+if ($chkNagiosConf != "") {
 	// Konfiguration schreiben
-	$strOldDate    = date("YmdHis",mktime());
-	$strFilename   = $SETS['nagios']['config']."cgi.cfg";
-	$strBackupfile = $SETS['nagios']['backup']."cgi.cfg_old_".$strOldDate;
-	if (file_exists($strFilename) && (is_writable($strFilename))) {
-		// Alte Konfiguration sichern
-		$strOldDate = date("YmdHis",mktime());
-		copy($strFilename,$strBackupfile);
-		// Neue Konfiguration sschreiben
-		$resFile = fopen($strFilename,"w");
-		$chkCgiConf = stripslashes($chkCgiConf);
-		fputs($resFile,$chkCgiConf);
+	if ($intMethod == 1) {
+		if (file_exists($strConfigfile) && (is_writable($strConfigfile))) {
+			$myConfigClass->moveFile("nagiosbasic","cgi.cfg");
+			// Neue Konfiguration schreiben
+			$resFile = fopen($strConfigfile,"w");
+			$chkNagiosConf = stripslashes($chkNagiosConf);
+			fputs($resFile,$chkNagiosConf);
+			fclose($resFile);
+			$strMessage .= "<span style=\"color:green\">".gettext('Configuration file successfully written!')."</span>";
+			$myDataClass->writeLog(gettext('Configuration successfully written:')." ".$strConfigfile);
+		} else {
+			$strMessage = gettext('Cannot open/overwrite the configuration file (check the permissions)!');
+			$myDataClass->writeLog(gettext('Configuration write failed:')." ".$strConfigfile);	
+		}
+	} else if ($intMethod == 2) {
+		$strFileName = $SETS['path']['tempdir']."/".$strTempfile;
+		$resFile = fopen($strFileName,"w");
+		$chkNagiosConf = stripslashes($chkNagiosConf);
+		fputs($resFile,$chkNagiosConf);
 		fclose($resFile);
-		$strMessage = $LANG['file']['success'];
-		$myDataClass->writeLog($LANG['logbook']['config']." ".$strFilename);
-	} else {
-		$strMessage = $LANG['file']['failed'];
-		$myDataClass->writeLog($LANG['logbook']['configfail']." ".$strFilename);	
+		// TemporÃ¤re Datei auf FTP Server kopieren
+		$intReturn = $myConfigClass->configCopy("cgi.cfg",$strTempfile,"basic",1,1);
+		if ($intReturn == 0) {
+			$strMessage .= "<span style=\"color:green\">".gettext('Configuration file successfully written!')."</span>";
+			$myDataClass->writeLog(gettext('Configuration successfully written:')." ".$strConfigfile);
+			unlink($SETS['path']['tempdir']."/nagiosql_config_temp.dat");
+		} else {
+			$strMessage = gettext('Cannot open/overwrite the configuration file (check the permissions on FTP remote system)!');
+			$myDataClass->writeLog(gettext('Configuration write failed (FTP remote):')." ".$strConfigfile);	
+		}
 	}
 }
-//
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm1']." -> ".$LANG['menu']['item_admsub23']);
-$maintp->parse("header");
-$maintp->show("header");
 //
 // Menu aufbauen
 // =============
@@ -72,7 +97,7 @@ $myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Content einbinden
 // =================
-$conttp->setVariable("TITLE",$LANG['title']['cgiconfig']);
+$conttp->setVariable("TITLE",gettext('CGI configuration file'));
 $conttp->parse("header");
 $conttp->show("header");
 //
@@ -80,21 +105,35 @@ $conttp->show("header");
 // ===============
 $conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
 $conttp->setVariable("MAINSITE",$SETS['path']['root']."admin.php");
-$conttp->setVariable("FILL_FIELDEMPTY",$LANG['formchecks']['fill_fieldempty']);
-$conttp->setVariable("LANG_SAVE",$LANG['admintable']['save']);
-$conttp->setVariable("LANG_ABORT",$LANG['admintable']['abort']);
+foreach($arrDescription AS $elem) {
+	$conttp->setVariable($elem['name'],$elem['string']);
+} 
 //
-// Konfigurationsdatei öffnen
+// Konfigurationsdatei Ã¶ffnen
 // ==========================
-if (file_exists($SETS['nagios']['config']."cgi.cfg") && is_readable($SETS['nagios']['config']."cgi.cfg")) {
-	$resFile = fopen($SETS['nagios']['config']."cgi.cfg","r");
-	if ($resFile) {
-		while(!feof($resFile)) {
-			$strConfig .= fgets($resFile,1024);
+$myConfigClass->getConfigData("basedir",$strBaseDir);
+if ($intMethod == 1) {
+	if (file_exists($strConfigfile) && is_readable($strConfigfile)) {
+		$resFile = fopen($strConfigfile,"r");
+		if ($resFile) {
+			while(!feof($resFile)) {
+				$strConfig .= fgets($resFile,1024);
+			}
 		}
+	} else {
+		$strMessage = gettext('Cannot open the data file (check the permissions)!');
 	}
-} else {
-	$strMessage = $LANG['file']['notreadable'];
+} else if ($intMethod == 2) {
+	$intReturn = $myConfigClass->configCopy("cgi.cfg","nagiosql_config_temp.dat","basic",0);
+	if ($intReturn == 0) {
+		$resFile = fopen($SETS['path']['tempdir']."/nagiosql_config_temp.dat","r");
+		if ($resFile) {
+			while(!feof($resFile)) {
+				$strConfig .= fgets($resFile,1024);
+			}
+		}	
+		unlink($SETS['path']['tempdir']."/nagiosql_config_temp.dat");
+	}
 }
 if ($strMessage != "") $conttp->setVariable("MESSAGE",$strMessage);
 $conttp->setVariable("DAT_NAGIOS_CONFIG",$strConfig);
@@ -103,7 +142,7 @@ $conttp->show("naginsert");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

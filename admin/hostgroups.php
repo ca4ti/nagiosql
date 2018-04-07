@@ -5,246 +5,284 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Hostgruppen definieren
-// Datei:	admin/hostgroups.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Admin hostgroup definition
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: hostgroups.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
-// 
+//
 // Variabeln deklarieren
 // =====================
-$intMain 		= 2;
-$intSub  		= 8;
-$intMenu 		= 2;
-$preContent 	= "hostgroups.tpl.htm";
-$strDBWarning	= "";
-$intCount		= 0;
-$strMessage		= "";
+$intMain      = 2;
+$intSub       = 8;
+$intMenu      = 2;
+$preContent   = "admin/hostgroups.tpl.htm";
+$strDBWarning = "";
+$intCount     = 0;
+$strMessage   = "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preAccess	= 1;
-$SETS 		= parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
+$preAccess    = 1;
+$preFieldvars = 1;
+
+require("../functions/prepend_adm.php");
+$myConfigClass->getConfigData("version",$intVersion);
 //
-// Übergabeparameter
+// Ãœbergabeparameter
 // =================
-$chkTfName 				= isset($_POST['tfName']) 			? addslashes($_POST['tfName']) 		: "";
-$chkTfFriendly 			= isset($_POST['tfFriendly']) 		? addslashes($_POST['tfFriendly']) 	: "";
-$chkSelMembers 			= isset($_POST['selMembers']) 		? $_POST['selMembers'] 				: array("");
+$chkTfName        = isset($_POST['tfName'])         ? $_POST['tfName']        : "";
+$chkTfFriendly      = isset($_POST['tfFriendly'])       ? $_POST['tfFriendly']      : "";
+$chkSelMembers      = isset($_POST['selMembers'])       ? $_POST['selMembers']      : array("");
+$chkSelHostgroupMembers = isset($_POST['selHostgroupMembers'])  ? $_POST['selHostgroupMembers'] : array("");
+$chkTfNotes       = isset($_POST['tfNotes'])        ? $_POST['tfNotes']       : "";
+$chkTfNotesURL      = isset($_POST['tfNotesURL'])       ? $_POST['tfNotesURL']      : "";
+$chkTfActionURL     = isset($_POST['tfActionURL'])      ? $_POST['tfActionURL']     : "";
+//
+// Datenbankeintrag vorbereiten bei Sonderzeichen
+// ==============================================
+if (ini_get("magic_quotes_gpc") == 0) {
+  $chkTfName    = addslashes($chkTfName);
+  $chkTfFriendly  = addslashes($chkTfFriendly);
+  $chkTfNotes   = addslashes($chkTfNotes);
+  $chkTfNotesURL  = addslashes($chkTfNotesURL);
+  $chkTfActionURL = addslashes($chkTfActionURL);
+}
 //
 // Daten verarbeiten
 // =================
-if (($chkSelMembers[0] == "")   || ($chkSelMembers[0] == "0"))   {$intSelMembers = 0;}  else {$intSelMembers = 1;}
-// Datein einfügen oder modifizieren
+if (($chkSelMembers[0] == "")       || ($chkSelMembers[0] == "0"))      {$intSelMembers = 0;}       else {$intSelMembers = 1;}
+if ($chkSelMembers[0] == "*")     $intSelMembers = 2;
+if (($chkSelHostgroupMembers[0] == "")  || ($chkSelHostgroupMembers[0] == "0")) {$intSelHostgroupMembers = 0;}  else {$intSelHostgroupMembers = 1;}
+if ($chkSelHostgroupMembers[0] == "*")  $intSelHostgroupMembers = 2;
+// Datein einfÃ¼gen oder modifizieren
 if (($chkModus == "insert") || ($chkModus == "modify")) {
-	if ($hidActive == 1) $chkActive = 1;
-	$strSQLx = "tbl_hostgroup SET hostgroup_name='$chkTfName', alias='$chkTfFriendly', members=$intSelMembers, 
-			    active='$chkActive', last_modified=NOW()";
-	if ($chkModus == "insert") {
-		$strSQL = "INSERT INTO ".$strSQLx; 
-	} else {
-		$strSQL = "UPDATE ".$strSQLx." WHERE id=$chkDataId";   
-	}	
-	if (($chkTfName != "") && ($chkTfFriendly != "") && ($intSelMembers != 0)) {
-		$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
-		if ($intInsert == 1) {
-			$intReturn = 1;
-		} else {		
-			if ($chkModus  == "insert") 	$myDataClass->writeLog($LANG['logbook']['newhostgr']." ".$chkTfName);
-			if ($chkModus  == "modify") 	$myDataClass->writeLog($LANG['logbook']['modifyhostgr']." ".$chkTfName);
-			//
-			// Relationen eintragen/updaten
-			// ============================
-			$intTableA = $myDataClass->tableID("tbl_hostgroup");
-			if ($chkModus == "insert") {
-				if ($intSelMembers == 1)  $myDataClass->dataInsertRelation($intTableA,$myDataClass->tableID("tbl_host"),$intInsertId,'members',$chkSelMembers);
-			} else if ($chkModus == "modify") {		
-				if ($intSelMembers == 1) {
-					$myDataClass->dataUpdateRelation($intTableA,$myDataClass->tableID("tbl_host"),$chkDataId,'members',$chkSelMembers);
-				} else {
-					$myDataClass->dataDeleteRelation($intTableA,$myDataClass->tableID("tbl_host"),$chkDataId,'members');
-				}
-			}
-			$intReturn = 0;
-		}		
-	} else {
-		$strMessage .= $LANG['db']['datamissing'];
-	}
-	$chkModus = "display";
+  if ($hidActive == 1) $chkActive = 1;
+  $strSQLx = "`tbl_hostgroup` SET `hostgroup_name`='$chkTfName', `alias`='$chkTfFriendly', `members`=$intSelMembers,
+        `hostgroup_members`=$intSelHostgroupMembers, `notes`='$chkTfNotes', `notes_url`='$chkTfNotesURL',
+        `action_url`='$chkTfActionURL', `active`='$chkActive', `config_id`=$chkDomainId, `last_modified`=NOW()";
+  if ($chkModus == "insert") {
+    $strSQL = "INSERT INTO ".$strSQLx;
+  } else {
+    $strSQL = "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
+  }
+  if (($chkTfName != "") && ($chkTfFriendly != "") && (($intSelMembers != 0) || ($intVersion == 3))) {
+    $intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
+    if ($chkModus == "insert") {
+      $chkDataId = $intInsertId;
+    }
+    if ($intInsert == 1) {
+      $intReturn = 1;
+    } else {
+      if ($chkModus  == "insert")   $myDataClass->writeLog(gettext('New host group inserted:')." ".$chkTfName);
+      if ($chkModus  == "modify")   $myDataClass->writeLog(gettext('Host group modified:')." ".$chkTfName);
+      //
+      // Relationen eintragen/updaten
+      // ============================
+      if ($chkModus == "insert") {
+        if ($intSelMembers  == 1)       $myDataClass->dataInsertRelation("tbl_lnkHostgroupToHost",$chkDataId,$chkSelMembers);
+        if ($intSelHostgroupMembers  == 1)  $myDataClass->dataInsertRelation("tbl_lnkHostgroupToHostgroup",$chkDataId,$chkSelHostgroupMembers);
+      } else if ($chkModus == "modify") {
+        if ($intSelMembers == 1) {
+          $myDataClass->dataUpdateRelation("tbl_lnkHostgroupToHost",$chkDataId,$chkSelMembers);
+        } else {
+          $myDataClass->dataDeleteRelation("tbl_lnkHostgroupToHost",$chkDataId);
+        }
+        if ($intSelHostgroupMembers == 1) {
+          $myDataClass->dataUpdateRelation("tbl_lnkHostgroupToHostgroup",$chkDataId,$chkSelHostgroupMembers);
+        } else {
+          $myDataClass->dataDeleteRelation("tbl_lnkHostgroupToHostgroup",$chkDataId);
+        }
+      }
+      $intReturn = 0;
+    }
+  } else {
+    $strMessage .= gettext('Database entry failed! Not all necessary data filled in!');
+  }
+  $chkModus = "display";
 }  else if ($chkModus == "make") {
-	// Konfigurationsdatei schreiben
-	$intReturn = $myConfigClass->createConfig("tbl_hostgroup",0);
-	$chkModus  = "display";
+  // Konfigurationsdatei schreiben
+  $intReturn = $myConfigClass->createConfig("tbl_hostgroup",0);
+  $chkModus  = "display";
+}  else if (($chkModus == "checkform") && ($chkSelModify == "info")) {
+  // Konfigurationsdatei schreiben
+  $intReturn  = $myDataClass->infoRelation("tbl_hostgroup",$chkListId,"hostgroup_name");
+  $strMessage = $myDataClass->strDBMessage;
+  $intReturn  = 0;
+  $chkModus   = "display";
 }  else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
-	// Gewählte Datensätze löschen
-	$intReturn = $myDataClass->dataDeleteSimple("tbl_hostgroup",$chkListId);
-	$chkModus  = "display";
+  // GewÃ¤hlte DatensÃ¤tze lÃ¶schen
+  $intReturn = $myDataClass->dataDeleteFull("tbl_hostgroup",$chkListId);
+  $strMessage .= $myDataClass->strDBMessage;
+  $chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
-	// Gewählte Datensätze kopieren
-	$intReturn = $myDataClass->dataCopySimple("tbl_hostgroup",$chkListId);
-	$chkModus  = "display";
+  // GewÃ¤hlte DatensÃ¤tze kopieren
+  $intReturn = $myDataClass->dataCopyEasy("tbl_hostgroup","hostgroup_name",$chkListId);
+  $chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
-	// Daten des gewählten Datensatzes holen
-	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM tbl_hostgroup WHERE id=".$chkListId,$arrModifyData);
-	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";	
-	$chkModus      = "add";
+  // Daten des gewÃ¤hlten Datensatzes holen
+  $booReturn = $myDBClass->getSingleDataset("SELECT * FROM `tbl_hostgroup` WHERE `id`=".$chkListId,$arrModifyData);
+  if ($booReturn == false) $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+  $chkModus      = "add";
 }
 // Statusmitteilungen setzen
 if (isset($intReturn) && ($intReturn == 1)) $strMessage = $myDataClass->strDBMessage;
-if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
+if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$myDataClass->strDBMessage."&nbsp;</span>";
 //
-// Letzte Datenbankänderung und Filedatum
+// Letzte DatenbankÃ¤nderung und Filedatum
 // ======================================
 $myConfigClass->lastModified("tbl_hostgroup",$strLastModified,$strFileDate,$strOld);
 //
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm2']." -> ".$LANG['menu']['item_admsub8']);
-$maintp->parse("header");
-$maintp->show("header");
-//
 // Menu aufbauen
 // =============
-$myVisClass->getMenu($intMain,$intSub,$intMenu); 
+$myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Content einbinden
 // =================
-$conttp->setVariable("TITLE",$LANG['title']['hostgroups']);
+$conttp->setVariable("TITLE",gettext('Define host groups (hostgroups.cfg)'));
 $conttp->parse("header");
 $conttp->show("header");
 //
 // Eingabeformular
 // ===============
 if ($chkModus == "add") {
-	// Klassenvariabeln definieren
-	$myVisClass->resTemplate     =& $conttp;	
-	$myVisClass->strTempValue1   = $chkSelModify;
-	$myVisClass->intTabA   	     = $myDataClass->tableID("tbl_hostgroup");
-	if (isset($arrModifyData)) {
-		$myVisClass->arrWorkdata = $arrModifyData;
-		$myVisClass->intTabA_id  = $arrModifyData['id'];
-	} else {
-		$myVisClass->intTabA_id  = 0;
-	}	
-	// Hostauswahlfeld füllen
-	$intReturn = 0;
-	$intReturn = $myVisClass->parseSelectNew('tbl_host','host_name','DAT_HOSTS','hosts','members',2,0);
-	if ($intReturn != 0) $strDBWarning .= $LANG['admintable']['warn_host']."<br>";		
-	// Feldbeschriftungen setzen
-	foreach($LANG['admintable'] AS $key => $value) {
-		$conttp->setVariable("LANG_".strtoupper($key),$value);
-	}
-	foreach($LANG['formchecks'] AS $key => $value) {
-		$conttp->setVariable(strtoupper($key),$value);
-	}
-	$conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
-	$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$conttp->setVariable("LIMIT",$chkLimit);
-	if ($strDBWarning != "") $conttp->setVariable("WARNING",$strDBWarning.$LANG['admintable']['warn_save']);
-	$conttp->setVariable("ACT_CHECKED","checked");
-	$conttp->setVariable("MODUS","insert");
-	// Im Modus "Modifizieren" die Datenfelder setzen
-	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-		foreach($arrModifyData AS $key => $value) {
-			if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
-			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars(stripslashes($value)));
-		}
-		if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
-		// Prüfen, ob dieser Eintrag in einer anderen Konfiguration verwendet wird
-		if ($myDataClass->checkMustdata("tbl_hostgroup",$arrModifyData['id'],$arrInfo) != 0) {
-			$conttp->setVariable("ACT_DISABLED","disabled");
-			$conttp->setVariable("ACTIVE","1");
-			$conttp->setVariable("CHECK_MUST_DATA","<span class=\"dbmessage\">".$LANG['admintable']['noactivate']."</span>");
-		}   
-		$conttp->setVariable("MODUS","modify");
-	}
-	$conttp->parse("datainsert");
-	$conttp->show("datainsert");
+  // Hostauswahlfeld fÃ¼llen
+  $intReturn = 0;
+  if (isset($arrModifyData['members'])) {$intFieldId = $arrModifyData['members'];} else {$intFieldId = 0;}
+  $intReturn = $myVisClass->parseSelect('tbl_host','host_name','DAT_HOSTS','hosts',$conttp,$chkListId,'tbl_lnkHostgroupToHost',$intFieldId,3);
+  if (($intReturn != 0) && ($intVersion != 3)) $strDBWarning .= gettext('Attention, no hosts defined!')."<br>";
+  // Hostgruppenmitglieder
+  if (isset($arrModifyData['hostgroup_members'])) {$intFieldId = $arrModifyData['hostgroup_members'];} else {$intFieldId = 0;}
+  if (isset($arrModifyData['id'])) {$intDataKey = $arrModifyData['id'];} else {$intDataKey = 0;}
+  $intReturn = $myVisClass->parseSelect('tbl_hostgroup','hostgroup_name','DAT_HOSTGROUP','hostgroupmembers',$conttp,$chkListId,'tbl_lnkHostgroupToHostgroup',$intFieldId,3,$intDataKey);
+  // Feldbeschriftungen setzen
+  foreach($arrDescription AS $elem) {
+    $conttp->setVariable($elem['name'],$elem['string']);
+  }
+  $conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
+  $conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
+  $conttp->setVariable("LIMIT",$chkLimit);
+  if ($strDBWarning != "") $conttp->setVariable("WARNING",$strDBWarning.gettext('Saving not possible!'));
+  $conttp->setVariable("ACT_CHECKED","checked");
+  $conttp->setVariable("MODUS","insert");
+  if ($SETS['common']['seldisable'] == 1)$conttp->setVariable("SELECT_FIELD_DISABLED","disabled");
+  // Versionsdifferenzen festlegen
+  if ($intVersion == 3) {
+    $conttp->setVariable("CLASS_NAME_20","elementHide");
+    $conttp->setVariable("CLASS_NAME_30","elementShow");
+  } else {
+    $conttp->setVariable("CLASS_NAME_20","elementShow");
+    $conttp->setVariable("CLASS_NAME_30","elementHide");
+    $conttp->setVariable("CLASS_20_MUST_ONLY","class=\"inpmust\"");
+    $conttp->setVariable("MUST_20_STAR","*");
+    $conttp->setVariable("MEMBER_20_MUST","selMembers,");
+  }
+  // Im Modus "Modifizieren" die Datenfelder setzen
+  if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    foreach($arrModifyData AS $key => $value) {
+      if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
+      $conttp->setVariable("DAT_".strtoupper($key),htmlentities($value));
+    }
+    if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
+    // PrÃ¼fen, ob dieser Eintrag in einer anderen Konfiguration verwendet wird
+    if ($myDataClass->infoRelation("tbl_hostgroup",$arrModifyData['id'],"hostgroup_name") != 0) {
+      $conttp->setVariable("ACT_DISABLED","disabled");
+      $conttp->setVariable("ACT_CHECKED","checked");
+      $conttp->setVariable("ACTIVE","1");
+      $strInfo = "<br><span class=\"dbmessage\">".gettext('Entry cannot be activated because it is used by another configuration').":</span><br><span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
+      $conttp->setVariable("CHECK_MUST_DATA",$strInfo);
+    }
+    $conttp->setVariable("MODUS","modify");
+  }
+  $conttp->parse("datainsert");
+  $conttp->show("datainsert");
 }
 //
 // Datentabelle
 // ============
 // Titel setzen
 if ($chkModus == "display") {
-	// Feldbeschriftungen setzen
-	foreach($LANG['admintable'] AS $key => $value) {
-		$mastertp->setVariable("LANG_".strtoupper($key),$value);
-	}  
-	$mastertp->setVariable("FIELD_1",$LANG['admintable']['hostgroup']);
-	$mastertp->setVariable("FIELD_2",$LANG['admintable']['friendly']);	
-	$mastertp->setVariable("DELETE",$LANG['admintable']['delete']);
-	$mastertp->setVariable("LIMIT",$chkLimit);
-	$mastertp->setVariable("DUPLICATE",$LANG['admintable']['duplicate']);	
-	$mastertp->setVariable("ACTION_MODIFY",$_SERVER['PHP_SELF']);
-	$mastertp->setVariable("TABLE_NAME","tbl_hostgroup");
-	// Anzahl Datensätze holen
-	$strSQL    = "SELECT count(*) AS number FROM tbl_hostgroup";
-	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
-	if ($booReturn == false) {
-		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
-	} else {
-		$intCount = (int)$arrDataLinesCount['number'];
-	}
-	// Datensätze holen
-	$strSQL    = "SELECT id, hostgroup_name, alias, active FROM tbl_hostgroup 
-				  ORDER BY hostgroup_name LIMIT $chkLimit,".$SETS['common']['pagelines'];
-	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-	if ($booReturn == false) {
-		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
-	} else if ($intDataCount != 0) {
-		for ($i=0;$i<$intDataCount;$i++) {	
-			// Jede zweite Zeile einfärben (Klassen setzen)
-			$strClassL = "tdld"; $strClassM = "tdmd"; $strChbClass = "checkboxline";
-			if ($i%2 == 1) {$strClassL = "tdlb"; $strClassM = "tdmb"; $strChbClass = "checkbox";}
-			if ($arrDataLines[$i]['active'] == 0) {$strActive = $LANG['common']['no_nak'];} else {$strActive = $LANG['common']['yes_ok'];}	
-			// Datenfelder setzen
-			foreach($LANG['admintable'] AS $key => $value) {
-				$mastertp->setVariable("LANG_".strtoupper($key),$value);
-			} 
-			$mastertp->setVariable("DATA_FIELD_1",stripslashes($arrDataLines[$i]['hostgroup_name']));
-			$mastertp->setVariable("DATA_FIELD_2",stripslashes($arrDataLines[$i]['alias']));
-			$mastertp->setVariable("DATA_ACTIVE",$strActive);
-			$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
-			$mastertp->setVariable("CELLCLASS_L",$strClassL);
-			$mastertp->setVariable("CELLCLASS_M",$strClassM);
-			$mastertp->setVariable("CHB_CLASS",$strChbClass);
-			$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-			if ($chkModus != "display") $conttp->setVariable("DISABLED","disabled");		
-			$mastertp->parse("datarow");
-		}
-	} else {
-		$mastertp->setVariable("DATA_FIELD_1",$LANG['admintable']['nodata']);
-		$mastertp->setVariable("DATA_FIELD_2","&nbsp;");
-		$mastertp->setVariable("DATA_ACTIVE","&nbsp;");
-		$mastertp->setVariable("CELLCLASS_L","tdlb");
-		$mastertp->setVariable("CELLCLASS_M","tdmb");
-		$mastertp->setVariable("CHB_CLASS","checkbox");
-		$mastertp->setVariable("DISABLED","disabled");
-	}
-	// Seiten anzeigen
-	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks($_SERVER['PHP_SELF'],$intCount,$chkLimit));
-	$mastertp->parse("datatable");
-	$mastertp->show("datatable");
+  // Feldbeschriftungen setzen
+  foreach($arrDescription AS $elem) {
+    $mastertp->setVariable($elem['name'],$elem['string']);
+  }
+  $mastertp->setVariable("FIELD_1",gettext('Host group'));
+  $mastertp->setVariable("FIELD_2",gettext('Description'));
+  $mastertp->setVariable("LIMIT",$chkLimit);
+  $mastertp->setVariable("ACTION_MODIFY",$_SERVER['PHP_SELF']);
+  $mastertp->setVariable("TABLE_NAME","tbl_hostgroup");
+  // Anzahl DatensÃ¤tze holen
+  $strSQL    = "SELECT count(*) AS `number` FROM `tbl_hostgroup` WHERE `config_id`=$chkDomainId";
+  $booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
+  if ($booReturn == false) {
+    $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+  } else {
+    $intCount = (int)$arrDataLinesCount['number'];
+  }
+  // DatensÃ¤tze holen
+  $strSQL    = "SELECT `id`, `hostgroup_name`, `alias`, `active` FROM `tbl_hostgroup` WHERE `config_id`=$chkDomainId
+          ORDER BY `hostgroup_name` LIMIT $chkLimit,".$SETS['common']['pagelines'];
+  $booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
+  if ($booReturn == false) {
+    $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    $mastertp->setVariable("CELLCLASS_L","tdlb");
+    $mastertp->setVariable("CELLCLASS_M","tdmb");
+    $mastertp->setVariable("DISABLED","disabled");
+    $mastertp->setVariable("DATA_FIELD_1",gettext('No data'));
+  } else if ($intDataCount != 0) {
+    for ($i=0;$i<$intDataCount;$i++) {
+      // Jede zweite Zeile einfÃ¤rben (Klassen setzen)
+      $strClassL = "tdld"; $strClassM = "tdmd"; $strChbClass = "checkboxline";
+      if ($i%2 == 1) {$strClassL = "tdlb"; $strClassM = "tdmb"; $strChbClass = "checkbox";}
+      if ($arrDataLines[$i]['active'] == 0) {$strActive = gettext('No');} else {$strActive = gettext('Yes');}
+      // Datenfelder setzen
+      foreach($arrDescription AS $elem) {
+        $mastertp->setVariable($elem['name'],$elem['string']);
+      }
+      $mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['hostgroup_name']));
+      $mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias']));
+      $mastertp->setVariable("DATA_ACTIVE",$strActive);
+      $mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
+      $mastertp->setVariable("CELLCLASS_L",$strClassL);
+      $mastertp->setVariable("CELLCLASS_M",$strClassM);
+      $mastertp->setVariable("CHB_CLASS",$strChbClass);
+      $mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
+      if ($chkModus != "display") $conttp->setVariable("DISABLED","disabled");
+      $mastertp->parse("datarow");
+    }
+  } else {
+    $mastertp->setVariable("DATA_FIELD_1",gettext('No data'));
+    $mastertp->setVariable("DATA_FIELD_2","&nbsp;");
+    $mastertp->setVariable("DATA_ACTIVE","&nbsp;");
+    $mastertp->setVariable("CELLCLASS_L","tdlb");
+    $mastertp->setVariable("CELLCLASS_M","tdmb");
+    $mastertp->setVariable("CHB_CLASS","checkbox");
+    $mastertp->setVariable("DISABLED","disabled");
+  }
+  // Seiten anzeigen
+  $mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
+  if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks($_SERVER['PHP_SELF'],$intCount,$chkLimit));
+  $mastertp->parse("datatable");
+  $mastertp->show("datatable");
 }
 // Mitteilungen ausgeben
 if (isset($strMessage) && ($strMessage != "")) $mastertp->setVariable("DBMESSAGE",$strMessage);
-$mastertp->setVariable("LAST_MODIFIED",$LANG['db']['last_modified']."<b>".$strLastModified."</b>");
-$mastertp->setVariable("FILEDATE",$LANG['common']['filedate']."<b>".$strFileDate."</b>");
-if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span><br>");
+$mastertp->setVariable("LAST_MODIFIED",gettext('Last database update:')." <b>".$strLastModified."</b>");
+$mastertp->setVariable("FILEDATE",gettext('Last change of the configuration file:')." <b>".$strFileDate."</b>");
+if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."&nbsp;</span><br>");
 $mastertp->parse("msgfooter");
 $mastertp->show("msgfooter");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

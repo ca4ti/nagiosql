@@ -5,45 +5,72 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Vollständiges Kommando ausgeben innerhalb des IFRAME
-// Datei:	admin/commandline.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Admin command line visualization
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: commandline.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
 //
 // Vorgabedatei einbinden
 // ======================
-$SETS = parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
+//$preAccess		= 1;
+//$intSub			= 2;
+$preNoMain 		= 1;
+
+require("../functions/prepend_adm.php");
 $strCommandLine = "&nbsp;";
+$intCount		= 0;
 //
 // Datenbank abfragen
 // ===================
 if (isset($_GET['cname']) && ($_GET['cname'] != "")) {
-	$strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_checkcommand WHERE id='".$_GET['cname']."'");
+	$strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_command WHERE id='".$_GET['cname']."'");
 	if ($strResult != false) {
-		$strCommandLine = htmlspecialchars(stripslashes($strResult));
+		$strCommandLine = $strResult;
+		$intCount = substr_count($strCommandLine,"ARG");
+		if (substr_count($strCommandLine,"ARG8") != 0) {
+			$intCount = 8;
+		} else if (substr_count($strCommandLine,"ARG7") != 0) {
+			$intCount = 7;
+		} else if (substr_count($strCommandLine,"ARG6") != 0) {
+			$intCount = 6;
+		} else if (substr_count($strCommandLine,"ARG5") != 0) {
+			$intCount = 5;
+		} else if (substr_count($strCommandLine,"ARG4") != 0) {
+			$intCount = 4;
+		} else if (substr_count($strCommandLine,"ARG3") != 0) {
+			$intCount = 3;
+		} else if (substr_count($strCommandLine,"ARG2") != 0) {
+			$intCount = 2;
+		} else if (substr_count($strCommandLine,"ARG1") != 0) {
+			$intCount = 1;
+		} else {
+			$intCount = 0;
+		}
+		
 	}
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  	<title>Commandline</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style type="text/css">
     <!--
     body {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;
 	  font-size: 12px;
 	  color: #000000;
-	  background-color: #FFFFFF;
-	  margin: 2px;
+	  background-color: #EDF5FF;
+	  margin: 3px;
 	  border: none;
     }
     -->
@@ -51,5 +78,10 @@ if (isset($_GET['cname']) && ($_GET['cname'] != "")) {
   </head>
 <body>
   <?php echo $strCommandLine; ?>
+  <script type="text/javascript" language="javascript">
+  <!--
+     parent.argcount = <?php echo $intCount; ?>;
+  //-->
+  </script>
 </body>
 </html>

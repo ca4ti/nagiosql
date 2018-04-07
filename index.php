@@ -5,72 +5,102 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2007 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Indexseite
-// Datei:	index.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Start script
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: index.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
-// 
-// Menuvariabeln für diese Seite
-// =============================
-$intMain 		= 1;
-$intSub  		= 0;
-$intMenu 		= 1;
-$preContent 	= "index.tpl.htm";
+//error_reporting(E_ALL);
+error_reporting(E_ERROR);
 //
-// Übergabeparameter
+// Menuvariabeln fÃ¼r diese Seite
+// =============================
+$intMain    = 1;
+$intSub     = 0;
+$intMenu    = 1;
+$preContent   = "index.tpl.htm";
+//
+// Ãœbergabeparameter
 // =================
-$chkInsName 	= isset($_POST['tfUsername']) 	? $_POST['tfUsername']	: "";
-$chkInsPasswd 	= isset($_POST['tfPassword']) 	? $_POST['tfPassword'] 	: "";
-$chkLogout		= isset($_GET['logout'])		? $_GET['logout']		: "rr";
+$chkInsName    = isset($_POST['tfUsername'])    ? $_POST['tfUsername']  : "";
+$chkInsPasswd  = isset($_POST['tfPassword'])    ? $_POST['tfPassword']  : "";
+$chkLogout     = isset($_GET['logout'])       ? $_GET['logout']   : "rr";
 if ($chkInsName != "") {
-	$preUsername = $chkInsName;
-	$prePassword = $chkInsPasswd;
+  $preUsername = $chkInsName;
+  $prePassword = $chkInsPasswd;
+  $preNoMain   = 1;
+} else {
+  $preNoLogin = true;
 }
+if ($chkLogout != "rr") {
+  $preNoMain   = 1;
+}
+// Include supportive functions
+require_once("functions/supportive.php");
 //
 // Vorgabedatei einbinden
 // ======================
-$preNoLogin = true;
-$SETS 		= parse_ini_file("config/settings.ini",TRUE);
-if (!file_exists($SETS['path']['physical']."functions/prepend_adm.php")) {
-   echo "Please check your site configuration in config/settings.ini!";
-   exit;
+if (file_exists('config/settings.php')) {
+  $SETS = parseIniFile("config/settings.php");
+} else {
+  header("Location: install/index.php");
 }
-require($SETS['path']['physical']."functions/prepend_adm.php");
+//
+// Installationsscript aufrufen
+// ============================
+if (!isset($SETS['common']['install']) || ($SETS['common']['install'] != "passed")) {
+  header("Location: install/index.php");
+} else {
+  //
+  // Check for existing ENABLE_INSTALLER
+  //
+  if (file_exists("install/ENABLE_INSTALLER")) {
+    if (extension_loaded('gettext')) {
+      echo "<h2>".gettext("Please remove the security file ENABLE_INSTALLER in the install directory to continue!")."</h2>";
+    } else {
+      echo "<h2>Please remove the security file ENABLE_INSTALLER in the install directory to continue!</h2>";
+    }
+    exit(1);
+  }
+}
+require("functions/prepend_adm.php");
 //
 // Seite umleiten, wenn Login erfolgreich
 // ======================================
 if (($_SESSION['startsite'] != "") && ($_SESSION['username'] != "")) {
-	header("Location: ".$SETS['path']['protocol']."://".$_SERVER['HTTP_HOST'].$_SESSION['startsite']);
+  if (!isset($preTemplateStart) || ($preTemplateStart == 0)) {
+    header("Location: ".$SETS['path']['protocol']."://".$_SERVER['HTTP_HOST'].$_SESSION['startsite']);
+  }
 }
-//
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['user']['login']);
-$maintp->parse("header");
-$maintp->show("header");
 //
 // Content einbinden
 // =================
-$conttp->setVariable("TITLE",$LANG['title']['login']); 
-$conttp->setVariable("USERNAME",$LANG['user']['username']);
-$conttp->setVariable("PASSWORD",$LANG['user']['password']);
-$conttp->setVariable("LOGIN",$LANG['user']['login']);
-if (isset($strLoginMessage) && ($strLoginMessage != "")) $conttp->setVariable("MESSAGE",$strLoginMessage);
+$conttp->setVariable("TITLE",gettext('Welcome to'));
+$conttp->setVariable("TITLE_LOGIN",gettext('Welcome'));
+$conttp->setVariable("LOGIN_TEXT",gettext('Please enter your username and password to access NagiosQL.<br>If you forgot one of them, please contact your Nagios Administrator.'));
+$conttp->setVariable("USERNAME",gettext('Username'));
+$conttp->setVariable("PASSWORD",gettext('Password'));
+$conttp->setVariable("LOGIN",gettext('Login'));
+if (isset($_SESSION['strLoginMessage']) && ($_SESSION['strLoginMessage'] != "") AND isset($_SERVER['HTTP_REFERER']) AND (eregi($_SERVER['HTTP_HOST'], $_SERVER['HTTP_REFERER']))) {
+  $conttp->setVariable("MESSAGE",$_SESSION['strLoginMessage']);
+} else {
+	$conttp->setVariable("MESSAGE","&nbsp;");
+}
 $conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
-$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
+$conttp->setVariable("IMAGE_PATH","images/");
 $conttp->parse("main");
 $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

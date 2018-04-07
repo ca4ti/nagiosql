@@ -5,80 +5,78 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Passwort wechseln
-// Datei:	admin/password.php
-// Version: 2.0.2 (Internal)
-// SVN:		$Id: password.php 72 2008-04-03 07:01:46Z rouven $
+// Project   : NagiosQL
+// Component : Password administration
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: password.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
-// 
-// Menuvariabeln für diese Seite
+//
+// Menuvariabeln fÃ¼r diese Seite
 // =============================
-$intMain 		= 7;
-$intSub  		= 20;
-$intMenu 		= 2;
-$preContent 	= "admin_master.tpl.htm";
-$strMessage		= "";
+$intMain      = 7;
+$intSub       = 20;
+$intMenu      = 2;
+$preContent   = "admin/admin_master.tpl.htm";
+$strMessage   = "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preAccess	= 1;
-$SETS 		= parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
+$preAccess      = 1;
+$preFieldvars   = 1;
+$preShowHeader  = 0;
+require("../functions/prepend_adm.php");
 //
-// Übergabeparameter
+// Ãœbergabeparameter
 // =================
-$chkInsPasswdOld 	= isset($_POST['tfPasswordOld']) 	? $_POST['tfPasswordOld'] 	: "";
-$chkInsPasswdNew1 	= isset($_POST['tfPasswordNew1']) 	? $_POST['tfPasswordNew1'] 	: "";
-$chkInsPasswdNew2 	= isset($_POST['tfPasswordNew2']) 	? $_POST['tfPasswordNew2'] 	: "";
+$chkInsPasswdOld  = isset($_POST['tfPasswordOld'])    ? $_POST['tfPasswordOld']   : "";
+$chkInsPasswdNew1 = isset($_POST['tfPasswordNew1'])   ? $_POST['tfPasswordNew1']  : "";
+$chkInsPasswdNew2 = isset($_POST['tfPasswordNew2'])   ? $_POST['tfPasswordNew2']  : "";
 //
 // Passwort wechseln
 // =================
 if (($chkInsPasswdOld != "") && ($chkInsPasswdNew1 != "")) {
-	// Passwort prüfen
-	$strSQL    = "SELECT * FROM tbl_user WHERE username='".$_SESSION['username']."' AND password=MD5('$chkInsPasswdOld')";
-	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-	if ($booReturn == false) {
-		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
-	} else if ($intDataCount == 1) {
-		if (($chkInsPasswdNew1 === $chkInsPasswdNew2) && (strlen($chkInsPasswdNew1) >=5)) {
-			// Letzte DB Eintrag aktualisieren
-			$strSQLUpdate = "UPDATE tbl_user SET password=MD5('$chkInsPasswdNew1'), last_login=NOW() WHERE username='".$_SESSION['username']."'";
-			$booReturn = $myDBClass->insertData($strSQLUpdate);
-			if ($booReturn == true) {
-				$myDataClass->writeLog($LANG['logbook']['pwdchanged']);
-				// Neues Login erzwingen
-				$_SESSION['username'] = "";
-				header("Location: ".$SETS['path']['protocol']."://".$_SERVER['HTTP_HOST'].$SETS['path']['root']."index.php");
-			} else {
-				$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
-			}
+  // Passwort prÃ¼fen
+  $strSQL    = "SELECT * FROM `tbl_user` WHERE `username`='".$_SESSION['username']."' AND `password`=MD5('$chkInsPasswdOld')";
+  $booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
+  if ($booReturn == false) {
+    $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+  } else if ($intDataCount == 1) {
+    if (($chkInsPasswdNew1 === $chkInsPasswdNew2) && (strlen($chkInsPasswdNew1) >=5)) {
+      // Letzte DB Eintrag aktualisieren
+      $strSQLUpdate = "UPDATE `tbl_user` SET `password`=MD5('$chkInsPasswdNew1'), `last_login`=NOW() WHERE `username`='".$_SESSION['username']."'";
+      $booReturn = $myDBClass->insertData($strSQLUpdate);
+      if ($booReturn == true) {
+        $myDataClass->writeLog(gettext('Password successfully modified'));
+        // Neues Login erzwingen
+        $_SESSION['username'] = "";
+        header("Location: ".$SETS['path']['protocol']."://".$_SERVER['HTTP_HOST'].$SETS['path']['root']."index.php");
+      } else {
+        $strMessage .= gettext('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+      }
 
-		} else {
-			// Neues Passwort ungültig
-			$strMessage .= $LANG['user']['passwordwrong'];
-		}
-	} else {
-		// Altes Passwort falsch
-		$strMessage .= $LANG['user']['oldpwfailed'];
-	}	
+    } else {
+      // Neues Passwort ungÃ¼ltig
+      $strMessage .= gettext('Password too short or password fields unequally!');
+    }
+  } else {
+    // Altes Passwort falsch
+    $strMessage .= gettext('Old password is wrong');
+  }
 } else if (isset($_POST['submit'])) {
-	// Passwort falsch
-	$strMessage .= $LANG['db']['datamissing'];
+  // Passwort falsch
+  $strMessage .= gettext('Database entry failed! Not all necessary data filled in!');
 }
-
 //
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['user']['pwchange']);
-$maintp->parse("header");
-$maintp->show("header");
+// Header ausgeben
+// ===============
+echo $tplHeaderVar;
 //
 // Menu aufbauen
 // =============
@@ -86,15 +84,14 @@ $myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Content einbinden
 // =================
-foreach($LANG['user'] AS $key => $value) {
-	$conttp->setVariable("LANG_".strtoupper($key),$value);
+foreach($arrDescription AS $elem) {
+  $conttp->setVariable($elem['name'],$elem['string']);
 }
-$conttp->setVariable("LANG_SAVE",$LANG['admintable']['save']);
-$conttp->setVariable("LANG_ABORT",$LANG['admintable']['abort']);
-$conttp->setVariable("LANG_MUSTDATA",$LANG['admintable']['mustdata']);
-foreach($LANG['formchecks'] AS $key => $value) {
-	$conttp->setVariable(strtoupper($key),$value);
-}
+$conttp->setVariable("LANG_SAVE",gettext('Save'));
+$conttp->setVariable("LANG_ABORT",gettext('Abort'));
+$conttp->setVariable("FILL_ALLFIELDS",gettext('Please fill in all fields marked with an *'));
+$conttp->setVariable("FILL_NEW_PASSWD_NOT_EQUAL",gettext('The new passwords are not equal!'));
+$conttp->setVariable("FILL_NEW_PWDSHORT",gettext('The new password is too short - use at least 6 characters!'));
 if ($strMessage != "") $conttp->setVariable("PW_MESSAGE",$strMessage);
 $conttp->setVariable("ACTION_INSERT",$_SERVER['PHP_SELF']);
 $conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
@@ -103,7 +100,7 @@ $conttp->show("passwordsite");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

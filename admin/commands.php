@@ -5,35 +5,29 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Übersicht Befehlsdaten
-// Datei:	admin/commands.php
-// Version: 2.0.2 (Internal)
+// Project   : NagiosQL
+// Component : Admin commands overview
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: commands.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
-// error_reporting(E_ALL);
 // 
-// Menuvariabeln für diese Seite
+// Menuvariabeln fÃ¼r diese Seite
 // =============================
 $intMain 		= 4;
 $intSub  		= 0;
 $intMenu 		= 2;
-$preContent 	= "mainpages.tpl.htm";
+$preContent 	= "admin/mainpages.tpl.htm";
 //
 // Vorgabedatei einbinden
 // ======================
-$SETS 		= parse_ini_file("../config/settings.ini",TRUE);
-require($SETS['path']['physical']."functions/prepend_adm.php");
-//
-// HTML Template laden
-// ===================
-$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm4']);
-$maintp->parse("header");
-$maintp->show("header");
+require("../functions/prepend_adm.php");
 //
 // Menu aufbauen
 // =============
@@ -41,24 +35,20 @@ $myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Content einbinden
 // =================
-$conttp->setVariable("TITLE",$LANG['title']['command']);
+$conttp->setVariable("TITLE",gettext('Check commands'));
 $conttp->parse("header");
 $conttp->show("header");
-$conttp->setVariable("DESC",$LANG['admincontent']['commandtext']);
-$conttp->setVariable("STATISTICS",$LANG['admincontent']['statistic']);
-$conttp->setVariable("TYPE",$LANG['admincontent']['group']);
-$conttp->setVariable("ACTIVE",$LANG['admintable']['active']);
-$conttp->setVariable("INACTIVE",$LANG['admincontent']['inactive']);
+$conttp->setVariable("DESC",gettext('To define check and misc commands, notification commands and special commands.'));
+$conttp->setVariable("STATISTICS",gettext('Statistical datas'));
+$conttp->setVariable("TYPE",gettext('Group'));
+$conttp->setVariable("ACTIVE",gettext('Active'));
+$conttp->setVariable("INACTIVE",gettext('Inactive'));
 //
 // Statistische Daten zusammenstellen
 // ==================================
-$conttp->setVariable("NAME",$LANG['menu']['item_admsub4']);
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_checkcommand WHERE active='1'"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_checkcommand WHERE active='0'"));
-$conttp->parse("statisticrow");
-$conttp->setVariable("NAME",$LANG['menu']['item_admsub3']);
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_misccommand WHERE active='1'"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_misccommand WHERE active='0'"));
+$conttp->setVariable("NAME",gettext('Check commands'));
+$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_command WHERE active='1' AND config_id=$chkDomainId"));
+$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_command WHERE active='0' AND config_id=$chkDomainId"));
 $conttp->parse("statisticrow");
 $conttp->parse("statistics");
 $conttp->parse("main");
@@ -66,7 +56,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

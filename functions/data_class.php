@@ -5,15 +5,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
+// (c) 2008, 2009 by Martin Willisegger
 //
-// Projekt:	NagiosQL Applikation
-// Author :	Martin Willisegger
-// Datum:	12.03.2007
-// Zweck:	Datenmanipulationsklassen
-// Datei:	functions/data_class.php
-// Version: 2.0.2 (Internal)
-// SV:      $Id: data_class.php 72 2008-04-03 07:01:46Z rouven $
+// Project   : NagiosQL
+// Component : NagiosQL data processing class
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2009-04-28 15:02:27 +0200 (Di, 28. Apr 2009) $
+// Author    : $LastChangedBy: rouven $
+// Version   : 3.0.3
+// Revision  : $LastChangedRevision: 708 $
+// SVN-ID    : $Id: data_class.php 708 2009-04-28 13:02:27Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -23,1269 +24,2032 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Behandelt sämtliche Funktionen, die zur Manipulation der Konfigurationsdaten innerhalb der 
+// Behandelt sÃ¤mtliche Funktionen, die zur Manipulation der Konfigurationsdaten innerhalb der
 // Datenbank notwendig sind
-//
-// Version 2.0.2 (Internal)
-// Datum   12.03.2007 wim
 //
 // Name: nagdata
 //
 // Klassenvariabeln:
 // -----------------
-// $arrSettings:	Mehrdimensionales Array mit den globalen Konfigurationseinstellungen
-// $arrLanguage:	Mehrdimensionales Array mit den globalen Sprachstrings
-// $myDBClass:		Datenbank Klassenobjekt
-// $myVisClass:		NagiosQL Visualisierungsklasse
-// $strDBMessage	Mitteilungen des Datenbankservers
+// $arrSettings:  Mehrdimensionales Array mit den globalen Konfigurationseinstellungen
+// $myDBClass:    Datenbank Klassenobjekt
+// $myVisClass:   NagiosQL Visualisierungsklasse
+// $strDBMessage  Mitteilungen des Datenbankservers
 //
 // Externe Funktionen
 // ------------------
 // keine
-// 	
+//
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class nagdata {
-    // Klassenvariabeln deklarieren
-    var $arrSettings;					// Wird im Klassenkonstruktor gefüllt
-	var $arrLanguage;					// Wird in der Datei prepend_adm.php gefüllt
-	var $myDBClass;						// Wird in der Datei prepend_adm.php definiert
-	var $myVisClass;					// Wird in der Datei prepend_adm.php definiert
-	var $strDBMessage    = "";			// Wird Klassenintern verwendet
-	
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Klassenkonstruktor
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Tätigkeiten bei Klasseninitialisierung
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function nagdata() {
-		// Globale Einstellungen einlesen
-		$this->arrSettings = $_SESSION['SETS'];
-	}
-	
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Auswahlfeld in Kommastring berfhren
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Schreibt die per Array übergebenen Einzelwerte in einen String hintereinander 
-	//  mit Komma getrennt.
-	//
-	//  ÜÜbergabeparameter:	$arrData	Datenarray
-	//
-	//  Returnwert:			Kommagetrennter Datenstring
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function makeCommaString($arrData) {
-		$strReturn = "";
-		for($i=0;$i<count($arrData);$i++) {
-			if ($arrData[$i] != "") $strReturn .= $arrData[$i].",";	
-		}
-		return(substr($strReturn,0,-1));
-	}	
-	
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Daten in die Datenbank schreiben
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Sendet einen übergebenen SQL String an den Datenbankserver und wertet die Rückgabe
-	//  des Servers aus.
-	//
-	//  ÜÜbergabeparameter:	$strSQL					SQL Befehl
-	//
-	//  Rückgabewert:		$intDataID				ID des letzten, eingefgten Datensatzes
-	//						$this->strDBMessage		Erfolg-/Fehlermeldung
-	//
-	//  Returnwert:			0 bei Erfolg / 1 bei Misserfolg
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function dataInsert($strSQL,&$intDataID) {
-		// Daten an Datenbankserver senden
-		$booReturn = $this->myDBClass->insertData($strSQL);
-		$intDataID = $this->myDBClass->intLastId;
-		// Konnte der Datensatz erfolgreich eingefgt werden?
-		if ($booReturn == true) {
-			// Erfolgreich
-			$this->strDBMessage = $this->arrLanguage['db']['success'];
-			return(0);
-		} else {
-			// Misserfolg
-			$this->strDBMessage = $this->arrLanguage['db']['failed']."<br>".$this->myDBClass->strDBError;
-			return(1);
-		}
-	}
+  // Klassenvariabeln deklarieren
+  var $arrSettings;         // Wird im Klassenkonstruktor gefÃ¼llt
+  var $intDomainId = 0;       // Wird im Klassenkonstruktor gefÃ¼llt
+  var $myDBClass;           // Wird in der Datei prepend_adm.php definiert
+  var $myVisClass;          // Wird in der Datei prepend_adm.php definiert
+  var $strDBMessage    = "";      // Wird Klassenintern verwendet
 
     ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Relationen in die Datenbank schreiben
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Trägt die notwendigen Relationen für eine 1:n (Optional 1:n:n) Beziehung in die 
-	//  Relationstabelle ein
-	//
-	//  ÜÜbergabeparameter:	$intTabA		Tabellen-ID der Tabelle A
-	//						$intTabB		Tabellen-ID der Tabelle B (Optional: B1)
-	//						$intTabA_id		Datensatz-ID der Tabelle A
-	//						$strTabA_field	Name des Tabellenfeldes der Tabelle A
-	//						$arrTabB_id		Array aller Datensatz-IDs der Tabelle B
-	//						$intTabB2		Optional: Tabellen-ID der Tabelle B2
-	//
-	//  Returnwert:			0 bei Erfolg / 1 bei Misserfolg
-	//						Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function dataInsertRelation($intTabA,$intTabB,$intTabA_id,$strTabA_field,$arrTabB_id,$intTabB2=0) {
-		// Für jede Arrayposition einen Eintrag in die Relationstabelle vornehmen
-		foreach($arrTabB_id AS $elem) {
-			// Leere Werte ausblenden
-			if (($elem == 0) && ($intTabB2 == 0)) continue;
-			// Normale oder spezielle Relation?
-			if ($intTabB2 == 0) {
-				// SQL Statement definieren
-				$strSQL = "INSERT INTO tbl_relation SET tbl_A=$intTabA, tbl_B=$intTabB, 
-						   tbl_A_id=$intTabA_id, tbl_A_field='$strTabA_field', tbl_B_id=$elem";
-			} else {
-				// Bei der speziellen Relation werden die IDs in der Form B1_ID.B2_ID bergeben
-				$arrValues = explode(".",$elem);
-				// Falls Übergabewert ein "*" ist, eine 0 als B1_ID eintragen
-				if ($arrValues[0] == "*") $arrValues[0] = 0;
-				// SQL Statement definieren
-				$strSQL = "INSERT INTO tbl_relation_special SET tbl_A=$intTabA, tbl_B1=$intTabB, tbl_B2=$intTabB2, 
-						   tbl_A_id=$intTabA_id, tbl_A_field='$strTabA_field', tbl_B1_id=".$arrValues[0].", tbl_B2_id=".$arrValues[1];
-			}
-			// Daten an Datenbankserver senden
-			$intReturn = $this->dataInsert($strSQL,$intDataID);
-			if ($intReturn != 0) return(1);
-		}
-		return(0);
-	}
+  //  Klassenkonstruktor
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  TÃ¤tigkeiten bei Klasseninitialisierung
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function nagdata() {
+    // Globale Einstellungen einlesen
+    $this->arrSettings = $_SESSION['SETS'];
+    if (isset($_SESSION['domain'])) $this->intDomainId = $_SESSION['domain'];
+  }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Daten in die Datenbank schreiben
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Sendet einen Ã¼bergebenen SQL String an den Datenbankserver und wertet die RÃ¼ckgabe
+  //  des Servers aus.
+  //
+  //  Ãœbergabeparameter:  $strSQL         SQL Befehl
+  //
+  //  RÃ¼ckgabewert:   $intDataID        ID des letzten, eingefÃ¼gten Datensatzes
+  //            $this->strDBMessage   Erfolg-/Fehlermeldung
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataInsert($strSQL,&$intDataID) {
+    // Daten an Datenbankserver senden
+    $booReturn = $this->myDBClass->insertData($strSQL);
+    $intDataID = $this->myDBClass->intLastId;
+    // Konnte der Datensatz erfolgreich eingefÃ¼gt werden?
+    if ($booReturn == true) {
+      // Erfolgreich
+      $this->strDBMessage = gettext('Data were successfully inserted to the data base!');
+      return(0);
+    } else {
+      // Misserfolg
+      $this->strDBMessage = gettext('Error while inserting the data to the data base:')."<br>".$this->myDBClass->strDBError;
+      return(1);
+    }
+  }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Daten aus Datenbank lÃ¶schen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  LÃ¶scht einen Datensatz oder mehrere DatensÃ¤tze aus einer Datentabelle. Wahlweise kann
+  //  eine einzelne Datensatz ID angegeben werden oder die Werte der mittels $_POST['chbId_n']
+  //  Ã¼bergebenen Parameter ausgewertet werden, wobei "n" der Datensatz ID entsprechen muss.
+  //
+  //  Diese Funktion lÃ¶scht nur die Daten aus einer einzelnen Tabelle!
+  //
+  //  Ãœbergabeparameter:  $strTableName Tabellenname
+  //            $strKeyField  SchlÃ¼sselfeld (Feldname, der die Datensatz ID enthÃ¤lt)
+  //            $_POST[]    Formularausgabe (Checkboxen "chbId_n" n=DBId)
+  //            $intDataId    Einzelne Datensatz ID, welche zu lÃ¶schen ist
+  //            $intTableId   Tabellen Id bei Spezialrelationen (Templates)
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataDeleteEasy($strTableName,$strKeyField,$intDataId = 0,$intTableId = 0) {
+    // Variabeln deklarieren
+    $this->strDBMessage = "";
+    // Sonderregel fÃ¼r Tabellen mit "nodelete" Zellen
+    if (($strTableName == "tbl_domain") || ($strTableName == "tbl_user")) {
+      $strNoDelete = "AND `nodelete` <> '1'";
+    } else {
+      $strNoDelete = "";
+    }
+    // Sonderregel fÃ¼r Templatelinkabellen
+    if ($intTableId != 0) {
+      $strTableId = "AND `idTable` = $intTableId";
+    } else {
+      $strTableId = "";
+    }
+    // Einzelnen Datensatz lÃ¶schen
+    if ($intDataId != 0) {
+      // Bei Hosts auch das Konfigurationsfile lÃ¶schen
+      if ($strTableName == "tbl_host") {
+        $strSQL    = "SELECT `host_name` FROM `tbl_host` WHERE `id` = $intDataId";
+        $strHost   = $this->myDBClass->getFieldData($strSQL);
+        $intReturn = $this->myConfigClass->moveFile("host",$strHost.".cfg");
+        if ($intReturn == 0) {
+          $this->strMessage .=  gettext('The assigned, no longer used configuration files were deleted successfully!');
+          $this->writeLog(gettext('Host file deleted:')." ".$strHost.".cfg");
+        } else {
+          $this->strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
+        }
+      }
+      // Bei Services auch das Konfigurationsfile lÃ¶schen
+      if ($strTableName == "tbl_service") {
+        $strSQL     = "SELECT `config_name` FROM `tbl_service` WHERE `id` = $intDataId";
+        $strService = $this->myDBClass->getFieldData($strSQL);
+        $strSQL     = "SELECT * FROM `tbl_service` WHERE `config_name` = '$strService'";
+        $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+        if ($intDataCount == 1) {
+          $intReturn = $this->myConfigClass->moveFile("service",$strService.".cfg");
+          if ($intReturn == 0) {
+            $this->strMessage .=  gettext('The assigned, no longer used configuration files were deleted successfully!');
+            $this->writeLog(gettext('Host file deleted:')." ".$strService.".cfg");
+          } else {
+            $this->strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
+          }
+        }
+      }
+      $strSQL = "DELETE FROM `".$strTableName."` WHERE `".$strKeyField."` = $intDataId $strNoDelete $strTableId";
+      $booReturn = $this->myDBClass->insertData($strSQL);
+      // Fehlerbehandlung
+      if ($booReturn == false) {
+        $this->strDBMessage .= gettext('Delete failed because a database error:')."<br>".mysql_error();
+        return(1);
+      } else if ($this->myDBClass->intAffectedRows == 0) {
+        //$this->strDBMessage .= gettext('No data deleted. Probably the dataset does not exist or it is protected from delete.');
+        return(0);
+      } else {
+        $this->strDBMessage .= gettext('Dataset successfully deleted. Affected rows:')." ".$this->myDBClass->intAffectedRows;
+        $this->writeLog(gettext('Delete dataset id:')." $intDataId ".gettext('- from table:')." $strTableName ".gettext('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
+        return(0);
+      }
+    } else {
+    // Mehrere DatensÃ¤tze lÃ¶schen
+      $strSQL = "SELECT `id` FROM `".$strTableName."` WHERE 1=1 $strNoDelete";
+      $booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+      if ($intDataCount != 0) {
+        $intDeleteCount = 0;
+        foreach ($arrData AS $elem) {
+          $strChbName = "chbId_".$elem['id'];
+          // wurde der aktuelle Datensatz zum lÃ¶schen markiert?
+          if (isset($_POST[$strChbName]) && ($_POST[$strChbName] == "on")) {
+            // Bei Hosts auch das Konfigurationsfile lÃ¶schen
+            if ($strTableName == "tbl_host") {
+              $strSQL    = "SELECT `host_name` FROM `tbl_host` WHERE `id` = ".$elem['id'];
+              $strHost   = $this->myDBClass->getFieldData($strSQL);
+              $intReturn = $this->myConfigClass->moveFile("host",$strHost.".cfg");
+              if ($intReturn == 0) {
+                if ($intDeleteCount == 0) {
+                  $this->strMessage .=  gettext('The assigned, no longer used configuration files were deleted successfully!');
+                }
+                $this->writeLog(gettext('Host file deleted:')." ".$strHost.".cfg");
+              } else {
+                $this->strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
+              }
+            }
+            // Bei Services auch das Konfigurationsfile lÃ¶schen
+            if ($strTableName == "tbl_service") {
+              $strSQL     = "SELECT `config_name` FROM `tbl_service` WHERE `id` = ".$elem['id'];
+              $strService = $this->myDBClass->getFieldData($strSQL);
+              $strSQL     = "SELECT * FROM `tbl_service` WHERE `config_name` = '$strService'";
+              $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+              if ($intDataCount == 1) {
+                $intReturn = $this->myConfigClass->moveFile("host",$strHost.".cfg");
+                if ($intReturn == 0) {
+                  if ($intDeleteCount == 0) {
+                    $this->strMessage .=  gettext('The assigned, no longer used configuration files were deleted successfully!');
+                  }
+                  $this->writeLog(gettext('Host file deleted:')." ".$strService.".cfg");
+                } else {
+                  $this->strMessage .=  gettext('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
+                }
+              }
+            }
+            $strSQL = "DELETE FROM `".$strTableName."` WHERE `".$strKeyField."` = ".$elem['id']." $strTableId";
+            $booReturn = $this->myDBClass->insertData($strSQL);
+            // Fehlerbehandlung
+            if ($booReturn == false) {
+              $this->strDBMessage .= gettext('Delete failed because a database error:')."<br>".mysql_error();
+              return(1);
+            } else {
+              $intDeleteCount = $intDeleteCount + $this->myDBClass->intAffectedRows;
+            }
+          }
+        }
+        // Mitteilungen ausgeben
+        if ($intDeleteCount == 0) {
+          //$this->strDBMessage .= gettext('No data deleted. Probably the dataset does not exist or it is protected from delete.');
+          return(0);
+        } else {
+          $this->strDBMessage .= gettext('Dataset successfully deleted. Affected rows:')." ".$intDeleteCount;
+          $this->writeLog(gettext('Delete data from table:')." $strTableName ".gettext('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
+          return(0);
+        }
+      } else {
+        $this->strDBMessage .= gettext('No data deleted. Probably the dataset does not exist or it is protected from delete.');
+        return(1);
+      }
+    }
+  }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Daten komplett aus Datenbank lÃ¶schen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  LÃ¶scht einen Datensatz oder mehrere DatensÃ¤tze aus einer Datentabelle. Wahlweise kann
+  //  eine einzelne Datensatz ID angegeben werden oder die Werte der mittels $_POST['chbId_n']
+  //  Ã¼bergebenen Parameter ausgewertet werden, wobei "n" der Datensatz ID entsprechen muss.
+  //
+  //  Diese Funktion lÃ¶scht nur die Daten aus einer einzelnen Tabelle!
+  //
+  //  Ãœbergabeparameter:  $strTableName Tabellenname
+  //            $_POST[]    Formularausgabe (Checkboxen "chbId_n" n=DBId)
+  //            $intDataId    Einzelne Datensatz ID, welche zu lÃ¶schen ist
+  //            $intForce   LÃ¶schen erzwingen 0=Nein, 1=Ja
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataDeleteFull($strTableName,$intDataId = 0,$intForce = 0) {
+    // Alle Relationen holen
+    $this->fullTableRelations($strTableName,$arrRelations);
+    // Einzelnen Datensatz lÃ¶schen
+    if ($intDataId != 0) {
+      $strChbName = "chbId_".$intDataId;
+      $_POST[$strChbName] = "on";
+    }
+    // DatensÃ¤tze lÃ¶schen
+    $strSQL = "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId;
+    $booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+    if ($intDataCount != 0) {
+      $intDeleteCount = 0;
+      $intFileRemoved = 0;
+      $strFileMessage = "";
+      foreach ($arrData AS $elem) {
+        $strChbName = "chbId_".$elem['id'];
+        // wurde der aktuelle Datensatz zum lÃ¶schen markiert?
+        if (isset($_POST[$strChbName]) && ($_POST[$strChbName] == "on")) {
+          // PrÃ¼fen, ob der Host gelÃ¶scht werden kann
+          if ($this->infoRelation($strTableName,$elem['id'],"id") != 0) {
+            // Variabeln deklarieren
+            $this->strDBMessage = "";
+          } else {
+            // Variabeln deklarieren
+            $this->strDBMessage = "";
+            // Relationen lÃ¶schen
+            foreach($arrRelations AS $rel) {
+              $strSQL = "";
+              // Flags auflÃ¶sen
+              $arrFlags = explode(",",$rel['flags']);
+              if ($arrFlags[3] == 1) {
+                $strSQL = "DELETE FROM `".$rel['tableName']."` WHERE `".$rel['fieldName']."`=".$elem['id'];
+              }
+              if ($arrFlags[3] == 0) {
+                if ($arrFlags[2] == 0) {
+                  $strSQL = "DELETE FROM `".$rel['tableName']."` WHERE `".$rel['fieldName']."`=".$elem['id'];
+                } else if ($arrFlags[2] == 2) {
+                  $strSQL = "UPDATE `".$rel['tableName']."` SET `".$rel['fieldName']."`=0 WHERE `".$rel['fieldName']."`=".$elem['id'];
+                }
+              }
+              if ($arrFlags[3] == 2) {
+                $strSQL   = "SELECT * FROM `".$rel['tableName']."` WHERE `idMaster`=".$elem['id'];
+                $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+                if ($intDataCount != 0) {
+                  foreach ($arrData AS $vardata) {
+                    $strSQL   = "DELETE FROM `tbl_variabledefinition` WHERE `id`=".$vardata['idSlave'];
+                    $booReturn  = $this->myDBClass->insertData($strSQL);
+                  }
+                }
+                $strSQL    = "DELETE FROM `".$rel['tableName']."` WHERE `idMaster`=".$elem['id'];
+              }
+              if ($arrFlags[3] == 3) {
+                $strSQL   = "DELETE FROM `tbl_timedefinition` WHERE `tipId`=".$elem['id'];
+                $booReturn  = $this->myDBClass->insertData($strSQL);
+                //$strSQL    = "DELETE FROM `".$rel['tableName']."` WHERE `idMaster`=".$elem['id'];
+              }
+              if ($strSQL != "") {
+                $booReturn  = $this->myDBClass->insertData($strSQL);
+              }
+            }
+            // Bei Hosts auch das Konfigurationsfile lÃ¶schen
+            if ($strTableName == "tbl_host") {
+              $strSQL    = "SELECT `host_name` FROM `tbl_host` WHERE `id`=".$elem['id'];
+              $strHost   = $this->myDBClass->getFieldData($strSQL);
+              $intReturn = $this->myConfigClass->moveFile("host",$strHost.".cfg");
+              if ($intReturn == 0) {
+                $intFileRemoved = 1;
+                $strFileMessage .=  "<br>".gettext('The assigned, no longer used configuration files were deleted successfully!');
+                $this->writeLog(gettext('Host file deleted:')." ".$strHost.".cfg");
+              } else {
+                $intFileRemoved = 2;
+                $strFileMessage .=  "<br>".gettext('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
+              }
+            }
+            // Bei Services auch das Konfigurationsfile lÃ¶schen
+            if ($strTableName == "tbl_service") {
+              $strSQL     = "SELECT `config_name` FROM `tbl_service` WHERE `id`=".$elem['id'];
+              $strService = $this->myDBClass->getFieldData($strSQL);
+              $strSQL     = "SELECT * FROM `tbl_service` WHERE `config_name` = '$strService'";
+              $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+              if ($intDataCount == 1) {
+                $intReturn = $this->myConfigClass->moveFile("service",$strService.".cfg");
+                if ($intReturn == 0) {
+                  $intFileRemoved = 1;
+                  $strFileMessage .=  "<br>".gettext('The assigned, no longer used configuration files were deleted successfully!');
+                  $this->writeLog(gettext('Host file deleted:')." ".$strService.".cfg");
+                } else {
+                  $intFileRemoved = 2;
+                  $strFileMessage .=  "<br>".gettext('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
+                }
+              }
+            }
+            // Haupteintrag lÃ¶schen
+            $strSQL = "DELETE FROM `".$strTableName."` WHERE `id`=".$elem['id'];
+            $booReturn  = $this->myDBClass->insertData($strSQL);
+            $intDeleteCount++;
+          }
+        }
+      }
+      // Mitteilungen ausgeben
+      if ($intDeleteCount == 0) {
+        $this->strDBMessage .= gettext('No data deleted. Probably the dataset does not exist, is protected from deletion or has relations to other configurations which cannot be deleted. Use the "info" function for detailed informations about relations!');
+        return(1);
+      } else {
+        $this->strDBMessage .= gettext('Dataset successfully deleted. Affected rows:')." ".$intDeleteCount;
+        $this->writeLog(gettext('Delete data from table:')." $strTableName ".gettext('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
+        $this->strDBMessage .= $strFileMessage;
+        return(0);
+      }
+    } else {
+      $this->strDBMessage .= gettext('No data deleted. Probably the dataset does not exist or it is protected from deletion.');
+      return(1);
+    }
+  }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: DatensÃ¤tze kopieren
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Kopiert einen oder mehrere DatensÃ¤tze in einer Datentabelle. Wahlweise kann eine
+  //  einzelne Datensatz ID angegeben werden oder die Werte der mittels $_POST['chbId_n']
+  //  Ã¼bergebenen Parameter ausgewertet werden, wobei "n" der Datensatz ID entsprechen muss.
+  //
+  //  Ãœbergabeparameter:  $strTableName Tabellenname
+  //            $strKeyField  Das SchlÃ¼sselfeld der Tabelle
+  //            $_POST[]    Formularausgabe (Checkboxen "chbId_n" n=DBId)
+  //            $intDataId    Einzelne Datensatz ID, welche zu lÃ¶schen ist
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataCopyEasy($strTableName,$strKeyField,$intDataId = 0) {
+    // Variabeln deklarieren
+    $intError     = 0;
+    $intNumber      = 0;
+    $this->strDBMessage = "";
+
+    // Alle Datensatz-IDs der Zieltabelle abfragen
+    $booReturn = $this->myDBClass->getDataArray("SELECT `id` FROM `".$strTableName."` ORDER BY `id`",$arrData,$intDataCount);
+    if ($booReturn == false) {
+      $this->strDBMessage = gettext('Error while selecting data from database:')."<br>".$this->myDBClass->strDBError."<br>";
+      return(1);
+    } else if ($intDataCount != 0) {
+      // DatensÃ¤tze zurÃ¼ckgeliefert
+      for ($i=0;$i<$intDataCount;$i++) {
+        // FormularÃ¼bergabeparameter zusammenstellen
+        $strChbName = "chbId_".$arrData[$i]['id'];
+        // Falls ein $_POST Parameter mit diesem Namen oder explizit diese Id bergeben wurde
+        if ((isset($_POST[$strChbName]) && ($intDataId == 0)) || ($intDataId == $arrData[$i]['id'])) {
+          // Daten des entsprechenden Eintrages holen
+          $this->myDBClass->getSingleDataset("SELECT * FROM `".$strTableName."` WHERE `id`=".$arrData[$i]['id'],$arrData[$i]);
+          // Namenszusatz erstellen
+          for ($y=1;$y<=$intDataCount;$y++) {
+            $strNewName = $arrData[$i][$strKeyField]." ($y)";
+            $booReturn = $this->myDBClass->getFieldData("SELECT `id` FROM `".$strTableName."` WHERE `".$strKeyField."`='$strNewName'");
+            // Falls den neue Name einmalig ist, abbrechen
+            if ($booReturn == false) break;
+          }
+          // Entsprechend dem Tabellennamen den Datenbank-Insertbefehl zusammenstellen
+          $strSQLInsert = "INSERT INTO `".$strTableName."` SET `".$strKeyField."`='$strNewName',";
+          foreach($arrData[$i] AS $key => $value) {
+            if (($key != $strKeyField) && ($key != "active") && ($key != "last_modified") && ($key != "id")) {
+              // NULL Werte nach Datenfeld setzen
+              if (($key == "normal_check_interval")   && ($value == ""))  $value="NULL";
+              if (($key == "retry_check_interval")  && ($value == ""))  $value="NULL";
+              if (($key == "max_check_attempts")    && ($value == ""))  $value="NULL";
+              if (($key == "low_flap_threshold")    && ($value == ""))  $value="NULL";
+              if (($key == "high_flap_threshold")   && ($value == ""))  $value="NULL";
+              if (($key == "freshness_threshold")   && ($value == ""))  $value="NULL";
+              if (($key == "notification_interval")   && ($value == ""))  $value="NULL";
+              if (($key == "first_notification_delay")&& ($value == ""))  $value="NULL";
+              if (($key == "check_interval")      && ($value == ""))  $value="NULL";
+              if (($key == "retry_interval")      && ($value == ""))  $value="NULL";
+              if (($key == "access_rights")       && ($value == ""))  $value="NULL";
+              // NULL Werte nach Tabellenname setzen
+              if (($strTableName == "tbl_hostextinfo") && ($key == "host_name"))    $value="NULL";
+              if (($strTableName == "tbl_serviceextinfo") && ($key == "host_name"))   $value="NULL";
+              // Passwort fÃ¼r kopierten Benutzer nicht bernehmen
+              if (($strTableName == "tbl_user") && ($key == "password"))        $value="xxxxxxx";
+              // LÃ¶schschutz / Webserverauthentification nicht Ã¼bernehmen
+              if ($key == "nodelete")                         $value="0";
+              if ($key == "wsauth")                           $value="0";
+              // Sofern der Datenwert nicht "NULL" ist, den Datenwert in Hochkommas einschliessen
+              if ($value != "NULL") {
+                $strSQLInsert .= "`".$key."`='".addslashes($value)."',";
+              } else {
+                $strSQLInsert .= "`".$key."`=".$value.",";
+              }
+            }
+          }
+          $strSQLInsert .= "`active`='0', `last_modified`=NOW()";
+          // Kopie in die Datenbank eintragen
+          $intCheck    = 0;
+          $booReturn   = $this->myDBClass->insertData($strSQLInsert);
+          $intMasterId = $this->myDBClass->intLastId;
+          if ($booReturn == false) $intCheck++;
+
+          // Eventuell vorhandene Relationen kopieren
+          if (($this->tableRelations($strTableName,$arrRelations) != 0) && ($intCheck == 0)){
+			foreach ($arrRelations AS $elem) {
+              if (($elem['type'] != "3") && ($elem['type'] != "5") && ($elem['type'] != "1")) {
+                // Ist Feld nicht auf "None" oder "*" gesetzt?
+                if ($arrData[$i][$elem['fieldName']] == 1) {
+                  $strSQL = "SELECT `idSlave` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
+                  $booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
+                  if ($intRelDataCount != 0) {
+                    for ($y=0;$y<$intRelDataCount;$y++) {
+                      $strSQLRel = "INSERT INTO `".$elem['linktable']."` SET `idMaster`=$intMasterId, `idSlave`=".$arrRelData[$y]['idSlave'];
+                      $booReturn   = $this->myDBClass->insertData($strSQLRel);
+                      if ($booReturn == false) $intCheck++;
+                    }
+                  }
+                }
+              } else if (($elem['type'] != "5") && ($elem['type'] != "1")) {
+                // Ist Feld nicht auf "None" oder "*" gesetzt?
+                if ($arrData[$i][$elem['fieldName']] == 1) {
+                  $strSQL = "SELECT `idSlave`,`idSort`,`idTable` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
+                  $booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
+                  if ($intRelDataCount != 0) {
+                    for ($y=0;$y<$intRelDataCount;$y++) {
+                      $strSQLRel = "INSERT INTO `".$elem['linktable']."` SET `idMaster`=$intMasterId, `idSlave`=".$arrRelData[$y]['idSlave'].",
+                                `idTable`=".$arrRelData[$y]['idTable'].", `idSort`=".$arrRelData[$y]['idSort'];
+                      $booReturn   = $this->myDBClass->insertData($strSQLRel);
+                      if ($booReturn == false) $intCheck++;
+                    }
+                  }
+                }
+              } else if ($elem['type'] != "1") {
+                // Ist Feld nicht auf "None" oder "*" gesetzt?
+                if ($arrData[$i][$elem['fieldName']] == 1) {
+                  $strSQL = "SELECT `idSlaveH`,`idSlaveHG`,`idSlaveS` FROM `".$elem['linktable']."` WHERE `idMaster` = ".$arrData[$i]['id'];
+                  $booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
+                  if ($intRelDataCount != 0) {
+                    for ($y=0;$y<$intRelDataCount;$y++) {
+                      $strSQLRel = "INSERT INTO `".$elem['linktable']."` SET `idMaster`=$intMasterId, `idSlaveH`=".$arrRelData[$y]['idSlaveH'].",
+                                `idSlaveHG`=".$arrRelData[$y]['idSlaveHG'].",`idSlaveS`=".$arrRelData[$y]['idSlaveS'];
+                      $booReturn   = $this->myDBClass->insertData($strSQLRel);
+                      if ($booReturn == false) $intCheck++;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          // Untertabellenwerte bei tbl_timeperiod kopieren
+          if ($strTableName == "tbl_timeperiod") {
+            $strSQL = "SELECT * FROM `tbl_timedefinition` WHERE `tipId`=".$arrData[$i]['id'];
+            $booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelDataTP,$intRelDataCountTP);
+            if ($intRelDataCountTP != 0) {
+              foreach ($arrRelDataTP AS $elem) {
+                $strSQLRel = "INSERT INTO `tbl_timedefinition` (`tipId`,`definition`,`range`,`last_modified`)
+                        VALUES ($intMasterId,'".$elem['definition']."','".$elem['range']."',now())";
+                $booReturn   = $this->myDBClass->insertData($strSQLRel);
+                if ($booReturn == false) $intCheck++;
+              }
+            }
+          }
+          // Logfile schreiben
+          if ($intCheck != 0) {
+            // Misserfolg
+            $intError++;
+            $this->writeLog(gettext('Data set copy failed - table [new name]:')." ".$strTableName." [".$strNewName."]");
+          } else {
+            // Erfolg
+            $this->writeLog(gettext('Data set copied - table [new name]:')." ".$strTableName." [".$strNewName."]");
+          }
+          $intNumber++;
+        }
+      }
+    }
+    // Fehlerbehandlung
+    if ($intNumber > 0) {
+      if ($intError == 0) {
+        // Erfolg
+        $this->strDBMessage = gettext('Data were successfully inserted to the data base!');
+        return(0);
+      } else {
+        // Misserfolg
+        $this->strDBMessage = gettext('Error while inserting the data to the data base:')."<br>".$this->myDBClass->strDBError;
+        return(1);
+      }
+    }
+  }
+
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Logbuch schreiben
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Speichert einen Ã¼bergebenen String im Logbuch
+  //
+  //  Ãœbergabeparameter:  $strMessage       Mitteilung
+  //            $_SESSION['username'] Benutzername
+  //
+  //  Returnwert:     0 bei Erfolg, 1 bei Misserfolg
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function writeLog($strMessage) {
+    // Logstring in Datenbank schreiben
+    $strUserName = (isset($_SESSION['username']) && ($_SESSION['username'] != ""))  ? $_SESSION['username'] : "unknown";
+    $strDomain   = $this->myDBClass->getFieldData("SELECT `domain` FROM `tbl_domain` WHERE `id`=".$this->intDomainId);
+    $booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$_SERVER["REMOTE_ADDR"]."', `domain`='$strDomain', `entry`='".addslashes(utf8_encode($strMessage))."'");
+    if ($booReturn == false) return(1);
+    return(0);
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Mussdaten prÃ¼fen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  ÃœberprÃ¼ft, ob mit dem mitgelieferten Datensatz in einer anderen Tabelle eine Relation
+  //  besteht, die nicht gelÃ¶scht werden darf. Alle gefundenen Relationen werden als
+  //  Resultatearray zurÃ¼ckgegeben.
+  //
+  //  Ãœbergabeparameter:  $strTable   Tabellenname
+  //            $intDataId    Daten ID
+  //
+  //  RÃ¼ckgabewert:   $arrInfo    Array mit den betroffenen Datenfeldern (Tabelle, Name)
+  //
+  //  Returnwert:     0 wenn keine Relation gefunden wurde
+  //            1 wenn mindestens eine Relation gefunden wurde
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function checkMustdata($strTableName,$intDataId,&$arrInfo) {
+    // TODO: Neues Regelwerk erstellen
+    return 0;
+  }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Relationen einer Datentabelle zurÃ¼ckliefern
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Gibt eine Liste aus mit allen Datenfeldern einer Tabelle, die eine 1:1 oder 1:n
+  //  Beziehung zu einer anderen Tabelle haben.
+  //
+  //  Ãœbergabeparameter:  $strTable   Tabellenname
+  //
+  //  RÃ¼ckgabewert:   $arrRelations Array mit den betroffenen Datenfeldern
+  //
+  //  Returnwert:     0 bei keinem Feld mit Relation
+  //            1 bei mindestens einem Feld mit Relation
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function tableRelations($strTable,&$arrRelations) {
+    $arrRelations = "";
+    switch ($strTable) {
+      case "tbl_command":   return(0);
+      case "tbl_timeperiod":      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "exclude",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "tbl_lnkTimeperiodToTimeperiod",
+                                  'type'    => 2);
+                      return(1);
+      case "tbl_contact":       $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "host_notification_commands",
+                                  'target'  => "command_name",
+                                  'linktable' => "tbl_lnkContactToCommandHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "service_notification_commands",
+                                  'target'  => "command_name",
+                                  'linktable' => "tbl_lnkContactToCommandService",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contactgroups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkContactToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "host_notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "service_notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName1' => "tbl_contacttemplate",
+                                  'tableName2' => "tbl_contact",
+                                  'fieldName'  => "use_template",
+                                  'target1'    => "template_name",
+                                  'target2'    => "name",
+                                  'linktable'  => "tbl_lnkContactToContacttemplate",
+                                  'type'     => 3);
+                      $arrRelations[] = array('tableName' => "tbl_variabledefinition",
+                                  'fieldName' => "use_variables",
+                                  'target'  => "name",
+                                  'linktable' => "tbl_lnkContactToVariabledefinition",
+                                  'type'    => 4);
+                      return(1);
+      case "tbl_contacttemplate":   $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "host_notification_commands",
+                                  'target'  => "command_name",
+                                  'linktable' => "tbl_lnkContacttemplateToCommandHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "service_notification_commands",
+                                  'target'  => "command_name",
+                                  'linktable' => "tbl_lnkContacttemplateToCommandService",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contactgroups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkContacttemplateToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "host_notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "service_notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName1' => "tbl_contacttemplate",
+                                  'tableName2' => "tbl_contact",
+                                  'fieldName'  => "use_template",
+                                  'target1'    => "template_name",
+                                  'target2'    => "name",
+                                  'linktable'  => "tbl_lnkContacttemplateToContacttemplate",
+                                  'type'     => 3);
+                      $arrRelations[] = array('tableName' => "tbl_variabledefinition",
+                                  'fieldName' => "use_variables",
+                                  'target'  => "name",
+                                  'linktable' => "tbl_lnkContacttemplateToVariabledefinition",
+                                  'type'    => 4);
+                      return(1);
+      case "tbl_contactgroup":    $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "members",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkContactgroupToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contactgroup_members",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkContactgroupToContactgroup",
+                                  'type'    => 2);
+                      return(1);
+      case "tbl_hosttemplate":    $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "parents",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkHosttemplateToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroups",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkHosttemplateToHostgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contact_groups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkHosttemplateToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "contacts",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkHosttemplateToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "check_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "check_command",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "event_handler",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName1' => "tbl_hosttemplate",
+                                  'tableName2' => "tbl_host",
+                                  'fieldName'  => "use_template",
+                                  'target1'    => "template_name",
+                                  'target2'    => "name",
+                                  'linktable'  => "tbl_lnkHosttemplateToHosttemplate",
+                                  'type'     => 3);
+                      $arrRelations[] = array('tableName' => "tbl_variabledefinition",
+                                  'fieldName' => "use_variables",
+                                  'target'  => "name",
+                                  'linktable' => "tbl_lnkHosttemplateToVariabledefinition",
+                                  'type'    => 4);
+                      return(1);
+      case "tbl_host":        $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "parents",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkHostToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroups",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkHostToHostgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contact_groups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkHostToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "contacts",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkHostToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "check_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "check_command",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "event_handler",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName1' => "tbl_hosttemplate",
+                                  'tableName2' => "tbl_host",
+                                  'fieldName'  => "use_template",
+                                  'target1'    => "template_name",
+                                  'target2'    => "name",
+                                  'linktable'  => "tbl_lnkHostToHosttemplate",
+                                  'type'     => 3);
+                      $arrRelations[] = array('tableName' => "tbl_variabledefinition",
+                                  'fieldName' => "use_variables",
+                                  'target'  => "name",
+                                  'linktable' => "tbl_lnkHostToVariabledefinition",
+                                  'type'    => 4);
+                      return(1);
+      case "tbl_hostgroup":     $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "members",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkHostgroupToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_members",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkHostgroupToHostgroup",
+                                  'type'    => 2);
+                      return(1);
+      case "tbl_servicetemplate":   $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkServicetemplateToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkServicetemplateToHostgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_servicegroup",
+                                  'fieldName' => "servicegroups",
+                                  'target'  => "servicegroup_name",
+                                  'linktable' => "tbl_lnkServicetemplateToServicegroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contact_groups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkServicetemplateToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "contacts",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkServicetemplateToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "check_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "check_command",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "event_handler",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName1' => "tbl_servicetemplate",
+                                  'tableName2' => "tbl_service",
+                                  'fieldName'  => "use_template",
+                                  'target1'    => "template_name",
+                                  'target2'    => "name",
+                                  'linktable'  => "tbl_lnkServicetemplateToServicetemplate",
+                                  'type'     => 3);
+                      $arrRelations[] = array('tableName' => "tbl_variabledefinition",
+                                  'fieldName' => "use_variables",
+                                  'target'  => "name",
+                                  'linktable' => "tbl_lnkServicetemplateToVariabledefinition",
+                                  'type'    => 4);
+                      return(1);
+      case "tbl_service":       $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkServiceToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkServiceToHostgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_servicegroup",
+                                  'fieldName' => "servicegroups",
+                                  'target'  => "servicegroup_name",
+                                  'linktable' => "tbl_lnkServiceToServicegroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contact_groups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkServiceToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "contacts",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkServiceToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "check_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "check_command",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_command",
+                                  'fieldName' => "event_handler",
+                                  'target'  => "command_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName1' => "tbl_servicetemplate",
+                                  'tableName2' => "tbl_service",
+                                  'fieldName'  => "use_template",
+                                  'target1'    => "template_name",
+                                  'target2'    => "name",
+                                  'linktable'  => "tbl_lnkServiceToServicetemplate",
+                                  'type'     => 3);
+                      $arrRelations[] = array('tableName' => "tbl_variabledefinition",
+                                  'fieldName' => "use_variables",
+                                  'target'  => "name",
+                                  'linktable' => "tbl_lnkServiceToVariabledefinition",
+                                  'type'    => 4);
+                      return(1);
+      case "tbl_servicegroup":    $arrRelations[] = array('tableName1' => "tbl_host",
+                                  'tableName2' => "tbl_service",
+                                  'fieldName'  => "members",
+                                  'target1'    => "host_name",
+                                  'target2'    => "service_description",
+                                  'linktable' => "tbl_lnkServicegroupToService",
+                                  'type'     => 5);
+                      $arrRelations[] = array('tableName' => "tbl_servicegroup",
+                                  'fieldName' => "servicegroup_members",
+                                  'target'  => "servicegroup_name",
+                                  'linktable' => "tbl_lnkServicegroupToServicegroup",
+                                  'type'    => 2);
+                      return(1);
+      case "tbl_hostdependency":    $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "dependent_host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkHostdependencyToHost_DH",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkHostdependencyToHost_H",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "dependent_hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkHostdependencyToHostgroup_DH",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkHostdependencyToHostgroup_H",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "dependency_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      return(1);
+      case "tbl_hostescalation":    $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkHostescalationToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkHostescalationToHostgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "contacts",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkHostescalationToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contact_groups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkHostescalationToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "escalation_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      return(1);
+      case "tbl_hostextinfo":     $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      return(1);
+      case "tbl_servicedependency": $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "dependent_host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkServicedependencyToHost_DH",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkServicedependencyToHost_H",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "dependent_hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkServicedependencyToHostgroup_DH",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkServicedependencyToHostgroup_H",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "dependent_service_description",
+                                  'target'  => "service_description",
+                                  'linktable' => "tbl_lnkServicedependencyToService_DS",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "service_description",
+                                  'target'  => "service_description",
+                                  'linktable' => "tbl_lnkServicedependencyToService_S",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "dependency_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      return(1);
+      case "tbl_serviceescalation": $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "tbl_lnkServiceescalationToHost",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_hostgroup",
+                                  'fieldName' => "hostgroup_name",
+                                  'target'  => "hostgroup_name",
+                                  'linktable' => "tbl_lnkServiceescalationToHostgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "service_description",
+                                  'target'  => "service_description",
+                                  'linktable' => "tbl_lnkServiceescalationToService",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "contacts",
+                                  'target'  => "contact_name",
+                                  'linktable' => "tbl_lnkServiceescalationToContact",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_contactgroup",
+                                  'fieldName' => "contact_groups",
+                                  'target'  => "contactgroup_name",
+                                  'linktable' => "tbl_lnkServiceescalationToContactgroup",
+                                  'type'    => 2);
+                      $arrRelations[] = array('tableName' => "tbl_timeperiod",
+                                  'fieldName' => "escalation_period",
+                                  'target'  => "timeperiod_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      return(1);
+      case "tbl_serviceextinfo":    $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "host_name",
+                                  'target'  => "host_name",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "service_description",
+                                  'target'  => "service_description",
+                                  'linktable' => "",
+                                  'type'    => 1);
+                      return(1);
+      default:            return(0);
+    }
+  }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  //  Funktion: Relationen in die Datenbank schreiben
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  TrÃ¤gt die notwendigen Relationen fÃ¼r eine 1:n (Optional 1:n:n) Beziehung in die
+  //  Relationstabelle ein
+  //
+  //  Ãœbergabeparameter:  $intTable   Name der Linktabelle
+  //            $intMasterId  Tabellen-ID der Haupttabelle
+  //            $arrSlaveId   Array aller Datensatz-IDs der Untertabelle
+  //            $intMulti   0 = normale 1:n / 1 = 1:n:n Beziehung
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataInsertRelation($intTable,$intMasterId,$arrSlaveId,$intMulti=0) {
+    // FÃ¼r jede Arrayposition einen Eintrag in die Relationstabelle vornehmen
+    foreach($arrSlaveId AS $elem) {
+      // Leere Werte ausblenden
+      if ($elem == '0') continue;
+      // SQL Statement definieren
+      if ($intMulti != 0) {
+        $arrValues = "";
+        $arrValues = explode("::",$elem);
+        $strSQL = "INSERT INTO `".$intTable."` SET `idMaster`=$intMasterId, `idSlaveH`=".$arrValues[0].", `idSlaveHG`=".$arrValues[1].", `idSlaveS`=".$arrValues[2];
+      } else {
+        $strSQL = "INSERT INTO `".$intTable."` SET `idMaster`=$intMasterId, `idSlave`=$elem";
+      }
+      // Daten an Datenbankserver senden
+	  $intReturn = $this->dataInsert($strSQL,$intDataID);
+      if ($intReturn != 0) return(1);
+    }
+    return(0);
+  }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Relationen in der Datenbank aktualisieren
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Ändert die Relationen für eine 1:n (Optonal 1:n:n) Beziehung innerhalb der Relations-
-	//  tabelle
-	//
-	//  ÜÜbergabeparameter:	$intTabA		Tabellen-ID der Tabelle A
-	//						$intTabB		Tabellen-ID der Tabelle B (Optional: B1)
-	//						$intTabA_id		Datensatz-ID der Tabelle A
-	//						$strTabA_field	Name des Tabellenfeldes der Tabelle A
-	//						$arrTabB_id		Array aller Datensatz-IDs der Tabelle B
-	//						$intTabB2		Optional: Tabellen-ID der Tabelle B2
-	//
-	//  Returnwert:			0 bei Erfolg / 1 bei Misserfolg
-	//						Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function dataUpdateRelation($intTabA,$intTabB,$intTabA_id,$strTabA_field,$arrTabB_id,$intTabB2=0) {
-		// Alte Relationen löschen
-		$intReturn1 = $this->dataDeleteRelation($intTabA,$intTabB,$intTabA_id,$strTabA_field,$intTabB2);
-		if ($intReturn1 != 0) return(1);
-		// Neue Relationen eintragen
-		$intReturn2 = $this->dataInsertRelation($intTabA,$intTabB,$intTabA_id,$strTabA_field,$arrTabB_id,$intTabB2);
-		if ($intReturn2 != 0) return(1);
-		return(0);
-	}
+  //  Funktion: Relationen in der Datenbank aktualisieren
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Ã„ndert die Relationen fÃ¼r eine 1:n (Optonal 1:n:n) Beziehung innerhalb der Relations-
+  //  tabelle
+  //
+  //  Ãœbergabeparameter:  $intTable   Name der Linktabelle
+  //            $intMasterId  Tabellen-ID der Haupttabelle
+  //            $arrSlaveId   Array aller Datensatz-IDs der Untertabelle
+  //            $intMulti   0 = normale 1:n / 1 = 1:n:n Beziehung
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataUpdateRelation($intTable,$intMasterId,$arrSlaveId,$intMulti=0) {
+    // Alte Relationen lÃ¶schen
+    $intReturn1 = $this->dataDeleteRelation($intTable,$intMasterId);
+    if ($intReturn1 != 0) return(1);
+    // Neue Relationen eintragen
+    $intReturn2 = $this->dataInsertRelation($intTable,$intMasterId,$arrSlaveId,$intMulti);
+    if ($intReturn2 != 0) return(1);
+    return(0);
+  }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Relationen in der Datenbank lschen
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Löscht eine Relation aus der Relationstabelle
-	//
-	//  ÜÜbergabeparameter:	$intTabA		Tabellen-ID der Tabelle A
-	//						$intTabB		Tabellen-ID der Tabelle B (Optional: B1)
-	//						$intTabA_id		Datensatz-ID der Tabelle A
-	//						$strTabA_field	Name des Tabellenfeldes der Tabelle A
-	//						$intTabB2		Optional: Tabellen-ID der Tabelle B2
-	//
-	//  Returnwert:			0 bei Erfolg / 1 bei Misserfolg
-	//  				 	Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function dataDeleteRelation($intTabA,$intTabB,$intTabA_id,$strTabA_field,$intTabB2=0) {		
-		// Normale oder spezielle Relation?
-		if ($intTabB2 == 0) {
-			// SQL Statement definieren
-			$strSQL = "DELETE FROM tbl_relation WHERE tbl_A=$intTabA AND tbl_B=$intTabB
-					   AND tbl_A_id=$intTabA_id AND tbl_A_field='$strTabA_field'";
-		} else {
-			// SQL Statement definieren
-			$strSQL = "DELETE FROM tbl_relation_special WHERE tbl_A=$intTabA AND tbl_B1=$intTabB
-					   AND tbl_B2=$intTabB2 AND tbl_A_id=$intTabA_id AND tbl_A_field='$strTabA_field'";		
-		}
-		// Daten an Datenbankserver senden
-		$intReturn = $this->dataInsert($strSQL,$intDataID);
-		if ($intReturn != 0) return(1);
-		return(0);
-	}
-	
+  //  Funktion: Relationen in der Datenbank lschen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  LÃ¶scht eine Relation aus der Relationstabelle
+  //
+  //  Ãœbergabeparameter:  $intTable   Name der Linktabelle
+  //            $intMasterId  Tabellen-ID der Haupttabelle
+  //
+  //  Returnwert:     0 bei Erfolg / 1 bei Misserfolg
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function dataDeleteRelation($intTable,$intMasterId) {
+    // SQL Statement definieren
+    $strSQL = "DELETE FROM `".$intTable."` WHERE `idMaster`=$intMasterId";
+    // Daten an Datenbankserver senden
+    $intReturn = $this->dataInsert($strSQL,$intDataID);
+    if ($intReturn != 0) return(1);
+    return(0);
+  }
     ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Relationen in der Datenbank finden
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Sucht eine Relation in der Relationstabelle
-	//
-	//  ÜÜbergabeparameter:	$intTabA		Tabellen-ID der Tabelle A
-	//						$intTabB		Tabellen-ID der Tabelle B (Optional: B1)
-	//						$intTabA_id		Datensatz-ID der Tabelle A
-	//						$strTabA_field	Name des Tabellenfeldes der Tabelle A
-	//						$arrTabB_id		Array aller Datensatz-IDs der Tabelle B
-	//
-	//  Returnwert:			0 falls keine Relation / Anzahl falls Relationen gefunden
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function findRelation($intTabA,$intTabB,$intTabA_id,$strTabA_field,$intTabB_id) {
-		// SQL Statement definieren
-		$strSQL = "SELECT * FROM tbl_relation WHERE tbl_A=$intTabA AND tbl_B=$intTabB AND 
-					   tbl_A_id=$intTabA_id AND tbl_A_field='$strTabA_field' AND tbl_B_id=$intTabB_id";
-		// Daten an Datenbankserver senden
-		$intCount = $this->myDBClass->countRows($strSQL);
-		return($intCount);
-	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Assoziierte Hosts zu einer, mehreren oder allen Hostgruppen finden
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Sucht alle assoziierten Hosts zu den mitgelieferten Hostgruppen
-	//
-	//  ÜÜbergabeparameter:	$arrHostgroupId	Array mit allen gewnschten Hostgruppen
-	//						$arrResult		Resultatearray
-	//
-	//  Returnwert:			0 bei Erfolg / 1 falls Fehler aufgetreten
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function findHostsByHostgroup($arrHostgroupId,&$arrResult) {
-		// (Es ist nicht möglich, einer Hostgruppe via "*" alle Hosts zuzuordnen, es können 
-		// aber alle Hostgruppen via "*" ausgewählt werden)
-		if (in_array("*",$arrHostgroupId)) {
-			// SQL Statement definieren
-			$strSQL = "SELECT DISTINCT tbl_host.id, tbl_host.host_name 
-					   FROM tbl_hostgroup
-					   LEFT JOIN tbl_relation ON tbl_hostgroup.id = tbl_relation.tbl_A_id
-					   LEFT JOIN tbl_host ON tbl_relation.tbl_B_id = tbl_host.id 
-					   WHERE tbl_relation.tbl_A = ".$this->tableID("tbl_hostgroup")." AND
-					         tbl_relation.tbl_B = ".$this->tableID("tbl_host")." AND
-							 tbl_relation.tbl_A_field = 'members'
-					   ORDER BY tbl_host.host_name";	
-			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrResult,$intDataCount);
-			if ($booReturn == true) {return(0);} else {return(1);}
-		} else {
-			// IN Statement der WHERE Bedingung zusammenstellen
-			$strWhere = "";
-			foreach($arrHostgroupId AS $elem) {
-				$strWhere .= "'".$elem['id']."',";
-			}
-			$strWhere = substr($strWhere,0,-1);
-			// SQL Statement definieren
-			$strSQL = "SELECT DISTINCT tbl_host.id, tbl_host.host_name 
-					   FROM tbl_hostgroup
-					   LEFT JOIN tbl_relation ON tbl_hostgroup.id = tbl_relation.tbl_A_id
-					   LEFT JOIN tbl_host ON tbl_relation.tbl_B_id = tbl_host.id 
-					   WHERE tbl_relation.tbl_A = ".$this->tableID("tbl_hostgroup")." AND
-					         tbl_relation.tbl_B = ".$this->tableID("tbl_host")." AND
-							 tbl_relation.tbl_A_field = 'members' AND tbl_hostgroup.id IN ($strWhere)
-					   ORDER BY tbl_host.host_name";	
-			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrResult,$intDataCount);
-			if ($booReturn == true) {return(0);} else {return(1);}		
-		}
-	}
+  //  Funktion: Relationen in der Datenbank auslesen
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Sucht alle relationen aus der Datenbank
+  //
+  //  Ãœbergabeparameter:  $intTable   Name der Haupttabelle
+  //            $intMasterId  Tabellen-ID der Haupttabelle
+  //            $strMasterfield Feldname des Haupteintrages
+  //            $intReporting Textausgabe - 0=ja, 1=nein
+  //
+  //  Returnwert:     0 LÃ¶schen mÃ¶glich / 1 LÃ¶schen nicht mÃ¶glich
+  //            Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function infoRelation($strTable,$intMasterId,$strMasterfield,$intReporting=0) {
+    $intReturn = $this->fullTableRelations($strTable,$arrRelations);
+    $intDeletion = 0;
+    if ($intReturn == 1) {
+    	$strNewMasterfield = str_replace(',','`,`',$strMasterfield);
+      $strSQL  = "SELECT `".$strNewMasterfield."` FROM `".$strTable."` WHERE `id` = $intMasterId";
+      $this->myDBClass->getSingleDataset($strSQL,$arrSource);
+      if (substr_count($strMasterfield,",") != 0) {
+        $arrTarget = explode(",",$strMasterfield);
+        $strName = $arrSource[$arrTarget[0]]."-".$arrSource[$arrTarget[1]];
+      } else {
+        $strName = $arrSource[$strMasterfield];
+      }
+      $this->strDBMessage = gettext("<span style=\"color:#0000FF;\">Relation information for <b>").$strName.gettext("</b> of table <b>").$strTable.":</b><br></span>\n";
+      foreach ($arrRelations AS $elem) {
+        // Flags auflÃ¶sen
+        $arrFlags = explode(",",$elem['flags']);
+        if ($elem['fieldName'] == "check_command") {
+          $strSQL   = "SELECT * FROM `".$elem['tableName']."` WHERE SUBSTRING_INDEX(`".$elem['fieldName']."`,'!',1)= $intMasterId";
+        } else {
+          $strSQL   = "SELECT * FROM `".$elem['tableName']."` WHERE `".$elem['fieldName']."`= $intMasterId";
+        }
+        $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+        // Nur verwendete VerknÃ¼pfungen anzeigen
+        if ($intDataCount != 0) {
+          // VerknÃ¼pfungstyp
+          if ($arrFlags[3] == 1) {
+            foreach ($arrData AS $data) {
+              if ($elem['fieldName'] == "idMaster") {
+                $strRef = "idSlave";
+                if ($elem['target'] == "tbl_service") {
+                  if ($elem['tableName'] == "tbl_lnkServicegroupToService") {
+                    $strRef = "idSlaveS";
+                  }
+                } else if ($elem['target'] == "tbl_host") {
+                  if ($elem['tableName'] == "tbl_lnkServicegroupToService") {
+                    $strRef = "idSlaveH";
+                  }
+                } else if ($elem['target'] == "tbl_hostgroup") {
+                  if ($elem['tableName'] == "tbl_lnkServicegroupToService") {
+                    $strRef = "idSlaveHG";
+                  }
+                }
+              } else {
+                $strRef = "idMaster";
+              }
+              // Daten holen
+              $strSQL = "SELECT * FROM `".$elem['tableName']."`
+                     LEFT JOIN `".$elem['target']."` ON `".$strRef."` = `id`
+                     WHERE `".$elem['fieldName']."` = ".$data[$elem['fieldName']]."
+                       AND `".$strRef."`=".$data[$strRef]." AND ".$elem['target'].".active = '1'";
+              $this->myDBClass->getSingleDataset($strSQL,$arrDSTarget);
+              if (substr_count($elem['targetKey'],",") != 0) {
+                $arrTarget = explode(",",$elem['targetKey']);
+                $strTarget = $arrDSTarget[$arrTarget[0]]."-".$arrDSTarget[$arrTarget[1]];
+              } else {
+                $strTarget = $arrDSTarget[$elem['targetKey']];
+              }
+              // Bei "Muss"-Feld prÃ¼fen, ob mehrere EintrÃ¤ge vorhanden
+			  if (($arrFlags[0] == 1) && ($strTarget != "-")) {
+                $strSQL = "SELECT * FROM `".$elem['tableName']."`
+                       WHERE `".$strRef."` = ".$arrDSTarget[$strRef];
+                $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrDSCount,$intDCCount);
+                if ($intDCCount > 1) {
+                  $this->strDBMessage .= gettext("Relation to <b>").$elem['target'].gettext("</b>, entry <b>").$strTarget.gettext("</b> - deletion <b>possible</b>")."<br>\n";
+                } else {
+                  $this->strDBMessage .= gettext("Relation to <b>").$elem['target'].gettext("</b>, entry <b>").$strTarget." - </b><span style=\"color:#FF0000;\">".gettext("deletion <b>not possible</b>")."</span><br>\n";
+                  $intDeletion = 1;
+                }
+              } else if ($strTarget != "-") {
+                $this->strDBMessage .= gettext("Relation to <b>").$elem['target'].gettext("</b>, entry <b>").$strTarget.gettext("</b> - deletion <b>possible</b>")."<br>\n";
+              }
+            }
+          }
+          else if ($arrFlags[3] == 0) {
+            // Gegenstelleneintrag holen
+            $strSQL = "SELECT * FROM `".$elem['tableName']."` WHERE `".$elem['fieldName']."`=$intMasterId";
+            $booReturn  = $this->myDBClass->getDataArray($strSQL,$arrDataCheck,$intDCCheck);
+            foreach ($arrDataCheck AS $data) {
+              if (substr_count($elem['targetKey'],",") != 0) {
+                $arrTarget = explode(",",$elem['targetKey']);
+                $strTarget = $data[$arrTarget[0]]."-".$data[$arrTarget[1]];
+              } else {
+                $strTarget = $data[$elem['targetKey']];
+              }
+              if ($arrFlags[0] == 1) {
+                $this->strDBMessage .= gettext("Relation to <b>").$elem['tableName'].gettext("</b>, entry <b>").$strTarget." - </b><span style=\"color:#FF0000;\">".gettext("deletion <b>not possible</b>")."</span><br>\n";
+                $intDeletion = 1;
+              } else {
+                $this->strDBMessage .= gettext("Relation to <b>").$elem['tableName'].gettext("</b>, entry <b>").$strTarget.gettext("</b> - deletion <b>possible</b>")."<br>\n";
+              }
+            }
+          }
+        }
+      }
+    }
+    return($intDeletion);
+  }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Daten aus Datenbank lschen
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Löscht einen Datensatz oder mehrere Datensätze aus einer Datentabelle. Wahlweise kann 
-	//  eine einzelne Datensatz ID angegeben werden oder die Werte der mittels $_POST['chbId_n'] 
-	//	übergebenen Parameter ausgewertet werden, wobei "n" der Datensatz ID entsprechen muss.
-	//
-	//  ÜÜbergabeparameter:	$strTableName	Tabellenname
-	//						$_POST[]		Formularausgabe (Checkboxen "chbId_n" n=DBId)
-	//						$intDataId		Einzelne Datensatz ID, welche zu lschen ist
-	//
-	//  Returnwert:			0 bei Erfolg / 1 bei Misserfolg
-	//  					Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function dataDeleteSimple($strTableName,$intDataId = 0) {
-		// Variabeln deklarieren
-		$intError=0; $intNumber=0; $intMustData=0; $intFileDel=0;
-		$this->strDBMessage = "";
-		// Alle Datensätze der angegebenen Tabelle holen
-		$booReturn = $this->myDBClass->getDataArray("SELECT id FROM ".$strTableName,$arrData,$intDataCount);
-		if ($booReturn == false) {
-			// Datenbankabfrage fehlgeschlagen
-			$this->strDBMessage = $this->arrLanguage['db']['dberror']."<br>".$this->myDBClass->strDBError."<br>";	
-			return(1);
-		} else if ($intDataCount == 0) {
-			// Keine Datensätze zurückgeliefert
-			$this->strDBMessage = $this->arrLanguage['db']['nodata_del']."<br>";	
-			return(0);
-		} else {
-			// Datensätze zurückgeliefert
-			for ($i=0;$i<$intDataCount;$i++) {		
-				// Formularübergabeparameter zusammenstellen
-				$strChbName = "chbId_".$arrData[$i]['id'];
-				// Falls ein $_POST Parameter mit diesem Namen oder explizit diese Id übergeben wurde
-				if ((isset($_POST[$strChbName]) && ($intDataId == 0)) || ($intDataId == $arrData[$i]['id'])) {
-					// Prüfen, ob dieser Datenbankeintrag noch in einer anderen Tabelle als MUSS Feld verwendet wird
-					$intReturn = $this->checkMustdata($strTableName,$arrData[$i]['id'],$arrInfo);
-					if ($intReturn == 1) {
-						// Mustdaten in einem Array zwischenspeichern
-						foreach ($arrInfo AS $elem) $arrMustData[] = $elem;
-						$intMustData = 1;
-					} else {
-						// Ausnahmeregel für Usertabelle und Adminaccount
-						if ($strTableName == "tbl_user") {
-							$intAdminId = $this->myDBClass->getFieldData("SELECT id FROM tbl_user WHERE username='Admin'");
-							if (($intAdminId != false) && ($intAdminId == $arrData[$i]['id'])) {
-								$this->strDBMessage .= "<span class=\"dbmessage\">".$this->arrLanguage['db']['admindelete']."<br></span>";
-								continue;
-							}
-						}
-						// Konfigurationsname/Hostname ermitteln
-						if ($strTableName == "tbl_service") {
-							$strConfigName = $this->myDBClass->getFieldData("SELECT config_name FROM $strTableName WHERE id=".$arrData[$i]['id']);
-						} else if ($strTableName == "tbl_host") {
-							$strHostName   = $this->myDBClass->getFieldData("SELECT host_name FROM $strTableName WHERE id=".$arrData[$i]['id']);
-						}
-						// Datenbankeintrag löschen
-						$intCheck  = 0;
-						$booReturn = $this->myDBClass->insertData("DELETE FROM $strTableName WHERE id=".$arrData[$i]['id']);
-						if ($booReturn == false) $intCheck++;
-						// Eventuell vorhandene Relationen löschen
-						if (($this->tableRelations($strTableName,$arrRelations) != 0) && ($intCheck == 0)){
-							$intTabA    = $this->tableID($strTableName);
-							$intTabA_id = $arrData[$i]['id'];
-							// Alle normalen Relationen aus der DB löschen (A-Seite)
-							$strSQL = "DELETE FROM tbl_relation WHERE tbl_A=$intTabA AND tbl_A_id=$intTabA_id";
-							$booReturn = $this->myDBClass->insertData($strSQL);
-							if ($booReturn == false) $intCheck++;
-							// Alle normalen Relationen aus der DB löschen (B-Seite)
-							$strSQL = "DELETE FROM tbl_relation WHERE tbl_B=$intTabA AND tbl_B_id=$intTabA_id";
-							$booReturn = $this->myDBClass->insertData($strSQL);
-							if ($booReturn == false) $intCheck++;
-							// Alle speziellen Relationen aus der DB löschen (A-Seite)
-							$strSQL = "DELETE FROM tbl_relation_special WHERE tbl_A=$intTabA AND tbl_A_id=$intTabA_id";
-							$booReturn = $this->myDBClass->insertData($strSQL);
-							if ($booReturn == false) $intCheck++;
-							// Alle speziellen Relationen aus der DB löschen (B-Seite)
-							$strSQL = "DELETE FROM tbl_relation_special WHERE (tbl_B1=$intTabA AND tbl_B1_id=$intTabA_id) OR (tbl_B2=$intTabA AND tbl_B2_id=$intTabA_id)";
-							$booReturn = $this->myDBClass->insertData($strSQL);
-							if ($booReturn == false) $intCheck++;
-						}			
-						// Fehlerbehandlung
-						if ($intCheck != 0) {
-							// Misserfolg
-							$intError++; 
-							$this->writeLog($this->arrLanguage['logbook']['deletedatafail']." ".$strTableName." [".$arrData[$i]['id']."]");
-						} else {
-							// Erfolg
-							$this->writeLog($this->arrLanguage['logbook']['deletedata']." ".$strTableName." [".$arrData[$i]['id']."]");
-						}
-						// Falls Service betroffen - evtl. Konfigurationsdatei löschen
-						if (isset($strConfigName) && ($strConfigName != "") && ($intCheck == 0)) {
-							// Falls es keine weiteren Einträge mit diesem Konfigurationsnamen gibt, die Datei löschen
-							$intServiceRows = $this->myDBClass->countRows("SELECT * FROM $strTableName WHERE config_name='$strConfigName'");
-							if ($intServiceRows == 0) {
-								$strFilename = $strConfigName.".cfg";
-								if (file_exists($this->arrSettings['nagios']['configservices'].$strFilename) && is_writeable($this->arrSettings['nagios']['configservices'].$strFilename)) {
-									$strOldDate = date("YmdHis",mktime());
-									copy($this->arrSettings['nagios']['configservices'].$strFilename,$this->arrSettings['nagios']['backupservices'].$strFilename."_old_".$strOldDate);					
-									unlink($this->arrSettings['nagios']['configservices'].$strFilename);
-									$this->writeLog($this->arrLanguage['logbook']['delservice']." ".$strFilename);
-									$intFileDel++;
-								}
-							}						
-						} else if (isset($strHostName) && ($strHostName != "") && ($intCheck == 0)) {
-							// Falls es keine weiteren Einträge mit diesem Hostnamen gibt, die Datei löschen
-							$intHostRows = $this->myDBClass->countRows("SELECT * FROM $strTableName WHERE host_name='$strHostName'");
-							if ($intHostRows == 0) {
-								$strFilename = $strHostName.".cfg";
-								if (file_exists($this->arrSettings['nagios']['confighosts'].$strFilename) && is_writeable($this->arrSettings['nagios']['confighosts'].$strFilename)) {
-									$strOldDate = date("YmdHis",mktime());
-									copy($this->arrSettings['nagios']['confighosts'].$strFilename,$this->arrSettings['nagios']['backuphosts'].$strFilename."_old_".$strOldDate);					
-									unlink($this->arrSettings['nagios']['confighosts'].$strFilename);
-									$this->writeLog($this->arrLanguage['logbook']['delhost']." ".$strFilename);
-									$intFileDel++;
-								}
-							}					
-						}
-						$intNumber++;
-					}
-				}
-			}
-		}
-		// Fehlerbehandlung
-		if ($intNumber > 0) {
-			// Kein Fehler -> Löschen war erfolgreich
-			if ($intError == 0) {
-				// Kein Mussdaten -> alles Ok
-				if ($intMustData == 0) {
-					$this->strDBMessage .= $this->arrLanguage['db']['success_del'];
-					if ($intFileDel != 0) $this->strDBMessage .= "<br>".$this->arrLanguage['file']['success_del'];
-					return(0);
-				} else {
-					$this->strDBMessage .= $this->arrLanguage['db']['mustdata_del'];
-					$intCount = 0;
-					// Mussdaten angeben
-					foreach ($arrMustData AS $elem) {
-						if ($intCount < 10) {
-							$this->strDBMessage .= "<br>".$this->arrLanguage['db']['entry']." \"".$elem['entry']."\" ".
-														  $this->arrLanguage['db']['used_in_table']." \"".$elem['target_table']."\" ".
-														  $this->arrLanguage['db']['in_entry']." \"".$elem['target_name']."\"";
-						}
-						$intCount++;
-					}
-					if ($intCount >= 10) {
-						$intCount = $intCount-10;
-						$this->strDBMessage .= "<br>".$this->arrLanguage['db']['entry']." \"".$elem['entry']."\" ".
-													 $this->arrLanguage['db']['usedin']." ".$intCount." ".
-													 $this->arrLanguage['db']['othertables'];
-					}
-					return(1);
-				}
-			// Fehler ist aufgetreten -> Löschen war nicht erfolgreich
-			} else {
-				$this->strDBMessage .= $this->arrLanguage['db']['failed_del'];
-				return(1);
-			}
-		}
-		// Falls keine Daten gelöscht werden konnten
-		if ($intMustData != 0) {
-			$this->strDBMessage .= $this->arrLanguage['db']['mustdata_del'];
-			$intCount = 0;
-			// Mussdaten angeben
-			foreach ($arrMustData AS $elem) {
-				if ($intCount < 10) {
-					$this->strDBMessage .= "<br>".$this->arrLanguage['db']['entry']." \"".$elem['entry']."\" ".
-												  $this->arrLanguage['db']['used_in_table']." \"".$elem['target_table']."\" ".
-												  $this->arrLanguage['db']['in_entry']." \"".$elem['target_name']."\"";
-				}
-				$intCount++;
-			}
-			if ($intCount >= 10) {
-				$intCount = $intCount-10;
-				$this->strDBMessage .= "<br>".$this->arrLanguage['db']['entry']." \"".$elem['entry']."\" ".
-											  $this->arrLanguage['db']['usedin']." ".$intCount." ".
-											  $this->arrLanguage['db']['othertables'];
-			}	
-			return(1);
-		}	
-		return(0);	
-	}
+  //  Funktion: VollstÃ¤ndige Relationen einer Datentabelle zurÃ¼ckliefern
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //
+  //  Gibt eine Liste aus mit allen Datenfeldern einer Tabelle, die eine Relation zu einer
+  //  anderen Tabelle besitzen. Hier werden auch passive Relationen zurÃ¼ckgeliefert, die
+  //  bei einer Konfiguration nicht geschrieben werden mÃ¼ssen aber dennoch bestehen, z.Bsp.
+  //  Relationen die von anderen Konfigurationen geschrieben werden, aber die angegebene
+  //  Tabelle miteinbeziehen.
+  //
+  //  Diese Funktion wird gebraucht um einen Konfigurationseintrag vollstÃ¤ndig zu lÃ¶schen
+  //  oder festzustellen ob die aktuelle Konfiguration andernorts verwendet wird.
+  //
+  //  Ãœbergabeparameter:  $strTable   Tabellenname
+  //
+  //  RÃ¼ckgabewert:   $arrRelations Array mit den betroffenen Datenfeldern
+  //            -> tableName  Tabellenname der die verknÃ¼pfte ID enthÃ¤lt
+  //            -> fieldName  Tabellenfeld das die verknÃ¼ftte ID enthÃ¤lz
+  //            -> flags    Pos1 -> 0 = Normalfeld, 1 = Pflichtfeld       [Feldtyp]
+  //                    Pos2 -> 0 = lÃ¶schen, 1 = belassen, 2 = auf 0 setzen [Bei normal lÃ¶schen]
+  //                    Pos3 -> 0 = lÃ¶schen, 2 = auf 0 setzen       [Bei LÃ¶schzwang]
+  //                    Pos4 -> 0 = 1:1, 1=1:n, 2=1:nVar, 3=1:nTime [VerknÃ¼pfungstyp]
+  //
+  //  Returnwert:     0 bei keinem Feld mit Relation
+  //            1 bei mindestens einem Feld mit Relation
+  //
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  function fullTableRelations($strTable,&$arrRelations) {
+    $arrRelations = "";
+    switch ($strTable) {
+      case "tbl_command":       $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToCommandHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contacttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToCommandService",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contacttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToCommandHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToCommandService",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "check_command",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "event_handler",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "check_command",
+                                  'target'  => "",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "event_handler",
+                                  'target'  => "",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,2,2,0");
+                      return(1);
+      case "tbl_contact":       $arrRelations[] = array('tableName' => "tbl_lnkContactgroupToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "1,2,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToCommandHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_command",
+                                  'targetKey' => "command_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToCommandService",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_command",
+                                  'targetKey' => "command_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToContacttemplate",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contacttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToVariabledefinition",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_variabledefinition",
+                                  'targetKey' => "name",
+                                  'flags'   => "0,0,0,2");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hosttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_serviceescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToContact",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "1,1,0,1");
+                      return(1);
+      case "tbl_contactgroup":    $arrRelations[] = array('tableName' => "tbl_lnkContactgroupToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactgroupToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactgroupToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contacttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hosttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_serviceescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToContactgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "1,1,0,1");
+                      return(1);
+      case "tbl_contacttemplate":   $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToCommandHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_command",
+                                  'targetKey' => "command_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToCommandService",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_command",
+                                  'targetKey' => "command_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToContacttemplate",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contacttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToContacttemplate",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contacttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContacttemplateToVariabledefinition",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_variabledefinition",
+                                  'targetKey' => "name",
+                                  'flags'   => "0,0,0,2");
+                      $arrRelations[] = array('tableName' => "tbl_lnkContactToContacttemplate",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_host":        $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHost_DH",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostdependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHost_H",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostdependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hosttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostgroupToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToHosttemplate",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hosttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToVariabledefinition",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_variabledefinition",
+                                  'targetKey' => "name",
+                                  'flags'   => "0,0,0,2");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHost_DH",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicedependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHost_H",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicedependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_serviceescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToHost",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicegroupToService",
+                                  'fieldName' => "idSlaveH",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_hostextinfo",
+                                  'fieldName' => "host_name",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,0");
+                      $arrRelations[] = array('tableName' => "tbl_serviceextinfo",
+                                  'fieldName' => "host_name",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,0");
+                      return(1);
+      case "tbl_hostdependency":    $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHostgroup_DH",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHostgroup_H",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHost_DH",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHost_H",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_hostescalation":    $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_hostextinfo":     return(0);
+      case "tbl_hostgroup":     $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHostgroup_DH",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostdependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostdependencyToHostgroup_H",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostdependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostescalationToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostgroupToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostgroupToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostgroupToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hosttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHostgroup_DH",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicedependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHostgroup_H",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicedependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_serviceescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToHostgroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicegroupToService",
+                                  'fieldName' => "idSlaveHG",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Datensätze kopieren
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Kopiert einen oder mehrere Datensätze in einer Datentabelle. Wahlweise kann eine 
-	//  einzelne Datensatz ID angegeben werden oder die Werte der mittels $_POST['chbId_n'] 
-	//	übergebenen Parameter ausgewertet werden, wobei "n" der Datensatz ID entsprechen muss.
-	//
-	//  Übergabeparameter:	$strTableName	Tabellenname
-	//	 					$_POST[]		Formularausgabe (Checkboxen "chbId_n" n=DBId)
-	//						$intDataId		Einzelne Datensatz ID, welche zu lschen ist
-	//
-	//  Returnwert:			0 bei Erfolg / 1 bei Misserfolg
-	//  					Erfolg-/Fehlermeldung via Klassenvariable strDBMessage
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////
-	function dataCopySimple($strTableName,$intDataId = 0) {
-		// Schlüsselfeld entsprechend dem Tabellennamen festlegen
-		switch($strTableName) {
-			case "tbl_timeperiod":			$strKeyField = "timeperiod_name"; 		break;
-			case "tbl_misccommand":			$strKeyField = "command_name"; 			break;
-			case "tbl_checkcommand":		$strKeyField = "command_name"; 			break;
-			case "tbl_contact":				$strKeyField = "contact_name"; 			break;
-			case "tbl_contactgroup":		$strKeyField = "contactgroup_name"; 	break;
-			case "tbl_hostgroup":			$strKeyField = "hostgroup_name"; 		break;
-			case "tbl_servicegroup":		$strKeyField = "servicegroup_name"; 	break;
-			case "tbl_host":				$strKeyField = "host_name"; 			break;
-			case "tbl_service":				$strKeyField = "service_description"; 	break;
-			case "tbl_servicedependency":	$strKeyField = "config_name"; 			break;
-			case "tbl_hostdependency":		$strKeyField = "config_name"; 			break;
-			case "tbl_serviceescalation":	$strKeyField = "config_name"; 			break;							
-			case "tbl_hostescalation":		$strKeyField = "config_name"; 			break;
-			case "tbl_hostextinfo":			$strKeyField = "notes"; 				break;
-			case "tbl_serviceextinfo":		$strKeyField = "service_description"; 	break;
-			case "tbl_user":				$strKeyField = "username"; 				break;							
-		}
-		// Variabeln deklarieren
-		$intError=0; $intNumber=0;
-		// Alle Datensatz-IDs der Zieltabelle abfragen
-		$booReturn = $this->myDBClass->getDataArray("SELECT id FROM $strTableName ORDER BY id",$arrData,$intDataCount);
-		if ($booReturn == false) {
-			$this->strDBMessage = $this->arrLanguage['db']['dberror']."<br>".$this->myDBClass->strDBError."<br>";
-			return(1);	
-		} else if ($intDataCount != 0) {
-			// Datensätze zurückgeliefert
-			for ($i=0;$i<$intDataCount;$i++) {
-				// Formularübergabeparameter zusammenstellen
-				$strChbName = "chbId_".$arrData[$i]['id'];
-				// Falls ein $_POST Parameter mit diesem Namen oder explizit diese Id bergeben wurde
-				if ((isset($_POST[$strChbName]) && ($intDataId == 0)) || ($intDataId == $arrData[$i]['id'])) {
-					// Daten des entsprechenden Eintrages holen
-					$this->myDBClass->getSingleDataset("SELECT * FROM $strTableName WHERE id=".$arrData[$i]['id'],$arrData[$i]);
-					// Namenszusatz erstellen
-					for ($y=1;$y<=$intDataCount;$y++) {
-						$strNewName = $arrData[$i][$strKeyField]." ($y)";
-						$booReturn = $this->myDBClass->getFieldData("SELECT id FROM $strTableName WHERE $strKeyField='$strNewName'");
-						// Falls den neue Name einmalig ist, abbrechen
-						if ($booReturn == false) break;
-					}
-					// Entsprechend dem Tabellennamen den Datenbank-Insertbefehl zusammenstellen
-					$strSQLInsert = "INSERT INTO $strTableName SET $strKeyField='$strNewName',";
-					foreach($arrData[$i] AS $key => $value) {
-						if (($key != $strKeyField) && ($key != "active") && ($key != "last_modified") && ($key != "id")) {
-							// NULL Werte nach Datenfeld setzen
-							if (($key == "normal_check_interval") 	&& ($value == "")) 	$value="NULL";
-							if (($key == "retry_check_interval") 	&& ($value == "")) 	$value="NULL";
-							if (($key == "max_check_attempts") 		&& ($value == ""))	$value="NULL";
-							if (($key == "low_flap_threshold") 		&& ($value == ""))	$value="NULL";							
-							if (($key == "high_flap_threshold") 	&& ($value == ""))	$value="NULL";
-							if (($key == "freshness_threshold") 	&& ($value == "")) 	$value="NULL";
-							if (($key == "notification_interval") 	&& ($value == "")) 	$value="NULL";
-							if (($key == "check_interval") 			&& ($value == "")) 	$value="NULL";
-							if (($key == "access_rights") 			&& ($value == "")) 	$value="NULL";
-							// NULL Werte nach Tabellenname setzen
-							if (($strTableName == "tbl_hostextinfo") && ($key == "host_name")) 		$value="NULL";
-							if (($strTableName == "tbl_serviceextinfo") && ($key == "host_name")) 	$value="NULL";
-							// Passwort für kopierten Benutzer nicht bernehmen
-							if (($strTableName == "tbl_user") && ($key == "password"))  			$value="xxxxxxx";
-							// Sofern der Datenwert nicht "NULL" ist, den Datenwert in Hochkommas einschliessen
-							if ($value != "NULL") {							
-								$strSQLInsert .= $key."='".addslashes($value)."',";
-							} else {
-								$strSQLInsert .= $key."=".$value.",";							
-							}
-						}
-					}
-					$strSQLInsert .= "active='0', last_modified=NOW()";
-					// Kopie in die Datenbank eintragen
-					$intCheck   = 0;
-					$booReturn  = $this->myDBClass->insertData($strSQLInsert);
-					$intTabA_id = $this->myDBClass->intLastId;
-					if ($booReturn == false) $intCheck++;
-					// Eventuell vorhandene Relationen kopieren
-					if (($this->tableRelations($strTableName,$arrRelations) != 0) && ($intCheck == 0)){
-						$intTabA    = $this->tableID($strTableName);
-						foreach ($arrRelations AS $elem) {
-							// Ist Feld nicht auf "None" oder "*" gesetzt?
-							if ($arrData[$i][$elem['fieldName']] == 1) {
-								if ($elem['type'] != 3) {
-									// Alle normalen Relationen aus der DB herausholen
-									$strSQL = "SELECT tbl_B_id FROM tbl_relation WHERE tbl_A=$intTabA AND tbl_B=".$this->tableID($elem['tableName'])." 
-											   AND tbl_A_id=".$arrData[$i]['id']." AND tbl_A_field='".$elem['fieldName']."'";
-									$booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
-									if ($intRelDataCount != 0) {
-										$arrDataInsert = "";
-										for ($y=0;$y<$intRelDataCount;$y++) {
-											$arrDataInsert[] = $arrRelData[$y]['tbl_B_id'];
-										}
-										$this->dataInsertRelation($intTabA,$this->tableID($elem['tableName']),$intTabA_id,$elem['fieldName'],$arrDataInsert);
-									}
-								} else {
-									// Alle speziellen Relationen aus der DB herausholen
-									$strSQL = "SELECT tbl_B1_id, tbl_B2_id FROM tbl_relation_special WHERE tbl_A=$intTabA AND 
-											   tbl_B1=".$this->tableID($elem['tableName1'])." AND tbl_B2=".$this->tableID($elem['tableName2'])."
-											   AND tbl_A_id=".$arrData[$i]['id']." AND tbl_A_field='".$elem['fieldName']."'";
-									$booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelData,$intRelDataCount);
-									if ($intRelDataCount != 0) {
-										$arrDataInsert = "";
-										for ($y=0;$y<$intRelDataCount;$y++) {
-											$arrDataInsert[] = $arrRelData[$y]['tbl_B1_id'].".".$arrRelData[$y]['tbl_B2_id'];
-										}
-										$this->dataInsertRelation($intTabA,$this->tableID($elem['tableName1']),$intTabA_id,$elem['fieldName'],$arrDataInsert,$this->tableID($elem['tableName2']));
-									}
-								}
-							}
-						}
-					}					
-					// Logfile schreiben
-					if ($intCheck != 0) {
-						// Misserfolg
-						$intError++;
-						$this->writeLog($this->arrLanguage['logbook']['copydatafail']." ".$strTableName." [".$strNewName."]");
-					} else {
-						// Erfolg
-						$this->writeLog($this->arrLanguage['logbook']['copydata']." ".$strTableName." [".$strNewName."]");					
-					} 
-					$intNumber++;
-				}
-			}
-		}
-		// Fehlerbehandlung
-		if ($intNumber > 0) {
-			if ($intError == 0) {
-				// Erfolg
-				$this->strDBMessage = $this->arrLanguage['db']['success'];
-				return(0);
-			} else {
-				// Misserfolg
-				$this->strDBMessage = $this->arrLanguage['db']['failed']."<br>".$this->myDBClass->strDBError;
-				return(1);
-			}
-		}
-	}
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Tabellen ID ermitteln
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim	
-	//  
-	//  Gibt die Tabellen ID der angegebenen Tabelle zurück
-	//
-	//  Übergabeparameter:	$strTable		Tabellenname
-	//
-	//  Returnwert:			Tabellen ID
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function tableID($strTable) {
-		switch ($strTable) {
-			case "tbl_checkcommand":		return(1);
-			case "tbl_contact":				return(2);
-			case "tbl_contactgroup":		return(3);
-			case "tbl_host":				return(4);
-			case "tbl_hostdependency":		return(5);
-			case "tbl_hostescalation":		return(6);
-			case "tbl_hostextinfo":			return(7);
-			case "tbl_hostgroup":			return(8);
-			case "tbl_misccommand":			return(9);
-			case "tbl_service":				return(10);
-			case "tbl_servicedependency":	return(11);
-			case "tbl_serviceescalation":	return(12);
-			case "tbl_serviceextinfo":		return(13);
-			case "tbl_servicegroup":		return(14);
-			case "tbl_timeperiod":			return(15);
-			default:				 		return(0);
-		}
-	}	
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Relationen einer Datentabelle zurückliefern
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   31.08.2007 wim
-	//  
-	//  Gibt eine Liste aus mit allen Datenfeldern einer Tabelle, die eine 1:1 oder 1:n 
-	//  Beziehung zu einer anderen Tabelle haben.
-	//
-	//  Übergabeparameter:	$strTable		Tabellenname
-	//
-	//  Rückgabewert:		$arrRelations	Array mit den betroffenen Datenfeldern
-	//
-	//  Returnwert:			0 bei keinem Feld mit Relation
-	//						1 bei mindestens einem Feld mit Relation 
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function tableRelations($strTable,&$arrRelations) {
-		$arrRelations = "";
-		switch ($strTable) {
-			case "tbl_checkcommand":		return(0);
-			case "tbl_contact":				$arrRelations[] = array('tableName' => "tbl_misccommand",
-																	'fieldName' => "host_notification_commands",
-																	'target' 	=> "command_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_misccommand",
-																	'fieldName' => "service_notification_commands",
-																	'target' 	=> "command_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_contactgroup",
-																	'fieldName' => "contactgroups",
-																	'target' 	=> "contactgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_timeperiod",
-																	'fieldName' => "host_notification_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);
-											$arrRelations[] = array('tableName' => "tbl_timeperiod",
-																	'fieldName' => "service_notification_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);																
-											return(1);
-			case "tbl_contactgroup":		$arrRelations[] = array('tableName' => "tbl_contact", 
-																	'fieldName' => "members",
-																	'target' 	=> "contact_name",
-																	'type'		=> 2);
-											return(1);
-			case "tbl_host":				$arrRelations[] = array('tableName' => "tbl_host", 
-																	'fieldName' => "parents",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);			
-											$arrRelations[] = array('tableName' => "tbl_hostgroup", 
-																	'fieldName' => "hostgroups",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2);											
-											$arrRelations[] = array('tableName' => "tbl_contactgroup", 
-																	'fieldName' => "contact_groups",
-																	'target' 	=> "contactgroup_name",
-																	'type'		=> 2);											
-											$arrRelations[] = array('tableName' => "tbl_timeperiod", 
-																	'fieldName' => "check_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);			
-											$arrRelations[] = array('tableName' => "tbl_checkcommand", 
-																	'fieldName' => "check_command",
-																	'target' 	=> "command_name",
-																	'type'		=> 1);																				
-											$arrRelations[] = array('tableName' => "tbl_timeperiod", 
-																	'fieldName' => "notification_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);
-											$arrRelations[] = array('tableName' => "tbl_misccommand", 
-																	'fieldName' => "event_handler",
-																	'target' 	=> "command_name",
-																	'type'		=> 1);	
-											return(1);
-			case "tbl_hostdependency":		$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "dependent_host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "dependent_hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2);		
-											return(1);
-			case "tbl_hostescalation":		$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2); 
-											$arrRelations[] = array('tableName' => "tbl_contactgroup",
-																	'fieldName' => "contact_groups",
-																	'target' 	=> "contactgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_timeperiod",
-																	'fieldName' => "escalation_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);	
-											return(1);
-			case "tbl_hostextinfo":			$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 1);	
-											return(1);
-			case "tbl_hostgroup":			$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "members",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);	
-											return(1);
-			case "tbl_misccommand":			return(0);
-			case "tbl_service":				$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_servicegroup",
-																	'fieldName' => "servicegroups",
-																	'target' 	=> "servicegroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_contactgroup",
-																	'fieldName' => "contact_groups",
-																	'target' 	=> "contactgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_timeperiod", 
-																	'fieldName' => "check_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);			
-											$arrRelations[] = array('tableName' => "tbl_checkcommand", 
-																	'fieldName' => "check_command",
-																	'target' 	=> "command_name",
-																	'type'		=> 1);																				
-											$arrRelations[] = array('tableName' => "tbl_timeperiod", 
-																	'fieldName' => "notification_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);
-											$arrRelations[] = array('tableName' => "tbl_misccommand", 
-																	'fieldName' => "event_handler",
-																	'target' 	=> "command_name",
-																	'type'		=> 1);																		
-											return(1);
-			case "tbl_servicedependency":	$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "dependent_host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2); 
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "dependent_hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2); 
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_service",
-																	'fieldName' => "dependent_service_description",
-																	'target' 	=> "service_description",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_service",
-																	'fieldName' => "service_description",
-																	'target' 	=> "service_description",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_servicegroup",
-																	'fieldName' => "dependent_servicegroup_name",
-																	'target' 	=> "servicegroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_servicegroup",
-																	'fieldName' => "servicegroup_name",
-																	'target' 	=> "servicegroup_name",
-																	'type'		=> 2);
-											return(1);
-			case "tbl_serviceescalation":	$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_hostgroup",
-																	'fieldName' => "hostgroup_name",
-																	'target' 	=> "hostgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_service",
-																	'fieldName' => "service_description",
-																	'target' 	=> "service_description",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_servicegroup",
-																	'fieldName' => "servicegroup_name",
-																	'target' 	=> "servicegroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_contactgroup",
-																	'fieldName' => "contact_groups",
-																	'target' 	=> "contactgroup_name",
-																	'type'		=> 2);
-											$arrRelations[] = array('tableName' => "tbl_timeperiod",
-																	'fieldName' => "escalation_period",
-																	'target' 	=> "timeperiod_name",
-																	'type'		=> 1);
-											return(1);
-			case "tbl_serviceextinfo":		$arrRelations[] = array('tableName' => "tbl_host",
-																	'fieldName' => "host_name",
-																	'target' 	=> "host_name",
-																	'type'		=> 1);	
-											$arrRelations[] = array('tableName' => "tbl_service",
-																	'fieldName' => "service_description",
-																	'target' 	=> "service_description",
-																	'type'		=> 1);	
-											return(1);
-			case "tbl_servicegroup":		$arrRelations[] = array('tableName1' => "tbl_host",
-																	'tableName2' => "tbl_service",
-																	'fieldName'  => "members",
-																	'target1' 	 => "host_name",
-																	'target2' 	 => "service_description",
-																	'type'		 => 3);	
-											return(1);
-			case "tbl_timeperiod":			return(0);
-			default:				 		return(0);
-		}
-	}	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Mussdaten prüfen
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Überprüft, ob mit dem mitgelieferten Datensatz in einer anderen Tabelle eine Relation
-	//  besteht, die nicht gelöscht werden darf. Alle gefundenen Relationen werden als
-	//  Resultatearray zurückgegeben.
-	//
-	//  Übergabeparameter:	$strTable		Tabellenname
-	//						$intDataId		Daten ID
-	//
-	//  Rückgabewert:		$arrInfo		Array mit den betroffenen Datenfeldern (Tabelle, Name)
-	//
-	//  Returnwert:			0 wenn keine Relation gefunden wurde
-	//						1 wenn mindestens eine Relation gefunden wurde 
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function checkMustdata($strTableName,$intDataId,&$arrInfo) {
-		$intTableID = $this->tableID($strTableName);
-		$intReturn  = 0;
-		// SQL Statement nach Tabellennamen
-		switch ($strTableName) {
-			case "tbl_timeperiod":
-				$strName = $this->myDBClass->getFieldData("SELECT timeperiod_name FROM tbl_timeperiod WHERE id=$intDataId");
-				$intReturn += $this->getMustDataSingle("host_name","tbl_host","check_period","notification_period",$intDataId,$strName,"Host",$arrInfo);
-				$intReturn += $this->getMustDataSingle("config_name","tbl_service","check_period","notification_period",$intDataId,$strName,"Service",$arrInfo);
-				$intReturn += $this->getMustDataSingle("contact_name","tbl_contact","host_notification_period","service_notification_period",$intDataId,$strName,"Contact",$arrInfo);
-				break;
-			case "tbl_checkcommand":	
-				$strName = $this->myDBClass->getFieldData("SELECT command_name FROM tbl_checkcommand WHERE id=$intDataId");
-				$strSQL    = "SELECT DISTINCT config_name FROM tbl_service WHERE check_command='$intDataId' OR check_command LIKE '$intDataId!%'";
-				$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-				if (($booReturn == true) && ($intDataCount != 0)) {
-					$intReturn = 1;
-					foreach ($arrData AS $elem) {
-						$arrInfo[] = array("entry" => $strName, "target_table" => "Service", "target_name" => $elem['config_name']);
-					}
-				}
-				break;
-			case "tbl_contactgroup":	
-				$strName = $this->myDBClass->getFieldData("SELECT contactgroup_name FROM tbl_contactgroup WHERE id=$intDataId");
-				$intReturn += $this->getMustDataMultiple("host_name","tbl_host","contact_groups",$intTableID,$intDataId,$strName,"Host",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_service","contact_groups",$intTableID,$intDataId,$strName,"Service",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostescalation","contact_groups",$intTableID,$intDataId,$strName,"Hostescalation",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_serviceescalation","contact_groups",$intTableID,$intDataId,$strName,"Serviceescalation",$arrInfo);	
-				break;
-			case "tbl_hostgroup":
-				$strName = $this->myDBClass->getFieldData("SELECT hostgroup_name FROM tbl_hostgroup WHERE id=$intDataId");
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_service","hostgroup_name",$intTableID,$intDataId,$strName,"Service",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostdependency","hostgroup_name",$intTableID,$intDataId,$strName,"Hostdependencies",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostdependency","dependent_hostgroup_name",$intTableID,$intDataId,$strName,"Hostdependencies",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostescalation","hostgroup_name",$intTableID,$intDataId,$strName,"Hostescalation",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_servicedependency","hostgroup_name",$intTableID,$intDataId,$strName,"Servicedependencies",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_servicedependency","dependent_hostgroup_name",$intTableID,$intDataId,$strName,"Servicedependencies",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_serviceescalation","hostgroup_name",$intTableID,$intDataId,$strName,"Serviceescalation",$arrInfo);					
-				break;
-			case "tbl_servicegroup":
-				$strName = $this->myDBClass->getFieldData("SELECT servicegroup_name FROM tbl_servicegroup WHERE id=$intDataId");
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_servicedependency","servicegroup_name",$intTableID,$intDataId,$strName,"Servicedependencies",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_servicedependency","dependent_servicegroup_name",$intTableID,$intDataId,$strName,"Servicedependencies",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_serviceescalation","servicegroup_name",$intTableID,$intDataId,$strName,"Serviceescalation",$arrInfo);					
-				break;
-			case "tbl_contact":
-				$strName = $this->myDBClass->getFieldData("SELECT contact_name FROM tbl_contact WHERE id=$intDataId");
-				$intReturn += $this->getMustDataMultiple("contactgroup_name","tbl_contactgroup","members",$intTableID,$intDataId,$strName,"Contactgroups",$arrInfo);
-				break;
-			case "tbl_host":
-				$strName = $this->myDBClass->getFieldData("SELECT host_name FROM tbl_host WHERE id=$intDataId");
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_service","host_name",$intTableID,$intDataId,$strName,"Service",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("hostgroup_name","tbl_hostgroup","members",$intTableID,$intDataId,$strName,"Hostgroup",$arrInfo);
-				//$intReturn += $this->getMustDataCross("servicegroup_name","tbl_servicegroup","members",$intTableID,$intDataId,$strName,"Servicegroup",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostdependency","dependent_host_name",$intTableID,$intDataId,$strName,"Hostdependencies",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostdependency","host_name",$intTableID,$intDataId,$strName,"Hostdependencies",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_hostescalation","host_name",$intTableID,$intDataId,$strName,"Hostescalation",$arrInfo);	
-				$intReturn += $this->getMustDataSingle("host_name","tbl_hostextinfo","host_name","host_name",$intDataId,$strName,"Hostextinfo",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_servicedependency","dependent_host_name",$intTableID,$intDataId,$strName,"Servicedependencies",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_serviceescalation","host_name",$intTableID,$intDataId,$strName,"Serviceescalation",$arrInfo);					
-				$intReturn += $this->getMustDataSingle("config_name","tbl_serviceextinfo","host_name","host_name",$intDataId,$strName,"Serviceextinfo",$arrInfo);	
-				break;	
-			case "tbl_service":
-				$strName = $this->myDBClass->getFieldData("SELECT CONCAT(config_name,'::',service_description) FROM tbl_service WHERE id=$intDataId");
-				$intReturn += $this->getMustDataCross("servicegroup_name","tbl_servicegroup","members",$intTableID,$intDataId,$strName,"Servicegroup",$arrInfo);
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_servicedependency","dependent_service_name",$intTableID,$intDataId,$strName,"Servicedependencies",$arrInfo);	
-				$intReturn += $this->getMustDataMultiple("config_name","tbl_serviceescalation","service_name",$intTableID,$intDataId,$strName,"Serviceescalation",$arrInfo);					
-				$intReturn += $this->getMustDataSingle("config_name","tbl_serviceextinfo","host_name","host_name",$intDataId,$strName,"Serviceextinfo",$arrInfo);	
-				break;	
-		} 
-		if ($intReturn != 0) $intReturn = 1; 
-		return($intReturn);
-	}
-	// Hilfsabfragefunktion für 1:1 Relationen
-	function getMustDataSingle($strField,$strTableName,$strWhere_field1,$strWhere_field2,$intDataId,$strName,$strTable,&$arrInfo) {
-		$strSQL    = "SELECT $strField FROM $strTableName WHERE $strWhere_field1=$intDataId OR $strWhere_field2=$intDataId AND active='1'";
-		$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-		if (($booReturn == true) && ($intDataCount != 0)) {
-			foreach ($arrData AS $elem) {
-				if ($strTableName == "tbl_hostextinfo") {
-					$arrInfo[] = array("entry" => $strName, "target_table" => $strTable, "target_name" => $strName);				
-				} else {
-					$arrInfo[] = array("entry" => $strName, "target_table" => $strTable, "target_name" => $elem[$strField]);
-				}
-			}
-			return(1);
-		}
-		return(0);
-	}
-	// Hilfsabfragefunktion für 1:n Relationen
-	function getMustDataMultiple($strFieldA,$strTableA,$strTableA_field,$intTableB_id,$intDataId,$strName,$strTable,&$arrInfo) {
-		$intTableA_id = $this->tableID($strTableA);
-		if ($strTableA == "tbl_service") {
-			$strSQL    = "SELECT CONCAT( config_name, '::', service_description ) AS $strFieldA, count(*) AS counter FROM $strTableA 
-						  LEFT JOIN tbl_relation ON $strTableA.id=tbl_relation.tbl_A_id AND tbl_relation.tbl_A=$intTableA_id
-						  WHERE tbl_relation.tbl_A_field='$strTableA_field' AND tbl_relation.tbl_B=$intTableB_id AND tbl_relation.tbl_B_id=$intDataId AND active='1'
-						  GROUP BY $strFieldA HAVING counter=1";
-		} else {
-			$strSQL    = "SELECT $strFieldA, count(*) AS counter FROM $strTableA 
-						  LEFT JOIN tbl_relation ON $strTableA.id=tbl_relation.tbl_A_id AND tbl_relation.tbl_A=$intTableA_id
-						  WHERE tbl_relation.tbl_A_field='$strTableA_field' AND tbl_relation.tbl_B=$intTableB_id AND tbl_relation.tbl_B_id=$intDataId AND active='1'
-						  GROUP BY $strFieldA HAVING counter=1";
-		}
-		$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-		if (($booReturn == true) && ($intDataCount != 0)) {
-			foreach ($arrData AS $elem) {
-				$arrInfo[] = array("entry" => $strName, "target_table" => $strTable, "target_name" => $elem[$strFieldA]);
-			}
-			return(1);
-		}
-		return(0);
-	}
-	// Hilfsabfragefunktion für 1:(n::n) Relationen
-	function getMustDataCross($strFieldA,$strTableA,$strTableA_field,$intTableB_id,$intDataId,$strName,$strTable,&$arrInfo) {
-		$intTableA_id = $this->tableID($strTableA);
-		if ($strTableA == "tbl_service") {
-			$strSQL    = "SELECT CONCAT( config_name, '::', service_description ) AS $strFieldA, count(*) AS counter FROM $strTableA 
-						  LEFT JOIN tbl_relation ON $strTableA.id=tbl_relation.tbl_A_id AND tbl_relation.tbl_A=$intTableA_id
-						  WHERE tbl_relation.tbl_A_field='$strTableA_field' AND tbl_relation.tbl_B=$intTableB_id AND tbl_relation.tbl_B_id=$intDataId
-						  GROUP BY $strFieldA HAVING counter=1";
-		} else if (($strTableA == "tbl_servicegroup") && ($intTableB_id == "10")) {
-			// Tabelle B = Services, Tabelle A = Servicegroup
-			// Alle Hosts suchen die in Tabelle B gewählt sind
-			$strSQL = "SELECT tbl_B_id FROM tbl_relation 
-					   LEFT JOIN tbl_service ON tbl_relation.tbl_A_id = tbl_service.id
-					   WHERE tbl_A_field='host_name' AND tbl_A=$intTableB_id AND tbl_B=4";
-			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-			if (($booReturn == true) && ($intDataCount != 0)) {
-				$strHostID = "";
-				foreach ($arrData AS $elem) { 
-					$strHostID .= $elem['tbl_B_id'].", ";
-				}
-				$strHostID = substr($strHostID,0,-2);
-			}
-			// Keine HostID gesetzt -> Alle Hosts eintragen
-			if (!isset($strHostID)) {
-				$strSQL = "SELECT id FROM tbl_host WHERE active='1'";
-				$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-				if (($booReturn == true) && ($intDataCount != 0)) {
-					$strHostID = "";
-					foreach ($arrData AS $elem) { 
-						$strHostID .= $elem['id'].", ";
-					}
-					$strHostID = substr($strHostID,0,-2);
-				}
-			}
-			$strSQL    = "SELECT $strFieldA, count(*) AS counter FROM $strTableA 
-						  LEFT JOIN tbl_relation_special ON $strTableA.id=tbl_relation_special.tbl_A_id 
-						  WHERE tbl_relation_special.tbl_A_field='$strTableA_field' 
-						        AND tbl_relation_special.tbl_A=$intTableA_id AND tbl_relation_special.tbl_B1=4 AND tbl_relation_special.tbl_B2=$intTableB_id 
-						        AND tbl_relation_special.tbl_B1_id IN ($strHostID) AND tbl_relation_special.tbl_B2_id = $intDataId
-						  GROUP BY $strFieldA HAVING counter >= 1";
-		} else if (($strTableA == "tbl_servicegroup") && ($intTableB_id == "4")) {
-			// Host in Servicegroup verwendet
-			// -> Folgt noch
-		}
-		$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-		if (($booReturn == true) && ($intDataCount != 0)) {
-			foreach ($arrData AS $elem) {
-				$arrInfo[] = array("entry" => $strName, "target_table" => $strTable, "target_name" => $elem[$strFieldA]);
-			}
-			return(1);
-		}
-		return(0);
-	}
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Services für Hosts zurückliefern
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Gibt ein Array der Servicenamen und IDs zurück welche einem Host zugeteilt sind.
-	//
-	//  Übergabeparameter:	$arrHostIDs		Array mit allen HostIDs
-	//						$intModeId		(Reserviert für sptere Verwendung)
-	//
-	//  Rückgabewert:		$arrServiceIDs	Array mit allen ServiceIDs
-	//						
-	//  Returnwert:			0 bei Erfolg, 1 bei Misserfolg
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function getServicesByHost($arrHostIDs,&$arrServiceIDs,$intModeId=0) {
-		// In welchen Hostgruppen ist dieser Host Mitglied?
-		$strHostIDs = $this->makeCommaString($arrHostIDs);
-		$strSQL = "SELECT DISTINCT tbl_hostgroup.id AS hostgroup_id FROM tbl_hostgroup
-				   LEFT JOIN tbl_relation ON tbl_A_id = tbl_hostgroup.id
-				   WHERE ((tbl_hostgroup.members = 1 AND tbl_relation.tbl_A = ".$this->tableID("tbl_hostgroup")."
-						 AND tbl_relation.tbl_B = ".$this->tableID("tbl_host").") AND tbl_B_id IN ($strHostIDs))
-						 OR  tbl_hostgroup.members = 2
-				   ORDER BY hostgroup_id"; 
-		$booReturn = $this->myDBClass->getDataArray($strSQL,$arrDataHostgroup,$intDataCount1);
-		// Services nach HostID holen
-		$strSQL = "SELECT DISTINCT tbl_service.id AS service_id, tbl_service.service_description AS description
-				   FROM tbl_service 
-				   LEFT JOIN tbl_relation ON tbl_service.id = tbl_relation.tbl_A_id
-				   LEFT JOIN tbl_host ON tbl_relation.tbl_B_id = tbl_host.id
-				   WHERE ((tbl_service.host_name = 1 AND tbl_relation.tbl_A = ".$this->tableID("tbl_service")."
-				         AND tbl_relation.tbl_B = ".$this->tableID("tbl_host").") AND tbl_host.id IN ($strHostIDs)) 
-						 OR (tbl_service.host_name = 2) 
-				   ORDER BY tbl_service.service_description";		
-		$booReturn = $this->myDBClass->getDataArray($strSQL,$arrDataHostServices,$intDataCount2);
-		// Daten in einem Array zusammenfgen
-		foreach ($arrDataHostServices AS $elem) {
-			$arrServiceData[] = Array( "id" => $elem['service_id'], "description" => $elem['description']);
-			$arrIdCheck[]     = $elem['service_id'];
-		}
-		// Services nach HostgroupID holen			
-		if ($intDataCount1 != 0) { 
-			$strHostgroupIDs = "";
-			foreach ($arrDataHostgroup AS $elem) {
-				$strHostgroupIDs .= $elem['hostgroup_id'].",";	
-			}
-			$strHostgroupIDs = substr($strHostgroupIDs,0,-1);
-			$strSQL = "SELECT DISTINCT tbl_service.id AS service_id, tbl_service.service_description AS description
-					   FROM tbl_service 
-					   LEFT JOIN tbl_relation ON tbl_service.id = tbl_relation.tbl_A_id
-					   LEFT JOIN tbl_hostgroup ON tbl_relation.tbl_B_id = tbl_hostgroup.id
-					   WHERE ((tbl_service.hostgroup_name = 1 AND tbl_relation.tbl_A = ".$this->tableID("tbl_service")."
-							 AND tbl_relation.tbl_B = ".$this->tableID("tbl_hostgroup").") AND tbl_hostgroup.id IN ($strHostgroupIDs)) 
-							 OR (tbl_service.hostgroup_name = 2) 
-					   ORDER BY tbl_service.service_description";		     
-			$booReturn = $this->myDBClass->getDataArray($strSQL,$arrDataHostgroupServices,$intDataCount3);
-			// Daten in einem Array zusammenfgen
-			if ($intDataCount3 != 0) {
-				foreach ($arrDataHostgroupServices AS $elem) {
-					if (!in_array($elem['service_id'],$arrIdCheck)) {
-						$arrServiceData[] = Array( "description" => $elem['description'], "id" => $elem['service_id']);
-					} 
-				}
-				// Array sortieren und ausgeben
-				asort($arrServiceData);
-				reset($arrServiceData);	
-			}
-		}
-		// Array ausgeben
-		$arrServiceIDs = $arrServiceData;
-		return(0);
-	}	
-	
-    ///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Services für Hostgruppen zurückliefern
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Gibt ein Array der Servicenamen und IDs zurück welche einer Hostgruppe zugeteilt sind.
-	//
-	//  Übergabeparameter:	$arrHostgroupIDs	Array mit allen HostIDs
-	//						$intModeId			(Reserviert für sptere Verwendung)
-	//
-	//  Rückgabewert:		$arrServiceIDs		Array mit allen ServiceIDs
-	//						
-	//  Returnwert:			0 bei Erfolg, 1 bei Misserfolg
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function getServicesByHostgroup($arrHostgroupIDs,&$arrServiceIDs,$intModeId=0) {
-		// Services nach HostgruppenID holen
-		$strHostgroupIDs = $this->makeCommaString($arrHostgroupIDs);
-		// Servicedaten von Hostgruppen die direkt einem Service zugeordnet wurden
-		$strSQL = "SELECT DISTINCT tbl_service.id AS service_id, tbl_service.service_description AS description
-				   FROM tbl_service 
-				   LEFT JOIN tbl_relation ON tbl_service.id = tbl_relation.tbl_A_id
-				   LEFT JOIN tbl_hostgroup ON tbl_relation.tbl_B_id = tbl_hostgroup.id
-				   WHERE ((tbl_service.hostgroup_name = 1 AND tbl_relation.tbl_A = ".$this->tableID("tbl_service")."
-						 AND tbl_relation.tbl_B = ".$this->tableID("tbl_hostgroup").") AND tbl_hostgroup.id IN ($strHostgroupIDs)) 
-						 OR (tbl_service.hostgroup_name = 2) 
-				   ORDER BY tbl_service.service_description";	
-		$booReturn1 = $this->myDBClass->getDataArray($strSQL,$arrDataHostgroupServices1,$intDataCount1);
-		if ($booReturn1 == false) return(1);		
-		// Servicedaten von Hostgruppen die via Hosts zugeordnet sind   
-		$strSQL = "SELECT DISTINCT tbl_service.id AS service_id, tbl_service.service_description AS description
-				   FROM tbl_hostgroup
-				   LEFT JOIN tbl_relation AS rel_1 ON tbl_hostgroup.id=rel_1.tbl_A_id
-				   LEFT JOIN tbl_host ON rel_1.tbl_B_id=tbl_host.id
-				   LEFT JOIN tbl_relation AS rel_2 ON tbl_host.id=rel_2.tbl_B_id
-				   LEFT JOIN tbl_service ON rel_2.tbl_A_id=tbl_service.id						  
-				   WHERE (rel_1.tbl_A=8 AND rel_1.tbl_B=4 AND rel_1.tbl_A_field='members' AND
-						  rel_2.tbl_A=10 AND rel_2.tbl_B=4 AND rel_2.tbl_A_field='host_name' AND 
-						  tbl_hostgroup.id IN ($strHostgroupIDs)) OR tbl_service.host_name=2
-				   GROUP BY description
-				   ORDER BY description";
-		$booReturn2 = $this->myDBClass->getDataArray($strSQL,$arrDataHostgroupServices2,$intDataCount2);
-		if ($booReturn2 == false) return(1);
-		// Arrays zusammenfgen
-		if (($intDataCount1 == 0) && ($intDataCount2 == 0)) {
-			$arrServiceIDs = "";
-			$arrServiceIDs[] = Array( "id" => 0, "description" => "");
-			return(0);
-		} else if (($intDataCount1 != 0) && ($intDataCount2 == 0)) {
-			$arrDataHostgroupServices = $arrDataHostgroupServices1;
-		} else if (($intDataCount1 == 0) && ($intDataCount2 != 0)) {
-			$arrDataHostgroupServices = $arrDataHostgroupServices2;
-		} else {
-			$arrDataHostgroupServices = array_merge($arrDataHostgroupServices1,$arrDataHostgroupServices2);
-		}
-		// Doppelte Eintrge herausfiltern
-		foreach($arrDataHostgroupServices AS $elem) {
-			if (!isset($arrTemp1) || !in_array($elem['description'],$arrTemp1)) {
-				$arrTemp1[] = $elem['description'];
-				$arrTemp2[] = Array( "id" => $elem['service_id'], "description" => $elem['description']);
-			}
-		}
-		$arrDataHostgroupServices = $arrTemp2;
-		// Daten in das Array abfllen
-		$arrServiceData = "";
-		foreach ($arrDataHostgroupServices AS $elem) {
-			$arrServiceData[] = Array( "id" => $elem['id'], "description" => $elem['description']);
-		}
-		// Array ausgeben
-		$arrServiceIDs = $arrServiceData;
-		return(0);
-	}	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  Funktion: Logbuch schreiben
-	///////////////////////////////////////////////////////////////////////////////////////////
-	//  
-	//  Version 2.0.2 (Internal)
-	//  Datum   12.03.2007 wim
-	//  
-	//  Speichert einen übergebenen String im Logbuch
-	//
-	//  Übergabeparameter:	$strMessage				Mitteilung
-	//						$_SESSION['username']	Benutzername
-	//
-	//  Returnwert:			0 bei Erfolg, 1 bei Misserfolg
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////	
-	function writeLog($strMessage) {
-		// Logstring in Datenbank schreiben
-		$strUserName = (isset($_SESSION['username']) && ($_SESSION['username'] != ""))	? $_SESSION['username'] : "unknown";
-		$booReturn   = $this->myDBClass->insertData("INSERT INTO tbl_logbook SET user='".$strUserName."',time=NOW(), entry='$strMessage'");
-		if ($booReturn == false) return(1);
-		return(0);
-	}
+      case "tbl_hosttemplate":    $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToHosttemplate",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToHosttemplate",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_hosttemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHosttemplateToVariabledefinition",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_variabledefinition",
+                                  'targetKey' => "name",
+                                  'flags'   => "0,0,0,2");
+                      $arrRelations[] = array('tableName' => "tbl_lnkHostToHosttemplate",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_service":       $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToService_DS",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicedependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToService_S",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicedependency",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToService",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_serviceescalation",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "1,1,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicegroupToService",
+                                  'fieldName' => "idSlaveS",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToServicegroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToServicetemplate",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToVariabledefinition",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_variabledefinition",
+                                  'targetKey' => "name",
+                                  'flags'   => "0,0,0,2");
+                      $arrRelations[] = array('tableName' => "tbl_serviceextinfo",
+                                  'fieldName' => "service_description",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,0");
+                      return(1);
+      case "tbl_servicedependency": $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHostgroup_DH",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHostgroup_H",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHost_DH",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToHost_H",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToService_DS",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicedependencyToService_S",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_serviceescalation": $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceescalationToService",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_serviceextinfo":    return(0);
+      case "tbl_servicegroup":    $arrRelations[] = array('tableName' => "tbl_lnkServicegroupToService",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicegroupToServicegroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicegroupToServicegroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToServicegroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToServicegroup",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_servicetemplate":   $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToContact",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contact",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToContactgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_contactgroup",
+                                  'targetKey' => "contactgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToHost",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_host",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToHostgroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_hostgroup",
+                                  'targetKey' => "hostgroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToServicegroup",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_servicegroup",
+                                  'targetKey' => "servicegroup_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToServicetemplate",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToServicetemplate",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_servicetemplate",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServicetemplateToVariabledefinition",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_variabledefinition",
+                                  'targetKey' => "name",
+                                  'flags'   => "0,0,0,2");
+                      $arrRelations[] = array('tableName' => "tbl_lnkServiceToServicetemplate",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_service",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,0,0,1");
+                      return(1);
+      case "tbl_timeperiod":      $arrRelations[] = array('tableName' => "tbl_lnkTimeperiodToTimeperiod",
+                                  'fieldName' => "idMaster",
+                                  'target'  => "tbl_timeperiod",
+                                  'targetKey' => "timeperiod_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_lnkTimeperiodToTimeperiod",
+                                  'fieldName' => "idSlave",
+                                  'target'  => "tbl_timeperiod",
+                                  'targetKey' => "timeperiod_name",
+                                  'flags'   => "0,0,0,1");
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "host_notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_contact",
+                                  'fieldName' => "service_notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "contact_name",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_contacttemplate",
+                                  'fieldName' => "host_notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_contacttemplate",
+                                  'fieldName' => "service_notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "check_period",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_host",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "host_name",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_hosttemplate",
+                                  'fieldName' => "check_period",
+                                  'target'  => "",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_hosttemplate",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_hostdependency",
+                                  'fieldName' => "dependency_period",
+                                  'target'  => "",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_hostescalation",
+                                  'fieldName' => "escalation_period",
+                                  'target'  => "",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "check_period",
+                                  'target'  => "",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_service",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "config_name,service_description",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_servicetemplate",
+                                  'fieldName' => "check_period",
+                                  'target'  => "",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_servicetemplate",
+                                  'fieldName' => "notification_period",
+                                  'target'  => "",
+                                  'targetKey' => "template_name",
+                                  'flags'   => "1,1,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_servicedependency",
+                                  'fieldName' => "dependency_period",
+                                  'target'  => "",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_serviceescalation",
+                                  'fieldName' => "escalation_period",
+                                  'target'  => "",
+                                  'targetKey' => "config_name",
+                                  'flags'   => "0,2,2,0");
+                      $arrRelations[] = array('tableName' => "tbl_timedefinition",
+                                  'fieldName' => "tipId",
+                                  'target'  => "",
+                                  'targetKey' => "id",
+                                  'flags'   => "0,0,0,3");
+                      return(1);
+      default:            return(0);
+    }
+  }
 }
 ?>
