@@ -1,5 +1,5 @@
-<!-- Version 2.00.00 -->
-<!-- Last modified 12.03.2007 -->
+<!-- Version 2.01.00 -->
+<!-- Last modified 25.09.2007 -->
 <!-- BEGIN datatable -->
 <form name="frmDatalist" method="post" action="{ACTION_MODIFY}">
   <script language="JavaScript" type="text/JavaScript">
@@ -118,6 +118,10 @@
       document.forms.frmDatalist.modus.value = "add";
       document.forms.frmDatalist.submit();
 	}
+	function writeConfig() {
+      document.forms.frmDatalist.modus.value = "make";
+      document.forms.frmDatalist.submit();
+	}
 	function checkMode() {
       if ((document.forms.frmDatalist.selModify.value == "delete") && !(confirm("{LANG_DELETEOK}"))) {
         return false; 
@@ -184,6 +188,7 @@
   <table width="100%" border="0" class="buttontable">
 	<tr>
 	  <td><input name="subAdd" type="button" id="subAdd" onClick="addDataset()" value="{LANG_ADD}">
+	    <input name="subMake" type="button" id="subMake" onclick="writeConfig()" value="{LANG_WRITE_CONF_ALL}">
 	    <input name="modus" type="hidden" id="modus" value="checkform">
 	    <input name="hidModify" type="hidden" id="hidModify">
 	    <input name="hidListId" type="hidden" id="hidListId">
@@ -233,6 +238,10 @@
 	function addDataset() {
 	  document.forms.frmDatalist.modus.value = "add";
 	  document.forms.frmDatalist.submit();
+	}
+	function writeConfig() {
+      document.forms.frmDatalist.modus.value = "make";
+      document.forms.frmDatalist.submit();
 	}
 	function reloadFilter() {
 	  document.forms.frmDatalist.modus.value = "filter";
@@ -312,6 +321,7 @@
   <table width="100%" border="0" class="buttontable">
 	<tr>
 	  <td><input name="subAdd" type="button" id="subAdd" onClick="addDataset()" value="{LANG_ADD}">
+	    <input name="subMake" type="button" id="subMake" onclick="writeConfig()" value="{LANG_WRITE_CONF_ALL}">
 	    <input name="modus" type="hidden" id="modus" value="checkform">
 	    <input name="hidModify" type="hidden" id="hidModify">
 	    <input name="hidListId" type="hidden" id="hidListId">

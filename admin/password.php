@@ -12,7 +12,8 @@
 // Datum:	12.03.2007
 // Zweck:	Passwort wechseln
 // Datei:	admin/password.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
+// SVN:		$Id: password.php 72 2008-04-03 07:01:46Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -54,7 +55,7 @@ if (($chkInsPasswdOld != "") && ($chkInsPasswdNew1 != "")) {
 				$myDataClass->writeLog($LANG['logbook']['pwdchanged']);
 				// Neues Login erzwingen
 				$_SESSION['username'] = "";
-				header("Location: http://".$_SERVER['HTTP_HOST'].$SETS['path']['root']."index.php");
+				header("Location: ".$SETS['path']['protocol']."://".$_SERVER['HTTP_HOST'].$SETS['path']['root']."index.php");
 			} else {
 				$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
 			}
@@ -102,7 +103,7 @@ $conttp->show("passwordsite");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

@@ -12,7 +12,7 @@
 // Datum:	12.03.2007
 // Zweck:	Konfiguration herunterladen
 // Datei:	admin/download.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);

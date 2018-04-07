@@ -12,7 +12,8 @@
 // Datum:	12.03.2007
 // Zweck:	Datenmanipulationsklassen
 // Datei:	functions/data_class.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
+// SV:      $Id: data_class.php 72 2008-04-03 07:01:46Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -25,7 +26,7 @@
 // Behandelt sämtliche Funktionen, die zur Manipulation der Konfigurationsdaten innerhalb der 
 // Datenbank notwendig sind
 //
-// Version 2.00.00 (Internal)
+// Version 2.0.2 (Internal)
 // Datum   12.03.2007 wim
 //
 // Name: nagdata
@@ -55,7 +56,7 @@ class nagdata {
 	//  Klassenkonstruktor
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Tätigkeiten bei Klasseninitialisierung
@@ -70,7 +71,7 @@ class nagdata {
 	//  Funktion: Auswahlfeld in Kommastring berfhren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Schreibt die per Array übergebenen Einzelwerte in einen String hintereinander 
@@ -93,7 +94,7 @@ class nagdata {
 	//  Funktion: Daten in die Datenbank schreiben
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Sendet einen übergebenen SQL String an den Datenbankserver und wertet die Rückgabe
@@ -127,7 +128,7 @@ class nagdata {
 	//  Funktion: Relationen in die Datenbank schreiben
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Trägt die notwendigen Relationen für eine 1:n (Optional 1:n:n) Beziehung in die 
@@ -174,7 +175,7 @@ class nagdata {
 	//  Funktion: Relationen in der Datenbank aktualisieren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Ändert die Relationen für eine 1:n (Optonal 1:n:n) Beziehung innerhalb der Relations-
@@ -205,7 +206,7 @@ class nagdata {
 	//  Funktion: Relationen in der Datenbank lschen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Löscht eine Relation aus der Relationstabelle
@@ -241,7 +242,7 @@ class nagdata {
 	//  Funktion: Relationen in der Datenbank finden
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Sucht eine Relation in der Relationstabelle
@@ -268,7 +269,7 @@ class nagdata {
 	//  Funktion: Assoziierte Hosts zu einer, mehreren oder allen Hostgruppen finden
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Sucht alle assoziierten Hosts zu den mitgelieferten Hostgruppen
@@ -319,7 +320,7 @@ class nagdata {
 	//  Funktion: Daten aus Datenbank lschen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Löscht einen Datensatz oder mehrere Datensätze aus einer Datentabelle. Wahlweise kann 
@@ -506,7 +507,7 @@ class nagdata {
 	//  Funktion: Datensätze kopieren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Kopiert einen oder mehrere Datensätze in einer Datentabelle. Wahlweise kann eine 
@@ -663,7 +664,7 @@ class nagdata {
 	//  Funktion: Tabellen ID ermitteln
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim	
 	//  
 	//  Gibt die Tabellen ID der angegebenen Tabelle zurück
@@ -698,8 +699,8 @@ class nagdata {
 	//  Funktion: Relationen einer Datentabelle zurückliefern
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
-	//  Datum   12.03.2007 wim
+	//  Version 2.0.2 (Internal)
+	//  Datum   31.08.2007 wim
 	//  
 	//  Gibt eine Liste aus mit allen Datenfeldern einer Tabelle, die eine 1:1 oder 1:n 
 	//  Beziehung zu einer anderen Tabelle haben.
@@ -726,7 +727,7 @@ class nagdata {
 																	'type'		=> 2);
 											$arrRelations[] = array('tableName' => "tbl_contactgroup",
 																	'fieldName' => "contactgroups",
-																	'target' 	=> "contacgroup_name",
+																	'target' 	=> "contactgroup_name",
 																	'type'		=> 2);
 											$arrRelations[] = array('tableName' => "tbl_timeperiod",
 																	'fieldName' => "host_notification_period",
@@ -932,7 +933,7 @@ class nagdata {
 	//  Funktion: Mussdaten prüfen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Überprüft, ob mit dem mitgelieferten Datensatz in einer anderen Tabelle eine Relation
@@ -1118,7 +1119,7 @@ class nagdata {
 	//  Funktion: Services für Hosts zurückliefern
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Gibt ein Array der Servicenamen und IDs zurück welche einem Host zugeteilt sind.
@@ -1193,7 +1194,7 @@ class nagdata {
 	//  Funktion: Services für Hostgruppen zurückliefern
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Gibt ein Array der Servicenamen und IDs zurück welche einer Hostgruppe zugeteilt sind.
@@ -1268,7 +1269,7 @@ class nagdata {
 	//  Funktion: Logbuch schreiben
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Speichert einen übergebenen String im Logbuch

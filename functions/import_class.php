@@ -12,7 +12,8 @@
 // Datum:	12.03.2007
 // Zweck:	Datenimportklassen
 // Datei:	functions/import_class.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
+// SV:      $Id: import_class.php 72 2008-04-03 07:01:46Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -24,7 +25,7 @@
 //
 // Enthält sämtliche Funktionen, zum Importieren bestehender Konfigurationsdateien nötig sind
 //
-// Version 2.00.00 (Internal)
+// Version 2.0.2 (Internal)
 // Datum   12.03.2007 wim
 //
 // Name: nagimport
@@ -56,7 +57,7 @@ class nagimport {
 	//  Klassenkonstruktor
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Tätigkeiten bei Klasseninitialisierung
@@ -71,7 +72,7 @@ class nagimport {
 	//  Funktion: Datenimport
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Importiert eine Konfigurationsdatei und schreibt deren Daten in die entsprechende
@@ -156,8 +157,8 @@ class nagimport {
 	//  Hilfsfunktion: Tabelle importieren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
-	//  Datum:		12.03.2007
+	//  Version:	2.00.02 (Internal)
+	//  Datum:		18.06.2007
 	//  
 	//  Importiert eine Konfigurationsdatei in die passende Datentabelle.
 	//
@@ -235,6 +236,7 @@ class nagimport {
 		
 		// SQL definieren - Teil 2 (Array abarbeiten)
 		$i = 0;
+		$strFirstHost = "";
 		foreach ($arrImportData AS $elem) {
 			if (($elem['key'] != "register") && ($elem['key'] != "use")) {
 				// Unterliegt dieses Feld einer Relation
@@ -284,6 +286,10 @@ class nagimport {
 								}
 								// Wert trennen
 								$arrValue = explode(",",$elem['value']);
+								// Erster Hostname
+								if ($relations['fieldName'] == "host_name") {
+									$strFirstHost = $arrValue[0];
+								}
 								// Ziel IDs bestimmen
 								$intSkip = 0;
 								foreach ($arrValue AS $rel2) {
@@ -296,7 +302,7 @@ class nagimport {
 									}
 									// Existiert der Zieleintrag? 
 									$intReturn = $this->myDBClass->getFieldData("SELECT id FROM ".$relations['tableName']." WHERE ".$relations['target']."='".$rel2."'");
-									//echo "SELECT id FROM ".$relations['tableName']." WHERE ".$relations['target']."='".$rel2."'<br>";
+									// echo "SELECT id FROM ".$relations['tableName']." WHERE ".$relations['target']."='".$rel2."'<br>";
 									if (($intReturn != false) && ($intReturn != 0)) {
 										$arrInsertSQL[] =  "INSERT INTO tbl_relation SET 
 															tbl_A=".$this->myDataClass->tableID($strTable).",
@@ -318,6 +324,81 @@ class nagimport {
 									}
 									$elem['value'] = 1;
 								}
+							} else if ($relations['type'] == 3) { //---> INSERT + UPDATE verschieden
+								// Im Updatefall erst alle Relationen löschen
+								if ($intExists != 0) {
+									$arrInsertSQL[] = "DELETE FROM tbl_relation_special WHERE 
+												   	   tbl_A=".$this->myDataClass->tableID($strTable)." AND
+												   	   tbl_A_id={INSERT_ID} AND
+													   tbl_A_field='".$relations['fieldName']."'";
+								}
+								// Wert trennen
+								$arrValue = explode(",",$elem['value']);
+								// Erster Hostname
+								if ($relations['fieldName'] == "host_name") {
+									$strFirstHost = $arrValue[0];
+								}
+								// Daten gruppieren
+								$intCountValue 	= 0;
+								$i				= 0;
+								foreach ($arrValue AS $rel2) {
+									if ($intCountValue % 2 == 0) {
+										$arrServiceGroup[$i]['Host'] = $rel2;
+									} else {
+										$arrServiceGroup[$i]['Service'] = $rel2;
+										$i++;
+									}
+									$intCountValue++;
+								}
+								
+								foreach ($arrServiceGroup AS $rel3) {
+									// Existieren die Zieleinträge? 
+									$intReturn1 = $this->myDBClass->getFieldData("SELECT id FROM ".$relations['tableName1']." WHERE ".$relations['target1']."='".$rel3['Host']."'");
+									$intReturn2 = $this->myDBClass->getFieldData("SELECT id FROM ".$relations['tableName2']." WHERE ".$relations['target2']."='".$rel3['Service']."'");
+									//echo "SELECT id FROM ".$relations['tableName1']." WHERE ".$relations['target1']."='".$rel3['Host']."'<br>";
+									//echo "SELECT id FROM ".$relations['tableName2']." WHERE ".$relations['target2']."='".$rel3['Service']."'<br>";
+									if ((($intReturn1 != false) && ($intReturn1 != 0)) && (($intReturn2 != false) && ($intReturn2 != 0))) {
+										// Beide Einträge existieren - nur Relationen eintragen
+										$arrInsertSQL[] =  "INSERT INTO tbl_relation_special SET 
+															tbl_A=".$this->myDataClass->tableID($strTable).",
+															tbl_A_id={INSERT_ID},
+															tbl_A_field='".$relations['fieldName']."',
+															tbl_B1=".$this->myDataClass->tableID($relations['tableName1']).",
+															tbl_B2=".$this->myDataClass->tableID($relations['tableName2']).",
+															tbl_B1_id=$intReturn1, 
+															tbl_B2_id=$intReturn2";		
+										$intInsertRelations = 1;
+									} else {
+										// Host existiert nicht
+										if (($intReturn1 == false) || ($intReturn1 == 0)) {
+											$arrInsertSQL[] =  "INSERT INTO ".$relations['tableName1']." SET ".$relations['target1']."='".$rel3['Host']."', 
+																active='0', last_modified=NOW() S::G::1";
+										}
+										// Service existiert nicht
+										if (($intReturn2 == false) || ($intReturn2 == 0)) {
+											$arrInsertSQL[] =  "INSERT INTO ".$relations['tableName2']." SET ".$relations['target2']."='".$rel3['Service']."', 
+																active='0', last_modified=NOW() S::G::2";
+										}
+										// Relationen eintragen
+										$strSQL =  "INSERT INTO tbl_relation_special SET 
+													tbl_A=".$this->myDataClass->tableID($strTable).",
+													tbl_A_id={INSERT_ID},
+													tbl_A_field='".$relations['fieldName']."',
+													tbl_B1=".$this->myDataClass->tableID($relations['tableName1']).",
+													tbl_B2=".$this->myDataClass->tableID($relations['tableName2']).",
+													tbl_B1_id={INSERT_ID_TARGET_1}, 
+													tbl_B2_id={INSERT_ID_TARGET_2}";		
+										if (($intReturn1 != false) && ($intReturn1 != 0)) {
+											$strSQL = str_replace("{INSERT_ID_TARGET_1}",$intReturn1,$strSQL);
+										}
+										if (($intReturn2 != false) && ($intReturn2 != 0)) {
+											$strSQL = str_replace("{INSERT_ID_TARGET_2}",$intReturn2,$strSQL);
+										}
+										$arrInsertSQL[] = $strSQL;
+										$intInsertRelations = 1;
+									}
+									$elem['value'] = 1;
+								}
 							}
 						}
 					}
@@ -333,8 +414,8 @@ class nagimport {
 		// Konfigurationsname ermitteln
 		if ($strTable == "tbl_service") {
 			$arrTemp  = explode(".",strrev(basename($strFileName)),2);
-			$strSQL1 .= "config_name='".strrev($arrTemp[1])."', ";
-			$strTemp1 = strrev($arrTemp[1]);
+			$strSQL1 .= "config_name='".strrev($arrTemp[1])."-".$strFirstHost."', ";
+			$strTemp1 = strrev($arrTemp[1])."-".$strFirstHost;
 		}		
 		if (($strTable == "tbl_serviceescalation") || ($strTable == "tbl_servicedependency") || 
 			($strTable == "tbl_hostescalation") || ($strTable == "tbl_hostdependency")) {
@@ -368,9 +449,19 @@ class nagimport {
 						$booResult 	= $this->myDBClass->insertData($elem);
 						continue;
 					}
-					if (substr_count($elem,"active") == 1) {
+					if ((substr_count($elem,"active") == 1) && (substr_count($elem,"S::G") != 1)) {
 						$booResult 	= $this->myDBClass->insertData($elem);
 						$intSaveID  = $this->myDBClass->intLastId;
+						//echo "Target: ".$elem."<br>";
+					} else if ((substr_count($elem,"active") == 1) && (substr_count($elem,"S::G::1") == 1)) {
+						$elem = str_replace("S::G::1","",$elem);
+						$booResult 		= $this->myDBClass->insertData($elem);
+						$intSaveID_SG1  = $this->myDBClass->intLastId;
+						//echo "Target: ".$elem."<br>";
+					} else if ((substr_count($elem,"active") == 1) && (substr_count($elem,"S::G::2") == 1)) {
+						$elem = str_replace("S::G::2","",$elem);
+						$booResult 		= $this->myDBClass->insertData($elem);
+						$intSaveID_SG2  = $this->myDBClass->intLastId;
 						//echo "Target: ".$elem."<br>";
 					} else {
 						if (isset($intSaveID) && ($intSaveID != 0))  {
@@ -378,6 +469,12 @@ class nagimport {
 							$elem = str_replace("{INSERT_ID_TARGET}",$intSaveID,$elem);
 							$intSaveID = 0;
 						} else {
+							if (isset($intSaveID_SG1) && ($intSaveID_SG1 != 0))  {
+								$elem = str_replace("{INSERT_ID_TARGET_1}",$intSaveID_SG1,$elem);
+							}
+							if (isset($intSaveID_SG2) && ($intSaveID_SG2 != 0))  {
+								$elem = str_replace("{INSERT_ID_TARGET_2}",$intSaveID_SG2,$elem);
+							}
 							$elem = str_replace("{INSERT_ID}",$intDatasetId,$elem);
 						}	
 						$booResult 	= $this->myDBClass->insertData($elem);
@@ -393,7 +490,7 @@ class nagimport {
 	//  Funktion: Template integrieren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Integriert die Daten eines bestimmten Templates in das Importdatenarrays

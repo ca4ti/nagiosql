@@ -12,7 +12,8 @@
 // Datum:	12.03.2007
 // Zweck:	Geschriebene Konfiguration prüfen
 // Datei:	admin/verify.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
+// SVN:		$Id: verify.php 72 2008-04-03 07:01:46Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -50,6 +51,7 @@ if ($chkCheck != "") {
 }
 if ($chkReboot != "") {
 	// Prüfen, ob Nagios Daemon läuft
+	clearstatcache();
 	if (file_exists($SETS['nagios']['pidfile'])) {
 		if (file_exists($SETS['nagios']['cmdfile']) && is_writable($SETS['nagios']['cmdfile'])) {
 				$strCommandString = "[".mktime()."] RESTART_PROGRAM;".mktime();
@@ -105,40 +107,40 @@ if ($chkWriteMon != "") {
 	} else {
 		$strInfo .= $LANG['file']['failed']."<br>";
 	}
-	$strInfo .= "Write hostgroup.cfg ...<br>";
+	$strInfo .= "Write hostgroups.cfg ...<br>";
 	$myConfigClass->createConfig("tbl_hostgroup");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
-	$strInfo .= "Write servicegroup.cfg ...<br>";
+	$strInfo .= "Write servicegroups.cfg ...<br>";
 	$myConfigClass->createConfig("tbl_servicegroup");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
 
 }
 if ($chkWriteAdd != "") {
-	$strInfo = "Write timeperiod.cfg ... ";
+	$strInfo = "Write timeperiods.cfg ... ";
 	$myConfigClass->createConfig("tbl_timeperiod");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= "Write misccommand.cfg ... ";
+	$strInfo .= "Write misccommands.cfg ... ";
 	$myConfigClass->createConfig("tbl_misccommand");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
-	$strInfo .= "Write checkcommand.cfg ... ";
+	$strInfo .= "Write checkcommands.cfg ... ";
 	$myConfigClass->createConfig("tbl_checkcommand");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
-	$strInfo .= "Write contact.cfg ... ";
+	$strInfo .= "Write contacts.cfg ... ";
 	$myConfigClass->createConfig("tbl_contact");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
-	$strInfo .= "Write contactgroup.cfg ... ";
+	$strInfo .= "Write contactgroups.cfg ... ";
 	$myConfigClass->createConfig("tbl_contactgroup");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= "Write servicedependency.cfg ... ";
+	$strInfo .= "Write servicedependencies.cfg ... ";
 	$myConfigClass->createConfig("tbl_servicedependency");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= "Write hostdependency.cfg ... ";
+	$strInfo .= "Write hostdependencies.cfg ... ";
 	$myConfigClass->createConfig("tbl_hostdependency");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
-	$strInfo .= "Write serviceescalation.cfg ... ";
+	$strInfo .= "Write serviceescalations.cfg ... ";
 	$myConfigClass->createConfig("tbl_serviceescalation");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";	
-	$strInfo .= "Write hostescalation.cfg ... ";
+	$strInfo .= "Write hostescalations.cfg ... ";
 	$myConfigClass->createConfig("tbl_hostescalation");
 	$strInfo .= $myConfigClass->strDBMessage."<br>";
 	$strInfo .= "Write serviceextinfo.cfg ... ";
@@ -213,7 +215,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

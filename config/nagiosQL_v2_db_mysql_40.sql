@@ -9,10 +9,10 @@
 -- // Projekt:	NagiosQL Applikation
 -- // Author :	Martin Willisegger
 -- // Datum:	25.09.2007
--- // Zweck:	MySQL Datenbank erstellen - MySQL 4.1-5.x
--- // Datei:	config/nagiosQL_V2_db_mysql.sql
+-- // Zweck:	MySQL Datenbank erstellen - Mysql Version 4.0
+-- // Datei:	config/nagiosQL_v2_db_mysql_40.sql
 -- // Version:  2.01-P00
--- // SVN:		$Id: nagiosQL_v2_db_mysql.sql 49 2007-09-25 15:01:56Z martin $
+-- // SVN:		$Id$
 -- //
 -- ///////////////////////////////////////////////////////////////////////////////
 
@@ -29,17 +29,17 @@ USE db_nagiosql_v2;
 -- Tabellenstruktur für Tabelle `tbl_checkcommand`
 -- 
 
-CREATE TABLE tbl_checkcommand (
+CREATE TABLE `tbl_checkcommand` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `command_name` varchar(60) NOT NULL default '',
   `command_line` text NOT NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`command_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE tbl_checkcommand (
 -- Tabellenstruktur für Tabelle `tbl_contact`
 -- 
 
-CREATE TABLE tbl_contact (
+CREATE TABLE `tbl_contact` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `contact_name` varchar(60) NOT NULL default '',
   `alias` varchar(120) NOT NULL default '',
@@ -66,12 +66,12 @@ CREATE TABLE tbl_contact (
   `address4` varchar(60) default NULL,
   `address5` varchar(60) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`contact_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -85,12 +85,12 @@ CREATE TABLE `tbl_contactgroup` (
   `alias` varchar(120) NOT NULL default '',
   `members` int(10) unsigned NOT NULL default '0',
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`contactgroup_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -131,12 +131,12 @@ CREATE TABLE `tbl_host` (
   `stalking_options` varchar(10) default NULL,
   `active` enum('0','1') NOT NULL default '1',
   `template` int(10) unsigned NOT NULL default '0',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`host_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -155,12 +155,12 @@ CREATE TABLE `tbl_hostdependency` (
   `execution_failure_criteria` varchar(10) default NULL,
   `notification_failure_criteria` varchar(10) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`config_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -180,12 +180,12 @@ CREATE TABLE `tbl_hostescalation` (
   `escalation_period` int(10) unsigned NOT NULL default '0',
   `escalation_options` varchar(10) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`config_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -207,12 +207,12 @@ CREATE TABLE `tbl_hostextinfo` (
   `2d_coords` varchar(40) default NULL,
   `3d_coords` varchar(60) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`host_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -226,12 +226,12 @@ CREATE TABLE `tbl_hostgroup` (
   `alias` varchar(120) NOT NULL default '',
   `members` int(10) unsigned NOT NULL default '0',
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`hostgroup_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -267,12 +267,12 @@ CREATE TABLE `tbl_hosttemplate` (
   `notifications_enabled` enum('0','1') NOT NULL default '1',
   `stalking_options` varchar(10) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`template_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -290,7 +290,7 @@ CREATE TABLE `tbl_language` (
   `lang_xy` text,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `category` (`category`,`keyword`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 PACK_KEYS=0;
+) TYPE=MyISAM PACK_KEYS=0;
 
 -- 
 -- Daten für Tabelle `tbl_language`
@@ -759,11 +759,11 @@ INSERT INTO `tbl_language` (`id`, `version`, `category`, `keyword`, `lang_de`, `
 
 CREATE TABLE `tbl_logbook` (
   `id` bigint(20) NOT NULL auto_increment,
-  `time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `time` timestamp(14) NOT NULL,
   `user` varchar(20) NOT NULL default '',
   `entry` tinytext NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -778,7 +778,7 @@ CREATE TABLE `tbl_mainmenu` (
   `item` varchar(20) NOT NULL default '',
   `link` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- 
 -- Daten für Tabelle `tbl_mainmenu`
@@ -801,14 +801,14 @@ INSERT INTO `tbl_mainmenu` (`id`, `order_id`, `menu_id`, `item`, `link`) VALUES 
 CREATE TABLE `tbl_misccommand` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `command_name` varchar(60) NOT NULL default '',
-  `command_line` text character set utf8 collate utf8_unicode_ci NOT NULL,
+  `command_line` text NOT NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`command_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -825,7 +825,7 @@ CREATE TABLE `tbl_relation` (
   `tbl_B_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `tbl_A` (`tbl_A`,`tbl_B`,`tbl_A_id`,`tbl_A_field`,`tbl_B_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -844,7 +844,7 @@ CREATE TABLE `tbl_relation_special` (
   `tbl_B2_id` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `tbl_A` (`tbl_A`,`tbl_B1`,`tbl_B2`,`tbl_A_id`,`tbl_A_field`,`tbl_B1_id`,`tbl_B2_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -888,12 +888,12 @@ CREATE TABLE `tbl_service` (
   `stalking_options` varchar(10) default NULL,
   `active` enum('0','1') NOT NULL default '1',
   `template` int(10) unsigned NOT NULL default '0',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`config_name`,`service_description`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -916,12 +916,12 @@ CREATE TABLE `tbl_servicedependency` (
   `execution_failure_criteria` varchar(12) default NULL,
   `notification_failure_criteria` varchar(12) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`config_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -943,12 +943,12 @@ CREATE TABLE `tbl_serviceescalation` (
   `escalation_period` int(10) unsigned NOT NULL default '0',
   `escalation_options` varchar(10) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `config_name` (`config_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -967,12 +967,12 @@ CREATE TABLE `tbl_serviceextinfo` (
   `icon_image` varchar(60) default NULL,
   `icon_image_alt` varchar(60) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`host_name`,`service_description`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -986,12 +986,12 @@ CREATE TABLE `tbl_servicegroup` (
   `alias` varchar(120) NOT NULL default '',
   `members` int(10) unsigned NOT NULL default '0',
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `config_name` (`servicegroup_name`,`config_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -1007,7 +1007,7 @@ CREATE TABLE `tbl_submenu` (
   `link` varchar(50) NOT NULL default '',
   `access_rights` varchar(8) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM;
 
 -- 
 -- Daten für Tabelle `tbl_submenu`
@@ -1056,12 +1056,12 @@ CREATE TABLE `tbl_timeperiod` (
   `friday` varchar(100) default NULL,
   `saturday` varchar(100) default NULL,
   `active` enum('0','1') NOT NULL default '1',
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` timestamp(14) NOT NULL,
   `access_rights` varchar(8) default NULL,
   `config_id` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `	timeperiod_name` (`timeperiod_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 PACK_KEYS=0;
+) TYPE=MyISAM PACK_KEYS=0;
 
 -- --------------------------------------------------------
 
@@ -1076,10 +1076,10 @@ CREATE TABLE `tbl_user` (
   `password` varchar(40) NOT NULL default '',
   `access_rights` varchar(8) default NULL,
   `active` enum('0','1') NOT NULL default '0',
-  `last_login` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `last_modified` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `last_login` timestamp(14) NOT NULL,
+  `last_modified` timestamp(14) NOT NULL default '00000000000000',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) TYPE=MyISAM AUTO_INCREMENT=2;
 
 -- 
 -- Daten für Tabelle `tbl_user`

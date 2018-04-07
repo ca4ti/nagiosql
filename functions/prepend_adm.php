@@ -2,19 +2,25 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // NagiosQL
-//
 ///////////////////////////////////////////////////////////////////////////////
 //
 // (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	12.03.2007
+// Datum:	06.11.2007
 // Zweck:	Allgemeine Funtionen für jede Seite des Administrationsbereiches
 // Datei:	prepend_adm.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
+// SVN:		$Id: prepend_adm.php 73 2008-04-03 07:15:23Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
+//
+// Übergabeparameter $SETS auschliessen (security)
+// ===============================================
+if (isset($_GET['SETS']) || isset($_POST['SETS'])) {
+	$SETS = parse_ini_file("../config/settings.ini",TRUE);
+}
 //
 // Einbinden der externen Funktions- und Definitionsdateien
 // ========================================================
@@ -31,9 +37,9 @@ if (!class_exists("HTML_Template_IT")) {
 // Versionsverwaltung
 // ==================
 $setMainVersion  = "2";
-$setSubVersion   = "00";
-$setPatchLevel   = "00";
-$setFileVersion  = $setMainVersion.".".$setSubVersion."-P".$setPatchLevel;
+$setSubVersion   = "0";
+$setPatchLevel   = "2";
+$setFileVersion  = $setMainVersion.".".$setSubVersion.".".$setPatchLevel;
 $setTitleVersion = $setMainVersion.".".$setSubVersion;
 // 
 // Session starten
@@ -65,6 +71,7 @@ $myConfigClass->myDataClass	=& $myDataClass;
 //
 // Sprachdatei einbinden
 // =====================
+unset($LANG);
 $intReturn = $myVisClass->getLanguage($SETS['data']['lang'],$LANG);
 if ($intReturn != 0) {$strLoginMessage = "Could not load language definition from database!<br>Please check your site configuration and/or database connection!";}
 $_SESSION['LANG']           = $LANG;
@@ -75,12 +82,12 @@ $myConfigClass->arrLanguage = $LANG;
 // Login verarbeiten
 // =================
 if (isset($preUsername)) {
-	$strSQL    = "SELECT * FROM tbl_user WHERE username='$preUsername' AND password=MD5('$prePassword')";
-	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataUser,$intDataCount);
-	if ($booReturn == false) {
-		if (!isset($strMessage)) $strMessage = "";
-		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
-	} else if ($intDataCount == 1) {	
+    $strSQL    = "SELECT * FROM tbl_user WHERE username='$preUsername' AND password=MD5('$prePassword') AND active='1'";
+    $booReturn = $myDBClass->getDataArray($strSQL,$arrDataUser,$intDataCount);
+    if ($booReturn == false) {
+         if (!isset($strMessage)) $strMessage = "";
+         $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";       
+    } else if ($intDataCount == 1) {    
 		// Session Variabeln setzen
 		$_SESSION['username']  = $arrDataUser[0]['username'];
 		$_SESSION['startsite'] = $SETS['path']['root']."admin.php";

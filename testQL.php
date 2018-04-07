@@ -9,10 +9,11 @@
 //
 // Projekt:	NagiosQL Application
 // Website: http://www.nagiosql.org
-// Datum:   12.03.2007
+// Datum:   17.08.2007
 // Author :	Martin Willisegger/Rouven Homann
 // Zweck:	Testscript
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
+// SV:      $Id: testQL.php 72 2008-04-03 07:01:46Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
 ?>
@@ -30,6 +31,7 @@
 -->
 </style>
 <?php
+ini_set("display_errors","On");
 error_reporting(E_ALL);
 // 
 // Menuvariabeln für diese Seite
@@ -106,13 +108,9 @@ if (str_replace("testQL.php","",$_SERVER['REQUEST_URI']) != $SETS['path']['root'
   	$strPath = str_replace("testQL.php","",$_SERVER['REQUEST_URI']); 
   	echo "<span class=\"red\"> -> This parameter should be set to: \"$strPath\" - now it is set to \"".$SETS['path']['root']."\"</span><br>";
 } else {
-  	echo "Parameter in settings.ini: section \"[path]\", parameter \"root\" seems to be correct!<br>";
+  	echo "Parameter in settings.ini: section \"[path]\", parameter \"root\" seems to be correct!";
 }
-if (!require_once($SETS['path']['IT'])) {
-  	echo "<span class=\"red\">Parameter wrong in settings.ini: section \"[path]\", parameter \"IT\" - file not found, install PEAR Module HTML_Template_IT!</span><br>";
-} else {
-  	echo "Parameter in settings.ini: section \"[path]\", parameter \"IT\" seems to be correct - file found and included!<br>";
-}
+
 echo "<br><h5><b>Templates</b></h5>\n";
 
 if (file_exists($SETS['path']['physical']."/templates/main.tpl.htm") && is_readable($SETS['path']['physical']."/templates/main.tpl.htm")) {
@@ -128,7 +126,16 @@ if (file_exists($SETS['path']['physical']."/templates/admin/admin_master.tpl.htm
 //
 // PEAR testen
 // ===========
+$incpath = strtoupper(ini_get("include_path"));
+if (substr_count($incpath,"PEAR") == 0) {
+	echo "<span class=\"red\">PEAR extension is probably not installed</span><br>";
+} else {
+	echo "PEAR extension seems to be installed<br>";
+}
+echo "<span class=\"red\">";
+include($SETS['path']['IT']);
 $testtp = new HTML_Template_IT($SETS['path']['physical']."/templates/"); 
+echo "</span><br>";
 if (!$testtp->loadTemplatefile("main.tpl.htm", true, false)) {
 	echo "<span class=\"red\">Can not load main template</span><br>";
 } else {
@@ -140,6 +147,7 @@ if (!$testtp2->loadTemplatefile("admin/admin_master.tpl.htm", true, false)) {
 } else {
 	echo "Admin template successfully loaded<br>";
 }
+
 $testtp->setVariable("LANGUAGE","de");
 $testtp->parse("header");
 $test1 = $testtp->get("header");
@@ -153,7 +161,13 @@ if ($test1 == "") {
 if ($test2 == "") {
 	echo "<span class=\"red\">Can not parse admin template</span><br>";
 } else {
-	echo "Admin template successfully parsed<br>";
+	echo "Admin template successfully parsed<br><br>";
+}
+$testGPC = ini_get("magic_quotes_gpc");
+if ($testGPC == 1) {
+	echo "php.ini configuration for magic_quotes_gpc is correct<br>";
+} else {
+	echo "<span class=\"red\">php.ini configuration for magic_quotes_gpc is not correct -> change it to \"magic_quotes_gpc = On\"</span><br>";
 }
 echo "<br><h5><b>Style sheet</b></h5>\n";
 if (file_exists($SETS['path']['physical']."/config/main.css") && is_readable($SETS['path']['physical']."/config/main.css")) {

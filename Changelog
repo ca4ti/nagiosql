@@ -4,7 +4,7 @@ NagiosQL Change Log
 
 *******************************************************************************
 *                                                                             *
-*                           NagiosQL 2005 - History                           *
+*                           NagiosQL - History                           *
 *                                                                             *
 *******************************************************************************
 
@@ -66,3 +66,8 @@ Minor changes:
 12.03.2007 - V2.00-P00 (Version 2.00 patch level 00)
 First productive release of version 2.00
  
+31.03.2008 - V2.0.1 (recommended bugfix release)
+- fixed many bugs
+
+03.04.2008 - V2.0.2 (immediate release because 2.0.1 was broken)
+- [fixed] login bug

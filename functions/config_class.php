@@ -12,7 +12,7 @@
 // Datum:	12.03.2007
 // Zweck:	Konfigurationsklassen
 // Datei:	functions/config_class.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -24,7 +24,7 @@
 //
 // Enthält sämtliche Funktionen, zum Erstellen der Nagioskonfiguration nötig sind
 //
-// Version 2.00.00 (Internal)
+// Version 2.0.2 (Internal)
 // Datum   12.03.2007 wim
 //
 // Name: nagconfig
@@ -56,7 +56,7 @@ class nagconfig {
 	//  Klassenkonstruktor
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Ttigkeiten bei Klasseninitialisierung
@@ -71,7 +71,7 @@ class nagconfig {
 	//  Funktion: Letzte Datentabellenänderung und letzte Konfigurationsdateiänderung
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Ermittelt die Zeitpunkte der letzten Datentabellenänderung sowie der letzten Änderung an
@@ -130,7 +130,7 @@ class nagconfig {
 	//  Funktion: Letzte Datensatzänderung und letzte Konfigurationsdateiänderung
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Ermittelt die Zeitpunkte der letzten Datensatzänderung sowie der letzten Änderung an
@@ -189,7 +189,7 @@ class nagconfig {
 	//  Funktion: Konfigurationsdatei schreiben
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Schreibt ein einzelnes Konfigurationsfile mit allen Datensätzen einer Tabelle oder
@@ -414,7 +414,7 @@ class nagconfig {
 	//  Funktion: Konfigurationsdatei für einzelnen Datensatz schreiben
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Schreibt ein einzelnes Konfigurationsfile mit einem einzelnen Datensatz einer Tabelle oder

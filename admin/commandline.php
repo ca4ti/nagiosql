@@ -12,7 +12,7 @@
 // Datum:	12.03.2007
 // Zweck:	Vollständiges Kommando ausgeben innerhalb des IFRAME
 // Datei:	admin/commandline.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);

@@ -12,7 +12,7 @@
 // Datum:	12.03.2007
 // Zweck:	Administrationsklassen
 // Datei:	functions/nag_class.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -25,7 +25,7 @@
 // Behandelt sämtliche Funktionen, zur Darstellung der Applikation notwendig 
 // sind
 //
-// Version 2.00.00 (Internal)
+// Version 2.0.2 (Internal)
 // Datum   12.03.2007 wim
 //
 // Name: nagvisual
@@ -67,7 +67,7 @@ class nagvisual {
 	//  Klassenkonstruktor
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Tätigkeiten bei Klasseninitialisierung
@@ -82,7 +82,7 @@ class nagvisual {
 	//  Funktion: Sprachdatei laden
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Lädt die Sprachdefinition in das Spracharray
@@ -114,7 +114,7 @@ class nagvisual {
 	//  Funktion: Hauptmenu anzeigen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Gibt das Hauptmenu aus
@@ -220,7 +220,7 @@ class nagvisual {
 	//  Funktion: Zugriffsschlüssel umwandeln
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Wandelt den Zugriffsschlüsselstring in ein Array um
@@ -244,7 +244,7 @@ class nagvisual {
 	//  Funktion: Berechtigung prüfen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Prüft die Berechtigung über den Zugriffsschlüssel
@@ -275,7 +275,7 @@ class nagvisual {
 	//  Funktion: Seitenlinks zusammenstellen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Erstellt einen String, der die Links für die einzelnen Seiten zum anwählen enthält
@@ -313,7 +313,7 @@ class nagvisual {
 	//  Funktion: Auswahlfeld aufbauen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version 2.00.00 (Internal)
+	//  Version 2.0.2 (Internal)
 	//  Datum   12.03.2007 wim
 	//  
 	//  Baut ein Auswahlfeld innerhalb eines Formulars auf

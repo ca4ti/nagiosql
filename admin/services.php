@@ -9,10 +9,11 @@
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	12.03.2007
+// Datum:	25.09.2007
 // Zweck:	Services definieren
 // Datei:	admin/services.php
-// Version: 2.00.00 (Internal)
+// Version: 2.01.00 (Internal)
+// SV:		$Id: services.php 65 2008-03-31 13:41:15Z rouven $
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -23,7 +24,6 @@ $intMain 		= 2;
 $intSub  		= 7;
 $intMenu 		= 2;
 $preContent 	= "services.tpl.htm";
-$setFileVersion = "2.00-BETA-2";
 $strDBWarning	= "";
 $intCount		= 0;
 $strMessage		= "";
@@ -208,6 +208,23 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
 	// Gewählte Datensätze kopieren
 	$intReturn = $myDataClass->dataCopySimple("tbl_service",$chkListId);
 	$chkModus  = "display";
+} else if ($chkModus == "make") {
+	// Servicekonfigurationen schreiben
+	$strSQL   = "SELECT id, config_name FROM tbl_service WHERE active='1' GROUP BY config_name";
+	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+	$intError = 0;
+	if ($intDataCount != 0) {
+		foreach ($arrData AS $data) {
+			$myConfigClass->createConfigSingle("tbl_service",$data['id']);
+			if ($myConfigClass->strDBMessage != $LANG['file']['success']) $intError++;
+		}
+	}
+	if ($intError == 0) {
+		$myDataClass->strDBMessage .= $LANG['file']['success']."<br>";
+	} else {
+		$myDataClass->strDBMessage .= $LANG['file']['failed']."<br>";
+	}
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
 	// Daten des gewählten Datensatzes holen
 	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM tbl_service WHERE id=".$chkListId,$arrModifyData);
@@ -220,14 +237,27 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
 	// Konfiguration schreiben
 	$intDSId    = (int)substr(array_search("on",$_POST),6);
 	if (isset($chkListId) && ($chkListId != 0)) $intDSId = $chkListId;
-	// Prüfen ob die Konfiguration aktiv ist
-	$booReturn = $myDBClass->getSingleDataset("SELECT active FROM tbl_service WHERE id=".$intDSId,$arrModifyData);
-	if (isset($arrModifyData['active']) && $arrModifyData['active'] == 1) {
+	// Prüfen ob es noch aktive Konfigurationen gibt
+	$booReturn = $myDBClass->getSingleDataset("SELECT config_name, active FROM tbl_service WHERE id=".$intDSId,$arrModifyData);
+	$myDBClass->getSingleDataset("SELECT count(*) AS counter FROM tbl_service WHERE config_name='".$arrModifyData['config_name']."' AND active='1'",$arrActiveData);
+	// Falls es keine aktiven Konfigurationen mehr gibt, das Konfigurationsfile löschen
+	if ($arrActiveData['counter'] == 0) {
+		$strOldDate    = date("YmdHis",mktime());
+		$strFilename   = $SETS['nagios']['configservices'].$arrModifyData['config_name'].".cfg";
+		$strBackupfile = $SETS['nagios']['backupservices'].$arrModifyData['config_name'].".cfg_old_".$strOldDate;
+		if (file_exists($strFilename) && (is_writable($strFilename)) && (is_writable($SETS['nagios']['backupservices']))) {
+			copy($strFilename,$strBackupfile);
+			unlink($strFilename);
+			$myDataClass->strDBMessage .= "<br>".$LANG['file']['success_del'];
+			$myDataClass->writeLog($LANG['logbook']['delservice']." ".$strFilename);
+		} else if (file_exists($strFilename)) {
+			$myDataClass->strDBMessage .= "<br>".$LANG['file']['failed_del'];
+			$intReturn = 1;
+		}
+	// Falls es aktive Konfiguration mehr gibt, das Konfigurationsfile löschen
+	} else {
 		$intReturn = $myConfigClass->createConfigSingle("tbl_service",$intDSId);
 		$myDataClass->strDBMessage = $myConfigClass->strDBMessage;
-	} else {
-		$myDataClass->strDBMessage = $LANG['db']['noactive_service'];
-		$intReturn = 1;
 	}
 	$chkModus   = "display";
 }  else if ($chkModus == "filter") {
@@ -476,7 +506,7 @@ $mastertp->show("msgfooterhost");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

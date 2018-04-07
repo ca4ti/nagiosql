@@ -9,10 +9,10 @@
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	12.03.2007
+// Datum:	25.09.2007
 // Zweck:	Hosts definieren
 // Datei:	admin/hosts.php
-// Version: 2.00.00 (Internal)
+// Version: 2.01.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -172,6 +172,23 @@ if (($chkModus == "insert") || ($chkModus == "modify")) {
 } else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
 	// Gewählte Datensätze kopieren
 	$intReturn = $myDataClass->dataCopySimple("tbl_host",$chkListId);
+	$chkModus  = "display";
+} else if ($chkModus == "make") {
+	// Hostkonfiguration schreiben
+	$strSQL  = "SELECT id FROM tbl_host WHERE active='1'";
+	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+	$intError = 0;
+	if ($intDataCount != 0) {
+		foreach ($arrData AS $data) {
+			$myConfigClass->createConfigSingle("tbl_host",$data['id']);
+			if ($myConfigClass->strDBMessage != $LANG['file']['success']) $intError++;
+		}
+	}
+	if ($intError == 0) {
+		$myDataClass->strDBMessage .= $LANG['file']['success']."<br>";
+	} else {
+		$myDataClass->strDBMessage .= $LANG['file']['failed']."<br>";
+	}
 	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
 	// Daten des gewählten Datensatzes holen
@@ -406,7 +423,7 @@ $mastertp->show("msgfooterhost");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

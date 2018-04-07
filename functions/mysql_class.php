@@ -12,7 +12,7 @@
 // Datum:	12.03.2007
 // Zweck:	MySQL Datenbank Klasse
 // Datei:	functions/mysql_class.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -25,7 +25,7 @@
 // Behandelt sämtliche Funktionen, die für den Datenaustausch mit einem MySQL Server
 // nötig sind
 //
-// Version:	2.00.00 (Internal)
+// Version:	2.0.2 (Internal)
 // Datum:	12.03.2007
 //
 // Name: mysqldb
@@ -55,7 +55,7 @@ class mysqldb {
 	//  Klassenkonstruktor
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Tätigkeiten bei Klasseninitialisierung
@@ -72,7 +72,7 @@ class mysqldb {
 	//  Funktion: Verbindung mit der Datenbank herstellen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Verbindet mit dem Datenbankserver und wählt eine Datenbank aus
@@ -102,7 +102,7 @@ class mysqldb {
 	//  Funktion: Einzelnes Datenfeld holen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Ruft mehrere Datensätze ab und speichert diese in ein nummerisches Array
@@ -131,7 +131,7 @@ class mysqldb {
 	//  Funktion: Einzelner Datensatz abfragen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Ruft einen einzelnen Datensatz ab und gibt diesen als assoziiertes Array zurück
@@ -164,7 +164,7 @@ class mysqldb {
 	//  Funktion: Mehrere Datensätze holen und in Array speichern
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Ruft mehrere Datensätze ab und speichert diese in ein nummerisches Array
@@ -206,7 +206,7 @@ class mysqldb {
 	//  Funktion: Daten einfügen oder aktualisieren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Fügt Daten in die Datenbank ein oder aktualisiert diese
@@ -237,7 +237,7 @@ class mysqldb {
 	//  Funktion: Datenzeilen zählen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Zählt die Anzahl Datenzeilen einer Abfrage
@@ -270,7 +270,7 @@ class mysqldb {
 	//  Funktion: Datenbankserver verbinden
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Verbindung mit dem Datenbankserver herstellen
@@ -305,7 +305,7 @@ class mysqldb {
 	//  Funktion: Datenbank wählen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	2.00.00 (Internal)
+	//  Version:	2.0.2 (Internal)
 	//  Datum:		12.03.2007
 	//  
 	//  Verbindung mit einer Datenbank herstellen

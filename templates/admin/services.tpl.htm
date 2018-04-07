@@ -1,4 +1,4 @@
-<!-- Version 2.00.00 -->
+<!-- Version 2.0.2 -->
 <!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
@@ -42,14 +42,14 @@
       }
       // Wurde kein Host und keine Hostgruppe ausgewaehlt?
       if((document.frmServiceInsert.selHosts.value == 0) &&
-	     (document.frmServiceInsert.selHostgroups.value == 0))  {
+	     (document.frmServiceInsert.selHostGroups.value == 0))  {
         alert("{FILL_HOST_GR}");
         document.frmServiceInsert.selHosts.focus();
         return false;
       }
       // Wurde ein Host und eine Hostgruppe ausgewaehlt?
       if((document.frmServiceInsert.selHosts.value != 0) &&
-	     (document.frmServiceInsert.selHostgroups.value != 0))  {
+	     (document.frmServiceInsert.selHostGroups.value != 0))  {
         alert("{FILL_HOSTORGR}");
         document.frmServiceInsert.selHosts.focus();
         return false;
@@ -183,7 +183,7 @@
 <!-- END hostname -->
           </select></td>
       <td>{LANG_HOSTGROUPS}(*)</td>
-      <td rowspan="2" valign="top"><select name="selHostGroups[]" size="8" multiple id="selHostgroups" style="width:200px;">
+      <td rowspan="2" valign="top"><select name="selHostGroups[]" size="8" multiple id="selHostGroups" style="width:200px;">
 <!-- BEGIN hostgroups -->
         <option value="{DAT_HOSTGROUPS_ID}" {DAT_HOSTGROUPS_SEL}>{DAT_HOSTGROUPS}</option>
 <!-- END hostgroups -->

@@ -12,7 +12,7 @@
 // Datum:	12.03.2007
 // Zweck:	Logbuch ansehen
 // Datei:	admin/logbook.php
-// Version: 2.00.00 (Internal)
+// Version: 2.0.2 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -105,7 +105,7 @@ $conttp->show("logbooksite");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org'>NagiosQL</a> - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>
