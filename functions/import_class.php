@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Import Class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-18 14:18:04 +0100 (Fr, 18. Mär 2011) $
+// Date      : $LastChangedDate: 2012-09-18 10:44:22 +0200 (Tue, 18 Sep 2012) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1066 $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1346 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -27,25 +27,16 @@
 //
 // Name: nagimport
 //
-// Class variables:
-// $arrSettings  		Includes all global settings ($SETS)
-// $intDomainId			Domain ID
-// $myDBClass     		MySQL database class object
-// $myDataClass  		Data manipulation class
-// $myConfigClass		Configure class
-// $strDBMessage		Process messages
-// $strMessage    		Import messages
-//
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class nagimport {
   	// Define class variables
-    var $arrSettings;       // Will be filled in class constructor
-  	var $intDomainId  = 0;  // Will be filled in class constructor
-  	var $myDBClass;         // Will be filled in prepend_adm.php
-  	var $myDataClass;       // Will be filled in prepend_adm.php
-  	var $myConfigClass;		// Will be filled in prepend_adm.php
-    var $strDBMessage = ""; // Will be filled in functions
-  	var $strMessage   = ""; // Will be filled in functions	
+    var $arrSettings;       		// Array includes all global settings
+  	var $intDomainId  		= 0;	// Domain id value
+  	var $myDBClass;         		// NagiosQL database class object
+  	var $myDataClass;       		// NagiosQL data class object
+  	var $myConfigClass;				// NagiosQL configuration class object
+    var $strErrorMessage 	= ""; 	// String including error messages
+  	var $strInfoMessage   	= ""; 	// String including information messages
   
 	///////////////////////////////////////////////////////////////////////////////////////////
   	//  Class constructor
@@ -55,65 +46,78 @@ class nagimport {
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
 	function nagimport() {
-    	// Read global settings
-		$this->arrSettings = $_SESSION['SETS'];
-		if (isset($_SESSION['domain'])) $this->intDomainId = $_SESSION['domain'];
+    	if (isset($_SESSION) && isset($_SESSION['SETS'])) {
+    		// Read global settings
+    		$this->arrSettings = $_SESSION['SETS'];
+    		if (isset($_SESSION['domain'])) $this->intDomainId = $_SESSION['domain'];
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	//  Function: Data import
+	//  Function: Data import from file
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//  Import a config file and writes the values to the database
 	//
   	//  Parameters:  		$strFileName    	Import file name
+	//						$intConfigId		Configuration set id
 	//						$intOverwrite   	0 = Do not replace existing data
 	//                      					1 = Replace existing data in tables
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
-  	function fileImport($strFileName,$intOverwrite=0) {
+  	function fileImport($strFileName,$intConfigId,$intOverwrite=0) {
   		// Define variables
     	$intBlock     	= 0;
-    	$intCheck     	= 0;
     	$intRemoveTmp   = 0;
     	$strFileName    = trim($strFileName);
-    	$this->myConfigClass->getConfigData("method",$intMethod);
-    	// Get inport file
+    	$intReturn = $this->myConfigClass->getConfigData($intConfigId,"method",$intMethod);
+		if ($intReturn != 0) { $this->strErrorMessage .= translate('Unable to get configuration data:')." method::"; return(1); }
+    	// Read import file
 		// Local file system
 		if ($intMethod == 1) {
 			if (!is_readable($strFileName)) {
-				$this->strMessage .= translate('Cannot open the data file (check the permissions)!')." ".$strFileName."<br>";
+				$this->strErrorMessage .= translate('Cannot open the data file (check the permissions)!')." ".$strFileName."::";
 				return(1);
       		}
 		// FTP access
     	} else if ($intMethod == 2) {
 			// Open ftp connection
-			$this->myConfigClass->getFTPConnection();
+			$intReturn = $this->myConfigClass->getFTPConnection($intConfigId);
+			if ($intReturn != 0) { $this->strErrorMessage .= $this->myConfigClass->strErrorMessage; return(1); }
 			// Transfer file from remote server to a local temp file
-			$strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql_imp');	
+			if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
+				$strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql_imp');
+			} else {
+				$strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql_imp');
+			}
 			if (!ftp_get($this->myConfigClass->resConnectId,$strConfigFile,$strFileName,FTP_ASCII)) {
-				$this->strMessage = translate('Cannot receive the configuration file (FTP connection)!');
+				$this->strErrorMessage .= translate('Cannot receive the configuration file (FTP connection)!')."::";;
           		ftp_close($conn_id);
           		return(1);
         	}
-			$intRemoveTmp   = 1;
-			$strFileName  	= $strConfigFile;
+			$intRemoveTmp = 1;
+			$strFileName  = $strConfigFile;
 		// SSH Access
 		} else if ($intMethod == 3) {
-			// Open ftp connection
-			$this->myConfigClass->getSSHConnection();
+			// Open ssh connection
+			$intReturn = $this->myConfigClass->getSSHConnection($intConfigId);
+			if ($intReturn != 0) { $this->strErrorMessage .= $this->myConfigClass->strErrorMessage; return(1); }
 			// Transfer file from remote server to a local temp file
-			$strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql_imp');
+			if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
+				$strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql_imp');
+			} else {
+				$strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql_imp');
+			}
   			if (!ssh2_scp_recv($this->myConfigClass->resConnectId,$strFileName,$strConfigFile)) {
-				$this->strMessage = translate('Cannot receive the configuration file (SSH connection)!');
+				$this->strErrorMessage .= translate('Cannot receive the configuration file (SSH connection)!')."::";;
 				return(1);
 			}
-			$intRemoveTmp   = 1;
-			$strFileName  	= $strConfigFile;
+			$intRemoveTmp = 1;
+			$strFileName  = $strConfigFile;
 		}
     	// Open and read config file
 		if (file_exists($strFileName) && is_readable($strFileName)) {
@@ -137,14 +141,20 @@ class nagimport {
 					$strConfLine = $strConfLineTemp.$strConfLine;
 					$intMultiple = 0;
 		  		}
+				// Find NAGIOSQL variable
+				if (substr_count($strConfLine,"#NAGIOSQL_") != 0) {
+					$strConfLine = str_replace("#NAGIOSQL_CONFIG_NAME","_NAGIOSQL_CONFIG_NAME",$strConfLine);
+				}
 		  		// Pass comments and empty lines
 		  		if (substr($strConfLine,0,1) == "#") continue;
 		  		if ($strConfLine == "") continue;
 		  		if (($intBlock == 1) && ($strConfLine == "{")) continue;
 		  		// Process line (remove blanks and cut comments)
-		  		$arrLine    = preg_split("/[\s]+/", $strConfLine);
+				$strLineTmp = str_replace("\;",":semi:",$strConfLine);
+		  		$arrLine    = preg_split("/[\s]+/", $strLineTmp);
 		  		$arrTemp    = explode(";",implode(" ",$arrLine));
 		  		$strNewLine = trim($arrTemp[0]);
+				$strNewLine = str_replace(":semi:","\;",$strNewLine);
 		  		// Find block begin
 				if ($arrLine[0] == "define") {
 					$intBlock 		= 1;
@@ -154,7 +164,7 @@ class nagimport {
 				}
 		  		// Store the block data to an array
 				if (($intBlock == 1) && ($arrLine[0] != "}")) {
-					$strExclude = "template_name,alias,name,use,register";
+					$strExclude = "template_name,alias,name,use";
 					if (($strBlockKey == "timeperiod") && (!in_array($arrLine[0],explode(",",$strExclude)))) {
   						$arrNewLine = explode(" ",$strNewLine);
 						$strTPKey   = str_replace(" ".$arrNewLine[count($arrNewLine)-1],"",$strNewLine);
@@ -174,16 +184,21 @@ class nagimport {
 				if ((substr_count($strConfLine,"}") == 1) && (isset($arrData)) && (is_array($arrData)))  {
 					$intBlock 	= 0;
 					$intReturn 	= $this->importTable($strBlockKey,$arrData,$intOverwrite,$strFileName);
+					if ($intReturn != 0) { if ($intRemoveTmp == 1) unlink($strFileName); return(1); }
 				} else if (!isset($arrData)) {
-					$this->strMessage = translate('No valid configuration found!');
+					$this->strErrorMessage .= translate('No valid configuration found:')." ".$strFileName."::";
+					if ($intRemoveTmp == 1) unlink($strFileName);
 					return(1);
 				}
 			}
 			if ($intRemoveTmp == 1) {
 		  		unlink($strFileName);
 			}
+		} else {
+			$this->strErrorMessage .= translate('Import file does not exist or is not readable:')." ".$strFileName."::";;
+			return(1);
 		}
-    	return($intCheck);
+    	return(0);
   	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +215,7 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function importTable($strBlockKey,$arrImportData,$intOverwrite,$strFileName) {
@@ -215,6 +230,7 @@ class nagimport {
 		$strVIValues     	= "";
 		$intWriteConfig   	= 0;
 		$strWhere     		= "";
+		$strSkip			= "";
 		$this->strList1   	= "";
 		$this->strList2   	= "";
 		// Block data from template or real configuration?
@@ -247,9 +263,10 @@ class nagimport {
 			}
     	}
 		if (!isset($strTable) || ($strTable == "")) {
-			$this->strDBMessage = translate('Table for import definition').$strBlockKey.translate('is not available!');
+			$this->strErrorMessage .= translate('Table for import definition').$strBlockKey.translate('is not available!')."::";;
 			return(1);			
 		}
+		
     	// Create an import hash if no key field is available
 		if ($strKeyField == "") { 
 			$this->createHash($strTable,$arrImportData,$strHash,$strConfigName);
@@ -259,20 +276,29 @@ class nagimport {
 		} else {
 			$strHash = "";
 		}
+		
 		// Get relation data
 		$intRelation = $this->myDataClass->tableRelations($strTable,$arrRelations);
     	// Does this entry already exist?
 		if ($intIsTemplate == 0) {
 			if (($strKeyField != "") && isset($arrImportData[$strKeyField])) {
 				if ($strHash == "") {
-					$strSQL = "SELECT `id` FROM `".$strTable."` 
-							   WHERE `config_id`=".$this->intDomainId." AND `".$strKeyField."`='".$arrImportData[$strKeyField]['value']."'";
+					// Special key field values
+					if ($strBlockKey == "hostextinfo") {
+						$strSQL  = "SELECT `id`FROM `tbl_host` WHERE `host_name`='".$arrImportData[$strKeyField]['value']."'";
+						$intHost = $this->myDBClass->getFieldData($strSQL)+0;
+						$strSQL = "SELECT `id` FROM `".$strTable."` 
+								   WHERE `config_id`=".$this->intDomainId." AND `".$strKeyField."`='".$intHost."'";
+					
+					} else {
+						$strSQL = "SELECT `id` FROM `".$strTable."` 
+								   WHERE `config_id`=".$this->intDomainId." AND `".$strKeyField."`='".$arrImportData[$strKeyField]['value']."'";
+					}
 				} else {
 					$strSQL = "SELECT `id` FROM `".$strTable."` 
 							   WHERE `config_id`=".$this->intDomainId." AND `import_hash`='".$strHash."'";
 				}
 				$intExists = $this->myDBClass->getFieldData($strSQL);
-				
         		if ($intExists == false) $intExists = 0;
       		}
     	} else {
@@ -289,30 +315,27 @@ class nagimport {
 				$strSQLConfig  = "SELECT `config_name` FROM `".$strTable."` WHERE `id`=".$intExists;
 				$arrImportData[$strKeyField]['value'] = $this->myDBClass->getFieldData($strSQLConfig);
 			}
-      		$this->strMessage .= translate('Entry')." ".$strKeyField."::".$arrImportData[$strKeyField]['value']." ".translate('inside')." ".$strTable." ".translate('exists and were not overwritten')."<br>";
-      		return(2);
+      		$this->strInfoMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKeyField." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('exists and were not overwritten')."::";
+      		return(0);
     	}
 		// Do not write "*" values
 		if (isset($arrImportData[$strKeyField]) && ($arrImportData[$strKeyField] == "*")) {
-      		$this->strMessage .= translate('Entry')." ".$strKeyField."::".$arrImportData[$strKeyField]['value']." ".translate('inside')." ".$strTable." ".translate('were not written')."<br>";
-      		return(2);
+      		$this->strInfoMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKeyField." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('were not written')."::";
+      		return(0);
     	}
-		// Activate entry?
-		if (isset($arrImportData['register']) && ($arrImportData['register']['value'] == 0) && ($intIsTemplate != 1)) {
-		  	$intActive = 0;
-		} else {
-		  	$intActive = 1;
-		}
+		// Activate entry
+		$intActive = 1;
+		
 		// Define SQL statement - part 1
     	if ($strHash == "") {$strHash = "";} else {$strHash = " `import_hash`='".$strHash."', ";}
 		if ($intExists != 0) { 		
 			// Update database
       		$strSQL1 = "UPDATE `".$strTable."` SET ";
-      		$strSQL2 = "  `config_id`=".$this->intDomainId.", $strHash `active`='$intActive', `last_modified`=NOW() WHERE `id`=$intExists";
+      		$strSQL2 = " `config_id`=".$this->intDomainId.", $strHash `active`='$intActive', `last_modified`=NOW() WHERE `id`=$intExists";
 			// Keep config name while update
-			if ($strKeyField == 'config_name') {
+			if (($strKeyField == 'config_name') && (!isset($arrImportData['_NAGIOSQL_CONFIG_NAME']))) {
 				$strSQLConfig  = "SELECT `config_name` FROM `".$strTable."` WHERE `id`=".$intExists;
-				$arrImportData[$strKeyField]['value'] = $this->myDBClass->getFieldData($strSQLConfig);
+				$arrImportData['config_name']['value'] = $this->myDBClass->getFieldData($strSQLConfig);
 			}
       		// Remove free variables
       		if ($intRelation != 0) {
@@ -348,12 +371,14 @@ class nagimport {
 		if ($strKeyField == "command_name") {
 			$strVCValues = "command_name,command_line";
 		  	// Find out command type
-		  	if ((substr_count($arrImportData['command_line']['value'],"ARG1") != 0) ||
-			  	(substr_count($arrImportData['command_line']['value'],"USER1") != 0)) {
-		   		$strSQL1 .= "`command_type` = 1,";
-		  	} else {
-				$strSQL1 .= "`command_type` = 2,";
-		  	}
+			if (isset($arrImportData['command_line'])) {
+				if ((substr_count($arrImportData['command_line']['value'],"ARG1") != 0) ||
+					(substr_count($arrImportData['command_line']['value'],"USER1") != 0)) {
+					$strSQL1 .= "`command_type` = 1,";
+				} else {
+					$strSQL1 .= "`command_type` = 2,";
+				}
+			}
 		  	$intWriteConfig = 1;
 		
     	// Read contact configurations
@@ -481,13 +506,12 @@ class nagimport {
 			$strRLValues  	= "dependent_host_name,dependent_hostgroup_name,host_name,hostgroup_name,dependency_period";
 			$intWriteConfig = 1;
 		
-		
 		// Read hostescalation configurations
 		} else if ($strTable == "tbl_hostescalation") {
 			$strVCValues  	= "config_name,escalation_options";
 			
 			$strVWValues  	= "first_notification,last_notification,notification_interval";
-			
+
 			$strRLValues  	= "host_name,hostgroup_name,contacts,contact_groups,escalation_period";
 			$intWriteConfig = 1;
 		
@@ -498,23 +522,23 @@ class nagimport {
 			$strRLValues  	= "host_name";
 			$intWriteConfig = 1;
 		
-		// Read hostdependency configurations
+		// Read servicedependency configurations
 		} else if ($strTable == "tbl_servicedependency") {
 			$strVCValues  	= "config_name,execution_failure_criteria,notification_failure_criteria";
 			
 			$strVIValues  	= "inherits_parent";
 			
 			$strRLValues  	= "dependent_host_name,dependent_hostgroup_name,dependent_service_description,host_name,";
-			$strRLValues   .= "hostgroup_name,dependency_period,service_description";
+			$strRLValues   .= "hostgroup_name,dependency_period,service_description,dependent_servicegroup_name,servicegroup_name";
 			$intWriteConfig = 1;
 		
 		// Read serviceescalation configurations
 		} else if ($strTable == "tbl_serviceescalation") {
 			$strVCValues  	= "config_name,escalation_options";
 			
-			$strVWValues  	= "first_notification,last_notification,notification_interval";
+			$strVIValues  	= "first_notification,last_notification,notification_interval";
 			
-			$strRLValues  	= "host_name,hostgroup_name,contacts,contact_groups,service_description,escalation_period";
+			$strRLValues  	= "host_name,hostgroup_name,contacts,contact_groups,service_description,escalation_period,servicegroup_name";
 			$intWriteConfig = 1;
 		
 		// Serviceextinfo configurations
@@ -524,6 +548,9 @@ class nagimport {
 			$strRLValues  	= "host_name,service_description";
 			$intWriteConfig = 1;
 		}
+		
+		// Common values (all configurations)
+		if ($strVWValues == "") { $strVWValues = "register"; } else { $strVWValues .= ",register"; }
 		
     	// Build value statemets
 		foreach ($arrImportData AS $elem) {
@@ -585,7 +612,6 @@ class nagimport {
       		}
       		// Write free variables
       		if ($intCheck == 0) {
-        		$strSkip = "register";
         		if (!in_array($elem['key'],explode(",",$strSkip))) {
 					$arrTemp      		= "";
 					$arrTemp['key']   	= $elem['key'];
@@ -605,13 +631,13 @@ class nagimport {
 		}
     	if ($strKeyField == "") {$strKey = $strConfigName;} else {$strKey = $strKeyField;}
     	if ($booResult != true) {
-      		$this->strDBMessage = $this->myDBClass->strDBError;
-      		if ($strKeyField != "") $this->strMessage .= translate('Entry')." ".$strKey."::".$arrImportData[$strKeyField]['value']." ".translate('inside')." ".$strTable." ".translate('could not be inserted:')." ".mysql_error()."<br>";
-      		if ($strKeyField == "") $this->strMessage .= translate('Entry')." ".$strTemp1."::".$strTemp2.translate('inside')." ".$strTable." ".$strTable." ".translate('could not be inserted:')." ".mysql_error()."<br>";
+      		$this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+      		if ($strKeyField != "") $this->strErrorMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKey." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('could not be inserted:')." ".mysql_error()."::";
+      		if ($strKeyField == "") $this->strErrorMessage .= translate('Entry')." <b class=\"blackmessage\">".$strTemp1." -> ".$strTemp2.translate('inside')."</b> ".$strTable." <b class=\"blackmessage\">".$strTable."</b> ".translate('could not be inserted:')." ".mysql_error()."::";
       		return(1);
     	} else {
-      		if ($strKeyField != "") $this->strMessage .= "<span class=\"greenmessage\">".translate('Entry')." ".$strKey."::".$arrImportData[$strKeyField]['value']." ".translate('inside')." ".$strTable." ".translate('successfully inserted')."</span><br>";
-      		if ($strKeyField == "") $this->strMessage .= "<span class=\"greenmessage\">".translate('Entry')." ".$strTemp1."::".$strTemp2." ".translate('inside')." ".$strTable." ".translate('successfully inserted')."</span><br>";
+      		if ($strKeyField != "") $this->strInfoMessage .= translate('Entry')." <b class=\"blackmessage\">".$strKey." -> ".$arrImportData[$strKeyField]['value']."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('successfully inserted')."::";
+      		if ($strKeyField == "") $this->strInfoMessage .= translate('Entry')." <b class=\"blackmessage\">".$strTemp1." -> ".$strTemp2."</b> ".translate('inside')." <b class=\"blackmessage\">".$strTable."</b> ".translate('successfully inserted')."::";
       		// Define data ID
       		if ($intExists != 0) {
         		$intDatasetId = $intExists;
@@ -648,10 +674,12 @@ class nagimport {
           			// Remove old values
           			$strSQL   = "DELETE FROM `tbl_timedefinition` WHERE `tipId` = $intDatasetId";
           			$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 					foreach ($arrFreeVariables AS $elem) {
             			$strSQL 	= "INSERT INTO `tbl_timedefinition` SET `tipId` = $intDatasetId,
                  					   `definition` = '".addslashes($elem['key'])."', `range` = '".addslashes($elem['value'])."'";
            				$booResult  = $this->myDBClass->insertData($strSQL);
+						if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
           			}
         		} else {
           			foreach ($arrFreeVariables AS $elem) {
@@ -663,11 +691,11 @@ class nagimport {
           			}
         		}
       		}
+			// Update Table times
+			$this->myDataClass->updateStatusTable($strTable);
       		return(0);
     	}
   	}
-  
-  /// 3.1 BETA start
   
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  Help function: Create HASH
@@ -683,10 +711,15 @@ class nagimport {
 			$strRawString = str_replace("*,","any,",$strRawString);
 			$strRawString = str_replace("!","not_",$strRawString);
 			$strRawString = str_replace("+","",$strRawString);
-			// Create configuration name from first two hosts / hostgroups
-			$arrConfig    = explode(",",$strRawString);
-			if (isset($arrConfig[0]) && ($arrConfig[0] != "")) $strConfigName  = "imp_".$arrConfig[0];
-			if (isset($arrConfig[1]) && ($arrConfig[1] != "")) $strConfigName .= "_".$arrConfig[1];
+			// Create configuration name from NagiosQL variable if exists
+			if (isset($arrBlockData['_NAGIOSQL_CONFIG_NAME'])) {
+				$strConfigName  = $arrBlockData['_NAGIOSQL_CONFIG_NAME']['value'];
+			} else {
+				// Create configuration name from first two hosts / hostgroups
+				$arrConfig    = explode(",",$strRawString);
+				if (isset($arrConfig[0]) && ($arrConfig[0] != "")) $strConfigName  = "imp_".$arrConfig[0];
+				if (isset($arrConfig[1]) && ($arrConfig[1] != "")) $strConfigName .= "_".$arrConfig[1];
+			}
 			// HASH from any host, any hostgroup and service description - step 2
 			if (isset($arrBlockData['service_description'])) 	$strRawString .= $arrBlockData['service_description']['value'].",";
 			if (isset($arrBlockData['display_name'])) 			$strRawString .= $arrBlockData['display_name']['value'].",";
@@ -703,6 +736,8 @@ class nagimport {
 			if (isset($arrBlockData['hostgroup_name'])) 				$strRawString2 .= $arrBlockData['hostgroup_name']['value'].",";
 			if (isset($arrBlockData['dependent_service_description'])) 	$strRawString3 .= $arrBlockData['dependent_service_description']['value'].",";
 			if (isset($arrBlockData['service_description'])) 			$strRawString3 .= $arrBlockData['service_description']['value'].",";
+			if (isset($arrBlockData['dependent_servicegroup_name'])) 	$strRawString3 .= $arrBlockData['dependent_servicegroup_name']['value'].",";
+			if (isset($arrBlockData['servicegroup_name'])) 				$strRawString3 .= $arrBlockData['servicegroup_name']['value'].",";
 			// Replace *, + and ! in HASH raw string
 			$strRawString1 = str_replace("*,","any,",$strRawString1);
 			$strRawString2 = str_replace("*,","any,",$strRawString2);
@@ -710,24 +745,30 @@ class nagimport {
 			$strRawString1 = str_replace("!","not_",$strRawString1);
 			$strRawString2 = str_replace("!","not_",$strRawString2);
 			$strRawString3 = str_replace("!","not_",$strRawString3);
-			$arrConfig1    = explode(",",$strRawString1);
-			$arrConfig2    = explode(",",$strRawString2);
-			$arrConfig3    = explode(",",$strRawString3);
-			if (isset($arrConfig1[0])) $strConfigName  = "imp_".$arrConfig1[0];
-			if (isset($arrConfig2[0])) $strConfigName .= "_".$arrConfig2[0]; 
-			if (isset($arrConfig3[0])) $strConfigName .= "_".$arrConfig3[0]; 
-			$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigName'";
-			$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
-			if ($booRet && ($intDC != 0)) {
-				$intCounter = 1;
-				do {	
-					$strConfigNameTemp = $strConfigName."_".$intCounter;
-					$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigNameTemp'";
-					$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
-					$intCounter++;
-				} while ($booRet && ($intDC != 0));
-				$strConfigName = $strConfigNameTemp;
+			// Create configuration name from NagiosQL variable if exists
+			if (isset($arrBlockData['_NAGIOSQL_CONFIG_NAME'])) {
+				$strConfigName  = $arrBlockData['_NAGIOSQL_CONFIG_NAME']['value'];
+			} else {
+				$arrConfig1    = explode(",",$strRawString1);
+				$arrConfig2    = explode(",",$strRawString2);
+				$arrConfig3    = explode(",",$strRawString3);
+				if (isset($arrConfig1[0])) $strConfigName  = "imp_".$arrConfig1[0];
+				if (isset($arrConfig2[0])) $strConfigName .= "_".$arrConfig2[0]; 
+				if (isset($arrConfig3[0])) $strConfigName .= "_".$arrConfig3[0]; 
+				$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigName'";
+				$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
+				if ($booRet && ($intDC != 0)) {
+					$intCounter = 1;
+					do {	
+						$strConfigNameTemp = $strConfigName."_".$intCounter;
+						$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigNameTemp'";
+						$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
+						$intCounter++;
+					} while ($booRet && ($intDC != 0));
+					$strConfigName = $strConfigNameTemp;
+				}
 			}
+			// HASH string
 			$strRawString = $strRawString1.$strRawString2.$strRawString3;
 			$strRawString = substr($strRawString,0,-1);
 		}
@@ -748,24 +789,30 @@ class nagimport {
 			$strRawString1 = str_replace("!","not_",$strRawString1);
 			$strRawString2 = str_replace("!","not_",$strRawString2);
 			$strRawString3 = str_replace("!","not_",$strRawString3);
-			$arrConfig1    = explode(",",$strRawString1);
-			$arrConfig2    = explode(",",$strRawString2);
-			$arrConfig3    = explode(",",$strRawString3);
-			if (isset($arrConfig1[0])) $strConfigName  = "imp_".$arrConfig1[0];
-			if (isset($arrConfig2[0])) $strConfigName .= "_".$arrConfig2[0]; 
-			if (isset($arrConfig3[0])) $strConfigName .= "_".$arrConfig3[0]; 
-			$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigName'";
-			$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
-			if ($booRet && ($intDC != 0)) {
-				$intCounter = 1;
-				do {	
-					$strConfigNameTemp = $strConfigName."_".$intCounter;
-					$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigNameTemp'";
-					$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
-					$intCounter++;
-				} while ($booRet && ($intDC != 0));
-				$strConfigName = $strConfigNameTemp;
-			}
+			// Create configuration name from NagiosQL variable if exists
+			if (isset($arrBlockData['_NAGIOSQL_CONFIG_NAME'])) {
+				$strConfigName  = $arrBlockData['_NAGIOSQL_CONFIG_NAME']['value'];
+			} else {
+				$arrConfig1    = explode(",",$strRawString1);
+				$arrConfig2    = explode(",",$strRawString2);
+				$arrConfig3    = explode(",",$strRawString3);
+				if (isset($arrConfig1[0])) $strConfigName  = "imp_".$arrConfig1[0];
+				if (isset($arrConfig2[0])) $strConfigName .= "_".$arrConfig2[0]; 
+				if (isset($arrConfig3[0])) $strConfigName .= "_".$arrConfig3[0]; 
+				$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigName'";
+				$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
+				if ($booRet && ($intDC != 0)) {
+					$intCounter = 1;
+					do {	
+						$strConfigNameTemp = $strConfigName."_".$intCounter;
+						$strSQL = "SELECT * FROM `".$strTable."` WHERE `config_name`='$strConfigNameTemp'";
+						$booRet	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDC);
+						$intCounter++;
+					} while ($booRet && ($intDC != 0));
+					$strConfigName = $strConfigNameTemp;
+				}
+			}	
+			// HASH string
 			$strRawString = $strRawString1.$strRawString2.$strRawString3;
 			$strRawString = substr($strRawString,0,-1);
 		}
@@ -773,11 +820,17 @@ class nagimport {
 			// HASH from any host, any hostgroup and service description - step 1
 			if (isset($arrBlockData['host_name'])) 				$strRawString .= $arrBlockData['host_name']['value'].",";
 			if (isset($arrBlockData['service_description'])) 	$strRawString .= $arrBlockData['service_description']['value'].",";	
+			// HASH string
 			$strRawString = substr($strRawString,0,-1);
-			// Create configuration name from first two items
-			$arrConfig    = explode(",",$strRawString);
-			if (isset($arrConfig[0]) && ($arrConfig[0] != "")) $strConfigName  = "imp_".$arrConfig[0];
-			if (isset($arrConfig[1]) && ($arrConfig[1] != "")) $strConfigName .= "_".$arrConfig[1];
+			// Create configuration name from NagiosQL variable if exists
+			if (isset($arrBlockData['_NAGIOSQL_CONFIG_NAME'])) {
+				$strConfigName  = $arrBlockData['_NAGIOSQL_CONFIG_NAME']['value'];
+			} else {
+				// Create configuration name from first two items
+				$arrConfig    = explode(",",$strRawString);
+				if (isset($arrConfig[0]) && ($arrConfig[0] != "")) $strConfigName  = "imp_".$arrConfig[0];
+				if (isset($arrConfig[1]) && ($arrConfig[1] != "")) $strConfigName .= "_".$arrConfig[1];
+			}
 		}
 		while (substr_count($strRawString," ") != 0) {
 			$strRawString = str_replace(" ","",$strRawString);
@@ -789,10 +842,7 @@ class nagimport {
 		$strHash = sha1($strRawString);
 		//echo "Hash: ".$strRawString." --> ".$strHash."<br>";
   	}
-  
-  
-  /// 3.1 BETA end
-  
+
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  Help function: Insert relation 1
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -808,7 +858,7 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function writeRelation_1($strKey,$strValue,$intDataId,$strDataTable,$arrRelData,$arrImportData) {
@@ -818,6 +868,7 @@ class nagimport {
       		// Update data in master table
       		$strSQL   = "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = -1 WHERE `id` = ".$intDataId;
       		$booResult  = $this->myDBClass->insertData($strSQL);
+			if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
     	} else {
       		// Decompose data value
       		$arrValues = explode(",",$strValue);
@@ -834,8 +885,9 @@ class nagimport {
         		}
         		// Does the value already exist?
         		$strSQL = "SELECT `".$arrRelData['tableName1']."`.`id` FROM `".$arrRelData['tableName1']."` $strLink 
-						   WHERE `".$arrRelData['target1']."` = '".$elem."' $strWhere AND `".$arrRelData['tableName1']."`.`config_id`=".$this->intDomainId;
-        		$strId  = $this->myDBClass->getFieldData($strSQL);
+						   WHERE `".$arrRelData['target1']."` = '".$elem."' $strWhere AND `".$arrRelData['tableName1']."`.`active`='1' 
+						   AND `".$arrRelData['tableName1']."`.`config_id`=".$this->intDomainId;
+				$strId  = $this->myDBClass->getFieldData($strSQL);
         		if ($strId != "") {
           			$intSlaveId = $strId+0;
         		}
@@ -845,7 +897,9 @@ class nagimport {
 					$strSQL 	= "INSERT INTO `".$arrRelData['tableName1']."` SET `".$arrRelData['target1']."` = '".$elem."',
                  			       $strAdd `config_id`=".$this->intDomainId.", `active`='0', `last_modified`=NOW()";
           			$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
           			$intSlaveId = $this->myDBClass->intLastId;
+					
 					// Special processing for serviceextinfo
 					if (($strDataTable == "tbl_serviceextinfo") && ($strKey == "service_description")) {
 						$strSQL = "SELECT `id` FROM `tbl_host` WHERE `host_name`='".$arrImportData['host_name']['value']."'";
@@ -854,14 +908,17 @@ class nagimport {
 							$strSQL 	= "INSERT INTO `tbl_lnkServiceToHost` SET `idMaster` = '".$intSlaveId."',
 										   `idSlave` = '".$strId."'";
 							$booResult  = $this->myDBClass->insertData($strSQL);
+							if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 							$strSQL 	= "UPDATE `tbl_service` SET `host_name`=0 WHERE `id`='".$intSlaveId."'";
 							$booResult  = $this->myDBClass->insertData($strSQL);
+							if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 						}
 					}
         		}
         		// Update data in master table
         		$strSQL   	= "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = ".$intSlaveId." WHERE `id` = ".$intDataId;
         		$booResult  = $this->myDBClass->insertData($strSQL);
+				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
       		}
     	}
   	}
@@ -880,7 +937,7 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function writeRelation_2($strKey,$strValue,$intDataId,$strDataTable,$arrRelData) {
@@ -895,6 +952,7 @@ class nagimport {
     	// Delete data from link table
     	$strSQL   	= "DELETE FROM `".$arrRelData['linkTable']."` WHERE `idMaster` = ".$intDataId;
     	$booResult  = $this->myDBClass->insertData($strSQL);
+		if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
     	// Define variables
     	$intSlaveId = 0;
     	if (strtolower(trim($strValue)) == "null") {
@@ -928,7 +986,7 @@ class nagimport {
 						$intExclude = 0;
 					}
 					if ((($strDataTable == "tbl_servicedependency") || ($strDataTable == "tbl_serviceescalation")) &&
-						(substr_count($strKey,"service") != 0)) {
+						(substr_count($strKey,"service") != 0) && (substr_count($strKey,"group") == 0)) {
 						if (substr_count($strKey,"depend") != 0) {
 							$strLink  = "LEFT JOIN `tbl_lnkServiceToHost` on `id`=`idMaster`";
 							$strWhere = "AND `idSlave` IN (".substr($this->strList1,0,-1).")";
@@ -951,12 +1009,14 @@ class nagimport {
 						$strSQL = "INSERT INTO `".$arrRelData['tableName1']."` SET `".$arrRelData['target1']."` = '".$elem."',
 								   `config_id`=".$this->intDomainId.", `active`='0', `last_modified`=NOW()";
 						$booResult  = $this->myDBClass->insertData($strSQL);
+						if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 						$intSlaveId = $this->myDBClass->intLastId;
 					}
 					// Insert relations
 					$strSQL   	= "INSERT INTO `".$arrRelData['linkTable']."` SET `idMaster` = ".$intDataId.", `idSlave` = ".$intSlaveId.", 
-								   `exclude`=".$intExclude;
+								   `exclude`=".$intExclude;	   
 					$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 					// Keep values
 					if (($strDataTable == "tbl_servicedependency") || ($strDataTable == "tbl_serviceescalation")) {
 						$strTemp = "";
@@ -997,6 +1057,7 @@ class nagimport {
 					$strSQL   = "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = $intRelValue WHERE `id` = ".$intDataId;
 				}
 				$booResult  = $this->myDBClass->insertData($strSQL);
+				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
       		}
     	}
   	}
@@ -1015,7 +1076,7 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function writeRelation_3($strKey,$strValue,$intDataId,$strDataTable,$arrRelData) {
@@ -1038,12 +1099,14 @@ class nagimport {
 			// Remove old relations
 			$strSQL   	= "DELETE FROM `".$arrRelData['linkTable']."` WHERE `idMaster` = ".$intDataId;
 			$booResult  = $this->myDBClass->insertData($strSQL);
+			if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
       		// Decompose data value
       		$arrValues = explode(",",$strValue);
       		// Process data values
       		foreach ($arrValues AS $elem) {
 				// Does the template already exist? (table 1)
-        		$strSQL = "SELECT `id` FROM `".$arrRelData['tableName1']."` WHERE `".$arrRelData['target1']."` = '".$elem."' AND `config_id`=".$this->intDomainId;
+        		$strSQL = "SELECT `id` FROM `".$arrRelData['tableName1']."` WHERE `".$arrRelData['target1']."` = '".$elem."' 
+						   AND `config_id`=".$this->intDomainId;
         		$strId  = $this->myDBClass->getFieldData($strSQL);
         		if ($strId != "") {
           			$intSlaveId = $strId+0;
@@ -1051,7 +1114,8 @@ class nagimport {
         		}
         		if ($intSlaveId == 0) {
 					// Does the template already exist? (table 2)
-					$strSQL = "SELECT `id` FROM `".$arrRelData['tableName2']."` WHERE `".$arrRelData['target2']."` = '".$elem."' AND `config_id`=".$this->intDomainId;
+					$strSQL = "SELECT `id` FROM `".$arrRelData['tableName2']."` WHERE `".$arrRelData['target2']."` = '".$elem."' 
+							   AND `config_id`=".$this->intDomainId;
 					$strId  = $this->myDBClass->getFieldData($strSQL);
 					if ($strId != "") {
 						$intSlaveId = $strId+0;
@@ -1063,6 +1127,7 @@ class nagimport {
           			$strSQL 	= "INSERT INTO `".$arrRelData['tableName1']."` SET `".$arrRelData['target1']."` = '".$elem."',
                  			   	   `config_id`=".$this->intDomainId.", `active`='0', `last_modified`=NOW()";
           			$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
           			$intSlaveId = $this->myDBClass->intLastId;
           			$intTable   = 1;
         		}
@@ -1070,12 +1135,14 @@ class nagimport {
        			$strSQL   	= "INSERT INTO `".$arrRelData['linkTable']."` SET `idMaster` = ".$intDataId.", `idSlave` = ".$intSlaveId.",
                  			   `idSort` = ".$intSortNr.", `idTable` = ".$intTable;
         		$booResult  = $this->myDBClass->insertData($strSQL);
+				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
         		$intSortNr++;
 				$intSlaveId = 0;
         		// Update field data in master table
         		$strSQL   	= "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = 1,
                 			   `".$arrRelData['fieldName']."_tploptions` = ".$intOption." WHERE `id` = ".$intDataId;
         		$booResult  = $this->myDBClass->insertData($strSQL);
+				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
       		}
     	}
   	}
@@ -1094,22 +1161,28 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function writeRelation_4($strKey,$strValue,$intDataId,$strDataTable,$arrRelData) {
 		// Remove empty variables
 		if (($strKey == "") || ($strValue == "")) return(1);
+		// Remove NagiosQL variables
+		if ($strKey == "_NAGIOSQL_CONFIG_NAME") return(1); 
 		// Insert values to the table
-		$strSQL   	= "INSERT INTO `tbl_variabledefinition` SET `name` = '$strKey', `value` = '$strValue', `last_modified`=now()";
+		$strSQL   	= "INSERT INTO `tbl_variabledefinition` SET `name` = '".addslashes($strKey)."', 
+					   `value` = '".addslashes($strValue)."', `last_modified`=now()";
 		$booResult  = $this->myDBClass->insertData($strSQL);
+		if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 		$intSlaveId = $this->myDBClass->intLastId;
 		// Insert relations to the table
 		$strSQL   	= "INSERT INTO `".$arrRelData['linkTable']."` SET `idMaster` = ".$intDataId.", `idSlave` = ".$intSlaveId;
 		$booResult  = $this->myDBClass->insertData($strSQL);
+		if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 		// Update data in master table
 		$strSQL   	= "UPDATE `".$strDataTable."` SET `use_variables` = 1 WHERE `id` = ".$intDataId;
 		$booResult  = $this->myDBClass->insertData($strSQL);
+		if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
   	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -1126,7 +1199,7 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function writeRelation_5($strKey,$strValue,$intDataId,$strDataTable,$arrRelData) {
@@ -1139,13 +1212,15 @@ class nagimport {
       		// Update data in master table
       		$strSQL   = "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = -1 WHERE `id` = ".$intDataId;
       		$booResult  = $this->myDBClass->insertData($strSQL);
+			if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
     	} else {
       		// Decompose data values
       		$arrValues = explode(",",$strValue);
       		// Process data values
       		foreach ($arrValues AS $elem) {
         		// Does the entry already exist?
-       			$strSQL = "SELECT `id` FROM `".$arrRelData['tableName1']."` WHERE `".$arrRelData['target1']."` = '".$elem."' AND `config_id`=".$this->intDomainId;
+       			$strSQL = "SELECT `id` FROM `".$arrRelData['tableName1']."` WHERE `".$arrRelData['target1']."` = '".$elem."' 
+						   AND `config_id`=".$this->intDomainId;
         		$strId  = $this->myDBClass->getFieldData($strSQL);
         		if ($strId != "") {
           			$intSlaveId = $strId+0;
@@ -1155,6 +1230,7 @@ class nagimport {
           			$strSQL 	= "INSERT INTO `".$arrRelData['tableName1']."` SET `".$arrRelData['target1']."` = '".$elem."',
                  			       `config_id`=".$this->intDomainId.", `active`='0', `last_modified`=NOW()";
           			$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
           			$intSlaveId = $this->myDBClass->intLastId;
         		}
         		// Update data in master table
@@ -1162,6 +1238,7 @@ class nagimport {
         		$strValue     	= implode("!",$arrCommand);
         		$strSQL   		= "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = '".mysql_real_escape_string($strValue)."' WHERE `id` = ".$intDataId;
         		$booResult  	= $this->myDBClass->insertData($strSQL);
+				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
       		}
     	}
   	}
@@ -1180,7 +1257,7 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function writeRelation_6($strKey,$strValue,$intDataId,$strDataTable,$arrRelData) {
@@ -1194,9 +1271,10 @@ class nagimport {
     	// Remove data from link table
     	$strSQL   	= "DELETE FROM `".$arrRelData['linkTable']."` WHERE `idMaster` = ".$intDataId;
     	$booResult  = $this->myDBClass->insertData($strSQL);
+		if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
     	// Check the sum of elements
     	if (count($arrValues) % 2 != 0) {
-      		$this->strMessage .= translate("Error: wrong number of arguments - cannot import service group members")."<br>";
+      		$this->strErrorMessage .= translate("Error: wrong number of arguments - cannot import service group members")."::";
     	} else {
       		// Process data values
       		$intCounter = 1;
@@ -1204,7 +1282,7 @@ class nagimport {
 				if ($intCounter % 2 == 0) {
           			// Does the host entry already exist?
           			$strSQL = "SELECT `id` FROM `".$arrRelData['tableName1']."` 
-							   WHERE `".$arrRelData['target1']."` = '".$strValue."' AND `config_id`=".$this->intDomainId;
+							   WHERE `".$arrRelData['target1']."` = '".$strValue."' AND `active`='1' AND `config_id`=".$this->intDomainId;
           			$strId  = $this->myDBClass->getFieldData($strSQL);
           			if ($strId != "") {
             			$intSlaveIdH = $strId+0;
@@ -1212,7 +1290,7 @@ class nagimport {
 					// Does a hostgroup entry already exist?
 					if ($intSlaveIdH == 0) {
 						$strSQL = "SELECT `id` FROM `tbl_hostgroup` 
-								   WHERE `hostgroup_name` = '".$strValue."' AND `config_id`=".$this->intDomainId;
+								   WHERE `hostgroup_name` = '".$strValue."' AND `active`='1' AND `config_id`=".$this->intDomainId;
 						$strId  = $this->myDBClass->getFieldData($strSQL);
 						if ($strId != "") {
 							$intSlaveIdHG = $strId+0;
@@ -1223,6 +1301,7 @@ class nagimport {
             			$strSQL 		= "INSERT INTO `".$arrRelData['tableName1']."` SET `".$arrRelData['target1']."` = '".$strValue."',
                    			 	   		  `config_id`=".$this->intDomainId.", `active`='0', `last_modified`=NOW()";
             			$booResult   	= $this->myDBClass->insertData($strSQL);
+						if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
             			$intSlaveIdH 	= $this->myDBClass->intLastId;
           			}
           			// Does the service entry already exist?
@@ -1231,10 +1310,26 @@ class nagimport {
 								   LEFT JOIN `tbl_lnkServiceToHost` ON `id` = `idMaster`
 								   WHERE `".$arrRelData['target2']."` = '".$elem."' AND `idSlave` = ".$intSlaveIdH." AND `config_id`=".$this->intDomainId;
 						$strId  = $this->myDBClass->getFieldData($strSQL);
+						if ($strId == "") {
+							$strSQL = "SELECT `id` FROM `".$arrRelData['tableName2']."`
+									   LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `tbl_lnkServiceToHostgroup`.`idMaster`
+									   LEFT JOIN `tbl_lnkHostgroupToHost` ON `tbl_lnkHostgroupToHost`.`idMaster` = `tbl_lnkServiceToHostgroup`.`idSlave`
+									   WHERE `".$arrRelData['target2']."` = '".$elem."' AND `tbl_lnkHostgroupToHost`.`idSlave` = ".$intSlaveIdH." AND 
+									   `active`='1' AND `config_id`=".$this->intDomainId;
+							$strId  = $this->myDBClass->getFieldData($strSQL);	
+						}
+						if ($strId == "") {
+							$strSQL = "SELECT `id` FROM `".$arrRelData['tableName2']."`
+									   LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `tbl_lnkServiceToHostgroup`.`idMaster`
+									   LEFT JOIN `tbl_lnkHostToHostgroup` ON `tbl_lnkHostToHostgroup`.`idSlave` = `tbl_lnkServiceToHostgroup`.`idSlave`
+									   WHERE `".$arrRelData['target2']."` = '".$elem."' AND `tbl_lnkHostToHostgroup`.`idMaster` = ".$intSlaveIdH." AND 
+									   `active`='1' AND `config_id`=".$this->intDomainId;
+							$strId  = $this->myDBClass->getFieldData($strSQL);	
+						}
 					} else if ($intSlaveIdHG != 0) {
 						$strSQL = "SELECT `id` FROM `".$arrRelData['tableName2']."`
 								   LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `idMaster`
-								   WHERE `".$arrRelData['target2']."` = '".$elem."' AND `idSlave` = ".$intSlaveIdHG." AND `config_id`=".$this->intDomainId;
+								   WHERE `".$arrRelData['target2']."` = '".$elem."' AND `idSlave` = ".$intSlaveIdHG." AND `active`='1' AND `config_id`=".$this->intDomainId;
 						$strId  = $this->myDBClass->getFieldData($strSQL);
 					}
           			if ($strId != "") {
@@ -1255,25 +1350,30 @@ class nagimport {
 										`hostgroup_name`=$intHostgroupName, `".$arrRelData['target2']."` = '".$elem."', `config_id`=".$this->intDomainId.", 
 										`active`='0', `last_modified`=NOW()";
             			$booResult	 = $this->myDBClass->insertData($strSQL);
+						if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
             			$intSlaveIdS = $this->myDBClass->intLastId;	
 						// Make a relation from temp service to host / hostgroup
 						if ($intSlaveIdH != 0) {
 							$strSQL		= "INSERT INTO `tbl_lnkServiceToHost` SET `idMaster` = '".$intSlaveIdS."',
 											`idSlave`=".$intSlaveIdH.", `exclude`='0'";
 							$booResult	= $this->myDBClass->insertData($strSQL);
+							if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 						} else if ($intSlaveIdHG != 0) {
 							$strSQL		= "INSERT INTO `tbl_lnkServiceToHostgroup` SET `idMaster` = '".$intSlaveIdS."',
 											`idSlave`=".$intSlaveIdHG.", `exclude`='0'";
 							$booResult	= $this->myDBClass->insertData($strSQL);	
+							if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 						}
 					}
           			// Insert relation
           			$strSQL   	= "INSERT INTO `".$arrRelData['linkTable']."` 
 								   SET `idMaster` = ".$intDataId.", `idSlaveH` = ".$intSlaveIdH.", `idSlaveS` = ".$intSlaveIdS;
           			$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
           			// Update data in master table
           			$strSQL   	= "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = 1 WHERE `id` = ".$intDataId;
           			$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
         		} else {
           			$strValue = $elem;
         		}
@@ -1296,13 +1396,14 @@ class nagimport {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function writeRelation_7($strKey,$strValue,$intDataId,$strDataTable,$arrRelData) {
     	// Delete data from link table
     	$strSQL   	= "DELETE FROM `".$arrRelData['linkTable']."` WHERE `idMaster` = ".$intDataId;
     	$booResult  = $this->myDBClass->insertData($strSQL);
+		if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
     	// Define variables
     	$intSlaveId = 0;
     	// Decompose data value
@@ -1334,12 +1435,14 @@ class nagimport {
 							   `host_name`=2, `hostgroup_name`=2, `config_name`='imp_tmp_by_servicedependency', `config_id`=".$this->intDomainId.", 
 							   `active`='0', `last_modified`=NOW()";
 					$booResult  = $this->myDBClass->insertData($strSQL);
+					if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 					$intSlaveId = $this->myDBClass->intLastId;
 				}
 				// Insert relations
 				$strSQL   	= "INSERT INTO `".$arrRelData['linkTable']."` SET `idMaster` = ".$intDataId.", `idSlave` = ".$intSlaveId.", 
 							   `strSlave`='".$elem."', `exclude`=".$intExclude;
 				$booResult  = $this->myDBClass->insertData($strSQL);
+				if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
 			}
 			// Update field values in master table
 			if (substr_count($strValue,"*") != 0) {
@@ -1349,6 +1452,7 @@ class nagimport {
 			}
 			$strSQL = "UPDATE `".$strDataTable."` SET `".$arrRelData['fieldName']."` = $intRelValue WHERE `id` = ".$intDataId;
 			$booRes = $this->myDBClass->insertData($strSQL);
+			if ($booResult == false) $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
     	}
   	}
 }

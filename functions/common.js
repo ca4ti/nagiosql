@@ -52,7 +52,7 @@ function msginit(msg,header,type) {
 	YAHOO.namespace("msg.container");
 	var handleOK = function() {
 		this.hide();
-		myFocusObject.myValue.focus();
+		//myFocusObject.myValue.focus();
 	};
 	if (type == 1) {
 		var iconobj = YAHOO.widget.SimpleDialog.ICON_WARN;
@@ -206,7 +206,7 @@ function calendarinit(lang,start,field,key,cont,obj) {
 }
 	
 // Open edit dialog for list boxes
-function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,menuid,exclude) {
+function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
 	
 	YAHOO.util.Event.onDOMReady(function(){
 			
@@ -226,7 +226,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,menuid,exclude
 			success:handleSuccess, 
 			failure: handleFailure 
 		}; 		
-		sUrl = "mutdialog.php?object=" + field + "&menuid=" + menuid + "&exclude=" + exclude;
+		sUrl = "mutdialog.php?object=" + field + "&exclude=" + exclude;
 		var request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 		
 		var handleSave = function() {
@@ -238,6 +238,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,menuid,exclude
       		}	
       		for (i = 0; i < source.length; ++i) {
         		source.options[i].selected = false;
+				source.options[i].className = source.options[i].className.replace(/ ieselected/g , '');
       		}
       		for (i = 0; i < targetSelect.length; ++i) {
         		for (y = 0; y < source.length; ++y) {
@@ -247,12 +248,12 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,menuid,exclude
             			source.options[y].selected = true;
 						source.options[y].value = targetSelect.options[i].value;
 						source.options[y].text  = targetSelect.options[i].text;
-						source.options[y].className = "ieselected";
+						source.options[y].className = source.options[y].className+" ieselected";
           			}
         		}
       		}
 			this.cancel();
-			if ((update) && (update == 1)) {
+			if ((typeof(update) == 'number') && (update == 1)) {
 				updateForm(field);
 			}
 		};
@@ -260,7 +261,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,menuid,exclude
 			this.cancel();
 		};
 		mutdialog = new YAHOO.widget.Dialog(divbox, 
-					{ 
+					{ width : "60em",
 					  fixedcenter : true,
 					  visible : false, 
 					  draggable: true,
@@ -297,11 +298,15 @@ function getData(field) {
   for (i = 0; i < source.length; ++i) {
 	if (source.options[i].selected == true) {
 		NeuerEintrag1 = new Option(source.options[i].text, source.options[i].value, false, false);
+		NeuerEintrag1.className = source.options[i].className.replace(/ ieselected/g , '');
+		NeuerEintrag1.className = NeuerEintrag1.className.replace(/ inpmust/g , '');
 		targetSelect.options[targetSelect.length] = NeuerEintrag1;
 	} 
 	if (source.options[i].selected == false) {
 		if (source.options[i].text != "") {
 		  NeuerEintrag2 = new Option(source.options[i].text, source.options[i].value, false, false);
+		  NeuerEintrag2.className = source.options[i].className.replace(/ ieselected/g , '');
+		  NeuerEintrag2.className = NeuerEintrag2.className.replace(/ inpmust/g , '');
 		  targetAvail.options[targetAvail.length] = NeuerEintrag2;
 		}
 	} 	
@@ -316,6 +321,7 @@ function selValue(field) {
 	for (i = 0; i < targetAvail.length; ++i) {
 	  if (targetAvail.options[i].selected == true) {
 		NeuerEintrag = new Option(targetAvail.options[i].text, targetAvail.options[i].value, false, false);
+		NeuerEintrag.className = targetAvail.options[i].className;
 		targetSelect.options[targetSelect.length] = NeuerEintrag;
 		DelOptions.push(i);
 	  }
@@ -340,6 +346,7 @@ function selValueEx(field) {
 		} else {
 		  NeuerEintrag = new Option(targetAvail.options[i].text, targetAvail.options[i].value, false, false);
 		}
+		NeuerEintrag.className = targetAvail.options[i].className;
 		targetSelect.options[targetSelect.length] = NeuerEintrag;
 		DelOptions.push(i);
 	  }
@@ -362,6 +369,7 @@ function desValue(field) {
 		var text  = targetSelect.options[i].text.replace(/^!/g , '');
 		var value = targetSelect.options[i].value.replace(/^e/g , '');
 		NeuerEintrag = new Option(text, value, false, false);
+		NeuerEintrag.className = targetSelect.options[i].className;
 		targetAvail.options[targetAvail.length] = NeuerEintrag;
 		DelOptions.push(i);
 	  }
@@ -384,11 +392,12 @@ function sort(obj){
 	list[i] = new Array();
 	list[i]["text"] = obj.options[i].text;
 	list[i]["value"] = obj.options[i].value;
+	list[i]["className"] = obj.options[i].className;
   }
 
   // Sort into a single dimension array
   for (i=0; i < obj.length; i++){
-	sortieren[i]=list[i]["text"]+";"+list[i]["value"];
+	sortieren[i]=list[i]["text"]+";"+list[i]["value"]+";"+list[i]["className"];
   }
 
   // Real sort
@@ -399,6 +408,7 @@ function sort(obj){
 	var felder = sortieren[i].split(";");
 	list[i]["text"] = felder[0];
 	list[i]["value"] = felder[1];
+	list[i]["className"] = felder[2];
   }
 
   // Remove list field
@@ -409,6 +419,7 @@ function sort(obj){
   // insert list to dialog
   for (i=0; i < list.length; i++){
 	NeuerEintrag = new Option(list[i]["text"], list[i]["value"], false, false);
+	NeuerEintrag.className = list[i]["className"];
 	obj.options[i] = NeuerEintrag;
   }
 }

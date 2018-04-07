@@ -1,12 +1,12 @@
-<!-- (c) 2005-2011 by Martin Willisegger -->
+<!-- (c) 2005-2012 by Martin Willisegger -->
 <!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : main template -->
 <!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $ -->
-<!-- Author     : $LastChangedBy: rouven $ -->
-<!-- Version    : 3.1.1 -->
-<!-- Revision   : $LastChangedRevision: 1058 $ -->
+<!-- Date       : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $ -->
+<!-- Author     : $LastChangedBy: martin $ -->
+<!-- Version    : 3.2.0 -->
+<!-- Revision   : $LastChangedRevision: 1229 $ -->
 <!-- BEGIN header -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -21,23 +21,23 @@
 	<meta name="publisher" content="{PUBLISHER}">{SPECIALMETA}
     <link rel="SHORTCUT ICON" href="{BASE_PATH}favicon.ico">
     <!-- YUI Components -->
-    <!--<link href="{BASE_PATH}functions/yui/build/fonts/fonts-min.css" rel="stylesheet" type="text/css"> -->
     <link href="{BASE_PATH}functions/yui/build/button/assets/skins/sam/button.css" rel="stylesheet" type="text/css">
     <link href="{BASE_PATH}functions/yui/build/container/assets/skins/sam/container.css" rel="stylesheet" type="text/css">
     <link href="{BASE_PATH}functions/yui/build/calendar/assets/skins/sam/calendar.css" rel="stylesheet" type="text/css">
     <!-- CSS Include -->
     <link href="{BASE_PATH}config/main.css" rel="stylesheet" type="text/css">
+    <link href="{BASE_PATH}config/content.css" rel="stylesheet" type="text/css">
     <link href="{BASE_PATH}functions/yui/build/tabview/assets/skins/sam/tabview.css" rel="stylesheet" type="text/css">
     <!-- YUI Scripts -->
     <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
     <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/element/element-min.js"></script>
     <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/button/button-min.js"></script>
-    <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/connection/connection-min.js"></script> 
+    <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/connection/connection-min.js"></script>  
     <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/utilities/utilities.js"></script>
     <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/container/container-min.js"></script>
 	<script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/calendar/calendar-min.js"></script>	
     <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/yui/build/tabview/tabview-min.js"></script>
-    <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/common.js"></script>
+    <script language="JavaScript" type="text/JavaScript" src="{BASE_PATH}functions/common.js"></script>    
     <script type="text/javascript" language="javascript">
       <!--
 	  function doChangeDomain() {
@@ -47,8 +47,6 @@
 	</script>
   </head>
   <body  class="yui-skin-sam">
-  
-  
   <table width="100%" cellpadding="0" cellspacing="0" class="header">
     <tr>
 	  <td class="headerleft">{ADMIN}&nbsp;{MONITOR}&nbsp;{PLUGINS}</td>
@@ -83,39 +81,14 @@
   </table>
   <table width="100%">
     <tr>
+    {MAINMENU}
+    	<td class="main" valign="top">
 <!-- END header2 -->
 <!-- BEGIN footer -->
+		</td>
     </tr>
   </table>
   <p class="version">{VERSION_INFO}</p>
   </body>
 </html>
 <!-- END footer -->
-<!-- BEGIN menuheader -->
-  <td width="150" align="center" valign="top">
-    <table cellspacing="5" class="{MENUCLASS}">
-<!-- END menuheader -->
-<!-- BEGIN mainmenupoint -->
-      <tr>
-        <td class="{CLASS_MAINMENU}"><a href="{MAINMENUPATH}">{MAINMENUENTRY}</a></td>
-      </tr>
-<!-- END mainmenupoint -->
-<!-- BEGIN submenupoint -->
-      <tr>
-        <td class="{CLASS_SUBMENU}">
-<!-- BEGIN submenurow -->
-          <a class="menulink" href="{SUBMENUPATH}">{SUBMENUENTRY}</a>
-<!-- END submenurow -->
-        </td>
-      </tr>
-<!-- END submenupoint -->
-<!-- BEGIN menufooter -->
-    </table>
-    <a href="{PHP_SELF}" class="menulinksmall">[{HIDE_MENU}]</a>
-  </td>
-<!-- END menufooter -->
-<!-- BEGIN menuhidden -->
-  <td valign="top">
-    <a href="{PHP_SELF}"><img src="{IMAGE_PATH}images/menu.gif" alt="{ENABLE_MENU}" title="{ENABLE_MENU}" border="0"></a>
-  </td>
-<!-- END menuhidden -->

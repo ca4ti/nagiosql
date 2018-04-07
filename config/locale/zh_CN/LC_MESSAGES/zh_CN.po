@@ -1,811 +1,731 @@
 # #############################################################################
 # #
 # # Project   : NagiosQL
-# # Component : Translation File Chinese
+# # Component : Translation File English
 # # Website   : http://www.nagiosql.org
-# # Date      : $LastChangedDate: 2011-04-10 16:59:17 +0200 (So, 10. Apr 2011) $
-# # Author    : $LastChangedBy: rouven $
+# # Date      : $LastChangedDate: 2012-03-09 22:55:35 +0100 (Fri, 09 Mar 2012) $
+# # Author    : $LastChangedBy: martin $
 # # Version   : 3.1.1
-# # Revision  : $LastChangedRevision: 1069 $
+# # Revision  : $LastChangedRevision: 1284 $
 # #
 # #############################################################################
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: NagiosQL 3.1.1\n"
+"Project-Id-Version: NagiosQL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-10 15:10+0100\n"
-"PO-Revision-Date: 2011-04-10 15:11+0100\n"
-"Last-Translator: NagiosQL <http://www.nagiosql.org>\n"
-"Language-Team: NagiosQL Translation Team <rouven@nagiosql.org>\n"
+"POT-Creation-Date: 2012-03-09 22:54+0100\n"
+"PO-Revision-Date: 2012-03-09 22:54+0100\n"
+"Last-Translator: \n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/nagiosql/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: Pootle 2.1.5\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: C:\\Development\\NagiosQL3.1\\\n"
+"X-Poedit-Basepath: D:\\$_Daten\\Webentwicklung\\NagiosQL_v3.2_svn\n"
 "X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin.php:42
+#: admin.php:34
 msgid "NagiosQL Administration"
 msgstr "NagiosQL管理"
 
-#: admin.php:45
-msgid "Welcome to NagiosQL, the administration module that can be used to easily create, modify and delete configuration files for Nagios and Icinga. The data is stored in a MySQL database and can be written directly to the standard files at any time you want."
-msgstr "欢迎来到NagiosQl的管理模块，此模块能方便的为Nagios和lcinga创建，修改和删除配置文件。这些数据存储在MySQL数据库中并且能在任何时候写入标准文件。欢迎来到NagiosQl的管理模块，此模块能方便的为Nagios和lcinga创建，修改和删除配置文件。这些数据存储在MySQL数据库中并且能在任何时候写入标准文件。"
+#: admin.php:37
+msgid "Welcome to NagiosQL, the administration module that can be used to easily create, modify and delete configuration files for Nagios. The data is stored in a database and can be written directly to the standard files at any time you want."
+msgstr ""
 
-#: admin.php:68
-msgid "Could not connect to Updateserver"
-msgstr "不能连接到目标服务器"
-
-#: admin.php:69
-msgid "Error"
-msgstr "错误"
-
-#: admin.php:103
-msgid "An error occured during the version check"
-msgstr "版本检查时产生错误"
-
-#: admin.php:111
-msgid "Checking for NagiosQL Updates"
-msgstr "检查NagiosQL更新"
-
-#: admin.php:113
-msgid "Installed"
-msgstr "已安装"
-
-#: admin.php:114
-msgid "Available"
-msgstr "可用的"
-
-#: admin.php:115
-msgid "Information"
-msgstr "信息"
-
-#: admin.php:123
-msgid "You already have the latest version installed"
-msgstr "你已经安装了最新版本"
-
-#: admin.php:129
-msgid "You already have the latest development version installed"
-msgstr "你已经安装了最新的开发版本。"
-
-#: admin.php:134
-msgid "You are using an older development version. Please update to the latest development version"
-msgstr "你正在使用较老的开发版本。请更新到最新的开发版本。"
-
-#: admin.php:142
-msgid "You are using an old NagiosQL version. Please update to the latest stable version"
-msgstr "你正在使用老版本的NagiosQL。请更新到最新的稳定版。"
-
-#: index.php:48
+#: index.php:45
 msgid "Welcome to"
 msgstr "欢迎来到"
 
-#: index.php:49
+#: index.php:46
 msgid "Welcome"
 msgstr "欢迎"
 
-#: index.php:50
+#: index.php:47
 msgid "Please enter your username and password to access NagiosQL.<br>If you forgot one of them, please contact your Administrator."
 msgstr "请输入你的用户名及密码以访问NagiosQL。<br>如果你忘记其中的一个，请联系管理员。"
 
-#: index.php:51
+#: index.php:48
 msgid "Username"
 msgstr "用户名"
 
-#: index.php:52
+#: index.php:49
 msgid "Password"
 msgstr "密码"
 
-#: index.php:53
+#: index.php:50
 msgid "Login"
 msgstr "登录"
 
-#: admin/administration.php:37
+#: admin/administration.php:31
 msgid "Administration"
 msgstr "管理"
 
-#: admin/administration.php:40
+# administration.php
+#: admin/administration.php:34
 msgid "Functions to administrate NagiosQL V3"
 msgstr "管理NagiosQL3版的功能"
 
-#: admin/alarming.php:37
+#: admin/alarming.php:31
 msgid "Alarming"
 msgstr "警告"
 
-#: admin/alarming.php:40
+# alarming.php
+#: admin/alarming.php:34
 msgid "To define contact data, contact templates and contact groups and time periods."
 msgstr "定义联系数据，联系组及时间段。"
 
-#: admin/alarming.php:41
-#: admin/commands.php:41
+#: admin/alarming.php:35
+#: admin/commands.php:35
 msgid "Statistical datas"
 msgstr "统计数据"
 
-#: admin/alarming.php:42
-#: admin/commands.php:42
+#: admin/alarming.php:36
+#: admin/commands.php:36
 msgid "Group"
 msgstr "组"
 
-#: admin/alarming.php:43
-#: admin/commands.php:43
+#: admin/alarming.php:37
+#: admin/commands.php:37
 msgid "Active"
 msgstr "活动"
 
-#: admin/alarming.php:44
-#: admin/commands.php:44
+#: admin/alarming.php:38
+#: admin/commands.php:38
 msgid "Inactive"
 msgstr "非活动"
 
-#: admin/alarming.php:48
+#: admin/alarming.php:45
 msgid "Contact data"
 msgstr "联系数据"
 
-#: admin/alarming.php:52
+#: admin/alarming.php:51
 msgid "Contact groups"
 msgstr "联系组"
 
-#: admin/alarming.php:56
+#: admin/alarming.php:57
 msgid "Time periods"
 msgstr "时间段"
 
-#: admin/alarming.php:60
+#: admin/alarming.php:63
 msgid "Contact templates"
 msgstr "联系人模板"
 
-#: admin/cgicfg.php:66
-#: admin/cgicfg.php:84
+#: admin/cgicfg.php:61
+#: admin/cgicfg.php:81
 msgid "Configuration file successfully written!"
 msgstr "配置文件写入成功!"
 
-#: admin/cgicfg.php:67
-#: admin/cgicfg.php:85
+#: admin/cgicfg.php:62
+#: admin/cgicfg.php:82
 msgid "Configuration successfully written:"
 msgstr "配置写入成功"
 
-#: admin/cgicfg.php:69
+#: admin/cgicfg.php:64
 msgid "Cannot open/overwrite the configuration file (check the permissions)!"
 msgstr "不能打开/覆盖配置文件(检查权限)!"
 
-#: admin/cgicfg.php:70
+#: admin/cgicfg.php:65
 msgid "Configuration write failed:"
 msgstr "配置写入失败:"
 
-#: admin/cgicfg.php:88
+#: admin/cgicfg.php:85
 msgid "Cannot open/overwrite the configuration file (check the permissions on remote system)!"
 msgstr "不能打开/覆盖配置文件(检查远程系统的权限)!"
 
-#: admin/cgicfg.php:89
+#: admin/cgicfg.php:86
 msgid "Configuration write failed (remote):"
 msgstr "配置文件写入错误(远程):"
 
-#: admin/cgicfg.php:101
+#: admin/cgicfg.php:94
 msgid "CGI configuration file"
 msgstr "CGI配置文件"
 
-#: admin/cgicfg.php:124
+#: admin/cgicfg.php:117
 msgid "Cannot open the data file (check the permissions)!"
 msgstr "不能打开数据文件(检查权限)!"
 
-#: admin/cgicfg.php:139
+#: admin/cgicfg.php:132
 msgid "Cannot open the temporary file"
 msgstr "不能打开临时文件"
 
-#: admin/cgicfg.php:143
+#: admin/cgicfg.php:136
 msgid "Configuration read failed (remote):"
 msgstr "配置文件写入错误(远程):"
 
-#: admin/checkcommands.php:79
+#: admin/checkcommands.php:53
 msgid "New command inserted:"
 msgstr "插入新命令:"
 
-#: admin/checkcommands.php:80
+#: admin/checkcommands.php:54
 msgid "Command modified:"
 msgstr "更改命令:"
 
-#: admin/checkcommands.php:84
-#: admin/contactgroups.php:113
-#: admin/contacts.php:262
-#: admin/contacttemplates.php:262
-#: admin/domain.php:180
-#: admin/group.php:98
+#: admin/checkcommands.php:57
+#: admin/configtargets.php:131
+#: admin/contactgroups.php:80
+#: admin/contacts.php:157
+#: admin/contacttemplates.php:157
+#: admin/datadomain.php:58
 msgid "Database entry failed! Not all necessary data filled in!"
 msgstr "数据库入口查找失败!并非所有必须数据被填充!"
 
-#: admin/checkcommands.php:123
-#: admin/checkcommands.php:232
-#: admin/checkcommands.php:250
-#: admin/contactgroups.php:152
-#: admin/contactgroups.php:277
-#: admin/contactgroups.php:295
-#: admin/contacts.php:301
-#: admin/contacts.php:500
-#: admin/contacts.php:518
-#: admin/contacttemplates.php:301
-#: admin/contacttemplates.php:498
-#: admin/contacttemplates.php:516
-#: admin/domain.php:202
-#: admin/domain.php:371
-#: admin/domain.php:389
-#: admin/group.php:115
-#: admin/group.php:198
-#: admin/group.php:216
-msgid "Error while selecting data from database:"
-msgstr "从数据库查取数据失败"
+#: admin/checkcommands.php:60
+#: admin/configtargets.php:134
+#: admin/contactgroups.php:83
+#: admin/contacts.php:160
+#: admin/contacttemplates.php:160
+#: admin/datadomain.php:61
+msgid "Database entry failed! No write access!"
+msgstr ""
 
-#: admin/checkcommands.php:129
-#: admin/contactgroups.php:158
-#: admin/contacts.php:307
-#: admin/contacttemplates.php:307
-#: admin/domain.php:208
-msgid "No permission to open configuration!"
-msgstr "没有打开配置的权限！"
-
-#: admin/checkcommands.php:154
+# checkcommand.php
+#: admin/checkcommands.php:73
 msgid "Command definitions"
 msgstr "命令定义"
 
-#: admin/checkcommands.php:171
-#: admin/contactgroups.php:210
-#: admin/contacts.php:390
-#: admin/contacttemplates.php:390
+#: admin/checkcommands.php:88
+#: admin/contactgroups.php:124
+#: admin/contacts.php:255
+#: admin/contacttemplates.php:247
+#: admin/datadomain.php:91
 msgid "Saving not possible!"
 msgstr "不能保存!"
 
-#: admin/checkcommands.php:176
+#: admin/checkcommands.php:90
 msgid "unclassified"
 msgstr "未分类"
 
-#: admin/checkcommands.php:177
+#: admin/checkcommands.php:91
 msgid "check command"
 msgstr "检查命令"
 
-#: admin/checkcommands.php:178
+#: admin/checkcommands.php:92
 msgid "misc command"
 msgstr "各种命令"
 
-#: admin/checkcommands.php:192
-#: admin/contactgroups.php:240
-#: admin/contacttemplates.php:450
+#: admin/checkcommands.php:98
+#: admin/contactgroups.php:131
+#: admin/contacts.php:269
+#: admin/contacttemplates.php:261
 msgid "Entry cannot be activated because it is used by another configuration"
 msgstr "由于入口被其他配置占用，无法激活"
 
-#: admin/checkcommands.php:212
+#: admin/checkcommands.php:115
 msgid "Command name"
 msgstr "命令名"
 
-#: admin/checkcommands.php:213
+#: admin/checkcommands.php:116
 msgid "Command line"
 msgstr "命令行"
 
-#: admin/checkcommands.php:244
-#: admin/contactgroups.php:289
-#: admin/contacts.php:512
-#: admin/contacttemplates.php:510
-#: admin/domain.php:383
-#: admin/group.php:210
-msgid "No data"
-msgstr "无数据"
+# prepend.adm
+#: admin/checkcommands.php:129
+#: admin/checkcommands.php:140
+#: admin/configtargets.php:264
+#: admin/configtargets.php:275
+#: admin/contactgroups.php:159
+#: admin/contactgroups.php:170
+#: admin/contacts.php:319
+#: admin/contacts.php:330
+#: admin/contacttemplates.php:311
+#: admin/contacttemplates.php:322
+#: admin/datadomain.php:137
+#: admin/datadomain.php:148
+msgid "Error while selecting data from database:"
+msgstr "从数据库查取数据失败"
 
-#: admin/checkcommands.php:256
-#: admin/contactgroups.php:301
-#: admin/contacts.php:524
-#: admin/contacttemplates.php:522
-#: admin/domain.php:395
-#: admin/group.php:222
-msgid "No"
-msgstr "否"
-
-#: admin/checkcommands.php:256
-#: admin/contactgroups.php:301
-#: admin/contacts.php:524
-#: admin/contacttemplates.php:522
-#: admin/domain.php:395
-#: admin/group.php:222
-msgid "Yes"
-msgstr "是"
-
-#: admin/checkcommands.php:301
-#: admin/contactgroups.php:346
-#: admin/contacts.php:568
-#: admin/contacttemplates.php:566
-msgid "Last database update:"
-msgstr "最后一次数据库升级:"
-
-#: admin/checkcommands.php:302
-#: admin/contactgroups.php:347
-#: admin/contacts.php:569
-#: admin/contacttemplates.php:567
-msgid "Last change of the configuration file:"
-msgstr "最后一次配置文件修改:"
-
-#: admin/commands.php:37
-#: admin/commands.php:48
+#: admin/commands.php:31
+#: admin/commands.php:45
 msgid "Check commands"
 msgstr "检查命令"
 
-#: admin/commands.php:40
+# commands.php
+#: admin/commands.php:34
 msgid "To define check and misc commands, notification commands and special commands."
 msgstr "定义检查及各种命令，提醒命令和特殊命令"
 
-#: admin/contactgroups.php:86
-msgid "New contact group inserted:"
-msgstr "插入新联系人组:"
-
-#: admin/contactgroups.php:87
-msgid "Contact group modified:"
-msgstr "修改联系人组:"
-
-#: admin/contactgroups.php:183
-msgid "Define contact groups (contactgroups.cfg)"
-msgstr "定义联系人组(contactgroups.cfg)"
-
-#: admin/contactgroups.php:194
-msgid "Attention, no contacts defined!"
-msgstr "注意，未定义联系人!"
-
-#: admin/contactgroups.php:257
-msgid "Contact group"
-msgstr "联系人组"
-
-#: admin/contactgroups.php:258
-#: admin/contacts.php:476
-#: admin/contacttemplates.php:475
-#: admin/domain.php:362
-#: admin/group.php:187
-msgid "Description"
-msgstr "描述"
-
-#: admin/contacts.php:175
-msgid "New contact inserted:"
-msgstr "插入新的联系人:"
-
-#: admin/contacts.php:176
-msgid "Contact modified:"
-msgstr "被修改的联系人:"
-
-#: admin/contacts.php:332
-msgid "Define contacts (contacts.cfg)"
-msgstr "定义联系人(contacts.cfg)"
-
-#: admin/contacts.php:368
-msgid "Attention, no time periods defined!"
-msgstr "注意，没有定义时间段!"
-
-#: admin/contacts.php:374
-msgid "Attention, no commands defined!"
-msgstr "注意，没有定义命令!"
-
-#: admin/contacts.php:451
-msgid "Entry cannot be deactivated because it is used by another configuration"
-msgstr "入口不能被禁止，因为它被其他配置使用"
-
-#: admin/contacts.php:475
-#: admin/contacttemplates.php:474
-msgid "Contact name"
-msgstr "联系人名字"
-
-#: admin/contacttemplates.php:175
-msgid "New contact template inserted:"
-msgstr "已插入的新联系模板:"
-
-#: admin/contacttemplates.php:176
-msgid "Contact template modified:"
-msgstr "已修改的联系模板:"
-
-#: admin/contacttemplates.php:332
-msgid "Define contact templates (contacttemplates.cfg)"
-msgstr "定义联系人模板(contacttemplates.cfg)"
-
-#: admin/delbackup.php:54
-#: admin/delconfig.php:54
-msgid "Could not open directory"
-msgstr "不能打开目录"
-
-#: admin/delbackup.php:88
-#: admin/delconfig.php:88
-msgid "File deleted"
-msgstr "被删除的文件"
-
-#: admin/delbackup.php:89
-#: admin/delconfig.php:89
-msgid "successfully deleted"
-msgstr "删除成功"
-
-#: admin/delbackup.php:91
-#: admin/delconfig.php:91
-msgid "could not be deleted (check the permissions)"
-msgstr "不能被删除(检查权限)!"
-
-#: admin/delbackup.php:103
-msgid "Delete backup files"
-msgstr "删除备份文件"
-
-#: admin/delbackup.php:106
-#: admin/delconfig.php:106
-msgid "Filter string"
-msgstr "过滤字符串"
-
-#: admin/delbackup.php:107
-#: admin/delconfig.php:107
-msgid "Search"
-msgstr "搜索"
-
-#: admin/delbackup.php:108
-#: admin/delbackup.php:113
-#: admin/delconfig.php:108
-#: admin/delconfig.php:113
-#: admin/group.php:188
-msgid "Delete"
-msgstr "删除"
-
-#: admin/delbackup.php:109
-#: admin/delconfig.php:109
-msgid "Reset filter"
-msgstr "重置过滤条件"
-
-#: admin/delbackup.php:111
-#: admin/delconfig.php:111
-msgid "Backup file"
-msgstr "备份文件"
-
-#: admin/delbackup.php:112
-#: admin/delconfig.php:112
-msgid "required"
-msgstr "必填"
-
-#: admin/delbackup.php:114
-#: admin/delconfig.php:114
-msgid "Abort"
-msgstr "取消"
-
-#: admin/delbackup.php:115
-#: admin/delconfig.php:115
-msgid "Hold CTRL to select<br>more than one entry"
-msgstr "按住CTTL选择<br>多个"
-
-#: admin/delconfig.php:103
-msgid "Delete config files"
-msgstr "删除配置文件"
-
-#: admin/domain.php:96
-#: admin/domain.php:101
-#: admin/domain.php:106
-#: admin/domain.php:111
-#: admin/domain.php:116
-#: admin/domain.php:121
-#: admin/domain.php:128
-#: admin/domain.php:132
+# mutdialog.php
+#: admin/configtargets.php:56
+#: admin/configtargets.php:62
+#: admin/configtargets.php:82
 msgid "is not writeable"
 msgstr "不可写"
 
-#: admin/domain.php:127
+#: admin/configtargets.php:62
+#: admin/configtargets.php:77
 msgid "Nagios config file"
 msgstr "Nagios配置文件"
 
-#: admin/domain.php:138
+#: admin/configtargets.php:77
+msgid "is not a valid configuration file!"
+msgstr ""
+
+#: admin/configtargets.php:82
+msgid "Cgi config file"
+msgstr ""
+
+#: admin/configtargets.php:89
 msgid "SSH module not loaded!"
 msgstr "SSH模块没有加载！"
 
-#: admin/domain.php:143
+#: admin/configtargets.php:94
 msgid "FTP module not loaded!"
 msgstr "FTP模块没有加载！"
 
-#: admin/domain.php:150
-msgid "Warning, at least one error occured, please check!"
-msgstr "警告，至少发省了一个错误，请检查！"
-
-#: admin/domain.php:177
+# domain.php
+#: admin/configtargets.php:127
+#: admin/datadomain.php:54
 msgid "New Domain inserted:"
 msgstr "插入新域:"
 
-#: admin/domain.php:178
+#: admin/configtargets.php:128
+#: admin/datadomain.php:55
 msgid "Domain modified:"
 msgstr "被修改的域:"
 
-#: admin/domain.php:189
-msgid "Localhost can't be deleted"
-msgstr "Localhost不能删除"
+#: admin/configtargets.php:142
+msgid "Configuration domain administration"
+msgstr ""
 
-#: admin/domain.php:226
-msgid "Domain administration"
-msgstr "域管理"
+#: admin/configtargets.php:143
+msgid "Warning, at least one error occured, please check!"
+msgstr "警告，至少发省了一个错误，请检查！"
 
-#: admin/domain.php:241
-msgid "In order for a user to get access, he needs to be member of the group selected here."
-msgstr "为使一个用户可以访问，他需要是所选择组的成员。"
-
-#: admin/domain.php:248
-#: admin/group.php:164
+#: admin/configtargets.php:158
+#: admin/datadomain.php:92
 msgid "Please fill in all fields marked with an *"
 msgstr "请填写所有标记*的空白"
 
-#: admin/domain.php:249
-#: admin/group.php:165
+#: admin/configtargets.php:159
+#: admin/datadomain.php:93
 msgid "The following field contains not permitted characters:"
 msgstr "下列域包含不被允许的字符:"
 
-#: admin/domain.php:251
+#: admin/configtargets.php:255
+msgid "Configuration target"
+msgstr ""
+
+#: admin/configtargets.php:256
+#: admin/contactgroups.php:146
+#: admin/contacts.php:301
+#: admin/contacttemplates.php:293
+#: admin/datadomain.php:129
+msgid "Description"
+msgstr "描述"
+
+#: admin/contactgroups.php:53
+msgid "New contact group inserted:"
+msgstr "插入新联系人组:"
+
+#: admin/contactgroups.php:54
+msgid "Contact group modified:"
+msgstr "修改联系人组:"
+
+#: admin/contactgroups.php:96
+msgid "Define contact groups (contactgroups.cfg)"
+msgstr "定义联系人组(contactgroups.cfg)"
+
+#: admin/contactgroups.php:111
+msgid "Attention, no contacts defined!"
+msgstr "注意，未定义联系人!"
+
+#: admin/contactgroups.php:145
+msgid "Contact group"
+msgstr "联系人组"
+
+# contacts.php
+#: admin/contacts.php:70
+msgid "New contact inserted:"
+msgstr "插入新的联系人:"
+
+#: admin/contacts.php:71
+msgid "Contact modified:"
+msgstr "被修改的联系人:"
+
+#: admin/contacts.php:173
+msgid "Define contacts (contacts.cfg)"
+msgstr "定义联系人(contacts.cfg)"
+
+#: admin/contacts.php:230
+msgid "Attention, no time periods defined!"
+msgstr "注意，没有定义时间段!"
+
+#: admin/contacts.php:241
+msgid "Attention, no commands defined!"
+msgstr "注意，没有定义命令!"
+
+#: admin/contacts.php:300
+#: admin/contacttemplates.php:292
+msgid "Contact name"
+msgstr "联系人名字"
+
+# hosttemplates.php
+#: admin/contacttemplates.php:70
+msgid "New contact template inserted:"
+msgstr "已插入的新联系模板:"
+
+#: admin/contacttemplates.php:71
+msgid "Contact template modified:"
+msgstr "已修改的联系模板:"
+
+#: admin/contacttemplates.php:173
+msgid "Define contact templates (contacttemplates.cfg)"
+msgstr "定义联系人模板(contacttemplates.cfg)"
+
+#: admin/datadomain.php:69
+msgid "Data domain administration"
+msgstr ""
+
+#: admin/datadomain.php:82
+msgid "Attention, no configuration targets defined!"
+msgstr ""
+
+#: admin/datadomain.php:94
 msgid "Enable"
 msgstr "启用"
 
-#: admin/domain.php:252
+# mutdialog.php
+#: admin/datadomain.php:95
 msgid "Disable"
 msgstr "禁用"
 
-#: admin/domain.php:361
-msgid "Domain"
-msgstr "域"
+# fieldvars.php
+#: admin/datadomain.php:128
+msgid "Data domain"
+msgstr ""
+
+#: admin/delbackup.php:50
+#: admin/delconfig.php:50
+msgid "File deleted"
+msgstr "被删除的文件"
+
+#: admin/delbackup.php:51
+#: admin/delconfig.php:51
+msgid "successfully deleted"
+msgstr "删除成功"
+
+#: admin/delbackup.php:60
+msgid "Delete backup files"
+msgstr "删除备份文件"
+
+#: admin/delbackup.php:63
+#: admin/delconfig.php:63
+msgid "Filter string"
+msgstr "过滤字符串"
+
+#: admin/delbackup.php:64
+#: admin/delconfig.php:64
+msgid "Search"
+msgstr "搜索"
+
+#: admin/delbackup.php:65
+#: admin/delbackup.php:70
+#: admin/delconfig.php:65
+#: admin/delconfig.php:70
+msgid "Delete"
+msgstr "删除"
+
+#: admin/delbackup.php:66
+#: admin/delconfig.php:66
+msgid "Reset filter"
+msgstr "重置过滤条件"
+
+#: admin/delbackup.php:68
+msgid "Backup file"
+msgstr "备份文件"
+
+#: admin/delbackup.php:69
+#: admin/delconfig.php:69
+msgid "required"
+msgstr "必填"
+
+#: admin/delbackup.php:71
+#: admin/delconfig.php:71
+msgid "Abort"
+msgstr "取消"
+
+#: admin/delbackup.php:72
+#: admin/delconfig.php:72
+msgid "Hold CTRL to select<br>more than one entry"
+msgstr "按住CTTL选择<br>多个"
+
+#: admin/delbackup.php:106
+#: admin/delbackup.php:131
+msgid "No backup files or no permission to read the backup files"
+msgstr ""
+
+#: admin/delconfig.php:60
+msgid "Delete config files"
+msgstr "删除配置文件"
+
+#: admin/delconfig.php:68
+msgid "Configuration file"
+msgstr ""
 
 #: admin/download.php:67
 msgid "Download"
 msgstr "下载"
 
-#: admin/group.php:69
+#: admin/group.php:53
 msgid "A new group added:"
 msgstr "新增组:"
 
-#: admin/group.php:70
+#: admin/group.php:54
 msgid "User modified:"
 msgstr "用户被修改:"
 
-#: admin/group.php:128
+#: admin/group.php:94
 msgid "Group administration"
 msgstr "用户组管理"
 
-#: admin/group.php:159
+#: admin/group.php:114
 msgid "Read"
 msgstr "读"
 
-#: admin/group.php:160
+#: admin/group.php:115
 msgid "Write"
 msgstr "写"
 
-#: admin/group.php:161
+#: admin/group.php:116
 msgid "Link"
 msgstr "链接"
 
-#: admin/group.php:186
+#: admin/group.php:134
 msgid "Groupname"
 msgstr "组名"
 
-#: admin/group.php:190
-msgid "Copy"
-msgstr "复制"
+#: admin/groupusers.php:150
+msgid "No data"
+msgstr "无数据"
 
-#: admin/group.php:192
-msgid "Do you really want to delete this database entry:"
-msgstr "你真想删除此数据库条目:"
-
-#: admin/group.php:193
-msgid "Do you really want to delete all marked entries?"
-msgstr "你真想删除所有被标记的条目?"
-
-#: admin/helpedit.php:80
+#: admin/helpedit.php:65
 msgid "Help text editor"
 msgstr "帮助文本编辑器"
 
-#: admin/helpedit.php:91
+#: admin/helpedit.php:76
 msgid "Main key"
 msgstr "主键"
 
-#: admin/helpedit.php:92
+#: admin/helpedit.php:77
 msgid "Sub key"
 msgstr "子键"
 
-#: admin/helpedit.php:93
+#: admin/helpedit.php:78
 msgid "Language"
 msgstr "语言"
 
-#: admin/helpedit.php:94
+#: admin/helpedit.php:79
 msgid "Nagios version"
 msgstr "Nagios版本"
 
-#: admin/helpedit.php:95
+#: admin/helpedit.php:80
 msgid "Load default text"
 msgstr "载入缺省文本"
 
-#: admin/hostdependencies.php:108
+# hosttemplates.php
+#: admin/hostdependencies.php:61
 msgid "New host dependency inserted:"
 msgstr "插入新主机依赖性:"
 
-#: admin/hostdependencies.php:109
+#: admin/hostdependencies.php:62
 msgid "Host dependency modified:"
 msgstr "改变了主机依赖关系"
 
-#: admin/hostdependencies.php:227
+#: admin/hostdependencies.php:125
 msgid "Define host dependencies (hostdependencies.cfg)"
 msgstr "定义主机依赖性(hostdependencies.cfg)"
 
-#: admin/hostdependencies.php:251
-#: admin/hostescalations.php:234
+#: admin/hostdependencies.php:153
+#: admin/hostescalations.php:141
 msgid "Attention, no hosts and hostgroups defined!"
 msgstr "注意，没有定义主机或主机组"
 
-#: admin/hostdependencies.php:308
-#: admin/hostescalations.php:299
+#: admin/hostdependencies.php:189
+#: admin/hostescalations.php:188
 msgid "Config name"
 msgstr "配置名称"
 
-#: admin/hostdependencies.php:309
+#: admin/hostdependencies.php:190
 msgid "Dependent hosts"
 msgstr "依赖的主机"
 
-#: admin/hostdependencies.php:309
+#: admin/hostdependencies.php:190
 msgid "Dependent hostgroups"
 msgstr "依赖的主机组"
 
-#: admin/hostescalations.php:102
+# hosttemplates.php
+#: admin/hostescalations.php:60
 msgid "New host escalation inserted:"
 msgstr "插入新升级主机:"
 
-#: admin/hostescalations.php:103
+#: admin/hostescalations.php:61
 msgid "Host escalation modified:"
 msgstr "升级主机被修改:"
 
-#: admin/hostescalations.php:220
+#: admin/hostescalations.php:124
 msgid "Define host escalation (hostescalations.cfg)"
 msgstr "定义升级主机(hostescalationss.cfg)"
 
-#: admin/hostescalations.php:245
+#: admin/hostescalations.php:156
 msgid "Attention, no contacts and contactgroups defined!"
 msgstr "注意，没有定义联系人或联系人组！"
 
-#: admin/hostescalations.php:300
-#: admin/monitoring.php:48
+#: admin/hostescalations.php:189
+#: admin/monitoring.php:46
 msgid "Hosts"
 msgstr "主机"
 
-#: admin/hostescalations.php:300
-#: admin/monitoring.php:56
+#: admin/hostescalations.php:189
+#: admin/monitoring.php:58
 msgid "Host groups"
 msgstr "主机组"
 
-#: admin/hostextinfo.php:94
+# hosttemplates.php
+#: admin/hostextinfo.php:55
 msgid "New host extended information inserted:"
 msgstr "插入新主机扩展信息:"
 
-#: admin/hostextinfo.php:95
+#: admin/hostextinfo.php:56
 msgid "Host extended information modified:"
 msgstr "主机扩展信息改变:"
 
-#: admin/hostextinfo.php:169
+#: admin/hostextinfo.php:75
 msgid "Define host extended information (hostextinfo.cfg)"
 msgstr "定义主机扩展信息(hostextinfo.cfg)"
 
-#: admin/hostextinfo.php:180
-#: admin/hostgroups.php:201
+#: admin/hostextinfo.php:88
+#: admin/hostgroups.php:111
 msgid "Attention, no hosts defined!"
 msgstr "注意，没有定义主机!"
 
-#: admin/hostextinfo.php:219
-#: admin/hosts.php:641
+#: admin/hostextinfo.php:118
+#: admin/hosts.php:454
 msgid "Host name"
 msgstr "主机名"
 
-#: admin/hostextinfo.php:220
+#: admin/hostextinfo.php:119
 msgid "Notes"
 msgstr "注释"
 
-#: admin/hostgroups.php:93
+#: admin/hostgroups.php:54
 msgid "New host group inserted:"
 msgstr "插入新主机组:"
 
-#: admin/hostgroups.php:94
+#: admin/hostgroups.php:55
 msgid "Host group modified:"
 msgstr "主机组被修改:"
 
-#: admin/hostgroups.php:190
+#: admin/hostgroups.php:97
 msgid "Define host groups (hostgroups.cfg)"
 msgstr "定义主机组(hostgroups.cfg)"
 
-#: admin/hostgroups.php:262
+#: admin/hostgroups.php:145
 msgid "Host group"
 msgstr "主机组"
 
-#: admin/hosts.php:219
+# contacts.php
+#: admin/hosts.php:77
 msgid "New host inserted:"
 msgstr "新主机插入:"
 
-#: admin/hosts.php:220
+#: admin/hosts.php:78
 msgid "Host modified:"
 msgstr "被修改的主机:"
 
-#: admin/hosts.php:265
+#: admin/hosts.php:129
+#: admin/hosts.php:152
 msgid "The assigned, no longer used configuration files were deleted successfully!"
 msgstr "被指定的不被使用的配置文件删除成功"
 
-#: admin/hosts.php:266
+#: admin/hosts.php:130
+#: admin/hosts.php:153
 msgid "Host file deleted:"
 msgstr "删除的主机文件:"
 
-#: admin/hosts.php:269
+#: admin/hosts.php:133
+#: admin/hosts.php:156
 msgid "Common files cannot be removed from target systems - please check manually"
 msgstr "普通文件不能从目标系统移除-请人工检查"
 
-#: admin/hosts.php:271
+#: admin/hosts.php:135
+#: admin/hosts.php:158
 msgid "Errors while deleting the old configuration file - please check!:"
 msgstr "删除旧配置文件时发生错误 - 请检查"
 
-#: admin/hosts.php:455
+#: admin/hosts.php:283
 msgid "Define hosts (hosts.cfg)"
 msgstr "定义主机(hosts.cfg)"
 
-#: admin/hosts.php:517
+#: admin/hosts.php:371
 msgid "Attention, no contact groups defined!"
 msgstr "注意，没有定义联系组!"
 
-#: admin/hosts.php:710
-msgid "out-of-date"
-msgstr "过期"
-
-#: admin/hosts.php:719
-msgid "up-to-date"
-msgstr "最新"
-
-#: admin/hosts.php:720
-msgid "missed"
-msgstr "丢失"
-
-#: admin/hosttemplates.php:208
+# hosttemplates.php
+#: admin/hosttemplates.php:76
 msgid "New host template inserted:"
 msgstr "插入新主机模板:"
 
-#: admin/hosttemplates.php:209
+#: admin/hosttemplates.php:77
 msgid "Host template modified:"
 msgstr "主机模板被修改:"
 
-#: admin/hosttemplates.php:373
+#: admin/hosttemplates.php:187
 msgid "Host template definition (hosttemplates.cfg)"
 msgstr "主机模板定义(hosttemplates.cfg)"
 
-#: admin/hosttemplates.php:548
+#: admin/hosttemplates.php:345
 msgid "Host template name"
 msgstr "主机模板名称"
 
-#: admin/import.php:92
+#: admin/import.php:51
 msgid "File upload error:"
 msgstr "文件上传错误："
 
-#: admin/import.php:100
-#: admin/import.php:112
+#: admin/import.php:61
+#: admin/import.php:75
 msgid "File imported - File [overwite flag]:"
 msgstr "导入文件 - 文件[覆盖标志]:"
 
-#: admin/import.php:123
+#: admin/import.php:82
 msgid "Configuration import"
 msgstr "导入配置"
 
-#: admin/import.php:131
+#: admin/import.php:90
 msgid "Template definition"
 msgstr "模板定义"
 
-#: admin/import.php:132
+#: admin/import.php:91
 msgid "Import file"
 msgstr "导入文件"
 
-#: admin/import.php:133
+#: admin/import.php:92
 msgid "Local import file"
 msgstr "本地导入文件"
 
-#: admin/import.php:134
+#: admin/import.php:93
 msgid "Overwrite database"
 msgstr "覆盖数据库"
 
-#: admin/import.php:135
+#: admin/import.php:94
 msgid "Import"
 msgstr "导入"
 
-#: admin/import.php:138
+#: admin/import.php:96
 msgid "Hold CTRL to select<br>more than one"
 msgstr "按住CTTL选择<br>多个"
 
-#: admin/import.php:142
-msgid "To prevent errors or misconfigurations, you should import your configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br><span style=\"color:#FF0000\"><b>Check your configuration after import!</b><br>In cause of an error or an uncomplete configuration, re-importing the wrong configuration can solve the problem.</span>"
-msgstr "为了防止错误或者错误的配置，你应该以一个可用的顺序导入配置文件。我们建议这样做:<br><br><b><i>命令 -> 时长 -> 联系人模板 -> 联系人 ->联系组 -> 主机模板 -> 主机 -> 主机组 -> 服务模板 -> 服务 -> 服务组</i></b><br><br><span style=\"color:#FF0000\"><b>导入后检查您的配置！</b><br>如果有错误或者未完成的配置，重新导入错误的配置可以解决此问题</span>"
+#: admin/import.php:100
+msgid "To prevent errors or misconfigurations, you should import your configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br>"
+msgstr ""
+
+#: admin/import.php:101
+msgid "<b>Check your configuration after import!</b><br>In cause of an error or an uncomplete configuration, re-importing the wrong configuration can solve the problem."
+msgstr ""
 
 #: admin/info.php:39
 msgid "This is relative path of your NagiosQL Installation"
@@ -895,59 +815,67 @@ msgstr "通过代理链接使用的密码（可选）"
 msgid "Information PopUp"
 msgstr "弹出信息"
 
+# mutdialog.php
 #: admin/info.php:91
 msgid "No information available"
 msgstr "无可用信息"
 
-#: admin/logbook.php:58
+#: admin/logbook.php:48
 msgid "Dataset successfully deleted. Affected rows:"
 msgstr "数据集成功删除。影响行数:"
 
-#: admin/logbook.php:87
+# logbook.php
+#: admin/logbook.php:74
 msgid "View logbook"
 msgstr "查看日志簿"
 
-#: admin/logbook.php:91
+#: admin/logbook.php:78
 msgid "Delete logentries between:"
 msgstr "删除日志区间:"
 
-#: admin/logbook.php:93
+#: admin/logbook.php:80
 msgid "Please at least fill in a start or a stop time"
 msgstr "请至少输入起始时间或截止时间"
 
-#: admin/logbook.php:94
+#: admin/logbook.php:81
 msgid "Do you really want to delete all log entries between the selected dates?"
 msgstr "你真的希望删除所选日期间的所有日志么？"
 
-#: admin/logbook.php:99
+#: admin/logbook.php:86
 msgid "previous 20 entries"
 msgstr "前20条条目"
 
-#: admin/logbook.php:105
+#: admin/logbook.php:92
 msgid "next 20 entries"
 msgstr "后20条条目"
 
-#: admin/menuaccess.php:47
+#: admin/menuaccess.php:40
 msgid "Error while inserting the data to the data base:"
 msgstr "写入数据库错误:"
 
-#: admin/menuaccess.php:50
+#: admin/menuaccess.php:43
 msgid "Data were successfully inserted to the data base!"
 msgstr "数据成功写入数据库!"
 
-#: admin/menuaccess.php:51
+#: admin/menuaccess.php:44
 msgid "Access group set for menu item:"
 msgstr "菜单条目中的访问组:"
 
-#: admin/menuaccess.php:61
+# menuaccess.php
+#: admin/menuaccess.php:50
 msgid "Define Menu Accessrights"
 msgstr "定义菜单访问权限"
 
-#: admin/monitoring.php:37
+#: admin/menuaccess.php:54
+msgid "In order for a user to get access, he needs to be member of the group selected here."
+msgstr "为使一个用户可以访问，他需要是所选择组的成员。"
+
+#: admin/monitoring.php:32
 msgid "Monitoring"
 msgstr "监测"
 
-#: admin/monitoring.php:40
+# monitoring.php
+#: admin/monitoring.php:35
 msgid "To define host and service supervisions as well as host and service groups."
 msgstr "定义对主机及服务的监控以及主机和服务器组"
 
@@ -955,508 +883,861 @@ msgstr "定义对主机及服务的监控以及主机和服务器组"
 msgid "Services"
 msgstr "服务"
 
-#: admin/monitoring.php:60
+#: admin/monitoring.php:64
 msgid "Service groups"
 msgstr "服务组"
 
-#: admin/monitoring.php:64
+#: admin/monitoring.php:70
 msgid "Host templates"
 msgstr "主机模板"
 
-#: admin/monitoring.php:68
+#: admin/monitoring.php:76
 msgid "Service templates"
 msgstr "服务模板"
 
-#: admin/mutdialog.php:53
+# mutdialog.php
+#: admin/mutdialog.php:51
+msgid "Available"
+msgstr "可用的"
+
+#: admin/mutdialog.php:52
 msgid "Selected"
 msgstr "选择"
 
-#: admin/nagioscfg.php:101
+#: admin/nagioscfg.php:94
 msgid "Nagios main configuration file"
 msgstr "Nagios主配置文件"
 
-#: admin/password.php:57
+#: admin/password.php:50
 msgid "Password successfully modified"
 msgstr "成功修改密码"
 
-#: admin/password.php:70
+#: admin/password.php:64
+#: admin/user.php:72
 msgid "Password too short or password fields unequally!"
 msgstr "密码太短或密码不匹配"
 
-#: admin/password.php:74
+#: admin/password.php:68
 msgid "Old password is wrong"
 msgstr "错误的旧密码"
 
-#: admin/password.php:94
+#: admin/password.php:84
+#: admin/settings.php:244
 msgid "Save"
 msgstr "保存"
 
-#: admin/password.php:97
+#: admin/password.php:87
 msgid "The new passwords are not equal!"
 msgstr "新密码不匹配"
 
-#: admin/password.php:98
+#: admin/password.php:88
 msgid "The new password is too short - use at least 6 characters!"
 msgstr "新密码太短 - 至少使用6个字符!"
 
-#: admin/servicedependencies.php:117
+# hosttemplates.php
+#: admin/servicedependencies.php:61
 msgid "New service dependency inserted:"
 msgstr "插入新服务依赖项:"
 
-#: admin/servicedependencies.php:118
+#: admin/servicedependencies.php:62
 msgid "Service dependency modified:"
 msgstr "更改服务依赖项"
 
-#: admin/servicedependencies.php:251
+#: admin/servicedependencies.php:157
 msgid "Define service dependencies (servicedependencies.cfg)"
 msgstr "定义服务依赖项(servicedependencies.cfg)"
 
-#: admin/servicedependencies.php:442
-#: config/fieldvars.php:214
+#: admin/servicedependencies.php:351
 msgid "Dependent services"
 msgstr "依赖的服务"
 
-#: admin/serviceescalations.php:108
+# hosttemplates.php
+#: admin/serviceescalations.php:61
 msgid "New service escalation inserted:"
 msgstr "插入新升级服务:"
 
-#: admin/serviceescalations.php:109
+#: admin/serviceescalations.php:62
 msgid "Service escalation modified:"
 msgstr "升级模板被修改:"
 
-#: admin/serviceescalations.php:234
+#: admin/serviceescalations.php:141
 msgid "Define service escalation (serviceescalations.cfg)"
 msgstr "定义服务升级(serviceescalations.cfg)"
 
-#: admin/serviceextinfo.php:86
+# hosttemplates.php
+#: admin/serviceextinfo.php:54
 msgid "New service extended information inserted:"
 msgstr "插入新服务扩展信息:"
 
-#: admin/serviceextinfo.php:87
+#: admin/serviceextinfo.php:55
 msgid "Service extended information modified:"
 msgstr "更改了服务扩展信息"
 
-#: admin/serviceextinfo.php:171
+#: admin/serviceextinfo.php:79
 msgid "Define service extended information (serviceextinfo.cfg)"
 msgstr "定义服务扩展信息(serviceextinfo.cfg)"
 
-#: admin/serviceextinfo.php:254
+#: admin/serviceextinfo.php:159
 msgid "Hostname"
 msgstr "主机名"
 
-#: admin/serviceextinfo.php:255
+#: admin/serviceextinfo.php:160
 msgid "Service"
 msgstr "服务"
 
-#: admin/servicegroups.php:93
+# hosttemplates.php
+#: admin/servicegroups.php:54
 msgid "New service group inserted:"
 msgstr "插入的新服务组"
 
-#: admin/servicegroups.php:94
+#: admin/servicegroups.php:55
 msgid "Service group modified:"
 msgstr "被修改的服务组:"
 
-#: admin/servicegroups.php:190
+#: admin/servicegroups.php:97
 msgid "Define service groups (servicegroups.cfg)"
 msgstr "定义服务组(servicegroups.cfg)"
 
-#: admin/servicegroups.php:201
+#: admin/servicegroups.php:112
 msgid "Attention, no services defined!"
 msgstr "注意，没有定义服务!"
 
-#: admin/servicegroups.php:262
+#: admin/servicegroups.php:146
 msgid "Service group"
 msgstr "服务组"
 
-#: admin/services.php:150
-#: admin/services.php:692
-msgid "All configs"
-msgstr "所有配置"
-
-#: admin/services.php:227
+# hosttemplates.php
+#: admin/services.php:77
 msgid "New service inserted:"
 msgstr "插入的新服务"
 
-#: admin/services.php:228
+#: admin/services.php:78
 msgid "Service modified:"
 msgstr "修改的服务:"
 
-#: admin/services.php:285
-#: admin/services.php:460
+#: admin/services.php:141
+#: admin/services.php:167
 msgid "Service file deleted:"
 msgstr "删除的服务文件:"
 
-#: admin/services.php:488
+#: admin/services.php:255
 msgid "Define services (services.cfg)"
 msgstr "定义服务(services.cfg)"
 
-#: admin/services.php:525
+#: admin/services.php:311
 msgid "Attention, no hosts or hostgroups defined!"
 msgstr "注意，没有定义主机或主机组"
 
-#: admin/services.php:537
+#: admin/services.php:328
 msgid "Attention, no check commands defined!"
 msgstr "注意，没有定义要检查的命令"
 
-#: admin/services.php:680
-#: admin/servicetemplates.php:560
+#: admin/services.php:354
+msgid "Attention, no contacts or contact groups defined!"
+msgstr ""
+
+#: admin/services.php:436
 msgid "Service name"
 msgstr "服务名称"
 
-#: admin/servicetemplates.php:209
+#: admin/services.php:438
+#: admin/services.php:462
+msgid "All configs"
+msgstr "所有配置"
+
+# hosttemplates.php
+#: admin/servicetemplates.php:76
 msgid "New service template inserted:"
 msgstr "插入新服务模板:"
 
-#: admin/servicetemplates.php:210
+#: admin/servicetemplates.php:77
 msgid "Service template modified:"
 msgstr "服务模板被修改:"
 
-#: admin/servicetemplates.php:380
+#: admin/servicetemplates.php:195
 msgid "Define service templates (servicetemplates.cfg)"
 msgstr "定义服务模板(servicetemplates.cfg)"
 
-#: admin/servicetemplates.php:559
-#: config/fieldvars.php:113
-#: config/fieldvars.php:197
+#: admin/servicetemplates.php:357
 msgid "Template name"
 msgstr "模板名称"
 
-#: admin/settings.php:85
+#: admin/servicetemplates.php:358
+msgid "Service description"
+msgstr "服务描述"
+
+#: admin/settings.php:63
 msgid "Curl module not loaded, Proxy will be deactivated!"
 msgstr "Curl模块没有加载，代理将被禁用。"
 
-#: admin/settings.php:100
-msgid "An error occured while writing settings to database"
-msgstr "在将设置写入数据库时发生错误"
+#: admin/settings.php:90
+msgid "An error occured while writing settings to database:"
+msgstr ""
 
-#: admin/settings.php:135
+#: admin/settings.php:129
 msgid "Error in setting the correct locale, please report this error with the associated output of 'locale -a'"
 msgstr "在设置区域时出错，请汇报此错误以及'locale -a'的输出"
 
-#: admin/settings.php:142
+#: admin/settings.php:136
 msgid "Settings were changed"
 msgstr "配置被改变"
 
-#: admin/settings.php:144
+#: admin/settings.php:138
 msgid "An error occured while writing settings.php, please check permissions!"
 msgstr "在写入settings.php时发生错误，请检查权限！"
 
-#: admin/settings.php:154
+#: admin/settings.php:141
+msgid "is not writeable, please check permissions!"
+msgstr ""
+
+#: admin/settings.php:147
 msgid "Configure Settings"
 msgstr "配置选项"
 
-#: admin/settings.php:161
+#: admin/settings.php:154
 msgid "Change your current NagiosQL settings (e.g. Database user, Language)."
 msgstr "改变你当前的NagiosQL配置(例如 数据库用户，语言)"
 
-#: admin/settings.php:165
+#: admin/settings.php:158
 msgid "Path"
 msgstr "路径"
 
-#: admin/settings.php:166
+#: admin/settings.php:159
 msgid "Temporary Directory"
 msgstr "临时路径"
 
-#: admin/settings.php:168
+#: admin/settings.php:161
 msgid "Server protocol"
 msgstr "服务器协议"
 
-#: admin/settings.php:195
+#: admin/settings.php:182
 msgid "Encoding"
 msgstr "编码"
 
-#: admin/settings.php:200
+#: admin/settings.php:187
 msgid "Database"
 msgstr "数据库"
 
-#: admin/settings.php:201
+#: admin/settings.php:188
 msgid "MySQL Server"
 msgstr "MySQL服务器"
 
-#: admin/settings.php:203
+#: admin/settings.php:190
 msgid "MySQL Server Port"
 msgstr "MySQL服务器端口"
 
-#: admin/settings.php:205
+#: admin/settings.php:192
 msgid "Database name"
 msgstr "数据库名"
 
-#: admin/settings.php:207
+#: admin/settings.php:194
 msgid "Database user"
 msgstr "数据库用户"
 
-#: admin/settings.php:209
+#: admin/settings.php:196
 msgid "Database password"
 msgstr "数据库密码"
 
-#: admin/settings.php:214
+#: admin/settings.php:201
 msgid "Security"
 msgstr "安全"
 
-#: admin/settings.php:215
+#: admin/settings.php:202
 msgid "Session auto logoff time"
 msgstr "Session自动退出时间"
 
-#: admin/settings.php:217
+#: admin/settings.php:204
 msgid "Authentication type"
 msgstr "认证类型"
 
-#: admin/settings.php:233
+#: admin/settings.php:209
 msgid "Common"
 msgstr "普通"
 
-#: admin/settings.php:234
+#: admin/settings.php:210
 msgid "Data lines per page"
 msgstr "每页的数据行数"
 
-#: admin/settings.php:237
+#: admin/settings.php:212
 msgid "Selection method"
 msgstr "选择方法"
 
-#: admin/settings.php:251
+#: admin/settings.php:217
 msgid "Template warn message"
 msgstr "模板警告信息"
 
-#: admin/settings.php:267
-msgid "Automatically check for online updates (internet access required!)"
-msgstr "自动检查更新（需要互联网访问！）"
+#: admin/settings.php:226
+msgid "Online version check"
+msgstr ""
 
-#: admin/settings.php:281
+#: admin/settings.php:232
 msgid "Proxyserver"
 msgstr "代理服务器"
 
-#: admin/settings.php:289
+#: admin/settings.php:235
 msgid "Proxy Address"
 msgstr "代理地址"
 
-#: admin/settings.php:291
+#: admin/settings.php:237
 msgid "Proxy Username (optional)"
 msgstr "代理用户名（可选）"
 
-#: admin/settings.php:293
+#: admin/settings.php:239
 msgid "Proxy Password (optional)"
 msgstr "代理密码（可选）"
 
-#: admin/specials.php:37
+#: admin/specials.php:31
 msgid "Misc commands"
 msgstr "各种命令"
 
-#: admin/specials.php:40
+# specials.php
+#: admin/specials.php:34
 msgid "To define host and service dependencies, host and service escalations as well as host and service additional data."
 msgstr " 定义主机及服务间的依赖关系，主机及服务升级和主机及服务的附属数据。"
 
-#: admin/specials.php:48
+#: admin/specials.php:45
 msgid "Host dependencies"
 msgstr "主机依赖关系"
 
-#: admin/specials.php:52
+#: admin/specials.php:51
 msgid "Host escalations"
 msgstr "主机升级"
 
-#: admin/specials.php:56
+#: admin/specials.php:57
 msgid "Host ext. info"
 msgstr "主机其他信息"
 
-#: admin/specials.php:60
+#: admin/specials.php:63
 msgid "Service dependencies"
 msgstr "服务依赖关系"
 
-#: admin/specials.php:64
+#: admin/specials.php:69
 msgid "Service escalations"
 msgstr "服务升级"
 
-#: admin/specials.php:68
+#: admin/specials.php:75
 msgid "Service ext. info"
 msgstr "服务其他信息"
 
-#: admin/templatedefinitions.php:227
+#: admin/support.php:65
+msgid "NagiosQL support page"
+msgstr ""
+
+#: admin/support.php:75
+msgid "Support contact information"
+msgstr ""
+
+#: admin/support.php:76
+msgid "For questions, the online support forum or contact information visit our website:"
+msgstr ""
+
+#: admin/support.php:80
+msgid "Donate to support NagiosQL"
+msgstr ""
+
+#: admin/support.php:81
+msgid "If you like NagiosQL and it simplifies your daily work, then you may want to support the project by making a donation. This helps us to keep NagiosQL alive and to cover our costs. Thank you for your donation!"
+msgstr ""
+
+#: admin/support.php:82
+msgid "Donate for NagiosQL on sourceforge"
+msgstr ""
+
+#: admin/support.php:86
+msgid "Translation services"
+msgstr ""
+
+#: admin/support.php:87
+msgid "NagiosQL was translated into various languages​​. Since some translators are no longer available in later versions, there may be untranslated words or phrases. If you want to help us complete the translation, correct them or introduce a new language​​, then sign up with us now! The translations are simply feasible online - we use an open translation service where you can register for free at any time:"
+msgstr ""
+
+#: admin/support.php:88
+msgid "Transifex translation service"
+msgstr ""
+
+#: admin/support.php:92
+msgid "Version check"
+msgstr ""
+
+#: admin/support.php:94
+msgid "The online version check is not enabled. You can enable it on the settings page."
+msgstr ""
+
+#: admin/support.php:96
+msgid "The online version check connects the NagiosQL page to find out, if your version is still up to date."
+msgstr ""
+
+#: admin/support.php:106
+msgid "Environment check"
+msgstr ""
+
+#: admin/support.php:108
+#: admin/support.php:118
+#: admin/support.php:129
+#: admin/support.php:137
+#: admin/support.php:146
+#: admin/support.php:156
+#: admin/support.php:171
+#: admin/support.php:183
+#: admin/support.php:192
+#: admin/support.php:201
+#: admin/support.php:210
+#: admin/support.php:220
+#: admin/support.php:267
+#: admin/support.php:282
+#: admin/support.php:301
+#: admin/support.php:332
+#: admin/support.php:354
+#: admin/support.php:358
+#: admin/support.php:375
+#: admin/support.php:379
+#: admin/support.php:395
+#: admin/support.php:398
+#: admin/support.php:401
+#: admin/support.php:420
+#: admin/support.php:424
+#: admin/support.php:427
+#: admin/support.php:439
+#: admin/support.php:442
+#: admin/support.php:459
+#: admin/support.php:466
+#: admin/support.php:551
+#: admin/support.php:554
+#: admin/support.php:566
+#: admin/support.php:583
+#: admin/support.php:607
+msgid "failed"
+msgstr "失败"
+
+#: admin/support.php:109
+#: admin/support.php:115
+#: admin/support.php:126
+#: admin/support.php:134
+#: admin/support.php:142
+#: admin/support.php:152
+#: admin/support.php:168
+#: admin/support.php:180
+#: admin/support.php:189
+#: admin/support.php:198
+#: admin/support.php:207
+#: admin/support.php:217
+#: admin/support.php:259
+#: admin/support.php:272
+#: admin/support.php:287
+#: admin/support.php:295
+#: admin/support.php:298
+#: admin/support.php:329
+#: admin/support.php:335
+#: admin/support.php:350
+#: admin/support.php:364
+#: admin/support.php:371
+#: admin/support.php:389
+#: admin/support.php:392
+#: admin/support.php:405
+#: admin/support.php:416
+#: admin/support.php:436
+#: admin/support.php:446
+#: admin/support.php:462
+#: admin/support.php:547
+#: admin/support.php:560
+#: admin/support.php:562
+#: admin/support.php:564
+#: admin/support.php:570
+#: admin/support.php:572
+#: admin/support.php:576
+#: admin/support.php:578
+msgid "ok"
+msgstr ""
+
+#: admin/support.php:112
+msgid "PHP version"
+msgstr ""
+
+#: admin/support.php:118
+#: admin/support.php:171
+msgid "Required:"
+msgstr ""
+
+#: admin/support.php:123
+#: admin/support.php:131
+#: admin/support.php:139
+#: admin/support.php:149
+msgid "PHP module:"
+msgstr ""
+
+#: admin/support.php:161
+msgid "MySQL version"
+msgstr ""
+
+#: admin/support.php:176
+#: admin/support.php:185
+#: admin/support.php:194
+#: admin/support.php:203
+msgid "PHP ini settings:"
+msgstr ""
+
+#: admin/support.php:213
+msgid "Read/Write access:"
+msgstr ""
+
+#: admin/support.php:229
+msgid "Config domain checks"
+msgstr ""
+
+#: admin/support.php:230
+msgid "The checks below are based on your data domain and config domain settings. To change the data domain, use the pull down menu in the upper right corner. Repeat this check for any data domain you have configured. To change the config domain, use the data domain menu and select a different config domain value."
+msgstr ""
+
+#: admin/support.php:233
+msgid "Config domain name"
+msgstr ""
+
+#: admin/support.php:235
+msgid "Connection type"
+msgstr ""
+
+#: admin/support.php:256
+msgid "Connection check"
+msgstr ""
+
+#: admin/support.php:298
+#: admin/support.php:335
+#: admin/support.php:398
+#: admin/support.php:420
+msgid "readonly"
+msgstr ""
+
+#: admin/support.php:341
+msgid "Nagios process file"
+msgstr "Nagios进程文件"
+
+#: admin/support.php:354
+#: admin/support.php:375
+#: admin/support.php:395
+#: admin/support.php:427
+#: admin/support.php:439
+#: admin/support.php:466
+msgid "file is missed"
+msgstr ""
+
+#: admin/support.php:359
+#: admin/support.php:380
+msgid "Nagios daemon is not running"
+msgstr ""
+
+#: admin/support.php:364
+#: admin/support.php:405
+#: admin/support.php:446
+msgid "not used with FTP"
+msgstr ""
+
+#: admin/support.php:379
+#: admin/support.php:392
+#: admin/support.php:424
+msgid "demon dead"
+msgstr ""
+
+#: admin/support.php:385
+msgid "Nagios command file"
+msgstr "Nagios命令文件"
+
+#: admin/support.php:432
+msgid "Nagios binary file"
+msgstr "Nagios执行文件"
+
+# mutdialog.php
+#: admin/support.php:442
+#: admin/support.php:459
+msgid "not executable"
+msgstr ""
+
+# config_class.php
+#: admin/support.php:474
+msgid "Verify configuration files and demon configuration"
+msgstr ""
+
+#: admin/support.php:475
+msgid "Configuration name"
+msgstr ""
+
+# fieldvars.php
+#: admin/support.php:476
+msgid "Used in data domain"
+msgstr ""
+
+#: admin/support.php:477
+msgid "Included in demon configuration"
+msgstr ""
+
+#: admin/support.php:549
+msgid "not used"
+msgstr ""
+
+#: admin/support.php:554
+msgid "cfg definition missed"
+msgstr ""
+
+#: admin/support.php:564
+#: admin/support.php:572
+#: admin/support.php:578
+msgid "cfg definition missed, but actually not used"
+msgstr ""
+
+#: admin/support.php:566
+msgid "wrong base path:"
+msgstr ""
+
+#: admin/support.php:583
+msgid "cfg file not readable"
+msgstr ""
+
+#: admin/support.php:606
+msgid "Not used"
+msgstr ""
+
+#: admin/support.php:608
+msgid "unused - please delete!"
+msgstr ""
+
+#: admin/templatedefinitions.php:231
 msgid "Up"
 msgstr "上"
 
-#: admin/templatedefinitions.php:227
+#: admin/templatedefinitions.php:231
 msgid "Down"
 msgstr "下"
 
-#: admin/timedefinitions.php:168
-#: admin/variabledefinitions.php:134
-#: config/fieldvars.php:68
+#: admin/timedefinitions.php:166
+#: admin/variabledefinitions.php:133
 msgid "Modify"
 msgstr "修改"
 
-#: admin/timeperiods.php:87
+#: admin/timeperiods.php:54
 msgid "New time period inserted:"
 msgstr "插入新的时间段:"
 
-#: admin/timeperiods.php:88
+#: admin/timeperiods.php:55
 msgid "Time period modified:"
 msgstr "被修改的时间段:"
 
-#: admin/timeperiods.php:207
+#: admin/timeperiods.php:118
 msgid "Timeperiod definitions"
 msgstr "时间段定义"
 
-#: admin/timeperiods.php:236
+#: admin/timeperiods.php:143
 msgid "Please insert a time definition and a time range"
 msgstr "请插入一个时间定义及时间范围"
 
-#: admin/timeperiods.php:281
-#: config/fieldvars.php:83
+# timeperiod.php
+#: admin/timeperiods.php:164
 msgid "Time period"
 msgstr "时间段"
 
-#: admin/tools.php:37
+# tools.php
+#: admin/tools.php:31
 msgid "Different tools"
 msgstr "不同的工具"
 
-#: admin/tools.php:40
+#: admin/tools.php:34
 msgid "Useful functions for data import, main configuration, daemon control and so on."
 msgstr "对于导入数据，主要的配置，进程控制及其他组件有用的功能"
 
-#: admin/user.php:81
+#: admin/user.php:62
 msgid "A new user added:"
 msgstr "新增用户:"
 
-#: admin/user.php:98
-msgid "Admin can't be deleted"
-msgstr "管理员不能被删除"
-
-#: admin/user.php:123
+#: admin/user.php:80
 msgid "User administration"
 msgstr "用户管理"
 
-#: admin/user.php:142
+#: admin/user.php:103
 msgid "The passwords are not equal!"
 msgstr "密码不一样!"
 
-#: admin/user.php:143
+#: admin/user.php:104
 msgid "Please fill in the password"
 msgstr "请输入密码"
 
-#: admin/user.php:144
+#: admin/user.php:105
 msgid "The password is too short - use at least 6 characters!"
 msgstr "密码太短 - 至少6位字符"
 
-#: admin/user.php:145
+#: admin/user.php:106
 msgid "Webserver authentification"
 msgstr "Web服务器认证"
 
-#: admin/verify.php:54
-msgid "Cannot find the Nagios binary or no rights for execution!"
-msgstr "找不到Nagios执行文件或没有执行权限"
+#: admin/verify.php:45
+#: admin/verify.php:145
+#: functions/config_class.php:711
+#: functions/config_class.php:712
+#: functions/config_class.php:928
+msgid "Writing of the configuration failed - no dataset or not activated dataset found"
+msgstr ""
 
-#: admin/verify.php:65
-msgid "Remote execution (FTP SITE EXEC) is not supported on your system!"
-msgstr "远程执行(FTP SITE EXEC)在您的系统上不支持"
-
-#: admin/verify.php:81
-msgid "Remote execution of nagios verify command failed (remote SSH)!"
-msgstr "在远程执行Nagios确认命令失败（远程SSH链接）！"
-
-#: admin/verify.php:84
-msgid "Nagios binary or configuration file not found (remote SSH)!"
-msgstr "没有发现Nagios二进制或配置文件（远程SSH）！"
-
-#: admin/verify.php:114
-msgid "Nagios daemon successfully restarted"
-msgstr "Nagios进程成功重启"
-
-#: admin/verify.php:115
-msgid "Restart command successfully send to Nagios"
-msgstr "重启命令成功发送给Nagios"
-
-#: admin/verify.php:117
-#: admin/verify.php:121
-#: admin/verify.php:122
-msgid "Restart failed - Nagios command file not found or no rights to execute"
-msgstr "重启失败 - 找不到Nagios执行文件或没有执行权限"
-
-#: admin/verify.php:118
-msgid "Nagios command file not found or no rights to write!"
-msgstr "没有发现Nagios命令文件或没有写权限"
-
-#: admin/verify.php:125
-msgid "Restart failed - Nagios daemon was not running"
-msgstr "重启失败 - Nagios进程没有运行"
-
-#: admin/verify.php:126
-msgid "Nagios daemon is not running, cannot send restart command!"
-msgstr "Nagios进程没有运行，不能发送重启命令！"
-
-#: admin/verify.php:129
-msgid "Restart failed - FTP restrictions"
-msgstr "重启失败 - FTP限制"
-
-#: admin/verify.php:130
-msgid "Nagios restart is not possible via FTP remote connection!"
-msgstr "不能通过远程FTP连接重启Nagios"
-
-#: admin/verify.php:147
-msgid "Restart failed - Nagios command file not found or no rights to execute (remote SSH)!"
-msgstr "重启失败 - 找不到Nagios执行文件或没有执行权限（远程SSH链接）！"
-
-#: admin/verify.php:149
-msgid "Nagios daemon successfully restarted (remote SSH)"
-msgstr "Nagios进程成功重启（远程SSH链接）"
-
-#: admin/verify.php:150
-msgid "Restart command successfully send to Nagios (remote SSH)"
-msgstr "重启命令成功发送给Nagios（远程SSH链接）"
-
-#: admin/verify.php:153
-msgid "Nagios command file not found (remote SSH)!"
-msgstr "没有发现Nagios命令文件（远程SSH链接）！"
-
-#: admin/verify.php:160
+#: admin/verify.php:57
 msgid "Write host configurations"
 msgstr "写入主机配置文件"
 
-#: admin/verify.php:175
-#: admin/verify.php:193
+#: admin/verify.php:63
+#: admin/verify.php:83
 msgid "No configuration items defined!"
 msgstr "配置选项没有被定义！"
 
-#: admin/verify.php:178
+#: admin/verify.php:77
 msgid "Write service configurations"
 msgstr "写入服务配置文件"
 
-#: admin/verify.php:250
+#: admin/verify.php:94
+#: admin/verify.php:108
+#: admin/verify.php:122
+#: admin/verify.php:136
+#: admin/verify.php:190
+#: admin/verify.php:204
+#: admin/verify.php:218
+#: admin/verify.php:232
+#: admin/verify.php:246
+#: admin/verify.php:260
+#: admin/verify.php:274
+msgid "No dataset or no activated dataset found - empty configuration written"
+msgstr ""
+
+#: admin/verify.php:291
+msgid "Cannot find the Nagios binary or no rights for execution!"
+msgstr "找不到Nagios执行文件或没有执行权限"
+
+#: admin/verify.php:304
+msgid "Remote execution (FTP SITE EXEC) is not supported on your system!"
+msgstr "远程执行(FTP SITE EXEC)在您的系统上不支持"
+
+#: admin/verify.php:321
+msgid "Remote execution of nagios verify command failed (remote SSH)!"
+msgstr "在远程执行Nagios确认命令失败（远程SSH链接）！"
+
+#: admin/verify.php:324
+msgid "Nagios binary or configuration file not found (remote SSH)!"
+msgstr "没有发现Nagios二进制或配置文件（远程SSH）！"
+
+#: admin/verify.php:355
+msgid "Nagios daemon successfully restarted"
+msgstr "Nagios进程成功重启"
+
+#: admin/verify.php:356
+msgid "Restart command successfully send to Nagios"
+msgstr "重启命令成功发送给Nagios"
+
+#: admin/verify.php:358
+#: admin/verify.php:363
+#: admin/verify.php:364
+msgid "Restart failed - Nagios command file not found or no rights to execute"
+msgstr "重启失败 - 找不到Nagios执行文件或没有执行权限"
+
+#: admin/verify.php:359
+msgid "Nagios command file not found or no rights to write!"
+msgstr "没有发现Nagios命令文件或没有写权限"
+
+#: admin/verify.php:367
+msgid "Restart failed - Nagios daemon was not running"
+msgstr "重启失败 - Nagios进程没有运行"
+
+#: admin/verify.php:368
+msgid "Nagios daemon is not running, cannot send restart command!"
+msgstr "Nagios进程没有运行，不能发送重启命令！"
+
+#: admin/verify.php:371
+msgid "Restart failed - FTP restrictions"
+msgstr "重启失败 - FTP限制"
+
+#: admin/verify.php:372
+msgid "Nagios restart is not possible via FTP remote connection!"
+msgstr "不能通过远程FTP连接重启Nagios"
+
+#: admin/verify.php:389
+msgid "Restart failed - Nagios command file not found or no rights to execute (remote SSH)!"
+msgstr "重启失败 - 找不到Nagios执行文件或没有执行权限（远程SSH链接）！"
+
+#: admin/verify.php:391
+msgid "Nagios daemon successfully restarted (remote SSH)"
+msgstr "Nagios进程成功重启（远程SSH链接）"
+
+#: admin/verify.php:392
+msgid "Restart command successfully send to Nagios (remote SSH)"
+msgstr "重启命令成功发送给Nagios（远程SSH链接）"
+
+#: admin/verify.php:395
+msgid "Nagios command file not found (remote SSH)!"
+msgstr "没有发现Nagios命令文件（远程SSH链接）！"
+
+#: admin/verify.php:403
 msgid "Check written configuration files"
 msgstr "检查写入的配置文件"
 
-#: admin/verify.php:253
+#: admin/verify.php:406
 msgid "Check configuration files:"
 msgstr "检查配置文件:"
 
-#: admin/verify.php:254
+#: admin/verify.php:407
 msgid "Restart Nagios:"
 msgstr "重新启动Nagios:"
 
-#: admin/verify.php:255
+#: admin/verify.php:408
 msgid "Write monitoring data"
 msgstr "写入检测数据"
 
-#: admin/verify.php:256
+#: admin/verify.php:409
 msgid "Write additional data"
 msgstr "写入其他数据"
 
-#: admin/verify.php:257
+#: admin/verify.php:410
 msgid "Warning, always check the configuration files before restart Nagios!"
 msgstr "警告，重启Nagios前要检查配置文件!"
 
-#: admin/verify.php:258
-#: config/fieldvars.php:53
+#: admin/verify.php:411
+#: config/fieldvars.php:54
 msgid "Do it"
 msgstr "执行"
 
-#: admin/verify.php:286
-#: admin/verify.php:315
+#: admin/verify.php:436
+#: admin/verify.php:465
 msgid "Written Nagios configuration checked - Warnings/Errors:"
 msgstr "检查写入的Nagios配置 - 警告/错误:"
 
-#: admin/verify.php:290
-#: admin/verify.php:318
+# config_class.php
+#: admin/verify.php:440
+#: admin/verify.php:468
 msgid "Written configuration files are valid, Nagios can be restarted!"
 msgstr "写入的配置文件可用，Nagios可以重启"
+
+#: admin/versioncheck.php:64
+#: admin/versioncheck.php:72
+msgid "check proxy settings"
+msgstr ""
+
+#: admin/versioncheck.php:75
+msgid "Installed"
+msgstr "已安装"
+
+#: admin/versioncheck.php:77
+#: config/fieldvars.php:171
+msgid "Information"
+msgstr "信息"
+
+#: admin/versioncheck.php:91
+msgid "You already have the latest version installed"
+msgstr "你已经安装了最新版本"
+
+#: admin/versioncheck.php:93
+msgid "You are using an old NagiosQL version. Please update to the latest stable version"
+msgstr "你正在使用老版本的NagiosQL。请更新到最新的稳定版。"
+
+#: admin/versioncheck.php:96
+msgid "You are using a newer development version without official support"
+msgstr ""
+
+# fieldvars.php
+#: config/fieldvars.php:22
+#: functions/prepend_adm.php:446
+msgid "Domain"
+msgstr "域"
 
 #: config/fieldvars.php:24
 #: config/fieldvars.php:29
@@ -1503,18 +1784,6 @@ msgstr "服务备份目录"
 msgid "Picture base directory"
 msgstr "图片根目录"
 
-#: config/fieldvars.php:38
-msgid "Nagios command file"
-msgstr "Nagios命令文件"
-
-#: config/fieldvars.php:39
-msgid "Nagios binary file"
-msgstr "Nagios执行文件"
-
-#: config/fieldvars.php:40
-msgid "Nagios process file"
-msgstr "Nagios进程文件"
-
 #: config/fieldvars.php:43
 msgid "Use common domain"
 msgstr "使用普通域"
@@ -1527,1053 +1796,1197 @@ msgstr "解码配置文件中的UTF8数据"
 msgid "Access key holes"
 msgstr "访问须输入密码"
 
+# user.php
 #: config/fieldvars.php:46
 msgid "Access keys"
 msgstr "访问密码"
 
-#: config/fieldvars.php:51
+#: config/fieldvars.php:48
+msgid "Registered"
+msgstr ""
+
+#: config/fieldvars.php:52
 msgid "Function"
 msgstr "功能"
 
-#: config/fieldvars.php:52
+#: config/fieldvars.php:53
 msgid "Marked"
 msgstr "标记"
 
-#: config/fieldvars.php:54
+#: config/fieldvars.php:55
 msgid "Add"
 msgstr "添加"
 
-#: config/fieldvars.php:55
+#: config/fieldvars.php:56
 msgid "Formcheck"
 msgstr "表格检查"
 
-#: config/fieldvars.php:56
+#: config/fieldvars.php:57
 msgid "Secure question"
 msgstr "安全问题"
 
+#: config/fieldvars.php:58
+#: functions/content_class.php:241
+#: functions/content_class.php:242
+msgid "Yes"
+msgstr "是"
+
 #: config/fieldvars.php:59
+#: functions/content_class.php:241
+#: functions/content_class.php:242
+msgid "No"
+msgstr "否"
+
+#: config/fieldvars.php:60
 msgid "Time"
 msgstr "时间"
 
-#: config/fieldvars.php:60
+#: config/fieldvars.php:61
 msgid "User"
 msgstr "用户"
 
-#: config/fieldvars.php:61
+#: config/fieldvars.php:62
 msgid "IP"
 msgstr "IP"
 
-#: config/fieldvars.php:62
+#: config/fieldvars.php:63
+#: functions/import_class.php:318
+#: functions/import_class.php:323
+#: functions/import_class.php:635
+#: functions/import_class.php:636
+#: functions/import_class.php:639
+#: functions/import_class.php:640
 msgid "Entry"
 msgstr "入口"
 
-#: config/fieldvars.php:63
+#: config/fieldvars.php:64
 msgid "From"
 msgstr "发件人"
 
-#: config/fieldvars.php:64
+#: config/fieldvars.php:65
 msgid "To"
 msgstr "收件人"
 
-#: config/fieldvars.php:65
+#: config/fieldvars.php:66
 msgid "Delete log entries"
 msgstr "删除日志条目"
 
-#: config/fieldvars.php:69
+#: config/fieldvars.php:67
+#: config/fieldvars.php:80
+#: config/fieldvars.php:168
+msgid "Copy"
+msgstr "复制"
+
+#: config/fieldvars.php:70
 msgid "Confirm password"
 msgstr "确认密码"
 
-#: config/fieldvars.php:70
+# password.php
+#: config/fieldvars.php:71
 msgid "Old password"
 msgstr "旧密码"
 
-#: config/fieldvars.php:71
-#: config/fieldvars.php:275
+#: config/fieldvars.php:72
+#: config/fieldvars.php:281
 msgid "New password"
 msgstr "新密码"
 
-#: config/fieldvars.php:72
+#: config/fieldvars.php:73
 msgid "Change password"
 msgstr "修改密码"
 
-#: config/fieldvars.php:73
+#: config/fieldvars.php:74
 msgid "Menu page"
 msgstr "菜单页"
 
-#: config/fieldvars.php:74
+#: config/fieldvars.php:75
 msgid "Search string"
 msgstr "搜索字符串"
 
-#: config/fieldvars.php:77
-#: config/fieldvars.php:171
+#: config/fieldvars.php:78
+#: config/fieldvars.php:172
 msgid "Write config file"
 msgstr "写入配置文件"
 
-#: config/fieldvars.php:80
+#: config/fieldvars.php:81
 msgid "Command"
 msgstr "命令"
 
-#: config/fieldvars.php:82
+#: config/fieldvars.php:83
 msgid "Command type"
 msgstr "命令类型"
 
-#: config/fieldvars.php:84
+#: config/fieldvars.php:85
 msgid "Exclude"
 msgstr "排除"
 
-#: config/fieldvars.php:85
+#: config/fieldvars.php:86
 msgid "Include"
 msgstr "包含"
 
-#: config/fieldvars.php:86
+#: config/fieldvars.php:87
 msgid "Time definitions"
 msgstr "时间定义"
 
-#: config/fieldvars.php:87
+#: config/fieldvars.php:88
 msgid "Weekday"
 msgstr "平日"
 
-#: config/fieldvars.php:88
+#: config/fieldvars.php:89
 msgid "Time range"
 msgstr "时间范围"
 
-#: config/fieldvars.php:89
+#: config/fieldvars.php:90
 msgid "Time definition"
 msgstr "时间定义"
 
-#: config/fieldvars.php:90
+#: config/fieldvars.php:91
 msgid "Insert"
 msgstr "插入"
 
-#: config/fieldvars.php:91
+#: config/fieldvars.php:92
 msgid "Modify selection"
 msgstr "修改被选项"
 
-#: config/fieldvars.php:94
+#: config/fieldvars.php:95
 msgid "Time period hosts"
 msgstr "时间段主机"
 
-#: config/fieldvars.php:95
+#: config/fieldvars.php:96
 msgid "Time period services"
 msgstr "时间段服务"
 
-#: config/fieldvars.php:96
+#: config/fieldvars.php:97
 msgid "Host options"
 msgstr "主机选项"
 
-#: config/fieldvars.php:97
+#: config/fieldvars.php:98
 msgid "Service options"
 msgstr "服务选项"
 
-#: config/fieldvars.php:98
+#: config/fieldvars.php:99
 msgid "Host command"
 msgstr "主机命令"
 
-#: config/fieldvars.php:99
+#: config/fieldvars.php:100
 msgid "Service command"
 msgstr "服务命令"
 
-#: config/fieldvars.php:100
+#: config/fieldvars.php:101
 msgid "EMail address"
 msgstr "电子邮件地址"
 
-#: config/fieldvars.php:101
+#: config/fieldvars.php:102
 msgid "Pager number"
 msgstr "页码"
 
-#: config/fieldvars.php:102
+#: config/fieldvars.php:103
 msgid "Addon address"
 msgstr "附加地址"
 
-#: config/fieldvars.php:103
+#: config/fieldvars.php:104
 msgid "Host notif. enable"
 msgstr "启用主机提醒"
 
-#: config/fieldvars.php:104
+#: config/fieldvars.php:105
 msgid "Service notif. enable"
 msgstr "启用服务提醒"
 
-#: config/fieldvars.php:105
+#: config/fieldvars.php:106
 msgid "Can submit commands"
 msgstr "能提交命令"
 
-#: config/fieldvars.php:106
+#: config/fieldvars.php:107
 msgid "Retain status info"
 msgstr "保留状态信息"
 
-#: config/fieldvars.php:107
+#: config/fieldvars.php:108
 msgid "Retain nonstatus info"
 msgstr "保留非状态信息"
 
-#: config/fieldvars.php:108
+# contactgroups.php
+#: config/fieldvars.php:109
 msgid "Members"
 msgstr "成员"
 
-#: config/fieldvars.php:109
+#: config/fieldvars.php:110
 msgid "Group members"
 msgstr "组成员"
 
-#: config/fieldvars.php:110
+#: config/fieldvars.php:111
 msgid "Common settings"
 msgstr "普通设置"
 
-#: config/fieldvars.php:111
+#: config/fieldvars.php:112
 msgid "Service settings"
 msgstr "服务选项"
 
-#: config/fieldvars.php:112
+#: config/fieldvars.php:113
 msgid "Add this host configuration to existing service definitions"
 msgstr "将此主机配置加入到现有服务定义中"
 
-#: config/fieldvars.php:114
+#: config/fieldvars.php:115
 msgid "Parents"
 msgstr "父"
 
-#: config/fieldvars.php:116
+#: config/fieldvars.php:117
 msgid "Check command"
 msgstr "检查命令"
 
-#: config/fieldvars.php:117
+#: config/fieldvars.php:118
 msgid "Command view"
 msgstr "命令视图"
 
-#: config/fieldvars.php:118
+#: config/fieldvars.php:119
 msgid "Additional templates"
 msgstr "其他模板"
 
-#: config/fieldvars.php:119
+#: config/fieldvars.php:120
 msgid "Check settings"
 msgstr "检查设置"
 
-#: config/fieldvars.php:120
+#: config/fieldvars.php:121
 msgid "Initial state"
 msgstr "初始状态"
 
-#: config/fieldvars.php:121
+#: config/fieldvars.php:122
 msgid "Retry interval"
 msgstr "重试间隔"
 
-#: config/fieldvars.php:122
+#: config/fieldvars.php:123
 msgid "Max check attempts"
 msgstr "最大重试次数"
 
-#: config/fieldvars.php:123
+#: config/fieldvars.php:124
 msgid "Check interval"
 msgstr "检查间隔"
 
-#: config/fieldvars.php:124
+#: config/fieldvars.php:125
 msgid "Active checks enabled"
 msgstr "启用的主动检查"
 
-#: config/fieldvars.php:125
+#: config/fieldvars.php:126
 msgid "Passive checks enabled"
 msgstr "启用的被动检查"
 
-#: config/fieldvars.php:126
+#: config/fieldvars.php:127
 msgid "Check period"
 msgstr "检查时段"
 
-#: config/fieldvars.php:127
+#: config/fieldvars.php:128
 msgid "Freshness treshold"
 msgstr "刷新阈值"
 
-#: config/fieldvars.php:128
+#: config/fieldvars.php:129
 msgid "Check freshness"
 msgstr "检查新数据"
 
-#: config/fieldvars.php:129
+#: config/fieldvars.php:130
 msgid "Obsess over host"
 msgstr "关注主机"
 
-#: config/fieldvars.php:130
+#: config/fieldvars.php:131
 msgid "Obsess over service"
 msgstr "关注服务"
 
-#: config/fieldvars.php:131
+#: config/fieldvars.php:132
 msgid "Event handler"
 msgstr "事件处理方法"
 
-#: config/fieldvars.php:132
+#: config/fieldvars.php:133
 msgid "Event handler enabled"
 msgstr "启用时间处理方法"
 
-#: config/fieldvars.php:133
+#: config/fieldvars.php:134
 msgid "Low flap threshold"
 msgstr "通过阈值下限"
 
-#: config/fieldvars.php:134
+#: config/fieldvars.php:135
 msgid "High flap threshold"
 msgstr "通过阈值上限"
 
-#: config/fieldvars.php:135
+#: config/fieldvars.php:136
 msgid "Flap detection enabled"
 msgstr "启用通过检测"
 
-#: config/fieldvars.php:136
+#: config/fieldvars.php:137
 msgid "Flap detection options"
 msgstr "通过检测选项"
 
-#: config/fieldvars.php:137
+#: config/fieldvars.php:138
 msgid "Retain status information"
 msgstr "保留状态信息"
 
-#: config/fieldvars.php:138
+#: config/fieldvars.php:139
 msgid "Retain nostatus information"
 msgstr "保留非状态信息"
 
-#: config/fieldvars.php:139
+#: config/fieldvars.php:140
 msgid "Process perf data"
 msgstr "进程性能信息"
 
-#: config/fieldvars.php:140
+#: config/fieldvars.php:141
 msgid "Alarm settings"
 msgstr "报警设置"
 
-#: config/fieldvars.php:141
+#: config/fieldvars.php:142
 msgid "Contacts"
 msgstr "联系人"
 
-#: config/fieldvars.php:143
+#: config/fieldvars.php:144
 msgid "Notification period"
 msgstr "通知时段"
 
-#: config/fieldvars.php:144
+#: config/fieldvars.php:145
 msgid "Notification options"
 msgstr "通知选项"
 
-#: config/fieldvars.php:145
+#: config/fieldvars.php:146
 msgid "Notification interval"
 msgstr "通知时长"
 
-#: config/fieldvars.php:146
+#: config/fieldvars.php:147
 msgid "First notification delay"
 msgstr "第一次通知延时"
 
-#: config/fieldvars.php:147
+#: config/fieldvars.php:148
 msgid "Notification enabled"
 msgstr "启用通知"
 
-#: config/fieldvars.php:148
+#: config/fieldvars.php:149
 msgid "Stalking options"
 msgstr "纠缠选项"
 
-#: config/fieldvars.php:149
+#: config/fieldvars.php:150
 msgid "Addon settings"
 msgstr "附加设置"
 
-#: config/fieldvars.php:151
+#: config/fieldvars.php:152
 msgid "VRML image"
 msgstr "VRML图片"
 
-#: config/fieldvars.php:152
+#: config/fieldvars.php:153
 msgid "Notes URL"
 msgstr "注释URL"
 
-#: config/fieldvars.php:153
+#: config/fieldvars.php:154
 msgid "Status image"
 msgstr "状态图片"
 
-#: config/fieldvars.php:154
+#: config/fieldvars.php:155
 msgid "Icon image"
 msgstr "图标图片"
 
-#: config/fieldvars.php:155
+#: config/fieldvars.php:156
 msgid "Action URL"
 msgstr "行动URL"
 
-#: config/fieldvars.php:156
+#: config/fieldvars.php:157
 msgid "2D coords"
 msgstr "2D坐标"
 
-#: config/fieldvars.php:157
+#: config/fieldvars.php:158
 msgid "3D coords"
 msgstr "3D坐标"
 
-#: config/fieldvars.php:158
+#: config/fieldvars.php:159
 msgid "Icon image ALT text"
 msgstr "图片替换文字"
 
-#: config/fieldvars.php:159
+#: config/fieldvars.php:160
 msgid "standard"
 msgstr "标准"
 
-#: config/fieldvars.php:160
+#: config/fieldvars.php:161
 msgid "on"
 msgstr "开"
 
-#: config/fieldvars.php:161
+#: config/fieldvars.php:162
 msgid "off"
 msgstr "关"
 
-#: config/fieldvars.php:162
+#: config/fieldvars.php:163
 msgid "skip"
 msgstr "忽略"
 
-#: config/fieldvars.php:163
+#: config/fieldvars.php:164
 msgid "Free variable definitions"
 msgstr "自由变量定义"
 
-#: config/fieldvars.php:164
+#: config/fieldvars.php:165
 msgid "Variable name"
 msgstr "变量名"
 
-#: config/fieldvars.php:165
+#: config/fieldvars.php:166
 msgid "Variable value"
 msgstr "变量值"
 
-#: config/fieldvars.php:168
+#: config/fieldvars.php:169
 msgid "Activate"
 msgstr "激活"
 
-#: config/fieldvars.php:169
+#: config/fieldvars.php:170
 msgid "Deactivate"
 msgstr "停用"
 
+#: config/fieldvars.php:173
+msgid "Do you really want to delete this database entry:"
+msgstr "你真想删除此数据库条目:"
+
 #: config/fieldvars.php:174
+msgid "Do you really want to delete all marked entries?"
+msgstr "你真想删除所有被标记的条目?"
+
+#: config/fieldvars.php:175
 msgid "Mark all shown datasets"
 msgstr "标记所有被显示数据集"
 
-#: config/fieldvars.php:175
+#: config/fieldvars.php:176
 msgid "File"
 msgstr "文件"
 
-#: config/fieldvars.php:176
+#: config/fieldvars.php:177
 msgid "Write all config files"
 msgstr "写入所有配置文件"
 
-#: config/fieldvars.php:177
+#: config/fieldvars.php:178
 msgid "Address"
 msgstr "地址"
 
-#: config/fieldvars.php:178
+#: config/fieldvars.php:179
 msgid "Display name"
 msgstr "显示名"
 
-#: config/fieldvars.php:179
+#: config/fieldvars.php:180
 msgid "Use this configuration as template"
 msgstr "使用此配置作为模板"
 
-#: config/fieldvars.php:180
+#: config/fieldvars.php:181
 msgid "Generic name"
 msgstr "通用名"
 
-#: config/fieldvars.php:184
+#: config/fieldvars.php:185
 msgid "Please check at least one option from:"
 msgstr "请至少从一个选项检查:"
 
-#: config/fieldvars.php:185
+#: config/fieldvars.php:186
 msgid "Host group name"
 msgstr "主机组名"
 
-#: config/fieldvars.php:186
+#: config/fieldvars.php:187
 msgid "Host group members"
 msgstr "主机组成员"
 
-#: config/fieldvars.php:188
-msgid "Service description"
-msgstr "服务描述"
-
-#: config/fieldvars.php:190
+#: config/fieldvars.php:191
 msgid "Is volatile"
 msgstr "是暂时的"
 
-#: config/fieldvars.php:191
+#: config/fieldvars.php:192
 msgid "Parallelize checks"
 msgstr "并行检查"
 
-#: config/fieldvars.php:192
+#: config/fieldvars.php:193
 msgid "Config name filter"
 msgstr "配置名过滤器"
 
-#: config/fieldvars.php:194
+#: config/fieldvars.php:195
 msgid "Import directory"
 msgstr "导入路径"
 
-#: config/fieldvars.php:195
+#: config/fieldvars.php:196
 msgid "Please insert a variable name and a variable definition"
 msgstr "请插入一个变量名以及一个变量值"
 
-#: config/fieldvars.php:196
-#: config/fieldvars.php:200
+#: config/fieldvars.php:197
+#: config/fieldvars.php:201
+#: config/fieldvars.php:233
 msgid "Warning:"
 msgstr "警告:"
 
-#: config/fieldvars.php:196
+#: config/fieldvars.php:197
 msgid "You have not filled in some required fields!<br><br>If this values are set by a template, you can save anyway - otherwise you will get an invalid configuration!"
 msgstr "你没有填写一些必须的域!<br><br>如果这些值由模板设置，你可以保存 - 否则你的配置无效"
 
-#: config/fieldvars.php:198
+#: config/fieldvars.php:199
 msgid "Nagios base directory"
 msgstr "Nagios基目录"
 
-#: config/fieldvars.php:199
+#: config/fieldvars.php:200
 msgid "Write config"
 msgstr "写入配置"
 
-#: config/fieldvars.php:200
+#: config/fieldvars.php:201
 msgid "You have not filled in all command arguments (ARGx) for your selected command!<br><br>If this arguments are optional, you can save anyway - otherwise you will get an invalid configuration!"
 msgstr "对选定的命令您没有填写一些必须的参数!<br><br>如果这些值是可选的，你可以保存 - 否则你的配置无效！"
 
-#: config/fieldvars.php:201
+#: config/fieldvars.php:202
 msgid "Service group members"
 msgstr "服务组成员"
 
-#: config/fieldvars.php:202
+#: config/fieldvars.php:203
 msgid "Service group name"
 msgstr "服务组名"
 
-#: config/fieldvars.php:205
+#: config/fieldvars.php:206
 msgid "Hostgroups"
 msgstr "主机组"
 
-#: config/fieldvars.php:206
+#: config/fieldvars.php:207
 msgid "Inherit parents"
 msgstr "继承的父类"
 
-#: config/fieldvars.php:207
+#: config/fieldvars.php:208
 msgid "Execution failure criteria"
 msgstr "执行失败标准"
 
-#: config/fieldvars.php:208
+#: config/fieldvars.php:209
 msgid "Nofification failure criteria"
 msgstr "通知失败标准"
 
-#: config/fieldvars.php:209
+#: config/fieldvars.php:210
 msgid "Dependency period"
 msgstr "依赖时段"
 
-#: config/fieldvars.php:210
+#: config/fieldvars.php:211
 msgid "Escalation period"
 msgstr "升级时段"
 
-#: config/fieldvars.php:211
+#: config/fieldvars.php:212
 msgid "Escalation options"
 msgstr "升级选项"
 
-#: config/fieldvars.php:212
+#: config/fieldvars.php:213
 msgid "First notification"
 msgstr "第一次通知"
 
-#: config/fieldvars.php:213
+#: config/fieldvars.php:214
 msgid "Last notification"
 msgstr "最后一次通知"
 
-#: config/fieldvars.php:216
+#: config/fieldvars.php:217
+msgid "Dependent servicegroups"
+msgstr ""
+
+#: config/fieldvars.php:218
 msgid "Help"
 msgstr "帮助"
 
-#: config/fieldvars.php:217
+#: config/fieldvars.php:219
 msgid "Calendar"
 msgstr "日历"
 
-#: config/fieldvars.php:218
+#: config/fieldvars.php:220
 msgid "Group name"
 msgstr "组名"
 
-#: config/fieldvars.php:219
+#: config/fieldvars.php:221
 msgid "Users"
 msgstr "用户"
 
-#: config/fieldvars.php:220
+#: config/fieldvars.php:222
 msgid "Access group"
 msgstr "访问组"
 
-#: config/fieldvars.php:221
+#: config/fieldvars.php:223
 msgid "User definitions"
 msgstr "用户定义"
 
-#: config/fieldvars.php:222
+#: config/fieldvars.php:224
 msgid "User name"
 msgstr "用户名"
 
-#: config/fieldvars.php:223
+#: config/fieldvars.php:225
 msgid "User rights"
 msgstr "用户权限"
 
-#: config/fieldvars.php:224
+#: config/fieldvars.php:226
 msgid "Object access restrictions"
 msgstr "对象访问限制"
 
-#: config/fieldvars.php:225
+#: config/fieldvars.php:227
 msgid "Enable group administration"
 msgstr "启用组管理"
 
-#: config/fieldvars.php:226
+#: config/fieldvars.php:228
 msgid "Show relation data"
 msgstr "显示相关数据"
 
-#: config/fieldvars.php:227
+#: config/fieldvars.php:229
 msgid "Hide relation data"
 msgstr "隐藏相关数据"
 
-#: config/fieldvars.php:229
+#: config/fieldvars.php:231
+msgid "User language"
+msgstr ""
+
+#: config/fieldvars.php:232
+msgid "Standard domain"
+msgstr ""
+
+#: config/fieldvars.php:233
+msgid "The associated services must be additionally written to the files. Only writing the host configuration is not sufficient because the modification is stored inside the service files!"
+msgstr ""
+
+#: config/fieldvars.php:235
 msgid "Monday"
 msgstr "星期一"
 
-#: config/fieldvars.php:230
+#: config/fieldvars.php:236
 msgid "Tuesday"
 msgstr "星期二"
 
-#: config/fieldvars.php:231
+#: config/fieldvars.php:237
 msgid "Wednesday"
 msgstr "星期三"
 
-#: config/fieldvars.php:232
+#: config/fieldvars.php:238
 msgid "Thursday"
 msgstr "星期四"
 
-#: config/fieldvars.php:233
+#: config/fieldvars.php:239
 msgid "Friday"
 msgstr "星期五"
 
-#: config/fieldvars.php:234
+#: config/fieldvars.php:240
 msgid "Saturday"
 msgstr "星期六"
 
-#: config/fieldvars.php:235
+#: config/fieldvars.php:241
 msgid "Sunday"
 msgstr "星期日"
 
-#: config/fieldvars.php:246
+#: config/fieldvars.php:252
 msgid "Main page"
 msgstr "主页"
 
-#: config/fieldvars.php:247
+#: config/fieldvars.php:253
 msgid "Supervision"
 msgstr "监督"
 
-#: config/fieldvars.php:250
+#: config/fieldvars.php:256
 msgid "Commands"
 msgstr "命令"
 
-#: config/fieldvars.php:251
+#: config/fieldvars.php:257
 msgid "Specialties"
 msgstr "特征"
 
-#: config/fieldvars.php:252
+#: config/fieldvars.php:258
 msgid "Tools"
 msgstr "工具"
 
-#: config/fieldvars.php:263
+#: config/fieldvars.php:269
 msgid "Service dependency"
 msgstr "服务依赖"
 
-#: config/fieldvars.php:264
+#: config/fieldvars.php:270
 msgid "Service escalation"
 msgstr "服务升级"
 
-#: config/fieldvars.php:265
+#: config/fieldvars.php:271
 msgid "Host dependency"
 msgstr "主机依赖项"
 
-#: config/fieldvars.php:266
+#: config/fieldvars.php:272
 msgid "Host escalation"
 msgstr "主机升级"
 
-#: config/fieldvars.php:267
+#: config/fieldvars.php:273
 msgid "Extended Host"
 msgstr "扩展主机"
 
-#: config/fieldvars.php:268
+#: config/fieldvars.php:274
 msgid "Extended Service"
 msgstr "扩展服务"
 
-#: config/fieldvars.php:269
+#: config/fieldvars.php:275
 msgid "Data import"
 msgstr "导入数据"
 
-#: config/fieldvars.php:272
+#: config/fieldvars.php:278
 msgid "User admin"
 msgstr "用户管理"
 
-#: config/fieldvars.php:273
+#: config/fieldvars.php:279
 msgid "Group admin"
 msgstr "组管理"
 
-#: config/fieldvars.php:274
+#: config/fieldvars.php:280
 msgid "Nagios control"
 msgstr "Nagios控制"
 
-#: config/fieldvars.php:276
+#: config/fieldvars.php:282
 msgid "Logbook"
 msgstr "日志簿"
 
-#: config/fieldvars.php:277
+#: config/fieldvars.php:283
 msgid "Nagios config"
 msgstr "Nagios配置"
 
-#: config/fieldvars.php:278
+#: config/fieldvars.php:284
 msgid "Settings"
 msgstr "设置"
 
-#: config/fieldvars.php:279
+#: config/fieldvars.php:285
 msgid "Definitions"
 msgstr "定义"
 
-#: config/fieldvars.php:280
+#: config/fieldvars.php:286
 msgid "CGI config"
 msgstr "CGI配置"
 
-#: config/fieldvars.php:281
+#: config/fieldvars.php:287
 msgid "Menu access"
 msgstr "访问菜单"
 
-#: config/fieldvars.php:282
+#: config/fieldvars.php:288
 msgid "Domains"
 msgstr "域"
 
-#: config/fieldvars.php:286
+#: config/fieldvars.php:292
 msgid "Help editor"
 msgstr "帮助编辑器"
 
-#: functions/config_class.php:155
-#: functions/config_class.php:158
+# fieldvars.php
+#: config/fieldvars.php:293
+msgid "Data domains"
+msgstr ""
+
+#: config/fieldvars.php:294
+msgid "Config targets"
+msgstr ""
+
+#: config/fieldvars.php:295
+msgid "Support"
+msgstr ""
+
+# config_class.php
+#: functions/config_class.php:164
+#: functions/config_class.php:168
 msgid "Warning: configuration file is out of date!"
 msgstr "警告：配置文件已过期"
 
-#: functions/config_class.php:301
+#: functions/config_class.php:173
+#: functions/config_class.php:729
+msgid "Warning: no configuration target defined!"
+msgstr ""
+
+#: functions/config_class.php:340
 msgid "Cannot backup and delete the old configuration file (check the permissions)!"
 msgstr "不能备份或者删除旧配置文件(检查权限)!"
 
-#: functions/config_class.php:317
+#: functions/config_class.php:358
 msgid "Cannot backup the old configuration file because the permissions are wrong (remote FTP)!"
 msgstr "不能备份旧配置文件，权限错误(远程FTP)"
 
-#: functions/config_class.php:337
+#: functions/config_class.php:380
 msgid "Cannot backup the old configuration file because the permissions are wrong (remote SFTP)!"
 msgstr "不能备份旧配置文件，权限错误(远程SFTP)"
 
-#: functions/config_class.php:365
-msgid "Cannot delete the file (check the permissions)!"
-msgstr "不能打开数据文件(检查权限)!"
+#: functions/config_class.php:411
+msgid "Cannot delete the file (wrong permissions)!"
+msgstr ""
 
-#: functions/config_class.php:380
+#: functions/config_class.php:415
+msgid "Cannot delete the file (file does not exist)!"
+msgstr ""
+
+#: functions/config_class.php:432
 msgid "Cannot delete file because the permissions are wrong (remote FTP)!"
 msgstr "由于权限错误不能备份配置文件(远程FTP)!"
 
-#: functions/config_class.php:383
+#: functions/config_class.php:438
 msgid "Cannot delete file because it does not exists (remote FTP)!"
 msgstr "由于文件不存在不能删除配置文件(远程FTP)!"
 
-#: functions/config_class.php:396
+#: functions/config_class.php:451
 msgid "Cannot delete file because the permissions are wrong (remote SFTP)!"
 msgstr "由于权限错误不能删除文件(远程SFTP)!"
 
-#: functions/config_class.php:399
+#: functions/config_class.php:454
 msgid "Cannot delete file because it does not exists (remote SFTP)!"
 msgstr "由于文件不存在不能删除文件(远程SFTP)!"
 
-#: functions/config_class.php:430
+#: functions/config_class.php:488
 msgid "Cannot get the configuration file (FTP connection failed)!"
 msgstr "不能获取配置文件(FTP连接失败)!"
 
-#: functions/config_class.php:437
+#: functions/config_class.php:499
 msgid "Cannot write the configuration file (FTP connection failed)!"
 msgstr "不能写入配置文件(FTP连接失败)!"
 
-#: functions/config_class.php:452
+#: functions/config_class.php:518
 msgid "Cannot get the configuration file (SSH connection failed)!"
 msgstr "不能获取配置文件(SSH连接失败)!"
 
-#: functions/config_class.php:456
+#: functions/config_class.php:524
 msgid "Cannot get the configuration file (remote file does not exist)!"
 msgstr "不能获取配置文件(远程文件不存在)!"
 
-#: functions/config_class.php:463
+#: functions/config_class.php:533
 msgid "Cannot write the configuration file (SSH connection failed)!"
 msgstr "不能写入配置文件(SSH连接失败)!"
 
-#: functions/config_class.php:491
-#: functions/config_class.php:662
+#: functions/config_class.php:563
+#: functions/config_class.php:761
 msgid "It is not possible to write config files directly from the common domain!"
 msgstr "不能从普通域直接写入配置文件。"
 
-#: functions/config_class.php:822
-msgid "Configuration write failed - Dataset not found"
-msgstr "写入配置文件错误 - 数据集不存在"
+#: functions/config_class.php:929
+msgid "Writing of the configuration failed - no dataset, not activated dataset found or you do not have write permission."
+msgstr ""
 
-#: functions/config_class.php:938
+#: functions/config_class.php:1046
 msgid "Configuration write failed (FTP connection failed):"
 msgstr "配置写入失败(FTP连接失败):"
 
-#: functions/config_class.php:939
-#: functions/config_class.php:989
+#: functions/config_class.php:1047
+#: functions/config_class.php:1111
 msgid "Cannot open/overwrite the configuration file (FTP connection failed)!"
 msgstr "不能打开/覆盖配置文件(FTP连接失败)!"
 
-#: functions/config_class.php:1005
+#: functions/config_class.php:1133
 msgid "Cannot open/overwrite the configuration file (remote SFTP)!"
 msgstr "不能打开/覆盖配置文件(远程SFTP)!"
 
-#: functions/config_class.php:1403
-#: functions/config_class.php:1435
+#: functions/config_class.php:1608
+#: functions/config_class.php:1609
+#: functions/config_class.php:1652
+#: functions/config_class.php:1653
 msgid "Connection to remote system failed (SSH2 connection):"
 msgstr "链接远程系统失败(SSH2链接):"
 
-#: functions/config_class.php:1404
-#: functions/config_class.php:1436
-msgid "Connection to remote system failed (SSH2 connection)!"
-msgstr "链接远程系统失败（SSH2链接）！"
-
-#: functions/config_class.php:1416
-#: functions/config_class.php:1417
+#: functions/config_class.php:1624
+#: functions/config_class.php:1625
 msgid "SSH public key does not exist or is not readable"
 msgstr "SSH公钥不存在或不可读。"
 
-#: functions/config_class.php:1421
-#: functions/config_class.php:1422
+#: functions/config_class.php:1629
+#: functions/config_class.php:1630
 msgid "SSH private key does not exist or is not readable"
 msgstr "SSH私钥不存在或不可读"
 
-#: functions/config_class.php:1497
+#: functions/config_class.php:1733
+#: functions/config_class.php:1734
 msgid "Connection to remote system failed (FTP connection):"
 msgstr "链接远程系统失败(FTP连接):"
 
-#: functions/config_class.php:1498
-msgid "Connection to remote system failed (FTP connection)!"
-msgstr "连接远程系统失败(FTP连接)!"
+# contacts.php
+#: functions/config_class.php:1867
+msgid "Could not open directory"
+msgstr "不能打开目录"
 
-#: functions/data_class.php:125
-#: functions/data_class.php:149
+#: functions/content_class.php:274
+#: functions/content_class.php:278
+msgid "out-of-date"
+msgstr "过期"
+
+#: functions/content_class.php:275
+msgid "no target"
+msgstr ""
+
+#: functions/content_class.php:276
+#: functions/content_class.php:277
+msgid "missed"
+msgstr "丢失"
+
+#: functions/content_class.php:279
+msgid "up-to-date"
+msgstr "最新"
+
+#: functions/content_class.php:351
+msgid "Last database update:"
+msgstr "最后一次数据库升级:"
+
+#: functions/content_class.php:354
+msgid "Last file change of the configuration target "
+msgstr ""
+
+# data_class.php
+#: functions/data_class.php:116
+#: functions/data_class.php:140
 msgid "Delete failed because a database error:"
 msgstr "由于数据库错误删除失败:"
 
-#: functions/data_class.php:128
+#: functions/data_class.php:119
+#: functions/data_class.php:149
 #: functions/data_class.php:158
-#: functions/data_class.php:167
 msgid "No data deleted. Probably the dataset does not exist or it is protected from delete."
 msgstr "没有数据被删除。可能由于数据集不存在或者它是受保护对象不能删除。"
 
-#: functions/data_class.php:132
+#: functions/data_class.php:123
 msgid "Delete dataset id:"
 msgstr "删除数据集ID:"
 
-#: functions/data_class.php:132
+#: functions/data_class.php:123
 msgid "- from table:"
 msgstr "- 从表中:"
 
-#: functions/data_class.php:132
-#: functions/data_class.php:162
-#: functions/data_class.php:301
-#: functions/data_class.php:582
-#: functions/data_class.php:645
+#: functions/data_class.php:123
+#: functions/data_class.php:153
+#: functions/data_class.php:311
+#: functions/data_class.php:638
+#: functions/data_class.php:703
 msgid "- with affected rows:"
 msgstr "- 受影响行:"
 
-#: functions/data_class.php:162
-#: functions/data_class.php:301
+#: functions/data_class.php:153
+#: functions/data_class.php:311
 msgid "Delete data from table:"
 msgstr "从表中删除数据:"
 
-#: functions/data_class.php:297
-msgid "No data deleted. Probably the dataset does not exist, is protected from deletion or has relations to other configurations which cannot be deleted. Use the \"info\" function for detailed informations about relations!"
-msgstr "没有删除数据。可能由于数据集不存在，被保护防止删除或者和其他不能被删除的配置有关联。对于关联关系，使用\"info\"函数获得详细信息"
+#: functions/data_class.php:306
+msgid "No data deleted. Probably the dataset does not exist, it is protected from deletion, you do not have write permission or it has relations to other configurations which cannot be deleted. Use the \"info\" function for detailed informations about relations!"
+msgstr ""
 
-#: functions/data_class.php:307
-msgid "No data deleted. Probably the dataset does not exist or it is protected from deletion."
-msgstr "没有数据被删除。可能由于数据集不存在或者它是受保护对象不能删除。"
+#: functions/data_class.php:316
+msgid "No data deleted. Probably the dataset does not exist, it is protected from deletion or you do not have write permission."
+msgstr ""
 
-#: functions/data_class.php:508
+#: functions/data_class.php:553
+#: functions/data_class.php:554
 msgid "Data set copy failed - table [new name]:"
 msgstr "数据集复制失败 - 表[新名]:"
 
-#: functions/data_class.php:511
+#: functions/data_class.php:557
+#: functions/data_class.php:558
 msgid "Data set copied - table [new name]:"
 msgstr "数据集复制成功 - 表[新名]:"
 
-#: functions/data_class.php:578
-msgid "No dataset activated. Probably the dataset does not exist or no dataset was selected"
-msgstr "没有数据集被激活。可能由于数据集不存在或者没有选择数据集。"
+#: functions/data_class.php:576
+#: functions/data_class.php:580
+msgid "No dataset copied. Maybe the dataset does not exist or you do not have write permission."
+msgstr ""
 
-#: functions/data_class.php:581
+#: functions/data_class.php:633
+msgid "No dataset activated. Maybe the dataset does not exist, no dataset was selected or you do not have write permission."
+msgstr ""
+
+#: functions/data_class.php:637
 msgid "Dataset successfully activated. Affected rows:"
 msgstr "数据集成功激活。影响行数:"
 
-#: functions/data_class.php:582
-#: functions/data_class.php:645
+#: functions/data_class.php:638
+#: functions/data_class.php:703
 msgid "Activate dataset from table:"
 msgstr "从表中激活数据集:"
 
-#: functions/data_class.php:587
-msgid "No dataset activated. Probably the dataset does not exist"
-msgstr "没有数据被激活。可能由于数据集不存在。"
+#: functions/data_class.php:642
+msgid "No dataset activated. Maybe the dataset does not exist or you do not have write permission."
+msgstr ""
 
-#: functions/data_class.php:641
-msgid "No dataset deactivated. Probably the dataset does not exist, is protected from deactivation or no dataset was selected. Use the \"info\" function for detailed informations about relations!"
-msgstr "没有停用数据集。可能由于数据集不存在，被保护防止停用或者没有选择数据集。使用\"info\"函数获得详细关系信息！"
+#: functions/data_class.php:698
+msgid "No dataset deactivated. Maybe the dataset does not exist, it is protected from deactivation, no dataset was selected or you do not have write permission. Use the \"info\" function for detailed informations about relations!"
+msgstr ""
 
-#: functions/data_class.php:644
+#: functions/data_class.php:702
 msgid "Dataset successfully deactivated. Affected rows:"
 msgstr "数据集成功停用。影响行数:"
 
-#: functions/data_class.php:650
-msgid "No dataset deactivated. Probably the dataset does not exist"
-msgstr "没有数据被停用。可能由于数据集不存在！"
+#: functions/data_class.php:707
+msgid "No dataset deactivated. Maybe the dataset does not exist or you do not have write permission."
+msgstr ""
 
-#: functions/data_class.php:834
-msgid "<span style=\"color:#0000FF;\">Relation information for <b>"
-msgstr "<span style=\"color:#0000FF:\">关系信息<b>"
+#: functions/data_class.php:891
+msgid "Relation information for <b>"
+msgstr ""
 
-#: functions/data_class.php:834
+#: functions/data_class.php:891
 msgid "</b> of table <b>"
 msgstr "</b>表<b>"
 
-#: functions/data_class.php:888
-#: functions/data_class.php:890
-#: functions/data_class.php:894
-#: functions/data_class.php:910
-#: functions/data_class.php:913
+#: functions/data_class.php:945
+#: functions/data_class.php:947
+#: functions/data_class.php:951
+#: functions/data_class.php:967
+#: functions/data_class.php:970
 msgid "Relation to <b>"
 msgstr "关系到<b>"
 
-#: functions/data_class.php:888
-#: functions/data_class.php:890
-#: functions/data_class.php:894
-#: functions/data_class.php:910
-#: functions/data_class.php:913
+#: functions/data_class.php:945
+#: functions/data_class.php:947
+#: functions/data_class.php:951
+#: functions/data_class.php:967
+#: functions/data_class.php:970
 msgid "</b>, entry <b>"
 msgstr "</b>, 条目<b>"
 
-#: functions/data_class.php:888
-#: functions/data_class.php:894
-#: functions/data_class.php:913
+#: functions/data_class.php:945
+#: functions/data_class.php:951
+#: functions/data_class.php:970
 msgid "deletion <b>possible</b>"
 msgstr "<b>能</b>删除"
 
-#: functions/data_class.php:890
-#: functions/data_class.php:910
+#: functions/data_class.php:947
+#: functions/data_class.php:967
 msgid "deletion <b>not possible</b>"
 msgstr "<b>不能</b>删除!"
 
-#: functions/import_class.php:99
+#: functions/import_class.php:78
+msgid "Unable to get configuration data:"
+msgstr ""
+
+#: functions/import_class.php:98
 msgid "Cannot receive the configuration file (FTP connection)!"
 msgstr "不能接收配置文件(FTP连接)!"
 
-#: functions/import_class.php:112
+#: functions/import_class.php:116
 msgid "Cannot receive the configuration file (SSH connection)!"
 msgstr "不能接收配置文件(SSH连接)!"
 
-#: functions/import_class.php:178
-msgid "No valid configuration found!"
-msgstr "没有发现有效配置！"
+#: functions/import_class.php:189
+msgid "No valid configuration found:"
+msgstr ""
 
-#: functions/import_class.php:250
+#: functions/import_class.php:198
+msgid "Import file does not exist or is not readable:"
+msgstr ""
+
+#: functions/import_class.php:266
 msgid "Table for import definition"
 msgstr "导入定义的表"
 
-#: functions/import_class.php:250
+# mutdialog.php
+#: functions/import_class.php:266
 msgid "is not available!"
 msgstr "不存在!"
 
-#: functions/import_class.php:292
-#: functions/import_class.php:297
-#: functions/import_class.php:609
-#: functions/import_class.php:610
-#: functions/import_class.php:613
-#: functions/import_class.php:614
+#: functions/import_class.php:318
+#: functions/import_class.php:323
+#: functions/import_class.php:635
+#: functions/import_class.php:636
+#: functions/import_class.php:639
+#: functions/import_class.php:640
 msgid "inside"
 msgstr "内部"
 
-#: functions/import_class.php:292
+#: functions/import_class.php:318
 msgid "exists and were not overwritten"
 msgstr "存在并没有被覆盖"
 
-#: functions/import_class.php:297
+#: functions/import_class.php:323
 msgid "were not written"
 msgstr "没有被写入"
 
-#: functions/import_class.php:609
-#: functions/import_class.php:610
+# contacts.php
+#: functions/import_class.php:635
+#: functions/import_class.php:636
 msgid "could not be inserted:"
 msgstr "不能被插入:"
 
-#: functions/import_class.php:613
-#: functions/import_class.php:614
+#: functions/import_class.php:639
+#: functions/import_class.php:640
 msgid "successfully inserted"
 msgstr "成功插入"
 
-#: functions/import_class.php:1199
+#: functions/import_class.php:1275
 msgid "Error: wrong number of arguments - cannot import service group members"
 msgstr "错误:参数个数错误 - 不能导入服务组成员"
 
-#: functions/mysql_class.php:274
+#: functions/mysql_class.php:269
 msgid "Missing server connection parameter!"
 msgstr "不存在服务器连接参数"
 
-#: functions/mysql_class.php:281
-#: functions/mysql_class.php:310
+#: functions/mysql_class.php:276
+#: functions/mysql_class.php:305
 msgid "Connection to the database server has failed by reason:"
 msgstr "连接到数据库失败，原因如下:"
 
-#: functions/mysql_class.php:303
+#: functions/mysql_class.php:298
 msgid "Missing database connection parameter!"
 msgstr "不存在数据库连接参数"
 
-#: functions/nag_class.php:187
+#: functions/nag_class.php:123
 msgid "Hide menu"
 msgstr "隐藏菜单"
 
-#: functions/nag_class.php:192
+#: functions/nag_class.php:132
 msgid "Show menu"
 msgstr "显示菜单"
 
-#: functions/nag_class.php:402
+#: functions/nag_class.php:406
 msgid "Page"
 msgstr "页"
 
-#: functions/nag_class.php:811
+#: functions/nag_class.php:961
 msgid "Unrestricted access"
 msgstr "无限制访问"
 
-#: functions/prepend_adm.php:98
-#: install/index.php:148
+# prepend.adm
+#: functions/prepend_adm.php:101
+#: install/index.php:100
 msgid "Error while connecting to database:"
 msgstr "连接数据库失败"
 
-#: functions/prepend_adm.php:124
+#: functions/prepend_adm.php:133
+#: functions/prepend_adm.php:192
 msgid "Error in setting the correct locale, please report this error with the associated output of  'locale -a' to bugs@nagiosql.org"
 msgstr "在设置正确的区域时出错，请将此错误以及'locale -a'的输出汇报给bugs@nagiosql.org"
 
-#: functions/prepend_adm.php:210
+#: functions/prepend_adm.php:269
 msgid "Webserver login successfull"
 msgstr "网页服务器成功登录！"
 
-#: functions/prepend_adm.php:235
+#: functions/prepend_adm.php:302
 msgid "Login successfull"
 msgstr "成功登录"
 
-#: functions/prepend_adm.php:240
-#: functions/prepend_adm.php:241
+#: functions/prepend_adm.php:307
+#: functions/prepend_adm.php:308
 msgid "Login failed!"
 msgstr "登录失败"
 
-#: functions/prepend_adm.php:260
+#: functions/prepend_adm.php:332
 msgid "Session timeout reached - Seconds:"
 msgstr "Session超时－秒："
 
-#: functions/prepend_adm.php:270
+#: functions/prepend_adm.php:343
 msgid "Restricted site accessed:"
 msgstr "访问受限站点"
 
-#: functions/prepend_adm.php:282
+#: functions/prepend_adm.php:355
 msgid "User not found in database"
 msgstr "数据库中未发现用户"
 
-#: functions/prepend_adm.php:307
+#: functions/prepend_adm.php:393
 msgid "Admin"
 msgstr "管理"
 
-#: functions/prepend_adm.php:352
+#: functions/prepend_adm.php:457
 msgid "Logged in:"
 msgstr "进入"
 
-#: functions/prepend_adm.php:353
+#: functions/prepend_adm.php:458
 msgid "Logout"
 msgstr "退出登录"
 
-#: functions/prepend_adm.php:369
+#: functions/prepend_adm.php:478
 msgid "Warning - template file not found or not readable, please check your file permissions! - File: "
 msgstr "警告 - 模板文件没有发现或不可读，请检查文件权限！ - 文件："
+
+#: functions/prepend_content.php:303
+#: functions/prepend_content.php:306
+#: functions/prepend_content.php:322
+#: functions/prepend_content.php:325
+msgid "Some configuration files were not written. Dataset not activated, not found or you do not have write permission!"
+msgstr ""
+
+#: functions/prepend_content.php:305
+#: functions/prepend_content.php:324
+msgid "Configuration files successfully written!"
+msgstr ""
+
+#: functions/prepend_content.php:344
+msgid "Admin can't be deleted"
+msgstr "管理员不能被删除"
+
+#: functions/prepend_content.php:347
+msgid "Localhost can't be deleted"
+msgstr "Localhost不能删除"
+
+#: functions/prepend_content.php:475
+msgid "No permission to open configuration!"
+msgstr "没有打开配置的权限！"
 
 #: functions/translator.php:56
 msgid "English"
@@ -2588,1032 +3001,699 @@ msgid "Chinese (Simplified)"
 msgstr "中文(简体)"
 
 #: functions/translator.php:68
-msgid "Polish"
-msgstr "波兰语"
-
-#: functions/translator.php:72
 msgid "Italian"
 msgstr "意大利语"
 
-#: functions/translator.php:76
+#: functions/translator.php:72
 msgid "French"
 msgstr "法语"
 
-#: functions/translator.php:80
+#: functions/translator.php:76
 msgid "Russian"
 msgstr "俄语"
 
-#: functions/translator.php:84
+#: functions/translator.php:80
 msgid "Spanish"
 msgstr "西班牙语"
 
-#: functions/translator.php:88
+#: functions/translator.php:84
 msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙语(巴西)"
 
-#: functions/translator.php:92
-msgid "Japanese"
-msgstr "日本"
-
-#: functions/translator.php:96
+#: functions/translator.php:88
 msgid "Dutch"
 msgstr "荷兰语"
 
-#: functions/translator.php:100
-msgid "Spanish (Argentina)"
-msgstr "西班牙语(阿根廷)"
-
-#: functions/translator.php:104
+#: functions/translator.php:92
 msgid "Danish"
 msgstr "丹麦语"
 
-#: install/index.php:74
-#: install/install.php:88
+#: install/index.php:63
+#: install/index.php:172
 msgid "Online Documentation"
 msgstr "在线文档"
 
-#: install/index.php:98
+#: install/index.php:99
+msgid "Database connection failed. Upgrade not available!"
+msgstr ""
+
+#: install/index.php:105
+msgid "Settings table not available or wrong. Upgrade not available!"
+msgstr ""
+
+#: install/index.php:116
+msgid "Installation cannot continue, please make sure you have the mysql extension loaded!"
+msgstr ""
+
+#: install/index.php:121
+msgid "Installation cannot continue, postgres is not yet available in beta!"
+msgstr ""
+
+#: install/index.php:124
+msgid "Installation cannot continue, please make sure you have the pgsql extension loaded!"
+msgstr ""
+
+#: install/index.php:128
+msgid "Database type in settings file is wrong (config/settings.php). Upgrade not available!"
+msgstr ""
+
+#: install/index.php:131
+msgid "Database values in settings file are missing (config/settings.php). Upgrade not available!"
+msgstr ""
+
+#: install/index.php:134
+msgid "Settings file not found or not readable (config/settings.php). Upgrade not available!"
+msgstr ""
+
+#: install/index.php:144
+msgid "Default values file is not available or not readable (install/functions/initial_settings.php). Installation possible, but without predefined data!"
+msgstr ""
+
+#: install/index.php:150
+#: install/install.php:124
 msgid "Welcome to the NagiosQL Installation Wizard"
 msgstr "欢迎使用NagiosQL安装向导"
 
-#: install/index.php:99
+#: install/index.php:151
 msgid "This wizard will help you to install and configure NagiosQL."
 msgstr "此向导将帮你安装并配置NagiosQL。"
 
-#: install/index.php:100
+#: install/index.php:152
 msgid "For questions please visit"
 msgstr "如有问题请访问"
 
-#: install/index.php:102
+#: install/index.php:153
 msgid "First let's check your local environment and find out if everything NagiosQL needs is available."
 msgstr "首先检查你的本地环境以及检查NagiosQL所需的环境是否可用。"
 
-#: install/index.php:103
+#: install/index.php:154
 msgid "The basic requirements are:"
 msgstr "基本所需软件："
 
-#: install/index.php:105
+#: install/index.php:155
 msgid "PHP 5.2.0 or greater including:"
 msgstr "PHP 5.2.0或以上版本，包括："
 
-#: install/index.php:107
-#: install/index.php:108
-#: install/index.php:109
-#: install/index.php:110
-#: install/index.php:111
-#: install/index.php:112
-#: install/index.php:113
-#: install/index.php:114
+#: install/index.php:156
+#: install/index.php:157
+#: install/index.php:158
+#: install/index.php:161
+#: install/index.php:163
+#: install/index.php:164
 msgid "PHP Module:"
 msgstr "PHP模块："
 
-#: install/index.php:113
-#: install/index.php:114
-#: install/index.php:115
+#: install/index.php:163
+#: install/index.php:164
+#: install/index.php:165
 msgid "(optional)"
 msgstr "(可选)"
 
-#: install/index.php:115
+#: install/index.php:165
 msgid "PECL Extension:"
 msgstr "PECL扩展："
 
-#: install/index.php:118
+#: install/index.php:166
 msgid "php.ini options"
 msgstr "php.ini选项"
 
-#: install/index.php:120
+#: install/index.php:167
 msgid "file_uploads on (for upload features)"
 msgstr "file_uploads在（用于上传文件）"
 
-#: install/index.php:121
+#: install/index.php:168
 msgid "session.auto_start needs to be off"
 msgstr "session.auto_start需要设置为off"
 
-#: install/index.php:124
+#: install/index.php:169
 msgid "A MySQL database server"
 msgstr "MySQL服务器"
 
-#: install/index.php:125
-msgid "Nagios 2.x/3.x or Icinga 1.x"
-msgstr "Nagios 2.x/3.x或者lcinga 1.x"
+#: install/index.php:170
+msgid "Nagios 2.x/3.x"
+msgstr ""
 
-#: install/index.php:198
-msgid "START UPDATE"
-msgstr "开始更新"
-
-#: install/index.php:201
-#: install/index.php:204
+#: install/index.php:176
 msgid "START INSTALLATION"
 msgstr "开始安装"
 
-#: install/status.php:23
+#: install/index.php:177
+msgid "START UPDATE"
+msgstr "开始更新"
+
+#: install/step1.php:80
 msgid "Requirements"
 msgstr "需求"
 
-#: install/status.php:25
-#: install/step3.php:371
+#: install/step1.php:82
 msgid "Finish"
 msgstr "完成"
 
-#: install/step1.php:86
+#: install/step1.php:83
 msgid "Checking requirements"
 msgstr "检查前提条件"
 
-#: install/step1.php:87
+#: install/step1.php:84
 msgid "Checking Client"
 msgstr "检查客户端"
 
-#: install/step1.php:89
-msgid "ENABLED"
-msgstr "启用"
-
-#: install/step1.php:91
-msgid "NOT ENABLED"
-msgstr "未启用"
-
-#: install/step1.php:94
+#: install/step1.php:85
 msgid "Checking PHP version"
 msgstr "检查PHP版本"
 
-#: install/step1.php:97
-#: install/step1.php:99
-msgid "Version"
-msgstr "版本"
-
-#: install/step1.php:97
-#: install/step1.php:109
-#: install/step1.php:121
-#: install/step1.php:135
-#: install/step1.php:167
-#: install/step1.php:173
-#: install/step1.php:187
-#: install/step1.php:193
-#: install/step1.php:205
-#: install/step1.php:215
-#: install/step1.php:217
-#: install/step1.php:229
-#: install/step1.php:238
-#: install/step1.php:247
-#: install/step1.php:256
-#: install/step1.php:265
-#: install/step1.php:274
-msgid "OK"
-msgstr "完成"
-
-#: install/step1.php:97
-#: install/step1.php:99
-msgid "detected"
-msgstr "检测到"
-
-#: install/step1.php:99
-msgid "or greater is required"
-msgstr "或者需要更高版本"
-
-#: install/step1.php:102
+#: install/step1.php:86
 msgid "Checking PHP extensions"
 msgstr "检查PHP扩展"
 
-#: install/step1.php:103
-msgid "The following modules/extensions are <em>required</em> to run NagiosQL"
-msgstr "要运行NagiosQL<em>需要</em>下列模块/扩展。"
-
-#: install/step1.php:112
-#: install/step1.php:125
-#: install/step1.php:139
-msgid "Could be loaded. Please add in php.ini"
-msgstr "不能加载。请在php.ini加入。"
-
-#: install/step1.php:113
-#: install/step1.php:126
-#: install/step1.php:140
-#: install/step1.php:164
-msgid "NOT AVAILABLE"
-msgstr "不可用"
-
-#: install/step1.php:118
-msgid "The next couple of extensions are <em>optional</em> but recommended"
-msgstr "下列扩展是<em>可选的</em>但推荐。"
-
-#: install/step1.php:130
+#: install/step1.php:87
 msgid "Checking available database interfaces"
 msgstr "检查可用的数据库接口"
 
-#: install/step1.php:131
-msgid "Check which of the supported extensions are installed. At least one of them is required."
-msgstr "检查已安装的可支持扩展。需要至少其中的一个。"
-
-#: install/step1.php:139
-msgid "Not installed"
-msgstr "未安装"
-
-#: install/step1.php:158
+#: install/step1.php:88
 msgid "Checking php.ini/.htaccess settings"
 msgstr "检查php.ini/.htaccess配置"
 
-#: install/step1.php:159
-msgid "The following settings are <em>required</em> to run NagiosQL"
-msgstr "要运行NagiosQL<em>需要</em>下列配置"
-
-#: install/step1.php:164
-msgid "cannot be empty and needs to be set"
-msgstr "不能为空，需要设置。"
-
-#: install/step1.php:175
-msgid "should be"
-msgstr "应该是"
-
-#: install/step1.php:180
-msgid "The following settings are <em>optional</em> but recommended"
-msgstr "下列配置是<em>可选的</em>但推荐使用"
-
-#: install/step1.php:185
-msgid "Could be set"
-msgstr "不能设置"
-
-#: install/step1.php:195
-msgid "Could be"
-msgstr "能是"
-
-#: install/step1.php:200
+#: install/step1.php:89
 msgid "Checking System Permission"
 msgstr "检查系统权限"
 
-#: install/step1.php:205
-#: install/step1.php:207
+#: install/step1.php:90
+msgid "The following modules/extensions are <em>required</em> to run NagiosQL"
+msgstr "要运行NagiosQL<em>需要</em>下列模块/扩展。"
+
+#: install/step1.php:91
+msgid "The next couple of extensions are <em>optional</em> but recommended"
+msgstr "下列扩展是<em>可选的</em>但推荐。"
+
+#: install/step1.php:92
+msgid "Check which of the supported extensions are installed. At least one of them is required."
+msgstr "检查已安装的可支持扩展。需要至少其中的一个。"
+
+#: install/step1.php:93
+msgid "The following settings are <em>required</em> to run NagiosQL"
+msgstr "要运行NagiosQL<em>需要</em>下列配置"
+
+#: install/step1.php:107
+msgid "ENABLED"
+msgstr "启用"
+
+#: install/step1.php:109
+msgid "NOT ENABLED"
+msgstr "未启用"
+
+#: install/step1.php:113
+msgid "Version"
+msgstr "版本"
+
+#: install/step1.php:115
+#: install/step1.php:128
+#: install/step1.php:141
+#: install/step1.php:158
+#: install/step1.php:178
+#: install/step1.php:182
+#: install/step1.php:194
+#: install/step1.php:201
+#: install/step1.php:203
+#: install/step1.php:213
+#: install/step1.php:220
+#: install/step1.php:227
+#: install/step1.php:234
+#: install/step1.php:241
+#: install/step1.php:248
+msgid "OK"
+msgstr "完成"
+
+#: install/step1.php:116
+#: install/step1.php:118
+msgid "detected"
+msgstr "检测到"
+
+#: install/step1.php:119
+msgid "or greater is required"
+msgstr "或者需要更高版本"
+
+#: install/step1.php:131
+#: install/step1.php:144
+#: install/step1.php:162
+msgid "Could be loaded. Please add in php.ini"
+msgstr "不能加载。请在php.ini加入。"
+
+#: install/step1.php:132
+#: install/step1.php:145
+#: install/step1.php:163
+#: install/step1.php:175
+msgid "NOT AVAILABLE"
+msgstr "不可用"
+
+#: install/step1.php:157
+msgid "New installation only - updates are only supported using the same database interface!"
+msgstr ""
+
+#: install/step1.php:175
+msgid "cannot be empty and needs to be set"
+msgstr "不能为空，需要设置。"
+
+#: install/step1.php:184
+msgid "should be"
+msgstr "应该是"
+
+#: install/step1.php:194
+#: install/step1.php:196
 msgid "Read test on settings file (config/settings.php)"
 msgstr "配置文件读取测试(config/settings.php)"
 
-#: install/step1.php:207
-#: install/step1.php:219
-#: install/step1.php:222
-#: install/step1.php:231
-#: install/step1.php:240
-#: install/step1.php:249
-#: install/step1.php:258
-#: install/step1.php:267
-#: install/step1.php:276
-#: install/step3.php:67
-#: install/step3.php:89
-#: install/step3.php:102
-#: install/step3.php:116
-#: install/step3.php:123
-#: install/step3.php:139
-#: install/step3.php:151
-#: install/step3.php:163
-#: install/step3.php:177
-#: install/step3.php:183
-#: install/step3.php:199
-#: install/step3.php:210
-#: install/step3.php:222
-#: install/step3.php:234
-#: install/step3.php:284
-#: install/step3.php:296
-#: install/step3.php:308
-#: install/step3.php:322
-#: install/step3.php:328
-#: install/step3.php:344
-#: install/step3.php:355
-msgid "failed"
-msgstr "失败"
-
-#: install/step1.php:210
+#: install/step1.php:198
 msgid "Settings file does not exists (config/settings.php)"
 msgstr "配置文件不存在(config/settings.php)"
 
-#: install/step1.php:210
+#: install/step1.php:198
 msgid "will be created"
 msgstr "将被创建"
 
-#: install/step1.php:215
-#: install/step1.php:219
+#: install/step1.php:201
+#: install/step1.php:205
 msgid "Write test on settings file (config/settings.php)"
 msgstr "配置文件写测试(config/settings.php)"
 
-#: install/step1.php:217
-#: install/step1.php:222
+#: install/step1.php:203
+#: install/step1.php:208
 msgid "Write test on settings directory (config/)"
 msgstr "配置目录写测试(config/)"
 
-#: install/step1.php:229
-#: install/step1.php:231
+#: install/step1.php:213
+#: install/step1.php:215
 msgid "Read test on a class file (functions/nag_class.php)"
 msgstr "类文件读取测试(functions/nag_class.php)"
 
-#: install/step1.php:238
-#: install/step1.php:240
+#: install/step1.php:220
+#: install/step1.php:222
 msgid "Read test on startsite file (admin.php)"
 msgstr "开始站点文件读测试(admin.php)"
 
-#: install/step1.php:247
-#: install/step1.php:249
+#: install/step1.php:227
+#: install/step1.php:229
 msgid "Read test on a template file (templates/index.tpl.htm)"
 msgstr "模板文件读测试(templates/index.tpl.htm)"
 
-#: install/step1.php:256
-#: install/step1.php:258
+#: install/step1.php:234
+#: install/step1.php:236
 msgid "Read test on a admin template file (templates/admin/admin_master.tpl.htm)"
 msgstr "管理模板文件读取测试(templates/admin/admin_master.tpl.htm)"
 
-#: install/step1.php:265
-#: install/step1.php:267
+#: install/step1.php:241
+#: install/step1.php:243
 msgid "Read test on a file template (templates/files/contacts.tpl.dat)"
 msgstr "模板文件读取测试(templates/files/contacts.tpl.dat)"
 
-#: install/step1.php:274
-#: install/step1.php:276
+#: install/step1.php:248
+#: install/step1.php:250
 msgid "Read test on a image file (images/pixel.gif)"
 msgstr "图片文件读取测试(images/pixel.gif)"
 
-#: install/step1.php:283
+#: install/step1.php:254
 msgid "There are some errors - please check your system settings and read the requirements of NagiosQL!"
 msgstr "有些错误－请检查你的系统配置并阅读NagiosQL的需求文档"
 
-#: install/step1.php:284
+#: install/step1.php:255
 msgid "Read the INSTALLATION file from NagiosQL to find out, how to fix them."
 msgstr "阅读NagiosQL的安装文件以找出解决问题的方法"
 
-#: install/step1.php:285
+#: install/step1.php:256
 msgid "After that - refresh this page to proceed"
 msgstr "完成后－刷新页面以继续"
 
-#: install/step1.php:288
+#: install/step1.php:259
 msgid "Refresh"
 msgstr "刷新"
 
-#: install/step1.php:292
+#: install/step1.php:261
 msgid "Environment test sucessfully passed"
 msgstr "环境测试成功通过"
 
-#: install/step1.php:297
-#: install/step2.php:103
+#: install/step1.php:264
 msgid "Next"
 msgstr "下一步"
 
-#: install/step2.php:55
+#: install/step2.php:33
+msgid "The NagiosQL first passwords are not equal!"
+msgstr ""
+
+#: install/step2.php:38
 msgid "Setup"
 msgstr "创建"
 
-#: install/step2.php:58
+#: install/step2.php:39
 msgid "Please complete the form below. Mandatory fields marked <em>*</em>"
 msgstr "请完成以下表格。强制项有<em>*</em>标记"
 
-#: install/step2.php:59
-msgid "Please backup your database before proceeding!"
-msgstr "请继续前备份数据库！"
-
-#: install/step2.php:61
+#: install/step2.php:40
 msgid "Database Configuration"
 msgstr "数据库配置文件"
 
-#: install/step2.php:67
+#: install/step2.php:41
+msgid "Database Type"
+msgstr ""
+
+#: install/step2.php:43
+msgid "Database Server"
+msgstr ""
+
+#: install/step2.php:45
+msgid "Local hostname or IP address"
+msgstr ""
+
+#: install/step2.php:51
+msgid "Database Server Port"
+msgstr ""
+
+#: install/step2.php:55
 msgid "NagiosQL DB User"
 msgstr "NagiosQL数据库用户"
 
-#: install/step2.php:68
+#: install/step2.php:57
 msgid "NagiosQL DB Password"
 msgstr "NagiosQL数据库密码"
 
-#: install/step2.php:73
-msgid "Administrative MySQL User"
-msgstr "Mysql管理用户"
+#: install/step2.php:59
+msgid "Administrative Database User"
+msgstr ""
 
-#: install/step2.php:74
-msgid "Administrative MySQL Password"
-msgstr "MySQL管理密码"
+#: install/step2.php:61
+msgid "Administrative Database Password"
+msgstr ""
 
-#: install/step2.php:76
+#: install/step2.php:62
 msgid "Drop database if already exists?"
 msgstr "如果数据库存在是否删除？"
 
-#: install/step2.php:86
+#: install/step2.php:64
 msgid "NagiosQL User Setup"
 msgstr "创建NagiosQL用户"
 
-#: install/step2.php:88
+#: install/step2.php:65
 msgid "Initial NagiosQL User"
 msgstr "初始Nagios用户"
 
-#: install/step2.php:89
+#: install/step2.php:67
 msgid "Initial NagiosQL Password"
 msgstr "初始NagiosQL密码"
 
-#: install/step2.php:90
+#: install/step2.php:69
 msgid "Please repeat the password"
 msgstr "请重复输入密码"
 
-#: install/step2.php:94
+#: install/step2.php:70
 msgid "Nagios Configuration"
 msgstr "Nagios配置文件"
 
-#: install/step2.php:96
+#: install/step2.php:71
 msgid "Import Nagios sample config?"
 msgstr "导入Nagios参考配置"
 
-#: install/step3.php:41
+#: install/step2.php:74
+msgid "NagiosQL path values"
+msgstr ""
+
+#: install/step2.php:75
+msgid "Create NagiosQL config paths?"
+msgstr ""
+
+#: install/step2.php:77
+msgid "NagiosQL config path"
+msgstr ""
+
+#: install/step2.php:79
+msgid "Nagios config path"
+msgstr ""
+
+#: install/step2.php:81
+msgid "Both path values were stored in your configuration target settings for localhost."
+msgstr ""
+
+#: install/step2.php:82
+msgid "If you select the create path option, be sure that the NagiosQL base path exist and the webserver demon has write access to it. So the installer will create the required subdirectories in your localhost's filesystem (hosts, services, backup etc.)"
+msgstr ""
+
+#: install/step2.php:94
+msgid "Please backup your database before proceeding!"
+msgstr "请继续前备份数据库！"
+
+#: install/step3.php:40
 msgid "Finishing Setup"
 msgstr "完成安装"
 
-#: install/step3.php:47
-msgid "Create new NagiosQL database"
-msgstr "创建新NagiosQL数据库"
-
-#: install/step3.php:55
-msgid "Database already exists and drop database was not selected, please correct or manage manually"
-msgstr "数据库已经存在并且删除数据库没有被选择，请改正或者手工操作"
-
-#: install/step3.php:63
-msgid "MySQL server connection (privileged user)"
-msgstr "MySQL服务器连接(授权用户)"
-
-#: install/step3.php:70
-#: install/step3.php:174
-#: install/step3.php:319
-msgid "passed"
-msgstr "通过"
-
-#: install/step3.php:71
-msgid "MySQL server version"
-msgstr "MySQL服务器版本"
-
-#: install/step3.php:81
-msgid "MySQL server support"
-msgstr "MySQL服务器支持"
-
-#: install/step3.php:83
-msgid "supported"
-msgstr "支持"
-
-#: install/step3.php:85
-msgid "not supported"
-msgstr "不支持"
-
-#: install/step3.php:96
-msgid "Delete existing NagiosQL database"
-msgstr "删除现有的NagiosQL数据库"
-
-#: install/step3.php:99
-#: install/step3.php:119
-#: install/step3.php:136
-#: install/step3.php:148
-#: install/step3.php:160
-#: install/step3.php:196
-#: install/step3.php:207
-#: install/step3.php:219
-#: install/step3.php:231
-#: install/step3.php:281
-#: install/step3.php:293
-#: install/step3.php:305
-#: install/step3.php:341
-#: install/step3.php:352
-msgid "done"
-msgstr "完成"
-
-#: install/step3.php:108
-msgid "Creating new database"
-msgstr "创建新数据库"
-
-#: install/step3.php:127
-#: install/functions/func_installer.php:291
-#: install/functions/func_installer.php:312
-msgid "Could not access"
-msgstr "不能获得"
-
-#: install/step3.php:133
-msgid "Create NagiosQL MySQL user"
-msgstr "创建NagiosQL MySQL用户"
-
-#: install/step3.php:145
-msgid "Update MySQL permissions"
-msgstr "更新MySQL权限"
-
-#: install/step3.php:157
-msgid "Reloading MySQL User Table"
-msgstr "重载MySQL用户表"
-
-#: install/step3.php:169
-#: install/step3.php:314
-msgid "Testing database connection to"
-msgstr "测试数据库连接"
-
-#: install/step3.php:192
-#: install/step3.php:337
+#: install/step3.php:42
 msgid "Deploy NagiosQL settings"
 msgstr "部署NagiosQL配置"
 
-#: install/step3.php:194
-#: install/step3.php:339
-msgid "Writing global settings to database"
-msgstr "将全局设置写入数据库"
+#: install/step3.php:43
+msgid "Database server connection (privileged user)"
+msgstr ""
 
-#: install/step3.php:205
-#: install/step3.php:350
-msgid "Writing database configuration to settings.php"
-msgstr "向settings.php写入数据库配置"
+#: install/step3.php:44
+msgid "Database server version"
+msgstr ""
 
-#: install/step3.php:216
+#: install/step3.php:45
+msgid "Database server support"
+msgstr ""
+
+#: install/step3.php:46
+msgid "Delete existing NagiosQL database"
+msgstr "删除现有的NagiosQL数据库"
+
+#: install/step3.php:47
+msgid "Creating new database"
+msgstr "创建新数据库"
+
+#: install/step3.php:48
+msgid "Create NagiosQL database user"
+msgstr ""
+
+#: install/step3.php:49
+msgid "Installing NagiosQL database tables"
+msgstr ""
+
+#: install/step3.php:50
 msgid "Set initial NagiosQL Administrator"
 msgstr "设置初始NagiosQL管理员"
 
-#: install/step3.php:228
+#: install/step3.php:51
+msgid "Database server connection (NagiosQL user)"
+msgstr ""
+
+#: install/step3.php:52
+msgid "Writing global settings to database"
+msgstr "将全局设置写入数据库"
+
+#: install/step3.php:53
+msgid "Writing database configuration to settings.php"
+msgstr "向settings.php写入数据库配置"
+
+#: install/step3.php:54
 msgid "Import Nagios sample data"
 msgstr "导入Nagios参考数据"
 
-#: install/step3.php:243
+#: install/step3.php:55
+msgid "Create and/or store NagiosQL path settings"
+msgstr ""
+
+#: install/step3.php:73
 msgid "Updating existing NagiosQL database"
 msgstr "更新现有的NagiosQL数据库"
 
-#: install/step3.php:246
+#: install/step3.php:80
 msgid "Installed NagiosQL version"
 msgstr "已安装的NagiosQL版本"
 
-#: install/step3.php:252
-msgid "is not supported!"
-msgstr "不被支持"
-
-#: install/step3.php:256
-#: install/step3.php:270
-msgid "error"
-msgstr "错误"
-
-#: install/step3.php:263
+#: install/step3.php:86
 msgid "Upgrading from version"
 msgstr "升级自版本"
 
-#: install/step3.php:263
+#: install/step3.php:86
 msgid "to"
 msgstr "到"
 
-#: install/step3.php:278
+#: install/step3.php:92
 msgid "Converting database to utf8 character set"
 msgstr "将数据库转换为utf8字符集"
 
-#: install/step3.php:290
+#: install/step3.php:98
 msgid "Converting database tables to utf8 character set"
 msgstr "将数据库表转换为utf8字符集"
 
-#: install/step3.php:302
+#: install/step3.php:104
 msgid "Converting database fields to utf8 character set"
 msgstr "将数据库字段转换为utf8字符集"
 
-#: install/step3.php:369
-msgid "Please delete the install directory to continue!"
-msgstr "请删除安装目录以继续"
+#: install/step3.php:126
+msgid "Create new NagiosQL database"
+msgstr "创建新NagiosQL数据库"
 
-#: install/step3.php:377
+#: install/step3.php:133
+msgid "Database already exists and drop database was not selected, please correct or manage manually"
+msgstr "数据库已经存在并且删除数据库没有被选择，请改正或者手工操作"
+
+#: install/step3.php:137
+#: install/functions/install_class.php:115
+#: install/functions/install_class.php:159
+msgid "passed"
+msgstr "通过"
+
+#: install/step3.php:146
+msgid "unknown"
+msgstr ""
+
+#: install/step3.php:211
 msgid "Back"
 msgstr "返回"
 
-#: install/functions/func_installer.php:64
-msgid "Could not create"
-msgstr "不能创建"
+#: install/step3.php:216
+msgid "Please delete the install directory to continue!"
+msgstr "请删除安装目录以继续"
 
-#: install/functions/func_installer.php:64
-#: install/functions/func_installer.php:70
-msgid "database in MySQL"
-msgstr "MySQL中的数据库"
+#: install/functions/install_class.php:110
+#: install/functions/install_class.php:154
+#: install/functions/install_class.php:188
+#: install/functions/install_class.php:229
+#: install/functions/install_class.php:303
+#: install/functions/install_class.php:335
+#: install/functions/install_class.php:413
+#: install/functions/install_class.php:529
+#: install/functions/install_class.php:768
+#: install/functions/install_class.php:814
+#: install/functions/install_class.php:901
+msgid "Database type not defined!"
+msgstr ""
 
-#: install/functions/func_installer.php:70
-msgid "Could not select"
-msgstr "不能选择"
+#: install/functions/install_class.php:195
+#: install/functions/install_class.php:265
+msgid "supported"
+msgstr "支持"
 
-#: install/functions/func_installer.php:169
-msgid "Could not open settings.php in config directory for writing!"
-msgstr "不能打开在配置目录中的settings.php以写入"
+#: install/functions/install_class.php:198
+msgid "not supported"
+msgstr "不支持"
 
-#: install/functions/func_installer.php:277
-msgid "Unknown version!"
-msgstr "未知版本"
+#: install/functions/install_class.php:268
+msgid "Your NagiosQL installation is up to date - no further actions are needed!"
+msgstr ""
 
-#: install/functions/func_installer.php:325
-msgid "Cannot connect to the database."
-msgstr "不能连接到数据库。"
+#: install/functions/install_class.php:272
+#: install/functions/install_class.php:279
+msgid "Updates to NagiosQL 3.2 and above are only supported from NagiosQL 3.0.0 and above!"
+msgstr ""
 
-#: install/functions/func_installer.php:325
-#: install/functions/func_installer.php:334
-#: install/functions/func_installer.php:337
-msgid "MySQL Error"
-msgstr "MySQL错误"
+# prepend.adm
+#: install/functions/install_class.php:277
+msgid "Error while selecting settings table."
+msgstr ""
 
-#: install/functions/func_installer.php:334
-msgid "Cannot select the database."
-msgstr "不能选择数据库"
+#: install/functions/install_class.php:308
+#: install/functions/install_class.php:340
+#: install/functions/install_class.php:419
+#: install/functions/install_class.php:421
+#: install/functions/install_class.php:494
+#: install/functions/install_class.php:534
+#: install/functions/install_class.php:625
+#: install/functions/install_class.php:675
+#: install/functions/install_class.php:732
+#: install/functions/install_class.php:740
+#: install/functions/install_class.php:773
+#: install/functions/install_class.php:819
+#: install/functions/install_class.php:906
+msgid "done"
+msgstr "完成"
 
-#: install/functions/func_installer.php:337
-msgid "Cannot set"
-msgstr "不能设置"
+#: install/functions/install_class.php:419
+msgid "Only added rights to existing user"
+msgstr ""
 
-#~ msgid "Serv. dependency"
-#~ msgstr "服务依赖项"
+#: install/functions/install_class.php:483
+#: install/functions/install_class.php:488
+msgid "SQL file is not readable or empty"
+msgstr ""
 
-#~ msgid "Serv. escalation"
-#~ msgstr "服务升级"
+# mutdialog.php
+#: install/functions/install_class.php:501
+msgid "No SQL update files available"
+msgstr ""
 
-#~ msgid "Serv. ext. info"
-#~ msgstr "服务其他信息"
+#: install/functions/install_class.php:571
+#: install/functions/install_class.php:576
+#: install/functions/install_class.php:585
+#: install/functions/install_class.php:590
+#: install/functions/install_class.php:613
+#: install/functions/install_class.php:620
+msgid "Inserting initial data to settings database has failed:"
+msgstr ""
 
-#~ msgid "Admin description"
-#~ msgstr "管理描述"
+#: install/functions/install_class.php:679
+msgid "Connot open/write to config/settings.php"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Now"
-#~ msgstr "否"
+#: install/functions/install_class.php:713
+#: install/functions/install_class.php:720
+msgid "Inserting path data to database has failed:"
+msgstr ""
 
-#, fuzzy
-#~ msgid "NagiosQL Plugins"
-#~ msgstr "初始Nagios登录"
+#: install/functions/install_class.php:732
+msgid "Check the permissions of the created paths!"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Plugin description"
-#~ msgstr "管理概述"
+#: install/functions/install_class.php:736
+msgid "NagiosQL config path is not writeable - only database values updated"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Administrate Plugins"
-#~ msgstr "管理"
+# prepend.adm
+#: install/functions/install_class.php:776
+#: install/functions/install_class.php:822
+#: install/functions/install_class.php:909
+msgid "Database errors while converting to utf-8:"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Manage your NagiosQL Plugins"
-#~ msgstr "初始Nagios登录"
-
-#, fuzzy
-#~ msgid "Community Plugins"
-#~ msgstr "命令行"
-
-#, fuzzy
-#~ msgid "Functions to administrate NagiosQL Community Admins"
-#~ msgstr "管理NagiosQL3版的功能"
-
-#, fuzzy
-#~ msgid "SVN Server changed to:"
-#~ msgstr "配置被改变"
-
-#, fuzzy
-#~ msgid "Commiting files"
-#~ msgstr "普通设置"
-
-#, fuzzy
-#~ msgid "Checkout files"
-#~ msgstr "检查配置文件:"
-
-#, fuzzy
-#~ msgid "Revision"
-#~ msgstr "监督"
-
-#, fuzzy
-#~ msgid "selected"
-#~ msgstr "选择"
-
-#, fuzzy
-#~ msgid "Checkout database"
-#~ msgstr "创建新数据库"
-
-#, fuzzy
-#~ msgid "Importing base directories"
-#~ msgstr "导入路径"
-
-#, fuzzy
-#~ msgid "Checkout Nagios and NagiosQL config files."
-#~ msgstr "Nagios参考配置文件"
-
-#, fuzzy
-#~ msgid "Warning, database checkout may destroy NagiosQL!"
-#~ msgstr "警告，重启Nagios前要检查配置文件!"
-
-#, fuzzy
-#~ msgid "Server"
-#~ msgstr "服务"
-
-#, fuzzy
-#~ msgid "Database Dump Directory"
-#~ msgstr "数据库用户"
-
-#, fuzzy
-#~ msgid "Report"
-#~ msgstr "导入"
-
+#~ msgid "Polish"
+#~ msgstr "Polish"
+#~ msgid "Japanese"
+#~ msgstr "Japanese"
+#~ msgid "Spanish (Argentina)"
+#~ msgstr "Spanish (Argentina)"
+#~ msgid "PHP session module"
+#~ msgstr "PHP session module"
+#~ msgid "PHP gettext module"
+#~ msgstr "PHP Module:"
+#~ msgid "PHP ftp module"
+#~ msgstr "PHP Module:"
+#~ msgid "PHP ssh module"
+#~ msgstr "PHP Module:"
+#~ msgid "Could not connect to Updateserver"
+#~ msgstr "Could not connect to update server"
+#~ msgid "Error"
+#~ msgstr "Error"
+#~ msgid "An error occured during the version check"
+#~ msgstr "An error occured during the version check"
+#~ msgid "Checking for NagiosQL Updates"
+#~ msgstr "Checking for NagiosQL Updates"
+#~ msgid "You already have the latest development version installed"
+#~ msgstr "You already have the latest development version installed"
 #~ msgid ""
-#~ "Please remove the security file ENABLE_INSTALLER in the install directory "
-#~ "to continue!"
-#~ msgstr "请删除在安装目录下的ENABLE_INSTALLER安全文件以继续"
-
-#~ msgid "Application root path"
-#~ msgstr "程序根路径"
-
-#~ msgid "Application base path"
-#~ msgstr "程序基础路径"
-
-#, fuzzy
-#~ msgid "Plugins"
-#~ msgstr "行"
-
-#~ msgid "Basic Settings"
-#~ msgstr "基础设置"
-
-#~ msgid "Setup Language"
-#~ msgstr "安装语言"
-
-#~ msgid "does not exist!"
-#~ msgstr "不存在"
-
-#~ msgid ""
-#~ "Please create an empty file called ENABLE_INSTALLER in the install "
-#~ "directory to continue!"
-#~ msgstr "请在安装目录创建一个叫做ENABLE_INSTALLER的空文件以继续"
-
-#~ msgid "Start new installation"
-#~ msgstr "开始新安装"
-
-#~ msgid "Update from previous releases"
-#~ msgstr "从以前的版本升级"
-
-#~ msgid "Reset settings (only in case of errors!)"
-#~ msgstr "重置设置(仅在出错时使用！)"
-
-#~ msgid ""
-#~ "does not exist, please create a file in the install directory to continue!"
-#~ msgstr "不存在，请在你的安装路径里生成一个文件以继续"
-
-#~ msgid "PHP mysql support (mysql or mysqli)"
-#~ msgstr "PHP mysql支持(mysql或者mysqli)"
-
-#~ msgid "PHP session support (session)"
-#~ msgstr "支持PHP session(session)"
-
-#~ msgid "PHP gettext support (gettext)"
-#~ msgstr "支持PHP gettext(gettext)"
-
-#~ msgid "PHP FTP support (ftp)"
-#~ msgstr "支持PHP FTP(ftp)"
-
-#~ msgid "PHP HTML_Template_IT support (pear module)"
-#~ msgstr "支持PHP HTML_Template_IT(pear模块)"
-
-#~ msgid "Database Setup"
-#~ msgstr "数据库设置"
-
-#~ msgid "New Installation of NagiosQL"
-#~ msgstr "NagiosQL新安装"
-
-#~ msgid "Parameter"
-#~ msgstr "参数"
-
-#~ msgid "Value"
-#~ msgstr "值"
-
-#~ msgid ""
-#~ "this option will drop an existing database with the same name during a "
-#~ "new installation!"
-#~ msgstr "此选项将在新安装的过程中丢弃一个已经存在的同名数据库"
-
-#~ msgid "Initial NagiosQL Login"
-#~ msgstr "初始Nagios登录"
-
-#~ msgid "Nagios sample config files"
-#~ msgstr "Nagios参考配置文件"
-
-#~ msgid "Update NagiosQL"
-#~ msgstr "更新NagiosQL"
-
-#~ msgid "Note: Upgrades from NagiosQL before v2.0.0 are not possible!"
-#~ msgstr "注意：从2.0.0前的旧版本NagiosQL升级不可行"
-
-#~ msgid "Old"
-#~ msgstr "旧的"
-
-#~ msgid "Modify Settings"
-#~ msgstr "修改设置"
-
-#~ msgid "Connect to source server"
-#~ msgstr "连接到源服务器"
-
-#~ msgid "Server not found!"
-#~ msgstr "服务器未找到"
-
-#~ msgid "Copying old database to new database"
-#~ msgstr "将旧数据库复制到新数据库"
-
-#~ msgid "Copy table"
-#~ msgstr "服值表"
-
-#~ msgid "db in mysql"
-#~ msgstr "mysql中的数据库"
-
-#~ msgid ""
-#~ "In order for a user to get access, he needs to have a key for each key "
-#~ "hole defined here"
-#~ msgstr "为使一个用户有访问权限，对于此处定义的每个空白他都要有访问密码"
-
-#~ msgid "Access violation"
-#~ msgstr "非法访问"
-
-#~ msgid ""
-#~ "You have tried to open a restricted area without having the required "
-#~ "access level. Please contact your local system administrator for further "
-#~ "information!"
+#~ "Entry cannot be deactivated because it is used by another configuration"
 #~ msgstr ""
-#~ "你试图在没有获得所需要的访问权限的情况下打开一个受限页面。请联系你的本地系"
-#~ "统管理员以获得更多信息！"
+#~ "Entry cannot be deactivated because it is used by another configuration"
+#~ msgid "Automatically check for online updates (internet access required!)"
+#~ msgstr "Automatically check for online updates (internet access required!)"
+#~ msgid "Connection to remote system failed (SSH2 connection)!"
+#~ msgstr "Connection to remote system failed (SSH2 connection)!"
+#~ msgid "Connection to remote system failed (FTP connection)!"
+#~ msgstr "Connection to remote system failed (FTP connection)!"
+#~ msgid "No dataset activated. Probably the dataset does not exist"
+#~ msgstr "No dataset activated. Probably the dataset does not exist"
+#~ msgid "No dataset deactivated. Probably the dataset does not exist"
+#~ msgstr "No dataset deactivated. Probably the dataset does not exist"
+#~ msgid "<span style=\"color:#0000FF;\">Relation information for <b>"
+#~ msgstr "<span style=\"color:#0000FF;\">Relational information for <b>"
+#~ msgid "Not installed"
+#~ msgstr "Not installed"
+#~ msgid "The following settings are <em>optional</em> but recommended"
+#~ msgstr "The following settings are <em>optional</em> but recommended"
 
-#~ msgid "Host not active!"
-#~ msgstr "主机不活跃!"
-
-#~ msgid "Attention, no contact or contact groups defined!"
-#~ msgstr "注意，没有定义联系人或联系人组"
-
-#~ msgid "Exclude data"
-#~ msgstr "排除数据"
-
-#~ msgid "Reading remote configuration failed (FTP connection failed):"
-#~ msgstr "读取远端配置文件失败(FTP连接失败):"
-
-#~ msgid "Cannot read the remote configuration file (FTP connection failed)!"
-#~ msgstr "不能读取远端配置文件(FTP连接错误)"
-
-#~ msgid "Configuration backup failed (FTP connection failed):"
-#~ msgstr "配置备份失败(FTP连接失败)"
-
-#~ msgid ""
-#~ "Cannot backup and delete the old configuration file (FTP connection "
-#~ "failed)!"
-#~ msgstr "不能备份及删除旧配置文件(FTP连接失败)!"
-
-#~ msgid "File deletion failed (FTP connection failed):"
-#~ msgstr "配置写入失败(FTP连接失败):"
-
-#~ msgid ""
-#~ "Cannot backup the configuration file because the permissions are wrong "
-#~ "(remote FTP)!"
-#~ msgstr "由于权限错误不能备份配置文件(远程FTP)!"
-
-#~ msgid ""
-#~ "Cannot open/overwrite the configuration file - check the permissions of "
-#~ "the temp directory:"
-#~ msgstr "不能打开/覆盖配置文件 - 检查临时路径权限"
-
-#~ msgid "Cannot backup the configuration file (check the permissions)!"
-#~ msgstr "不能备份配置文件(检查权限)!"
-
-#~ msgid "</b> - deletion <b>possible</b>"
-#~ msgstr "</b><b>能</b> - 删除"
-
-#~ msgid "Cannot open the configuration file (FTP connection failed)!"
-#~ msgstr "不能打开配置文件(FTP连接失败)!"
-
-#, fuzzy
-#~ msgid "Change settings (optional)"
-#~ msgstr "修改设置(可选)"
-
-#~ msgid "Installation"
-#~ msgstr "安装"
-
-#~ msgid "Update"
-#~ msgstr "更新"
-
-#~ msgid "Hold CTRL to select<br />more than one entry"
-#~ msgstr "按住CTTL以选择<br>多个条目"
-
-#~ msgid ""
-#~ "Please fill in all required arguments (ARGx) for your selected command"
-#~ msgstr "请为你选择的命令输入所有必须的参数(ARGx)"
-
-#~ msgid "Please define the language for the Setup process"
-#~ msgstr "请指定你安装过程的语言"
-
-#~ msgid "This setup will help you with your new NagiosQL Installation:"
-#~ msgstr "此安装过程将会帮你完成新的NagiosQL安装"
-
-#~ msgid "configure NagiosQL settings,"
-#~ msgstr "配置NagiosQL选项"
-
-#~ msgid "This setup will help you upgrading your old NagiosQL Installation:"
-#~ msgstr "此安装过成将会帮你升级你原有的NagiosQL"
-
-#~ msgid "verify the requirements,"
-#~ msgstr "确认前提条件"
-
-#~ msgid "and upgrade the database."
-#~ msgstr "并且升级数据库"
-
-#~ msgid "Upgrades are only possible from NagiosQL 2.0 and above!"
-#~ msgstr "升级只支持NagiosQL 2.0以上版本"
-
-#~ msgid "Module / Test"
-#~ msgstr "模块／测试"
-
-#~ msgid "Installation Test"
-#~ msgstr "安装测试"
-
-#~ msgid "NagiosQL System settings"
-#~ msgstr "NagiosQL系统设置"
-
-#~ msgid "seconds"
-#~ msgstr "秒"
-
-#~ msgid "Database settings"
-#~ msgstr "数据库设置"
-
-#~ msgid ""
-#~ "Now we install the NagiosQL V3.00 Database. If you upgrade from NagiosQL "
-#~ "V2.0.0 or V2.0.2 you can use the upgrade option."
-#~ msgstr ""
-#~ "现在安装NagiosQL 3.0.0版数据库。如果你从NagiosQL 2.0.0版或者2.0.2版升级，"
-#~ "你可以使用升级选项"
-
-#~ msgid ""
-#~ "In any case, you can also install a new database for NagiosQL V3.0.0."
-#~ msgstr "无论何种情况，你都可以为NagiosQL 3.0.0版安装新的数据库"
-
-#~ msgid ""
-#~ "Using the option 'Skip DB installation' will only upgrade the NagiosQL DB "
-#~ "access settings and does not install or upgrade the database."
-#~ msgstr ""
-#~ "使用'忽略数据库安装选项'将只更新NagiosQL数据库访问设置并不安装或升级数据库"
-
-#~ msgid "Installation option"
-#~ msgstr "安装选项"
-
-#~ msgid "Database name (new or existing V2.x database)"
-#~ msgstr "数据库名称(新的或者已存在的2.x版数据库)"
-
-#~ msgid "Drop existing database?"
-#~ msgstr "丢弃现有数据库?"
-
-#~ msgid "MySQL User (installation only)"
-#~ msgstr "MySQL密码(只针对安装)"
-
-#~ msgid "In case of an upgrade, this option has no functionality."
-#~ msgstr "如果是升级，此选项无作用"
-
-#~ msgid "exists"
-#~ msgstr "存在"
-
-#~ msgid "Existing database"
-#~ msgstr "以存在数据库"
-
-#~ msgid "will be deleted"
-#~ msgstr "将被删除"
-
-#~ msgid "already exists - new installation is not possible"
-#~ msgstr "已经存在－不能进行新的安装操作"
-
-#~ msgid "MySQL database connection (privileged user)"
-#~ msgstr "MySQL数据库连接(授权用户)"
-
-#~ msgid "Accessing SQL Script"
-#~ msgstr "访问SQL脚本"
-
-#~ msgid "Create tables and data"
-#~ msgstr "创建表及数据"
-
-#~ msgid "Update additional table definitions"
-#~ msgstr "升级其他表格定义"
-
-#~ msgid "added columns"
-#~ msgstr "增加的列"
-
-#~ msgid "Accessing SQL Update Script"
-#~ msgstr "访问SQL更新脚本"
-
-#~ msgid "Update tables and data"
-#~ msgstr "更新表及数据"
-
-#~ msgid "Read settings"
-#~ msgstr "阅读设置"
-
-#~ msgid "Writing settings"
-#~ msgstr "写入设置"
-
-#~ msgid "Installation sucessfully finished."
-#~ msgstr "成功完成安装"
-
-#~ msgid "Thanks for using NagiosQL!"
-#~ msgstr "感谢使用NagiosQL"
-
-#~ msgid "Go to NagiosQL"
-#~ msgstr "转到NagiosQL"
-
-#~ msgid "THIS FILE IS AUTOMATICALLY CREATED! DO NOT EDIT MANUALLY"
-#~ msgstr "此文件是自动生成的！请勿手工修改"
-
-#~ msgid "compatible"
-#~ msgstr "兼容"
-
-#~ msgid "no text found in"
-#~ msgstr "没有发现文本"
-
-#~ msgid "query"
-#~ msgstr "查询"
-
-#~ msgid "Host Templates"
-#~ msgstr "主机模板"
-
-#~ msgid "Contact Templates"
-#~ msgstr "联系人模板"
-
-#~ msgid "MySQL User"
-#~ msgstr "MySQL服务器"
-
-#~ msgid "(installation only)"
-#~ msgstr "(只针对安装)"
-
-#~ msgid "Application language"
-#~ msgstr "应用语言"

@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Download config file
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1229 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //

@@ -5,121 +5,78 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : User administration
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1229 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
-$intMain    	= 7;
-$intSub     	= 18;
-$intMenu    	= 2;
-$preContent 	= "admin/user.tpl.htm";
-$intCount   	= 0;
-$strMessage 	= "";
+$prePageId			= 32;
+$preContent   		= "admin/user.tpl.htm";
+$preSearchSession	= 'user';
+$preTableName		= 'tbl_user';
+$preKeyField		= 'username';
+$preAccess    		= 1;
+$preFieldvars 		= 1;
+//$preNoAccessGrp		= 1;
 //
-// Include preprocessing file
-// ==========================
-$preAccess    	= 1;
-$preFieldvars 	= 1;
+// Include preprocessing files
+// ===========================
 require("../functions/prepend_adm.php");
-//
-// Process post parameters
-// =======================
-$chkInsName   	= isset($_POST['tfName'])       	? htmlspecialchars($_POST['tfName'], ENT_QUOTES, 'utf-8')      	: "";
-$chkInsAlias  	= isset($_POST['tfAlias'])      	? htmlspecialchars($_POST['tfAlias'], ENT_QUOTES, 'utf-8')     	: "";
-$chkHidName   	= isset($_POST['hidName'])      	? $_POST['hidName']     	: "";
-$chkInsPwd1   	= isset($_POST['tfPassword1'])  	? $_POST['tfPassword1'] 	: "";
-$chkInsPwd2   	= isset($_POST['tfPassword2'])  	? $_POST['tfPassword2'] 	: "";
-$chkAdminEnable = isset($_POST['chbAdminEnable'])   ? $_POST['chbAdminEnable']  : 0;
-$chkWsAuth    	= isset($_POST['chbWsAuth'])    	? $_POST['chbWsAuth']   	: 0;
-//
-// Quote special characters
-// ==========================
-if (get_magic_quotes_gpc() == 0) {
-	$chkInsName   = addslashes($chkInsName);
-	$chkInsAlias  = addslashes($chkInsAlias);
-	$chkHidName   = addslashes($chkHidName);
-	$chkInsPwd1   = addslashes($chkInsPwd1);
-	$chkInsPwd2   = addslashes($chkInsPwd2);
-}
+require("../functions/prepend_content.php");
 // 
 // Add or modify data
 // ==================
-if (($chkModus == "insert") || ($chkModus == "modify")) {
+if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
   	// Check password
-  	if ((($chkInsPwd1 === $chkInsPwd2) && (strlen($chkInsPwd1) > 5)) || (($chkModus == "modify") && ($chkInsPwd1 == ""))) {
-    	if ($chkInsPwd1 == "") {$strPasswd = "";} else {$strPasswd = "`password`=MD5('$chkInsPwd1'),";}
+  	if ((($chkTfValue3 === $chkTfValue4) && (strlen($chkTfValue3) > 5)) || (($chkModus == "modify") && ($chkTfValue3 == ""))) {
+    	if ($chkTfValue3 == "") {$strPasswd = "";} else {$strPasswd = "`password`=MD5('$chkTfValue3'),";}
     	// Grant admin rights
-		if ($chkHidName == "Admin") { 
-			$chkInsName	 	 = "Admin";
-			$chkActive		 = "1";
-			$chkAdminEnable  = "1";
+		if ($chkTfValue5 == "Admin") { 
+			$chkTfValue1  = "Admin";
+			$chkActive	  = "1";
+			$chkChbValue1 = "1";
 		}
-    	$strSQLx = "`tbl_user` SET `username`='$chkInsName', `alias`='$chkInsAlias', $strPasswd
-          			`admin_enable`='$chkAdminEnable', `wsauth`='$chkWsAuth', `active`='$chkActive', `last_modified`=NOW()";
-    	if ($chkModus == "insert") {
-      		$strSQL = "INSERT INTO ".$strSQLx;
-    	} else {
-      		$strSQL = "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
-    	}
-    	if (($chkInsName != "") && ($chkInsAlias != "")) {
-      		$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
-			$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-			if ($chkModus == "insert") $chkDataId = $intInsertId;
-			if ($intInsert == 1) {
-				$intReturn = 1;
+    	$strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', $strPasswd `admin_enable`='$chkChbValue1', 
+				    `wsauth`='$chkChbValue2', `active`='$chkActive', `language`='$chkSelValue1', `domain`='$chkSelValue2', `last_modified`=NOW()";
+		if ($chkModus == "insert") {
+			$strSQL 		= "INSERT INTO ".$strSQLx;
+		} else {
+			$strSQL			= "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
+		}
+		if ($intWriteAccessId == 0) {
+			if (($chkTfValue1 != "") && ($chkTfValue2 != "")) {
+				$intReturn = $myDataClass->dataInsert($strSQL,$intInsertId);
+				if ($intReturn == 1) {
+					$myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				} else {
+					$myVisClass->processMessage($myDataClass->strInfoMessage,$strInfoMessage);
+					if ($chkModus == "insert") $myDataClass->writeLog(translate('A new user added:')." ".$chkTfValue1);
+					if ($chkModus == "modify") $myDataClass->writeLog(translate('User modified:')." ".$chkTfValue1);
+				}
 			} else {
-      			if ($chkModus  == "insert")   $myDataClass->writeLog(translate('A new user added:')." ".$chkInsName);
-      			if ($chkModus  == "modify")   $myDataClass->writeLog(translate('User modified:')." ".$chkInsName);
-				$intReturn = 0;
+				$myVisClass->processMessage(translate('Database entry failed! Not all necessary data filled in!'),$strErrorMessage);
 			}
-    	} else {
-      		$strMessage .= translate('Database entry failed! Not all necessary data filled in!');
-    	}
+		} else {
+			$myVisClass->processMessage(translate('Database entry failed! No write access!'),$strErrorMessage);
+		}
   	} else {
-    	$strMessage .= translate('Password too short or password fields unequally!');
+		$myVisClass->processMessage(translate('Password too short or password fields unequally!'),$strErrorMessage);
   	}
   	$chkModus = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
-	// Delete selected datasets
-  	if ($chkHidName != "Admin") {
-    	$intReturn = $myDataClass->dataDeleteEasy("tbl_user","id",$chkListId);
-		$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	} else {
-    	$myDataClass->strDBMessage = translate("Admin can't be deleted");
-  	}
-  	$chkModus  = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
-	// Copy selected datasets
-  	$intReturn = $myDataClass->dataCopyEasy("tbl_user","username",$chkListId);
-	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	$chkModus  = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
-  	// Open a dataset to modify
-  	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM `tbl_user` WHERE `id`=".$chkListId,$arrModifyData);
-	$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
-  	if ($booReturn == false) $strMessage .= translate('Error while selecting data from database:')."<br>".$myDataClass->strDBError."<br>";
-  	$chkModus      = "add";
 }
-// Get status messages from database
-if (isset($intReturn) && ($intReturn == 1)) $strMessage = $strMessage;
-if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$strMessage."</span>";
+if ($chkModus != "add") $chkModus    = "display"; 
 //
-// Build content menu
-// ==================
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
-//
-// Insert content
-// ==============
+// Start content
+// =============
 $conttp->setVariable("TITLE",translate('User administration'));
 $conttp->parse("header");
 $conttp->show("header");
@@ -127,16 +84,20 @@ $conttp->show("header");
 // Singe data form
 // ===============
 if ($chkModus == "add") {
-  	// Process template text raplacements
-  	foreach($arrDescription AS $elem) {
-    	$conttp->setVariable($elem['name'],$elem['string']);
-  	}
-	$conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-	$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$conttp->setVariable("LIMIT",$chkLimit);
-	$conttp->setVariable("ACT_CHECKED","checked");
+  	// Process domain selection field
+  	if (isset($arrModifyData['domain'])) {$intFieldId = $arrModifyData['domain'];} else {$intFieldId = 1;}
+  	$intReturn = $myVisClass->parseSelectSimple('tbl_datadomain','domain','std_domain',0,$intFieldId,0);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+  	// Process language selection field
+  	if (isset($arrModifyData['language'])) {$intFieldId = $arrModifyData['language'];} else {$intFieldId = 0;}
+	if ($intFieldId == 0) {
+		$intFieldId = $myDBClass->getFieldData("SELECT `id` FROM `tbl_language` WHERE `locale`='".$_SESSION['SETS']['data']['locale']."'")+0;
+	}
+  	$intReturn = $myVisClass->parseSelectSimple('tbl_language','language','language_name',0,$intFieldId);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	// Initial add/modify form definitions
+	$myContentClass->addFormInit($conttp);
 	$conttp->setVariable("WSAUTH_DISABLE","disabled");
-	$conttp->setVariable("MODUS","insert");
 	$conttp->setVariable("FILL_ALLFIELDS",translate('Please fill in all fields marked with an *'));
 	$conttp->setVariable("FILL_ILLEGALCHARS",translate('The following field contains not permitted characters:'));
 	$conttp->setVariable("FILL_PASSWD_NOT_EQUAL",translate('The passwords are not equal!'));
@@ -151,19 +112,16 @@ if ($chkModus == "add") {
   	}
   	// Insert data from database in "modify" mode
   	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-    	foreach($arrModifyData AS $key => $value) {
-      		if (($key == "active") || ($key == "last_modified")) continue;
-      		$conttp->setVariable("DAT_".strtoupper($key),$value);
-    	}
-		if ($arrModifyData['wsauth'] != 1) 		 	$conttp->setVariable("WSAUTH_CHECKED","");
-		if ($arrModifyData['active'] != 1) 		 	$conttp->setVariable("ACT_CHECKED","");
-		if ($arrModifyData['admin_enable'] != 1) 	$conttp->setVariable("ADMINENABLE_CHECKED","");
-		// Object based group administration
-		if ($arrModifyData['admin_enable'] == 1) 	$conttp->setVariable("ADMINENABLE_CHECKED","checked");
+		// Process data
+		$myContentClass->addInsertData($conttp,$arrModifyData,0,'');
 		// Webserver authentification
-		if ($arrModifyData['wsauth'] == 1) 			$conttp->setVariable("WSAUTH_CHECKED","checked");
+		$conttp->setVariable("WSAUTH_CHECKED","");
+		if ($arrModifyData['wsauth'] == 1) $conttp->setVariable("WSAUTH_CHECKED","checked");
+		// Object based group administration
+		$conttp->setVariable("ADMINENABLE_CHECKED","");
+		if ($arrModifyData['admin_enable'] == 1) $conttp->setVariable("ADMINENABLE_CHECKED","checked");
 		// Admin rules
-   		if ($arrModifyData['username'] == "Admin") {
+   		if ($arrModifyData[$preKeyField] == "Admin") {
 			$conttp->setVariable("NAME_DISABLE","disabled");
 			$conttp->setVariable("ACT_DISABLE","disabled");
 			$conttp->setVariable("WSAUTH_DISABLE","disabled");
@@ -172,7 +130,6 @@ if ($chkModus == "add") {
     	}
 		$conttp->setVariable("PASSWORD_MUST","");
 		$conttp->setVariable("PASSWORD_MUST_STAR","");
-    	$conttp->setVariable("MODUS","modify");
   	}
   	$conttp->parse("datainsert");
   	$conttp->show("datainsert");
@@ -181,83 +138,38 @@ if ($chkModus == "add") {
 // Data table
 // ==========
 if ($chkModus == "display") {
-  	// Process template text raplacements
-  	foreach($arrDescription AS $elem) {
-    	$mastertp->setVariable($elem['name'],$elem['string']);
-  	}
+	// Initial list view definitions
+	$myContentClass->listViewInit($mastertp);
 	$mastertp->setVariable("FIELD_1",translate('Username'));
 	$mastertp->setVariable("FIELD_2",translate('Description'));
-	$mastertp->setVariable("DELETE",translate('Delete'));
-	$mastertp->setVariable("LIMIT",$chkLimit);
-	$mastertp->setVariable("DUPLICATE",translate('Copy'));
-	$mastertp->setVariable("ACTION_MODIFY",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-	$mastertp->setVariable("LANG_DELETESINGLE",translate('Do you really want to delete this database entry:'));
-	$mastertp->setVariable("LANG_DELETEOK",translate('Do you really want to delete all marked entries?'));
+	// Row sorting
+	$strOrderString = "ORDER BY `$preKeyField` $hidSortDir";
+	if ($hidSortBy == 2) $strOrderString = "ORDER BY `alias` $hidSortDir";
   	// Count datasets
-  	$strSQL    = "SELECT count(*) AS `number` FROM `tbl_user`";
+  	$strSQL    = "SELECT count(*) AS `number` FROM `$preTableName`";
   	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
   	if ($booReturn == false) {
-    	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	} else {
-    	$intCount = (int)$arrDataLinesCount['number'];
+    	$intLineCount = (int)$arrDataLinesCount['number'];
+		if ($intLineCount < $chkLimit) $chkLimit = 0;
   	}
   	// Get datasets
-  	$strSQL    = "SELECT `id`, `username`, `alias`, `active`, `nodelete`
-          		  FROM `tbl_user` ORDER BY `username` LIMIT $chkLimit,".$SETS['common']['pagelines'];
+  	$strSQL    = "SELECT `id`, `$preKeyField`, `alias`, `active`, `nodelete`
+          		  FROM `$preTableName` $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
   	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$mastertp->setVariable("CELLCLASS_L","tdlb");
-	$mastertp->setVariable("CELLCLASS_M","tdmb");	;
-	$mastertp->setVariable("DATA_FIELD_1",translate('No data'));
-	$mastertp->setVariable("DATA_FIELD_2","&nbsp;");
-	$mastertp->setVariable("DATA_ACTIVE","&nbsp;");
-	$mastertp->setVariable("CHB_CLASS","checkbox");
-  	if ($booReturn == false) {
-    	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
-  	} else if ($intDataCount != 0) {
-    	for ($i=0;$i<$intDataCount;$i++) {
-      		// Line colours
-      		$strClassL = "tdld"; $strClassM = "tdmd"; $strChbClass = "checkboxline";
-      		if ($i%2 == 1) {$strClassL = "tdlb"; $strClassM = "tdmb"; $strChbClass = "checkbox";}
-      		if ($arrDataLines[$i]['active'] == 0) {$strActive = translate('No');} else {$strActive = translate('Yes');}
-      		// Set datafields
-      		foreach($arrDescription AS $elem) {
-        		$mastertp->setVariable($elem['name'],$elem['string']);
-      		}
-			$mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['username'],ENT_COMPAT,'UTF-8'));
-			$mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['alias'],ENT_COMPAT,'UTF-8'));
-			$mastertp->setVariable("DATA_ACTIVE",$strActive);
-			$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
-			$mastertp->setVariable("CELLCLASS_L",$strClassL);
-			$mastertp->setVariable("CELLCLASS_M",$strClassM);
-			$mastertp->setVariable("CHB_CLASS",$strChbClass);
-			$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-			$mastertp->setVariable("PICTURE_CLASS","elementShow");
-			if ($chkModus != "display") $mastertp->setVariable("DISABLED","disabled");
-			if ($arrDataLines[$i]['nodelete'] == "1") {
-				$mastertp->setVariable("DEL_HIDE_START","<!--");
-				$mastertp->setVariable("DEL_HIDE_STOP","-->");
-				$mastertp->setVariable("DISABLED","disabled");
-			}
-      	$mastertp->parse("datarowcommon");
-    	}
-  	} else {
-      	$mastertp->parse("datarowcommon");
+	if ($booReturn == false) {
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	}
-	// Show page numbers
-  	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-  	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks(filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING),$intCount,$chkLimit));
-  	$mastertp->parse("datatablecommon");
-  	$mastertp->show("datatablecommon");
+	// Process data
+	$myContentClass->listData($mastertp,$arrDataLines,$intDataCount,$intLineCount,$preKeyField,'alias');
 }
 // Show messages
-if (isset($strMessage)) {$mastertp->setVariable("DBMESSAGE",$strMessage);} else {$mastertp->setVariable("DBMESSAGE","&nbsp;");}
-$mastertp->parse("msgfooter");
-$mastertp->show("msgfooter");
+$myContentClass->showMessages($mastertp,$strErrorMessage,$strInfoMessage,$strConsistMessage,'','',1);
 //
 // Process footer
 // ==============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
-$maintp->parse("footer");
-$maintp->show("footer");
+$myContentClass->showFooter($maintp,$setFileVersion);
 ?>

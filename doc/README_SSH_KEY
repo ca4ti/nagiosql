@@ -1,0 +1,52 @@
+To create an ssh key pair for NagiosQL:
+=======================================
+
+Remote system:
+1. Create an user (like nagiosql_usr)
+
+Local system
+2. Create a path for the ssh keys
+# mkdir /etc/nagiosql/ssh
+2. Create a key pair (only rsa is supported!)
+# ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): /etc/nagiosql/ssh/id_rsa
+-> empty passphrase!
+
+3. Copy the key on the remote system
+# ssh-copy-id -i /etc/nagiosql/ssh/id_rsa/id_rsa.pub nagiosql_usr@remote-system
+
+4. Check the permissions (read access for apache user)
+# chown wwwrun /etc/nagiosql/ssh/id_rsa
+
+5. Check the login on the remote system:
+# ssh -i /etc/nagiosql/ssh/id_rsa nagiosql_usr@remote-system
+-> Login without a password should be possible!
+
+6. In NagiosQL GUI - go to Administration -> Domain and edit the domain data of your remote system:
+6.1. Select SSH/SFTP as Method
+6.2. Fill in nagiosql_usr as User
+6.3. Fill in /etc/nagiosql/ssh/ as Directory of the key pair (without id_rsa)!
+
+
+Using passwort authentication (not recommended)
+===============================================
+
+If you are using ssh2 with user/password - you have to enable PasswordAuthentication in your sshd_config:
+PasswordAuthentication yes
+
+
+Installing SSH2 Module for PHP
+==============================
+
+1. Install pecl extension from distribution (probably part of php5-devel)							
+
+2. Install libssh2 devel from distribution
+
+3. # pecl install ssh2
+   or
+   # pecl install ssh2-beta 
+   (Use predefined values -> return)
+   
+4. Add ssh2.so to your php.ini:
+   extension=ssh2.so

@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Mysql data processing class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1229 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -28,7 +28,7 @@
 // Name: mysqldb
 //
 // Class variables:  	$arrSettings    	Includes all global settings ($SETS)
-// 						$strDBError     	Includes database error messages
+// 						$strErrorMessage     	Includes database error messages
 //            			$error        		Boolean - error occurred (true/false)
 //            			$strDBId      		Database connection ID
 //            			$intLastId      	Last insert ID
@@ -38,11 +38,11 @@
 class mysqldb {
   	// Define class variables
   	var $arrSettings;				// Will be filled in class constructor
-  	var $strDBError       = "";		// Will be filled in functions
   	var $error            = false;	// Will be filled in functions
   	var $strDBId          = "";		// Will be filled in functions
   	var $intLastId        = 0;		// Will be filled in functions
   	var $intAffectedRows  = 0;		// Will be filled in functions
+  	var $strErrorMessage  = "";		// Will be filled in functions
 
 	///////////////////////////////////////////////////////////////////////////////////////////
   	//  Class constructor
@@ -56,7 +56,7 @@ class mysqldb {
 			// Read global settings
 			$this->arrSettings = $_SESSION['SETS'];
     		// Connect to Database
-    		$this->getDatabase($this->arrSettings['db']);
+			if (isset($this->arrSettings['db'])) $this->getDatabase($this->arrSettings['db']);
 		}
   	}
 
@@ -74,7 +74,7 @@ class mysqldb {
 	//
   	//  Return value:		true 	= successful
 	//						false 	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function getdatabase($arrSettings) {
@@ -99,20 +99,19 @@ class mysqldb {
 	//
   	//  Return value:		<data> 	= successful
 	//						<empty>	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function getFieldData($strSQL) {
     	// Send an SQL Statement to the server
-		$resQuery = mysql_query("set names 'utf8'");
     	$resQuery = mysql_query($strSQL);
     	// Error processing
     	if ($resQuery && (mysql_num_rows($resQuery) != 0) && (mysql_error() == "")) {
       		// return the field value at postition 0/0
 			return mysql_result($resQuery,0,0);
     	} else if (mysql_error() != "") {
-      		$this->strDBError   = mysql_error();
-      		$this->error        = true;
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error        	= true;
      		return("");
     	}
     	return("");
@@ -129,13 +128,12 @@ class mysqldb {
 	//
   	//  Return value:		true 	= successful
 	//						false 	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function getSingleDataset($strSQL,&$arrDataset) {
     	$arrDataset = "";
     	// Send an SQL Statement to the server
-		$resQuery = mysql_query("set names 'utf8'");
     	$resQuery = mysql_query($strSQL);
     	// Error processing
     	if ($resQuery && (mysql_num_rows($resQuery) != 0) && (mysql_error() == "")) {
@@ -143,8 +141,8 @@ class mysqldb {
       		$arrDataset = mysql_fetch_array($resQuery,MYSQL_ASSOC);
       		return true;
     	} else if (mysql_error() != "") {
-      		$this->strDBError   = mysql_error();
-      		$this->error      = true;
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error      		= true;
       		return false;
     	}
     	return true;
@@ -162,14 +160,13 @@ class mysqldb {
 	//
   	//  Return value:		true 	= successful
 	//						false 	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function getDataArray($strSQL,&$arrDataset,&$intDataCount) {
     	$arrDataset   = "";
     	$intDataCount = 0;
     	// Send an SQL Statement to the server
-		$resQuery = mysql_query("set names 'utf8'");
     	$resQuery = mysql_query($strSQL);
     	// Error processing
     	if ($resQuery && (mysql_num_rows($resQuery) != 0) && (mysql_error() == "")) {
@@ -184,8 +181,8 @@ class mysqldb {
       		}
       		return true;
     	} else if (mysql_error() != "") {
-      		$this->strDBError   = mysql_error();
-      		$this->error      = true;
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error 			= true;
       		return false;
     	}
     	return true;
@@ -204,12 +201,11 @@ class mysqldb {
 	//
   	//  Return value:		true 	= successful
 	//						false 	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function insertData($strSQL) {
     	// Send an SQL Statement to the server
-    	$resQuery        = mysql_query("set names 'utf8'");
     	$resQuery        = mysql_query($strSQL);
     	// Error processing
     	if (mysql_error() == "") {
@@ -217,8 +213,8 @@ class mysqldb {
       		$this->intAffectedRows  = mysql_affected_rows();
       		return true;
     	} else {
-      		$this->strDBError   = mysql_error();
-      		$this->error      	= true;
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error      		= true;
       		return false;
     	}
   	}
@@ -233,19 +229,18 @@ class mysqldb {
 	//
   	//  Return value:		<number> 	= successful
 	//						0 			= no datasets or error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function countRows($strSQL) {
     	// Send an SQL Statement to the server
-		$resQuery = mysql_query("set names 'utf8'");
     	$resQuery = mysql_query($strSQL);
     	// Error processing
     	if ($resQuery && (mysql_error() == "")) {
       		return mysql_num_rows($resQuery);
     	} else {
-      		$this->strDBError   = mysql_error();
-      		$this->error      	= true;
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error      		= true;
       		return 0;
     	}
   	}
@@ -265,22 +260,22 @@ class mysqldb {
 	//
   	//  Return value:		true 	= successful
 	//						false 	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function dbconnect($dbserver,$dbport,$dbuser,$dbpasswd) {
     	// Not all parameters available
     	if (($dbserver == "") || ($dbuser == "")) {
-      		$this->strDBError = translate("Missing server connection parameter!")."<br>\n";
+      		$this->strErrorMessage .= translate("Missing server connection parameter!")."::";
       		$this->error   = true;
       		return false;
     	}
     	$this->strDBId = @mysql_connect($dbserver.":".$dbport,$dbuser,$dbpasswd);
     	// Session cannot be etablished
       	if(!$this->strDBId) {
-      		$this->strDBError  = "[".$this->arrSettings['db']['server']."] ".translate("Connection to the database server has failed by reason:")."<br>\n";
-      		$this->strDBError .= mysql_error()."\n";
-      		$this->error   	   = true;
+      		$this->strErrorMessage .= "[".$this->arrSettings['db']['server']."] ".translate("Connection to the database server has failed by reason:")."::";
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error   	   		= true;
       		return false;
     	}
     	return true;
@@ -294,22 +289,28 @@ class mysqldb {
 	//
   	//  Return value:		true 	= successful
 	//						false 	= error
-	//						Status message is stored in class variable $this->strDBError
+	//						Status message is stored in class variable $this->strErrorMessage
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
   	function dbselect($database) {
     	// Not all parameters available
     	if ($database == "") {
-     		$this->strDBError = translate("Missing database connection parameter!")."<br>\n";
+     		$this->strErrorMessage .= translate("Missing database connection parameter!")."::";
       		$this->error   = true;
       		return false;
     	}
     	$bolConnect = @mysql_select_db($database);
     	// Session cannot be etablished
     	if(!$bolConnect) {
-      		$this->strDBError  = "[".$this->arrSettings['db']['server']."] ".translate("Connection to the database server has failed by reason:")."<br>\n";
-      		$this->strDBError .= mysql_error()."\n";
-      		$this->error   	   = true;
+      		$this->strErrorMessage .= "[".$this->arrSettings['db']['server']."] ".translate("Connection to the database server has failed by reason:")."::";
+      		$this->strErrorMessage .= mysql_error()."::";
+      		$this->error   	   		= true;
+      		return false;
+    	}
+		$resQuery = mysql_query("set names 'utf8'");
+		if (mysql_error() != "") {
+      		$this->strErrorMessage	.= mysql_error()."::";
+      		$this->error      		 = true;
       		return false;
     	}
     	return true;

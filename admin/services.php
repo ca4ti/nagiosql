@@ -5,483 +5,249 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Service definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-04-17 12:09:50 +0200 (Tue, 17 Apr 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1321 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
-$intMain      	= 2;
-$intSub       	= 7;
-$intMenu      	= 2;
-$preContent   	= "admin/services.tpl.htm";
-$strDBWarning 	= "";
-$intCount     	= 0;
+$prePageId			= 9;
+$preContent   		= "admin/services.tpl.htm";
+$preSearchSession	= 'service';
+$preTableName		= 'tbl_service';
+$preKeyField		= 'config_name';
+$preAccess    		= 1;
+$preFieldvars 		= 1;
 //
-// Include preprocessing file
-// ==========================
-$preAccess    	= 1;
-$preFieldvars 	= 1;
+// Include preprocessing files
+// ===========================
 require("../functions/prepend_adm.php");
-//
-// Process post parameters
-// =======================
-$chkTfSearch      			= isset($_POST['txtSearch'])      			? htmlspecialchars($_POST['txtSearch'], ENT_QUOTES, 'utf-8') : "";
-$chkTfName          		= isset($_POST['tfName'])         			? str_replace(" ","_",$_POST['tfName']) : "";
-$chkOldConfig       		= isset($_POST['hidName'])        			? $_POST['hidName']             		: "";
-$chkSelHosts        		= isset($_POST['selHosts'])       			? $_POST['selHosts']            		: array("");
-$chkRadHosts        		= isset($_POST['radHosts'])       			? $_POST['radHosts']+0            		: 2;
-$chkSelHostGroups     		= isset($_POST['selHostGroups'])    		? $_POST['selHostGroups']           	: array("");
-$chkRadHostGroups     		= isset($_POST['radHostGroups'])    		? $_POST['radHostGroups']+0         	: 2;
-$chkTfServiceDescription	= isset($_POST['tfServiceDescription']) 	? $_POST['tfServiceDescription']      	: "";
-$chkTfDisplayName       	= isset($_POST['tfDisplayName'])    		? $_POST['tfDisplayName']         		: "";
-$chkSelServiceGroups    	= isset($_POST['selServiceGroups'])   		? $_POST['selServiceGroups']        	: array("");
-$chkRadServiceGroups    	= isset($_POST['radServiceGroups'])   		? $_POST['radServiceGroups']+0        	: 2;
-$chkServiceCommand      	= isset($_POST['selServiceCommand'])  		? $_POST['selServiceCommand']+0       	: 0;
-$chkTfArg1          		= isset($_POST['tfArg1'])         			? $_POST['tfArg1']									: "";
-$chkTfArg2          		= isset($_POST['tfArg2'])         			? $_POST['tfArg2']              		: "";
-$chkTfArg3          		= isset($_POST['tfArg3'])         			? $_POST['tfArg3']              		: "";
-$chkTfArg4         		 	= isset($_POST['tfArg4'])         			? $_POST['tfArg4']              		: "";
-$chkTfArg5          		= isset($_POST['tfArg5'])         			? $_POST['tfArg5']              		: "";
-$chkTfArg6          		= isset($_POST['tfArg6'])         			? $_POST['tfArg6']              		: "";
-$chkTfArg7          		= isset($_POST['tfArg7'])         			? $_POST['tfArg7']              		: "";
-$chkTfArg8          		= isset($_POST['tfArg8'])         			? $_POST['tfArg8']              		: "";
-$chkRadTemplates      		= isset($_POST['radTemplate'])      		? $_POST['radTemplate']+0         		: 2;
-$chkISo           			= isset($_POST['chbISo'])       			? $_POST['chbISo'].","            		: "";
-$chkISw           			= isset($_POST['chbISw'])       			? $_POST['chbISw'].","            		: "";
-$chkISu           			= isset($_POST['chbISu'])       			? $_POST['chbISu'].","            		: "";
-$chkISc           			= isset($_POST['chbISc'])       			? $_POST['chbISc'].","            		: "";
-$chkActiveChecks      		= isset($_POST['radActiveChecksEnabled']) 	? $_POST['radActiveChecksEnabled']+0  	: 2;
-$chkPassiveChecks     		= isset($_POST['radPassiveChecksEnabled'])  ? $_POST['radPassiveChecksEnabled']+0 	: 2;
-$chkParallelizeChecks   	= isset($_POST['radParallelizeChecks']) 	? $_POST['radParallelizeChecks']+0      : 2;
-$chkSelCheckPeriod      	= isset($_POST['selCheckPeriod'])     		? $_POST['selCheckPeriod']+0        	: 0;
-$chkFreshness       		= isset($_POST['radFreshness'])     		? $_POST['radFreshness']+0          	: 2;
-$chkObsess          		= isset($_POST['radObsess'])      			? $_POST['radObsess']+0           		: 2;
-$chkSelEventHandler     	= isset($_POST['selEventHandler'])    		? $_POST['selEventHandler']+0       	: 0;
-$chkEventEnable       		= isset($_POST['radEventEnable'])   		? $_POST['radEventEnable']+0        	: 2;
-$chkFlapEnable        		= isset($_POST['radFlapEnable'])    		? $_POST['radFlapEnable']+0         	: 2;
-$chkFLo           			= isset($_POST['chbFLo'])       			? $_POST['chbFLo'].","            		: "";
-$chkFLw           			= isset($_POST['chbFLw'])       			? $_POST['chbFLw'].","            		: "";
-$chkFLu           			= isset($_POST['chbFLu'])       			? $_POST['chbFLu'].","            		: "";
-$chkFLc           			= isset($_POST['chbFLc'])       			? $_POST['chbFLc'].","            		: "";
-$chkStatusInfos       		= isset($_POST['radStatusInfos'])   		? $_POST['radStatusInfos']+0        	: 2;
-$chkNonStatusInfos      	= isset($_POST['radNoStatusInfos'])   		? $_POST['radNoStatusInfos']+0        	: 2;
-$chkPerfData        		= isset($_POST['radPerfData'])      		? $_POST['radPerfData']+0         		: 2;
-$chkIsVolatile        		= isset($_POST['radIsVolatile'])    		? $_POST['radIsVolatile']+0         	: 2;
-$chkSelContacts       		= isset($_POST['selContacts'])      		? $_POST['selContacts']           		: array("");
-$chkRadContacts       		= isset($_POST['radContacts'])      		? $_POST['radContacts']+0         		: 2;
-$chkSelContactGroups    	= isset($_POST['selContactGroups'])   		? $_POST['selContactGroups']        	: array("");
-$chkRadContactGroups    	= isset($_POST['radContactGroups'])   		? $_POST['radContactGroups']+0        	: 2;
-$chkSelNotifPeriod      	= isset($_POST['selNotifPeriod'])     		? $_POST['selNotifPeriod']+0        	: 0;
-$chkNOw           			= isset($_POST['chbNOw'])       			? $_POST['chbNOw'].","            		: "";
-$chkNOu           			= isset($_POST['chbNOu'])       			? $_POST['chbNOu'].","            		: "";
-$chkNOc           			= isset($_POST['chbNOr'])       			? $_POST['chbNOr'].","            		: "";
-$chkNOr           			= isset($_POST['chbNOc'])       			? $_POST['chbNOc'].","            		: "";
-$chkNOf           			= isset($_POST['chbNOf'])       			? $_POST['chbNOf'].","            		: "";
-$chkNOs           			= isset($_POST['chbNOs'])       			? $_POST['chbNOs'].","            		: "";
-$chkNOnull          		= isset($_POST['chbNOnull'])      			? $_POST['chbNOnull'].","         		: "";
-$chkNotifEnabled      		= isset($_POST['radNotifEnabled'])    		? $_POST['radNotifEnabled']+0       	: 0;
-$chkSTo           			= isset($_POST['chbSTo'])       			? $_POST['chbSTo'].","            		: "";
-$chkSTw           			= isset($_POST['chbSTw'])       			? $_POST['chbSTw'].","            		: "";
-$chkSTu           			= isset($_POST['chbSTu'])       			? $_POST['chbSTu'].","            		: "";
-$chkSTc           			= isset($_POST['chbSTc'])       			? $_POST['chbSTc'].","            		: "";
-$chkTfNotes         		= isset($_POST['tfNotes'])        			? $_POST['tfNotes']             		: "";
-$chkTfNotesURL        		= isset($_POST['tfNotesURL'])       		? $_POST['tfNotesURL']            		: "";
-$chkTfActionURL      		= isset($_POST['tfActionURL'])      		? $_POST['tfActionURL']           		: "";
-$chkTfIconImage       		= isset($_POST['tfIconImage'])      		? $_POST['tfIconImage']           		: "";
-$chkTfIconImageAlt      	= isset($_POST['tfIconImageAlt'])     		? $_POST['tfIconImageAlt']          	: "";
-$chkGenericName       		= isset($_POST['tfGenericName'])    		? $_POST['tfGenericName']           	: "";
-$chkSelOrderByGet     		= isset($_GET['orderby'])       			? rawurldecode($_GET['orderby'])      	: "";
-$chkSelOrderBy        		= isset($_POST['selOrderBy'])       		? $_POST['selOrderBy']            		: "";
-$chkHostGiven       		= isset($_POST['hostGiven'])      			? $_POST['hostGiven']           		: 0;
-$chkSelAccessGroup			= isset($_POST['selAccessGroup'])			? $_POST['selAccessGroup']+0			: 0;
-//
-$chkTfRetryInterval		= (isset($_POST['tfRetryInterval'])    && ($_POST['tfRetryInterval'] 	!= "")) ? $myVisClass->checkNull($_POST['tfRetryInterval'])+0    : "NULL";
-$chkTfMaxCheckAttempts 	= (isset($_POST['tfMaxCheckAttempts']) && ($_POST['tfMaxCheckAttempts'] != "")) ? $myVisClass->checkNull($_POST['tfMaxCheckAttempts'])+0 : "NULL";
-$chkTfCheckInterval		= (isset($_POST['tfCheckInterval'])    && ($_POST['tfCheckInterval'] 	!= "")) ? $myVisClass->checkNull($_POST['tfCheckInterval'])+0    : "NULL";
-$chkTfFreshTreshold		= (isset($_POST['tfFreshTreshold'])    && ($_POST['tfFreshTreshold'] 	!= "")) ? $myVisClass->checkNull($_POST['tfFreshTreshold'])+0    : "NULL";
-$chkTfLowFlat			= (isset($_POST['tfLowFlat'])     	   && ($_POST['tfLowFlat'] 			!= "")) ? $myVisClass->checkNull($_POST['tfLowFlat'])+0       	 : "NULL";
-$chkTfHighFlat			= (isset($_POST['tfHighFlat'])         && ($_POST['tfHighFlat'] 		!= "")) ? $myVisClass->checkNull($_POST['tfHighFlat'])+0      	 : "NULL";
-$chkNotifInterval		= (isset($_POST['tfNotifInterval'])    && ($_POST['tfNotifInterval'] 	!= "")) ? $myVisClass->checkNull($_POST['tfNotifInterval'])+0    : "NULL";
-$chkNotifDelay			= (isset($_POST['tfFirstNotifDelay'])  && ($_POST['tfFirstNotifDelay'] 	!= "")) ? $myVisClass->checkNull($_POST['tfFirstNotifDelay'])+0  : "NULL";
-//
-// Quote special characters
-// ==========================
-if (get_magic_quotes_gpc() == 0) {
-	$chkTfSearch        		= addslashes($chkTfSearch);
-	$chkTfName          		= addslashes($chkTfName);
-	$chkOldConfig       		= addslashes($chkOldConfig);
-	$chkTfServiceDescription  	= addslashes($chkTfServiceDescription);
-	$chkTfDisplayName     		= addslashes($chkTfDisplayName);
-	$chkTfArg1          		= addslashes($chkTfArg1);
-	$chkTfArg2          		= addslashes($chkTfArg2);
-	$chkTfArg3          		= addslashes($chkTfArg3);
-	$chkTfArg4          		= addslashes($chkTfArg4);
-	$chkTfArg5          		= addslashes($chkTfArg5);
-	$chkTfArg6          		= addslashes($chkTfArg6);
-	$chkTfArg7          		= addslashes($chkTfArg7);
-	$chkTfArg8          		= addslashes($chkTfArg8);
-	$chkTfNotes         		= addslashes($chkTfNotes);
-	$chkTfNotesURL        		= addslashes($chkTfNotesURL);
-	$chkTfActionURL       		= addslashes($chkTfActionURL);
-	$chkTfIconImage       		= addslashes($chkTfIconImage);
-	$chkTfIconImageAlt      	= addslashes($chkTfIconImageAlt);
-	$chkGenericName       		= addslashes($chkGenericName);
-}
-//
-// Search/Filter - Session data
-// ============================
-if (!isset($_SESSION['search']) || !isset($_SESSION['search']['service'])) 		$_SESSION['search']['service'] 		= "";
-if (!isset($_SESSION['search']) || !isset($_SESSION['search']['serviceorder'])) $_SESSION['search']['serviceorder'] = "";
-if (($chkModus == "checkform") || ($chkModus == "filter")) {
-  	$_SESSION['search']['service'] 		= $chkTfSearch;
-  	$_SESSION['search']['serviceorder'] = $chkSelOrderBy;
-  	if ($chkSelOrderByGet != "") {
-    	$_SESSION['search']['serviceorder'] = $chkSelOrderByGet;
-  	}
-  	if ($chkSelOrderBy == translate('All configs')) {
-    	$_SESSION['search']['serviceorder'] = "";
-  	}	
-}
-//$strFilter = "";
-//
-// Process additional templates
-// ============================
-if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) && (count($_SESSION['templatedefinition']) != 0)) {
-  	$intTemplates = 1;
-} else {
-  	$intTemplates = 0;
-}
-if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition']) && (count($_SESSION['variabledefinition']) != 0)) {
-  	$intVariables = 1;
-} else {
-  	$intVariables = 0;
-}
+require("../functions/prepend_content.php");
 //
 // Data processing
 // ===============
-$strIS = substr($chkISo.$chkISw.$chkISu.$chkISc,0,-1);
-$strFL = substr($chkFLo.$chkFLw.$chkFLu.$chkFLc,0,-1);
-$strST = substr($chkSTo.$chkSTw.$chkSTu.$chkSTc,0,-1);
-if ($chkNOnull == "") {$strNO = substr($chkNOw.$chkNOu.$chkNOc.$chkNOr.$chkNOf.$chkNOs,0,-1);} else {$strNO = "null";}
-if (($chkSelHosts[0] 		 == "")  || ($chkSelHosts[0] 		 == "0")) {$intSelHosts 		= 0;} else {$intSelHosts 		 = 1;}
-if ($chkSelHosts[0] 		 == "*") $intSelHosts = 2;
-if (($chkSelHostGroups[0] 	 == "")  || ($chkSelHostGroups[0] 	 == "0")) {$intSelHostGroups 	= 0;} else {$intSelHostGroups 	 = 1;}
-if ($chkSelHostGroups[0] 	 == "*") $intSelHostGroups = 2;
-if (($chkSelServiceGroups[0] == "")  || ($chkSelServiceGroups[0] == "0")) {$intSelServiceGroups = 0;} else {$intSelServiceGroups = 1;}
-if (($chkSelContacts[0] 	 == "")  || ($chkSelContacts[0] 	 == "0")) {$intSelContacts 		= 0;} else {$intSelContacts 	 = 1;}
-if ($chkSelContacts[0] 		 == "*") $intSelContacts = 2;
-if (($chkSelContactGroups[0] == "")  || ($chkSelContactGroups[0] == "0")) {$intSelContactGroups = 0;} else {$intSelContactGroups = 1;}
-if ($chkSelContactGroups[0]  == "*") $intSelContactGroups = 2;
-$strCheckCommand = $chkServiceCommand;
-if ($chkServiceCommand != "") {
-  for ($i=1;$i<=8;$i++) {
-    if (${"chkTfArg$i"} != "") $strCheckCommand .= "!".${"chkTfArg$i"};
-  }
+$strNO = substr($chkChbGr1a.$chkChbGr1b.$chkChbGr1c.$chkChbGr1d.$chkChbGr1e.$chkChbGr1f,0,-1);
+$strIS = substr($chkChbGr2a.$chkChbGr2b.$chkChbGr2c.$chkChbGr2d,0,-1);
+$strFL = substr($chkChbGr3a.$chkChbGr3b.$chkChbGr3c.$chkChbGr3d,0,-1);
+$strST = substr($chkChbGr4a.$chkChbGr4b.$chkChbGr4c.$chkChbGr4d,0,-1);
+if ($chkSelValue1 != "") {
+  	for ($i=1;$i<=8;$i++) {
+		${"chkTfArg$i"} = str_replace("!","::bang::",${"chkTfArg$i"});
+		if (${"chkTfArg$i"} != "") $chkSelValue1 .= "!".${"chkTfArg$i"};
+  	}
 }
 // 
 // Add or modify data
 // ==================
-if (($chkModus == "insert") || ($chkModus == "modify")) {
-  	if ($hidActive == 1) $chkActive = 1;
-	if ($chkGroupAdm == 1) 		{$strGroupSQL 	= "`access_group`=$chkSelAccessGroup, ";} 	else {$strGroupSQL 	= "";}
-	if ($chkModus == "insert") 	{$strDomain 	= "`config_id`=$chkDomainId, ";} 			else {$strDomain 	= "";}
-  	$strSQLx = "`tbl_service` SET `config_name`='$chkTfName', `host_name`=$intSelHosts, `host_name_tploptions`=$chkRadHosts,
-        		`hostgroup_name`=$intSelHostGroups, `hostgroup_name_tploptions`=$chkRadHostGroups, `service_description`='$chkTfServiceDescription',
-        		`display_name`='$chkTfDisplayName', `servicegroups`=$intSelServiceGroups, `servicegroups_tploptions`=$chkRadServiceGroups,
-        		`check_command`='$strCheckCommand', `use_template`=$intTemplates, `use_template_tploptions`=$chkRadTemplates,
-        		`is_volatile`=$chkIsVolatile, `initial_state`='$strIS', `max_check_attempts`=$chkTfMaxCheckAttempts, `check_interval`=$chkTfCheckInterval,
-        		`retry_interval`=$chkTfRetryInterval, `active_checks_enabled`=$chkActiveChecks, `passive_checks_enabled`=$chkPassiveChecks,
-        		`check_period`=$chkSelCheckPeriod, `parallelize_check`=$chkParallelizeChecks, `obsess_over_service`=$chkObsess,
-        		`check_freshness`=$chkFreshness, `freshness_threshold`=$chkTfFreshTreshold, `event_handler`=$chkSelEventHandler,
-        		`event_handler_enabled`=$chkEventEnable, `low_flap_threshold`=$chkTfLowFlat, `high_flap_threshold`=$chkTfHighFlat,
-        		`flap_detection_enabled`=$chkFlapEnable, `flap_detection_options`='$strFL', `process_perf_data`=$chkPerfData,
-        		`retain_status_information`=$chkStatusInfos, `retain_nonstatus_information`=$chkNonStatusInfos, `contacts`=$intSelContacts,
-        		`contacts_tploptions`=$chkRadContacts, `contact_groups`=$intSelContactGroups, `contact_groups_tploptions`=$chkRadContactGroups,
-        		`notification_interval`=$chkNotifInterval, `notification_period`=$chkSelNotifPeriod,
-        		`first_notification_delay`=$chkNotifDelay, `notification_options`='$strNO', `notifications_enabled`=$chkNotifEnabled,
-        		`stalking_options`='$strST', `notes`='$chkTfNotes', `notes_url`='$chkTfNotesURL', `action_url`='$chkTfActionURL',
-        		`icon_image`='$chkTfIconImage', `icon_image_alt`='$chkTfIconImageAlt', `name`='$chkGenericName', `active`='$chkActive',
-        		$strGroupSQL $strDomain `use_variables`=$intVariables, `last_modified`=NOW()";
-  	if ($chkModus == "insert") {
-    	$strSQL = "INSERT INTO ".$strSQLx;
+if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+  	$strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `host_name`=$intMselValue1, `host_name_tploptions`=$chkRadValue1, `hostgroup_name`=$intMselValue2,
+				`hostgroup_name_tploptions`=$chkRadValue2, `service_description`='$chkTfValue3', `display_name`='$chkTfValue4', `servicegroups`=$intMselValue3,
+				`servicegroups_tploptions`=$chkRadValue3, `check_command`='$chkSelValue1', `use_template`=$intTemplates, `is_volatile`=$chkRadValue14, 
+				`initial_state`='$strIS', `max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, `retry_interval`=$chkTfNullVal1,
+				`active_checks_enabled`=$chkRadValue4, `passive_checks_enabled`=$chkRadValue5, `check_period`=$chkSelValue2, `parallelize_check`=$chkRadValue6,
+				`obsess_over_service`=$chkRadValue8, `check_freshness`=$chkRadValue7, `freshness_threshold`=$chkTfNullVal4, `event_handler`=$chkSelValue3,
+        		`event_handler_enabled`=$chkRadValue9, `low_flap_threshold`=$chkTfNullVal5, `high_flap_threshold`=$chkTfNullVal6, `flap_detection_enabled`=$chkRadValue10,
+				`flap_detection_options`='$strFL', `process_perf_data`=$chkRadValue13, `retain_status_information`=$chkRadValue11, `retain_nonstatus_information`=$chkRadValue12,
+				`contacts`=$intMselValue4, `contacts_tploptions`=$chkRadValue15, `contact_groups`=$intMselValue5, `contact_groups_tploptions`=$chkRadValue16,
+        		`notification_interval`=$chkTfNullVal7, `notification_period`=$chkSelValue4, `first_notification_delay`=$chkTfNullVal8, `notification_options`='$strNO',
+				`notifications_enabled`=$chkRadValue17, `stalking_options`='$strST', `notes`='$chkTfValue5', `notes_url`='$chkTfValue6', `action_url`='$chkTfValue7',
+        		`icon_image`='$chkTfValue8', `icon_image_alt`='$chkTfValue9', `name`='$chkTfValue10', $preSQLCommon1";
+	if ($chkModus == "insert") {
+		$strSQL 		= "INSERT INTO ".$strSQLx;
   	} else {
-    	$strSQL = "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
+    	$strSQL			= "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
   	}
-	if (($chkTfName != "") && ($chkTfServiceDescription != "")) {
-    	$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
-		$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-    	if ($chkModus == "insert") $chkDataId = $intInsertId;
-    	if ($intInsert == 1) {
-      		$strMessage = $myDataClass->strDBMessage;
-      		$intReturn  = 1;
-		} else {
-      		if ($chkModus == "insert") $myDataClass->writeLog(translate('New service inserted:')." ".$chkTfName);
-      		if ($chkModus == "modify") $myDataClass->writeLog(translate('Service modified:')." ".$chkTfName);
-      		//
-      		// Insert/update relations
-      		// =======================
-      		if ($chkModus == "insert") {
-        		if ($intSelHosts         != 0)  $myDataClass->dataInsertRelation("tbl_lnkServiceToHost",$chkDataId,$chkSelHosts);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHostGroups    != 0)  $myDataClass->dataInsertRelation("tbl_lnkServiceToHostgroup",$chkDataId,$chkSelHostGroups);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelServiceGroups != 0)  $myDataClass->dataInsertRelation("tbl_lnkServiceToServicegroup",$chkDataId,$chkSelServiceGroups);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelContacts    	 != 0)  $myDataClass->dataInsertRelation("tbl_lnkServiceToContact",$chkDataId,$chkSelContacts);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelContactGroups != 0)  $myDataClass->dataInsertRelation("tbl_lnkServiceToContactgroup",$chkDataId,$chkSelContactGroups);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		} else if ($chkModus == "modify") {
-        		if ($intSelHosts != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServiceToHost",$chkDataId,$chkSelHosts);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServiceToHost",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHostGroups != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServiceToHostgroup",$chkDataId,$chkSelHostGroups);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServiceToHostgroup",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelServiceGroups != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServiceToServicegroup",$chkDataId,$chkSelServiceGroups);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServiceToServicegroup",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelContacts != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServiceToContact",$chkDataId,$chkSelContacts);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServiceToContact",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelContactGroups != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServiceToContactgroup",$chkDataId,$chkSelContactGroups);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServiceToContactgroup",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		}
-      		//
-			// Removing the config file if an entry was deleted or renamed
-			// ===========================================================
-     		 if (($chkModus == "modify") && ($chkOldConfig != $chkTfName) && ($chkDomainId != 0)) {
-        		$intServiceCount = $myDBClass->countRows("SELECT * FROM `tbl_service` WHERE BINARY `config_name`='$chkOldConfig' AND `config_id`=$chkDomainId AND `active`='1'");
-        		if ($intServiceCount == 0) {
-          			$intReturn = $myConfigClass->moveFile("service",$chkOldConfig.".cfg");
-					$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-          			if ($intReturn == 0) {
-						$myVisClass->processMessage(translate('The assigned, no longer used configuration files were deleted successfully!')."<br>",$strMessage);
-            			$myDataClass->writeLog(translate('Service file deleted:')." ".$chkOldConfig.".cfg");
-          			} else {
-						if ($chkDomainId == 0) {
-							$myVisClass->processMessage(translate('Common files cannot be removed from target systems - please check manually'),$strMessage);
-						} else {
-							$myVisClass->processMessage(translate('Errors while deleting the old configuration file - please check!:')."<br>".$myConfigClass->strDBMessage."<br>",$strMessage);
-						}
-          			}
-        		}
-      		}
-      		//
-			// Removing the config file if an entry was dectivated ???
-			// ===================================================
-			/*
-      		if (($chkModus == "modify") && ($chkActive == 0)) {
-        		$intServiceCount = $myDBClass->countRows("SELECT * FROM `tbl_service` WHERE `config_name`='$chkOldConfig' AND `config_id`=$chkDomainId AND `active`='1'");
-        		if ($intServiceCount == 0) {
-          			$intReturn = $myConfigClass->moveFile("service",$chkOldConfig.".cfg");
-					$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-          			if ($intReturn == 0) {
-						$myVisClass->processMessage(translate('The assigned, no longer used configuration files were deleted successfully!')."<br>",$strMessage);
-            			$myDataClass->writeLog(translate('Service file deleted:')." ".$chkTfName.".cfg");
-          			} else {
-						$myVisClass->processMessage(translate('Errors while deleting the old configuration file - please check!:')."<br>".$myConfigClass->strDBMessage."<br>",$strMessage);
-          			}
-        		}
-      		}
-			*/
-      		//
-      		// Insert/update session data for templates
-			// ========================================
-      		if ($chkModus == "modify") {
-        		$strSQL   	= "DELETE FROM `tbl_lnkServiceToServicetemplate` WHERE `idMaster`=$chkDataId";
-       			$booReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		}
-      		if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) && (count($_SESSION['templatedefinition']) != 0)) {
-        		$intSortId = 1;
-        		foreach($_SESSION['templatedefinition'] AS $elem) {
-         			if ($elem['status'] == 0) {
-            			$strSQL 	= "INSERT INTO `tbl_lnkServiceToServicetemplate` (`idMaster`,`idSlave`,`idTable`,`idSort`)
-                   				  	   VALUES ($chkDataId,".$elem['idSlave'].",".$elem['idTable'].",".$intSortId.")";
-            			$booReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
-						$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-          			}
-          			$intSortId++;
-        		}
-      		}
-      		//
-      		// Insert/update session data for free variables
-      		// =============================================
-      		if ($chkModus == "modify") {
-        		$strSQL   	= "SELECT * FROM `tbl_lnkServiceToVariabledefinition` WHERE `idMaster`=$chkDataId";
-        		$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intDataCount != 0) {
-          			foreach ($arrData AS $elem) {
-            			$strSQL   	= "DELETE FROM `tbl_variabledefinition` WHERE `id`=".$elem['idSlave'];
-            			$booReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
-						$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-          			}
-        		}
-        		$strSQL   	= "DELETE FROM `tbl_lnkServiceToVariabledefinition` WHERE `idMaster`=$chkDataId";
-        		$booReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		}
-      		if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition']) && (count($_SESSION['variabledefinition']) != 0)) {
-        		foreach($_SESSION['variabledefinition'] AS $elem) {
-          			if ($elem['status'] == 0) {
-            			$strSQL 	= "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`)
-                   				   	   VALUES ('".$elem['definition']."','".$elem['range']."',now())";
-            			$booReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
-						$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-            			$strSQL 	= "INSERT INTO `tbl_lnkServiceToVariabledefinition` (`idMaster`,`idSlave`)
-                   					   VALUES ($chkDataId,$intInsertId)";
-            			$booReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
-						$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-          			}
-        		}
-      		}
-			//
-			// Update Import HASH
-			// ==================
-			$booReturn = $myDataClass->updateHash('tbl_service',$chkDataId);
-			$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		$intReturn = 0;
-    	}
-  	} else {
-    	$strMessage .= translate('Database entry failed! Not all necessary data filled in!');
-  	}
-  	$chkModus = "display";
-} else if ($chkModus == "make") {
-	// Write any configuration files
-	$myConfigClass->getConfigData("enable_common",$setEnableCommon);
-	if ($setEnableCommon != 0) {
-		$strDomainWhere = " (`config_id`=".$chkDomainId." OR `config_id`=0) ";	
-	} else {
-		$strDomainWhere = " (`config_id`=".$chkDomainId.") ";
-	}
-  	$strSQL  = "SELECT `id`, `config_name` FROM `tbl_service` WHERE $strDomainWhere GROUP BY `config_name`";
-  	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-  	$intError = 0;
-  	if ($intDataCount != 0) {
-    	foreach ($arrData AS $data) {
-      		$booReturn = $myConfigClass->createConfigSingle("tbl_service",$data['id']);
-			$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-      		if ($booReturn == 1) $intError++;
-    	}
-  	}
-  	if ($intError == 0) {
-		$myVisClass->processMessage(translate('Configuration file successfully written!'),$strMessage);
-    	$intReturn 	 = 0;
-  	} else {
-    	$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-    	$intReturn 	 = 1;
-  	}
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "info")) {
-	// Display additional relation information
-  	$myDataClass->infoRelation("tbl_service",$chkListId,"config_name,service_description");
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	$intReturn   = 0;
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
-	// Delete selected datasets
-  	$intReturn   = $myDataClass->dataDeleteFull("tbl_service",$chkListId);
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	//-?? if ($intResult == 0) $strFilter = "";
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
-	// Copy selected datasets
-  	$intReturn   = $myDataClass->dataCopyEasy("tbl_service","config_name",$chkListId,$chkSelTargetDomain);
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "activate")) {
-	// Activate selected datasets
-	$intReturn   = $myDataClass->dataActivate("tbl_service",$chkListId);
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "deactivate")) {
-	// Deactivate selected datasets
-	$intReturn   = $myDataClass->dataDeactivate("tbl_service",$chkListId);
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-	$chkModus    = "display"; 
-} else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
-	// Open a dataset to modify
-  	$booReturn   = $myDBClass->getSingleDataset("SELECT * FROM `tbl_service` WHERE `id`=".$chkListId,$arrModifyData);
-	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-	if ($booReturn == false) {
-		$myVisClass->processMessage(translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError,$strMessage);
-		$chkModus    = "add";
-	} else {
-		// Check access permission
-		$intAccess = $myVisClass->checkAccGroup($_SESSION['userid'],$arrModifyData['access_group']);  
-		if ($intAccess == 1) {
-	  		$myVisClass->processMessage(translate('No permission to open configuration!'),$strMessage);
-	  		$arrModifyData  = "";
-	 		$chkModus       = "display";
-		} else {
-	  		$chkModus 	  = "add";	
-		}
-	}
-} else if (($chkModus == "checkform") && ($chkSelModify == "config")) {
-	// Write configuration file
-  	$intDSId    = (int)substr(array_search("on",$_POST),6);
-  	if (isset($chkListId) && ($chkListId != 0)) $intDSId = $chkListId;
-  	// Check the active status of the configuration
-  	$booReturn = $myDBClass->getSingleDataset("SELECT `config_name`, `active` FROM `tbl_service` WHERE `id`=".$intDSId,$arrModifyData);
-  	$myDBClass->getSingleDataset("SELECT count(*) AS `counter` FROM `tbl_service` WHERE `config_name`='".$arrModifyData['config_name']."' AND `config_id`=$chkDomainId",$arrActiveData);
-	$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
-  	// Backup config file if no active configuration exists
-  	if ($arrActiveData['counter'] == 0) {
-    	$intReturn = $myConfigClass->moveFile("service",$chkOldConfig.".cfg");
-    	if ($intReturn == 0) {
-			$myVisClass->processMessage(translate('The assigned, no longer used configuration files were deleted successfully!'),$strMessage);
-      		$myDataClass->writeLog(translate('Service file deleted:')." ".$chkOldConfig.".cfg");
-    	} else {
-			if ($chkDomainId == 0) {
-				$myVisClass->processMessage(translate('Common files cannot be removed from target systems - please check manually'),$strMessage);
+	if ($intWriteAccessId == 0) {
+		if (($chkTfValue1 != "") && ($chkTfValue3 != "")) {
+			$intReturn = $myDataClass->dataInsert($strSQL,$intInsertId);
+			if ($chkModus == "insert")  $chkDataId = $intInsertId;
+			if ($intReturn == 1) {
+				$myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
 			} else {
-				$myVisClass->processMessage(translate('Errors while deleting the old configuration file - please check!:')."<br>".$myConfigClass->strDBMessage,$strMessage);
+				$myVisClass->processMessage($myDataClass->strInfoMessage,$strInfoMessage);
+				if ($chkModus == "insert") $myDataClass->writeLog(translate('New service inserted:')." ".$chkTfValue1);
+				if ($chkModus == "modify") $myDataClass->writeLog(translate('Service modified:')." ".$chkTfValue1);
+				//
+				// Insert/update relations
+				// =======================
+				if ($chkModus == "insert") {
+					if ($intMselValue1 != 0) $intRet1 = $myDataClass->dataInsertRelation("tbl_lnkServiceToHost",$chkDataId,$chkMselValue1);
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue2 != 0) $intRet2 = $myDataClass->dataInsertRelation("tbl_lnkServiceToHostgroup",$chkDataId,$chkMselValue2);
+					if (isset($intRet2) && ($intRet2 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue3 != 0) $intRet3 = $myDataClass->dataInsertRelation("tbl_lnkServiceToServicegroup",$chkDataId,$chkMselValue3);
+					if (isset($intRet3) && ($intRet3 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue4 != 0) $intRet4 = $myDataClass->dataInsertRelation("tbl_lnkServiceToContact",$chkDataId,$chkMselValue4);
+					if (isset($intRet4) && ($intRet4 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue5 != 0) $intRet5 = $myDataClass->dataInsertRelation("tbl_lnkServiceToContactgroup",$chkDataId,$chkMselValue5);
+					if (isset($intRet5) && ($intRet5 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				} else if ($chkModus == "modify") {
+					if ($intMselValue1 != 0) {
+						$intRet1 = $myDataClass->dataUpdateRelation("tbl_lnkServiceToHost",$chkDataId,$chkMselValue1);
+					} else {
+						$intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToHost",$chkDataId);
+					}
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue2 != 0) {
+						$intRet2 = $myDataClass->dataUpdateRelation("tbl_lnkServiceToHostgroup",$chkDataId,$chkMselValue2);
+					} else {
+						$intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToHostgroup",$chkDataId);
+					}
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue3 != 0) {
+						$intRet3 = $myDataClass->dataUpdateRelation("tbl_lnkServiceToServicegroup",$chkDataId,$chkMselValue3);
+					} else {
+						$intRet3 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToServicegroup",$chkDataId);
+					}
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue4 != 0) {
+						$intRet4 = $myDataClass->dataUpdateRelation("tbl_lnkServiceToContact",$chkDataId,$chkMselValue4);
+					} else {
+						$intRet4 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToContact",$chkDataId);
+					}
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue5 != 0) {
+						$intRet5 = $myDataClass->dataUpdateRelation("tbl_lnkServiceToContactgroup",$chkDataId,$chkMselValue5);
+					} else {
+						$intRet5 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToContactgroup",$chkDataId);
+					}
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				}
+				if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5) != 0) $strInfoMessage = "";
+				//
+				// Removing the config file if an entry was deleted or renamed
+				// ===========================================================
+				if (($chkModus == "modify") && ($chkTfValue2 != $chkTfValue1) && ($chkDomainId != 0)) {
+					$intServiceCount = $myDBClass->countRows("SELECT * FROM `$preTableName` 
+															  WHERE BINARY `$preKeyField`='$chkTfValue2' AND `config_id`=$chkDomainId AND `active`='1'");
+					if ($intServiceCount == 0) {
+						$arrConfigID  = $myConfigClass->getConfigSets();
+						if (($arrConfigID != 1) && is_array($arrConfigID)) {
+							$intReturn = 0;
+							foreach($arrConfigID AS $intConfigID) {
+								$intReturn += $myConfigClass->moveFile("service",$chkTfValue2.".cfg",$intConfigID);
+							}
+							if ($intReturn == 0) {
+								$myVisClass->processMessage(translate('The assigned, no longer used configuration files were deleted successfully!'),$strInfoMessage);
+								$myDataClass->writeLog(translate('Service file deleted:')." ".$chkTfValue2.".cfg");
+							} else {
+								if ($chkDomainId == 0) {
+									$myVisClass->processMessage(translate('Common files cannot be removed from target systems - please check manually'),$strErrorMessage);
+								} else {
+									$myVisClass->processMessage(translate('Errors while deleting the old configuration file - please check!:'),$strErrorMessage);
+									$myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
+								}
+							}
+						}
+					}
+				}
+				//
+				// Removing the config file if an entry was dectivated
+				// ===================================================
+				if (($chkModus == "modify") && ($chkActive == 0)) {
+					$intServiceCount = $myDBClass->countRows("SELECT * FROM `$preTableName` WHERE `$preKeyField`='$chkTfValue2' AND `config_id`=$chkDomainId AND `active`='1'");
+					if ($intServiceCount == 0) {
+						$arrConfigID  = $myConfigClass->getConfigSets();
+						if (($arrConfigID != 1) && is_array($arrConfigID)) {
+							$intReturn = 0;
+							foreach($arrConfigID AS $intConfigID) {
+								$intReturn += $myConfigClass->moveFile("service",$chkTfValue2.".cfg",$intConfigID);
+							}
+							if ($intReturn == 0) {
+								$myVisClass->processMessage(translate('The assigned, no longer used configuration files were deleted successfully!'),$strInfoMessage);
+								$myDataClass->writeLog(translate('Service file deleted:')." ".$chkTfValue2.".cfg");
+							} else {
+								$myVisClass->processMessage(translate('Errors while deleting the old configuration file - please check!:'),$strErrorMessage);
+								$myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
+							}
+						}
+					}
+				}
+				//
+				// Insert/update session data for templates
+				// ========================================
+				if ($chkModus == "modify") {
+					$strSQL   	= "DELETE FROM `tbl_lnkServiceToServicetemplate` WHERE `idMaster`=$chkDataId";
+					$intReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
+					if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				}
+				if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) && (count($_SESSION['templatedefinition']) != 0)) {
+					$intSortId = 1;
+					foreach($_SESSION['templatedefinition'] AS $elem) {
+						if ($elem['status'] == 0) {
+							$strSQL 	= "INSERT INTO `tbl_lnkServiceToServicetemplate` (`idMaster`,`idSlave`,`idTable`,`idSort`)
+										   VALUES ($chkDataId,".$elem['idSlave'].",".$elem['idTable'].",".$intSortId.")";
+							$intReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
+							if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+						}
+						$intSortId++;
+					}
+				}
+				//
+				// Insert/update session data for free variables
+				// =============================================
+				if ($chkModus == "modify") {
+					$strSQL   	= "SELECT * FROM `tbl_lnkServiceToVariabledefinition` WHERE `idMaster`=$chkDataId";
+					$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+					if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
+					if ($intDataCount != 0) {
+						foreach ($arrData AS $elem) {
+							$strSQL   	= "DELETE FROM `tbl_variabledefinition` WHERE `id`=".$elem['idSlave'];
+							$intReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
+							if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+						}
+					}
+					$strSQL   	= "DELETE FROM `tbl_lnkServiceToVariabledefinition` WHERE `idMaster`=$chkDataId";
+					$intReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
+					if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					$strSQL 	= "UPDATE `tbl_service` SET `use_variables`=0 WHERE `id`=$chkDataId";
+					$intReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
+					if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				}
+				if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition']) && (count($_SESSION['variabledefinition']) != 0)) {
+					$intCountVariable = 0;
+					foreach($_SESSION['variabledefinition'] AS $elem) {
+						if ($elem['status'] == 0) {
+							$strSQL 	= "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`)
+										   VALUES ('".$elem['definition']."','".$elem['range']."',now())";
+							$intReturn1 = $myDataClass->dataInsert($strSQL,$intInsertId);
+							if ($intReturn1 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+							$strSQL 	= "INSERT INTO `tbl_lnkServiceToVariabledefinition` (`idMaster`,`idSlave`)
+										   VALUES ($chkDataId,$intInsertId)";
+							$intReturn2 = $myDataClass->dataInsert($strSQL,$intInsertId);
+							if ($intReturn2 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+							if (($intReturn1 == 0) && ($intReturn2 == 0)) $intCountVariable++;
+						}
+					}
+					if ($intCountVariable != 0) {
+						$strSQL 	= "UPDATE `tbl_service` SET `use_variables`=1 WHERE `id`=$chkDataId";
+						$intReturn  = $myDataClass->dataInsert($strSQL,$intInsertId);
+						if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					}
+				}
+				//
+				// Update Import HASH
+				// ==================
+				$intReturn = $myDataClass->updateHash($preTableName,$chkDataId);
+				if ($intReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
 			}
+		} else {
+			$myVisClass->processMessage(translate('Database entry failed! Not all necessary data filled in!'),$strErrorMessage);
 		}
-  	} else {
-    	$intReturn 	 = $myConfigClass->createConfigSingle("tbl_service",$intDSId);
-    	$strMessage .= $myConfigClass->strDBMessage;
-  	}
-  	$chkModus   = "display";
-} else if ($chkModus == "filter") {
-  $chkModus   = "display";
-} else if ($chkModus  != "add") {
-  $chkModus   = "display";
+	} else {
+		$myVisClass->processMessage(translate('Database entry failed! No write access!'),$strErrorMessage);
+	}
+  	$chkModus = "display";
 }
-// Get status messages from database
-if (isset($intReturn) && ($intReturn == 1)) $strMessage = $strMessage;
-if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$strMessage."</span>";
-//
-// Build content menu
-// ==================
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
+if ($chkModus != "add") $chkModus    = "display"; 
 //
 // Start content
 // =============
@@ -492,40 +258,62 @@ $conttp->show("header");
 // Singe data form
 // ===============
 if ($chkModus == "add") {
+	// Do not show modified time list
+	$intNoTime = 1;
 	// Process template fields
   	$strWhere = "";
   	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
     	$strWhere = "AND `id` <> ".$arrModifyData['id'];
   	}
-  	$strSQL   	= "SELECT `id`,`template_name` FROM `tbl_servicetemplate` WHERE $strDomainWhere ORDER BY `template_name`";
-  	$booReturn  = $myDBClass->getDataArray($strSQL,$arrDataTpl,$intDataCountTpl);
+  	$strSQL    = "SELECT `id`,`template_name`, `active` FROM `tbl_servicetemplate` WHERE $strDomainWhere2 ORDER BY `template_name`";
+  	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataTpl,$intDataCountTpl);
+	if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	if ($intDataCountTpl != 0) {
     	foreach ($arrDataTpl AS $elem) {
-      		$conttp->setVariable("DAT_TEMPLATE",$elem['template_name']);
+			if ($elem['active'] == 0) { 
+				$strActive = " [inactive]";
+				$conttp->setVariable("SPECIAL_STYLE","inactive_option");
+			} else {
+				$strActive = "";
+				$conttp->setVariable("SPECIAL_STYLE","");
+			}
+      		$conttp->setVariable("DAT_TEMPLATE",htmlspecialchars($elem['template_name'],ENT_QUOTES,'UTF-8').$strActive);
       		$conttp->setVariable("DAT_TEMPLATE_ID",$elem['id']."::1");
       		$conttp->parse("template");
     	}
   	}
-  	$strSQL     = "SELECT `id`, `name` FROM `tbl_service` WHERE `name` <> '' AND $strDomainWhere $strWhere ORDER BY `name`";
-  	$booReturn  = $myDBClass->getDataArray($strSQL,$arrDataHpl,$intDataCount);
+  	$strSQL    = "SELECT `id`, `name`, `active` FROM `$preTableName` WHERE `name` <> '' $strWhere AND $strDomainWhere ORDER BY `name`";
+  	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataHpl,$intDataCount);
+	if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	if ($arrDataHpl != 0) {
     	foreach ($arrDataHpl AS $elem) {
-      		$conttp->setVariable("DAT_TEMPLATE",$elem['name']);
+			if ($elem['active'] == 0) { 
+				$strActive = " [inactive]";
+				$conttp->setVariable("SPECIAL_STYLE","inactive_option");
+			} else {
+				$strActive = "";
+				$conttp->setVariable("SPECIAL_STYLE","");
+			}
+      		$conttp->setVariable("DAT_TEMPLATE",htmlspecialchars($elem['name'],ENT_QUOTES,'UTF-8').$strActive);
       		$conttp->setVariable("DAT_TEMPLATE_ID",$elem['id']."::2");
       		$conttp->parse("template");
     	}
   	}
 	// Process host selection field
-  	$intReturn1 = 0;
-	$intReturn2 = 0;
   	if (isset($arrModifyData['host_name'])) {$intFieldId = $arrModifyData['host_name'];} else {$intFieldId = 0;}
 	$intReturn1 = $myVisClass->parseSelectMulti('tbl_host','host_name','hosts','tbl_lnkServiceToHost',2,$intFieldId);
+	if ($intReturn1 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
   	if (isset($arrModifyData['hostgroup_name'])) {$intFieldId = $arrModifyData['hostgroup_name'];} else {$intFieldId = 0;}
 	$intReturn2 = $myVisClass->parseSelectMulti('tbl_hostgroup','hostgroup_name','hostgroup','tbl_lnkServiceToHostgroup',2,$intFieldId);
-  	if (($intReturn1 != 0) && ($intReturn2 != 0)) $strDBWarning .= translate('Attention, no hosts or hostgroups defined!')."<br>";
+	if ($intReturn2 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	if (($intReturn1 != 0) && ($intReturn2 != 0)) {
+		$myVisClass->processMessage(translate('Attention, no hosts or hostgroups defined!'),$strDBWarning);
+		$intDataWarning = 1;
+	}
 	// Process service groups selection field
   	if (isset($arrModifyData['servicegroups'])) {$intFieldId = $arrModifyData['servicegroups'];} else {$intFieldId = 0;}
 	$intReturn = $myVisClass->parseSelectMulti('tbl_servicegroup','servicegroup_name','servicegroup','tbl_lnkServiceToServicegroup',0,$intFieldId);
+	if ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
 	// Process check command selection field
   	if (isset($arrModifyData['check_command']) && ($arrModifyData['check_command'] != "")) {
     	$arrCommand = explode("!",$arrModifyData['check_command']);
@@ -534,78 +322,54 @@ if ($chkModus == "add") {
     	$intFieldId = 0;
    	}
 	$intReturn = $myVisClass->parseSelectSimple('tbl_command','command_name','servicecommand',2,$intFieldId);
-	if ($intReturn != 0) $strDBWarning .= translate('Attention, no check commands defined!')."<br>";
+	if ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	if ($intReturn != 0) {
+		$myVisClass->processMessage(translate('Attention, no check commands defined!'),$strDBWarning);
+		$intDataWarning = 1;
+	}
   	// Process check period selection field
-	$intReturn = 0;
   	if (isset($arrModifyData['check_period'])) {$intFieldId = $arrModifyData['check_period'];} else {$intFieldId = 0;}
 	$intReturn = $myVisClass->parseSelectSimple('tbl_timeperiod','timeperiod_name','checkperiod',1,$intFieldId);
+	if ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
   	if (isset($arrModifyData['notification_period'])) {$intFieldId = $arrModifyData['notification_period'];} else {$intFieldId = 0;}
 	$intReturn = $myVisClass->parseSelectSimple('tbl_timeperiod','timeperiod_name','notifyperiod',1,$intFieldId);
-	if ($intReturn != 0) $strDBWarning .= translate('Attention, no time periods defined!')."<br>";
+	if ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	if ($intReturn != 0) {
+		$myVisClass->processMessage(translate('Attention, no time periods defined!'),$strDBWarning);
+		$intDataWarning = 1;
+	}
   	// Process event handler selection field
   	if (isset($arrModifyData['event_handler'])) {$intFieldId = $arrModifyData['event_handler'];} else {$intFieldId = 0;}
 	$intReturn = $myVisClass->parseSelectSimple('tbl_command','command_name','eventhandler',1,$intFieldId);
+	if ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
   	// Process contact and contact group selection field
-	$intReturn1 = 0;
-	$intReturn2 = 0;
   	if (isset($arrModifyData['contacts'])) {$intFieldId = $arrModifyData['contacts'];} else {$intFieldId = 0;}
 	$intReturn1 = $myVisClass->parseSelectMulti('tbl_contact','contact_name','service_contacts','tbl_lnkServiceToContact',2,$intFieldId);
+	if ($intReturn1 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
   	if (isset($arrModifyData['contact_groups'])) {$intFieldId = $arrModifyData['contact_groups'];} else {$intFieldId = 0;}
 	$intReturn2 = $myVisClass->parseSelectMulti('tbl_contactgroup','contactgroup_name','service_contactgroups','tbl_lnkServiceToContactgroup',2,$intFieldId);
-  	if (($intReturn != 0) && ($intReturn2 != 0)) $strDBWarning .= translate('Attention, no contact groups defined!')."<br>";
+	if ($intReturn2 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+  	if (($intReturn != 0) && ($intReturn2 != 0)) {
+		$myVisClass->processMessage(translate('Attention, no contacts or contact groups defined!'),$strDBWarning);
+		$intDataWarning = 1;
+	}		
   	// Process access group selection field
   	if (isset($arrModifyData['access_group'])) {$intFieldId = $arrModifyData['access_group'];} else {$intFieldId = 0;}
   	$intReturn = $myVisClass->parseSelectSimple('tbl_group','groupname','acc_group',0,$intFieldId);
-	// Process template text raplacements
-	foreach($arrDescription AS $elem) {
-		$conttp->setVariable($elem['name'],str_replace("</","<\/",$elem['string']));
-	}
-  	$conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-	$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$conttp->setVariable("LIMIT",$chkLimit);
-  	$conttp->setVariable("MENU_ID",$intSub);
-	if ($strDBWarning != "") $conttp->setVariable("WARNING",$strDBWarning.translate('Saving not possible!'));
-	$conttp->setVariable("ACT_CHECKED","checked");
-	$conttp->setVariable("MODUS","insert");
-	$conttp->setVariable("VERSION",$intVersion);
-	$conttp->setVariable("RELATION_CLASS","elementHide");
-	$conttp->setVariable("DOCUMENT_ROOT",$SETS['path']['root']);
-	$conttp->setVariable("IFRAME_SRC",$SETS['path']['root']."admin/commandline.php");
-	$conttp->setVariable("ORDER_BY",$_SESSION['search']['serviceorder']);
-	$conttp->setVariable("SELECT_FIELD_DISABLED","disabled");
-	if ($SETS['common']['seldisable'] == 0)$conttp->setVariable("SELECT_FIELD_DISABLED","enabled");
-	if ($SETS['common']['tplcheck'] == 0) $conttp->setVariable("CHECK_BYPASS","return true;");
-	if ($chkGroupAdm == 0) $conttp->setVariable("RESTRICT_GROUP_ADMIN","class=\"elementHide\"");
-	// Process additional fields based on nagios version
-	if ($intVersion == 3) {
-    	$conttp->setVariable("CLASS_NAME_20","elementHide");
-    	$conttp->setVariable("CLASS_NAME_30","elementShow");
-	} else {
-    	$conttp->setVariable("CLASS_NAME_20","elementShow");
-    	$conttp->setVariable("CLASS_NAME_30","elementHide");
-    	$conttp->setVariable("MUST_20_STAR","*");
-  	}
-	// Process status fields
-  	$strStatusfelder = "ACE,PCE,PAC,FRE,OBS,EVH,FLE,STI,NSI,PED,ISV,NOE,HOS,HOG,SEG,COT,COG,TPL";
-  	foreach (explode(",",$strStatusfelder) AS $elem) {
-    	$conttp->setVariable("DAT_".$elem."0_CHECKED","");
-    	$conttp->setVariable("DAT_".$elem."1_CHECKED","");
-    	$conttp->setVariable("DAT_".$elem."2_CHECKED","checked");
-  	}
+	if ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	// Initial add/modify form definitions
+	$strChbFields = "ACE,PCE,PAC,FRE,OBS,EVH,FLE,STI,NSI,PED,ISV,NOE,HOS,HOG,SEG,COT,COG,TPL";
+	$myContentClass->addFormInit($conttp,$strChbFields);
+	if ($intDataWarning == 1) $conttp->setVariable("WARNING",$strDBWarning."<br>".translate('Saving not possible!'));
   	// Insert data from database in "modify" mode
   	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-    	foreach($arrModifyData AS $key => $value) {
-      		if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
-      		$conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_QUOTES,'UTF-8'));
-    	}
-    	if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
-    	// Process status fields
-    	$strStatusfelder = "ACE,PCE,PCE,FRE,OBS,EVH,FLE,STI,NSI,PED,ISV,NOE,HOS,HOG,SEG,COT,COG,TPL";
-    	foreach (explode(",",$strStatusfelder) AS $elem) {
-      		$conttp->setVariable("DAT_".$elem."0_CHECKED","");
-      		$conttp->setVariable("DAT_".$elem."1_CHECKED","");
-      		$conttp->setVariable("DAT_".$elem."2_CHECKED","");
-    	}
+		// Check relation information to find out locked configuration datasets
+		$intLocked = $myDataClass->infoRelation($preTableName,$arrModifyData['id'],$preKeyField);
+		$myVisClass->processMessage($myDataClass->strInfoMessage,$strRelMessage);
+		$strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by another configuration').":</span>";
+		$strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+		// Process data
+		$myContentClass->addInsertData($conttp,$arrModifyData,$intLocked,$strInfo,$strChbFields);
     	$conttp->setVariable("DAT_ACE".$arrModifyData['active_checks_enabled']."_CHECKED","checked");
     	$conttp->setVariable("DAT_PCE".$arrModifyData['passive_checks_enabled']."_CHECKED","checked");
     	$conttp->setVariable("DAT_PAC".$arrModifyData['parallelize_check']."_CHECKED","checked");
@@ -625,7 +389,8 @@ if ($chkModus == "add") {
     	$conttp->setVariable("DAT_COG".$arrModifyData['contact_groups_tploptions']."_CHECKED","checked");
     	$conttp->setVariable("DAT_TPL".$arrModifyData['use_template_tploptions']."_CHECKED","checked");
     	// Special processing for -1 values - write 'null' to integer fields
-    	$strIntegerfelder = "max_check_attempts,check_interval,retry_interval,freshness_threshold,low_flap_threshold,high_flap_threshold,notification_interval,first_notification_delay";
+    	$strIntegerfelder  = "max_check_attempts,check_interval,retry_interval,freshness_threshold,low_flap_threshold,high_flap_threshold,";
+		$strIntegerfelder .= "notification_interval,first_notification_delay";
     	foreach(explode(",",$strIntegerfelder) AS $elem) {
       		if ($arrModifyData[$elem] == -1) {
         		$conttp->setVariable("DAT_".strtoupper($elem),"null");
@@ -635,20 +400,13 @@ if ($chkModus == "add") {
       		$arrArgument = explode("!",$arrModifyData['check_command']);
       		foreach ($arrArgument AS $key => $value) {
         		if ($key == 0) {
-          			$conttp->setVariable("IFRAME_SRC",$SETS['path']['root']."admin/commandline.php?cname=".$value);
+          			$conttp->setVariable("IFRAME_SRC",$_SESSION['SETS']['path']['base_url']."admin/commandline.php?cname=".$value);
         		} else {
+					$value = str_replace("::bang::","!",$value);
+					$value = str_replace("::back::","\\",$value);
           			$conttp->setVariable("DAT_ARG".$key,htmlentities($value,ENT_QUOTES,'UTF-8'));
         		}
       		}
-    	}
-		// Check relation information to find out locked configuration datasets
-    	if ($myDataClass->infoRelation("tbl_service",$arrModifyData['id'],"config_name,service_description") != 0) {
-      		$conttp->setVariable("ACT_DISABLED","disabled");
-      		$conttp->setVariable("ACT_CHECKED","checked");
-      		$conttp->setVariable("ACTIVE","1");
-      		$strInfo = "<br><span class=\"dbmessage\">".translate('Entry cannot be activated because it is used by another configuration').":</span><br><span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
-      		$conttp->setVariable("CHECK_MUST_DATA",$strInfo);
-			$conttp->setVariable("RELATION_CLASS","elementShow");
     	}
     	// Process option fields
     	foreach(explode(",",$arrModifyData['initial_state']) AS $elem) {
@@ -663,8 +421,7 @@ if ($chkModus == "add") {
     	foreach(explode(",",$arrModifyData['stalking_options']) AS $elem) {
       		$conttp->setVariable("DAT_ST".strtoupper($elem)."_CHECKED","checked");
     	}
-    	$conttp->setVariable("MODUS","modify");
-  	}
+	}
   	$conttp->parse("datainsert");
   	$conttp->show("datainsert");
 }
@@ -672,159 +429,71 @@ if ($chkModus == "add") {
 // List view
 // ==========
 if ($chkModus == "display") {
-  	// Process template text raplacements
-  	foreach($arrDescription AS $elem) {
-    	$mastertp->setVariable($elem['name'],$elem['string']);
-  	} 
-  	$mastertp->setVariable("FIELD_1",translate('Config name'));
-  	$mastertp->setVariable("FIELD_2",translate('Service name'));
-  	$mastertp->setVariable("LIMIT",$chkLimit);
-  	$mastertp->setVariable("ACTION_MODIFY",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-  	$mastertp->setVariable("TABLE_NAME","tbl_service");
-  	$mastertp->setVariable("MAX_ID","0");
-  	$mastertp->setVariable("MIN_ID","0");
-  	$mastertp->setVariable("DAT_SEARCH",$_SESSION['search']['service']);
-  	// Get Group id's with READ
-  	$strAccess = $myVisClass->getAccGroupRead($_SESSION['userid']);
-	// Include domain list
-	$myVisClass->insertDomainList($mastertp);
-   	// Select configuration
-  	$mastertp->setVariable("DAT_CONFIGNAME",translate('All configs'));
-  	if ($chkHostGiven == 0) $mastertp->setVariable("DAT_CONFIGNAME_SEL","selected");
+	// Initial list view definitions
+	$myContentClass->listViewInit($mastertp);
+	$mastertp->setVariable("FIELD_1",translate('Config name'));
+	$mastertp->setVariable("FIELD_2",translate('Service name'));
+	// Configuration name selection
+	$mastertp->setVariable("DAT_CONFIGNAME",translate('All configs'));
   	$mastertp->parse("configlist");
-  	$strSQL    = "SELECT DISTINCT `config_name` FROM `tbl_service` WHERE $strDomainWhere ORDER BY `config_name`";
+  	$strSQL    = "SELECT DISTINCT `$preKeyField` FROM `$preTableName` WHERE $strDomainWhere ORDER BY `$preKeyField`";
   	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataConfig,$intDataCount);
   	if ($booReturn == false) {
-    	$myVisClass->processMessage(translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError,$strMessage);
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	} else if ($intDataCount != 0) {
 		for ($i=0;$i<$intDataCount;$i++) {
-      		$mastertp->setVariable("DAT_CONFIGNAME",$arrDataConfig[$i]['config_name']);
-      		if ($_SESSION['search']['serviceorder'] == $arrDataConfig[$i]['config_name']) {
+      		$mastertp->setVariable("DAT_CONFIGNAME",$arrDataConfig[$i][$preKeyField]);
+      		if ($_SESSION['search']['config_selection'] == $arrDataConfig[$i][$preKeyField]) {
 	  			$mastertp->setVariable("DAT_CONFIGNAME_SEL","selected");
 	  		}
       		$mastertp->parse("configlist");
     	}
   	}
   	// Process filter string
-  	$strSearchWhere = "";
-  	if ($_SESSION['search']['service'] != "") {
-		$strSearchTxt   = $_SESSION['search']['service'];
-    	$strSearchWhere = "AND (`config_name` LIKE '%".$strSearchTxt."%' OR `service_description` LIKE '%".$strSearchTxt."%' OR
+  	if ($_SESSION['search'][$preSearchSession] != "") {
+		$strSearchTxt   = $_SESSION['search'][$preSearchSession];
+    	$strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `service_description` LIKE '%".$strSearchTxt."%' OR
                 		   `display_name` LIKE '%".$strSearchTxt."%')";
   	}
-	$strFilter = "";
-  	if ($_SESSION['search']['serviceorder'] != "") {
-		$strSearchTxt   = $_SESSION['search']['serviceorder'];
-    	$strFilter 		= " AND `config_name` = '".$strSearchTxt."' ";
+  	if ($_SESSION['search']['config_selection'] != "") {
+		$strSearchTxt2   = $_SESSION['search']['config_selection'];
+		if ($strSearchTxt2 != translate('All configs')) {
+    		$strSearchWhere2 = " AND `$preKeyField` = '".$strSearchTxt2."' ";
+		}
   	}
+	// Row sorting
+	$strOrderString = "ORDER BY `config_id`,`$preKeyField` $hidSortDir";
+	if ($hidSortBy == 2) $strOrderString = "ORDER BY `config_id`, `service_description` $hidSortDir";
   	// Count datasets
-  	$strSQL    = "SELECT count(*) AS `number` FROM `tbl_service` WHERE `config_id`=$chkDomainId $strFilter $strSearchWhere AND `access_group` IN ($strAccess)";
-  	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
+  	$strSQL    = "SELECT count(*) AS `number` FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere2 $strSearchWhere AND `access_group` IN ($strAccess)";
+ 	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
   	if ($booReturn == false) {
-    	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	} else {
-    	$intCount = (int)$arrDataLinesCount['number'];
+    	$intLineCount = (int)$arrDataLinesCount['number'];
+		if ($intLineCount < $chkLimit) $chkLimit = 0;
   	}
-	if ($intCount == 0) {
-		$_SESSION['search']['serviceorder'] = "";
-		$strFilter = "";
-		$strSQL    = "SELECT count(*) AS `number` FROM `tbl_service` WHERE `config_id`=$chkDomainId $strFilter $strSearchWhere AND `access_group` IN ($strAccess)";
-  		$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
-		$intCount  = (int)$arrDataLinesCount['number'];
-	}
   	// Datensätze holen
-  	if ($chkLimit > $intCount) $chkLimit =  0;
-  	$strSQL    = "SELECT `id`, `config_name`, `service_description`, `active`, `last_modified`, `config_id` FROM `tbl_service` WHERE $strDomainWhere
-         		  $strFilter $strSearchWhere AND `access_group` IN ($strAccess) ORDER BY `config_id`,`config_name`,`service_description` 
+  	$strSQL    = "SELECT `id`, `$preKeyField`, `service_description`, `register`, `active`, `last_modified`, `config_id`, `access_group` 
+				  FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere2 $strSearchWhere AND `access_group` IN ($strAccess) $strOrderString 
 				  LIMIT $chkLimit,".$SETS['common']['pagelines'];
   	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$mastertp->setVariable("CELLCLASS_L","tdlb");
-	$mastertp->setVariable("CELLCLASS_M","tdmb");	
-	$mastertp->setVariable("DISABLED","disabled");
-	$mastertp->setVariable("DATA_FIELD_1",translate('No data'));
-	$mastertp->setVariable("DATA_FIELD_2","&nbsp;");
-	$mastertp->setVariable("DATA_ACTIVE","&nbsp;");
-	$mastertp->setVariable("DATA_FILE","&nbsp;");
-	$mastertp->setVariable("CHB_CLASS","checkbox");
-	$mastertp->setVariable("PICTURE_CLASS","elementHide");
-	$mastertp->setVariable("PICTURE_CLASS_2","elementHide");
-  	if ($booReturn == false) {
-    	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
-  	} else if ($intDataCount != 0) {
-    	$y=0; $z=0;
-    	for ($i=0;$i<$intDataCount;$i++) {
-      		// Get biggest and smalest value
-      		if ($i == 0) {$y = $arrDataLines[$i]['id']; $z = $arrDataLines[$i]['id'];}
-      		if ($arrDataLines[$i]['id'] < $y) $y = $arrDataLines[$i]['id'];
-      		if ($arrDataLines[$i]['id'] > $z) $z = $arrDataLines[$i]['id'];
-      		$mastertp->setVariable("MAX_ID",$z);
-      		$mastertp->setVariable("MIN_ID",$y);
-      		// Line colours
-      		$strClassL = "tdld"; $strClassM = "tdmd"; $strChbClass = "checkboxline";
-      		if ($i%2 == 1) {$strClassL = "tdlb"; $strClassM = "tdmb"; $strChbClass = "checkbox";}
-      		if ($arrDataLines[$i]['active'] == 0) {$strActive = translate('No');} else {$strActive = translate('Yes');}
-      		// Get file date
-      		$intDate = $myConfigClass->lastModifiedDir($arrDataLines[$i]['config_name'],$arrDataLines[$i]['id'],"service",$strTimeEntry,$strTimeFile,$intOlder);
-			$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-			// Set datafields
-      		foreach($arrDescription AS $elem) {
-        		$mastertp->setVariable($elem['name'],$elem['string']);
-      		}
-      		$mastertp->setVariable("DATA_FIELD_1",htmlspecialchars($arrDataLines[$i]['config_name'],ENT_COMPAT,'UTF-8'));
-	  		$mastertp->setVariable("DATA_FIELD_1S",addslashes(htmlspecialchars($arrDataLines[$i]['config_name'],ENT_COMPAT,'UTF-8')));
-      		$mastertp->setVariable("DATA_FIELD_2",htmlspecialchars($arrDataLines[$i]['service_description'],ENT_COMPAT,'UTF-8'));
-	  		$mastertp->setVariable("DATA_FIELD_2S",addslashes(htmlspecialchars($arrDataLines[$i]['service_description'],ENT_COMPAT,'UTF-8')));
-      		$mastertp->setVariable("DATA_ACTIVE",$strActive);
-      		$mastertp->setVariable("DATA_FILE","<span class=\"dbmessage\">".translate('out-of-date')."</span>");
-      		$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
-      		$mastertp->setVariable("CELLCLASS_L",$strClassL);
-      		$mastertp->setVariable("CELLCLASS_M",$strClassM);
-      		$mastertp->setVariable("CHB_CLASS",$strChbClass);
-      		$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-			$mastertp->setVariable("PICTURE_CLASS","elementShow");
-			$mastertp->setVariable("PICTURE_CLASS_2","elementShow");
-			$mastertp->setVariable("DISABLED","");
-      		if ($intOlder == 0) $mastertp->setVariable("DATA_FILE",translate('up-to-date'));
-      		if ($intDate  == 1) $mastertp->setVariable("DATA_FILE","<span class=\"dbmessage\">".translate('missed')."</span>");
-      		if ($chkModus != "display") $mastertp->setVariable("DISABLED","disabled");
-			// Disable common domain objects
-			if ($arrDataLines[$i]['config_id'] != $chkDomainId) {
-				$mastertp->setVariable("DISABLED","disabled");
-				$mastertp->setVariable("PICTURE_CLASS","elementHide");
-				$mastertp->setVariable("PICTURE_CLASS_2","elementHide");
-				$mastertp->setVariable("DOMAIN_SPECIAL"," [common]");
-			}
-			if ($chkDomainId == 0) {
-				$mastertp->setVariable("PICTURE_CLASS_2","elementHide");
-				$mastertp->setVariable("DATA_FILE","&nbsp;");
-			}
-      		$mastertp->parse("datarowservice");
-    	}
-  	} else {
-		// Disable common domain objects
-		if ($chkDomainId == 0) {
-			$mastertp->setVariable("DISABLED","disabled");
-			$mastertp->setVariable("PICTURE_CLASS","elementHide");
-			$mastertp->setVariable("PICTURE_CLASS_2","elementHide");
-			$mastertp->setVariable("DOMAIN_SPECIAL","&nbsp;");
-		}
-		$mastertp->parse("datarowservice");
+	if ($booReturn == false) {
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	}
-	// Show page numbers
-  	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-  	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks(filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING),$intCount,$chkLimit,$_SESSION['search']['serviceorder']));
-  	$mastertp->parse("datatableservice");
-  	$mastertp->show("datatableservice");
+	// Process data
+	$myContentClass->listData($mastertp,$arrDataLines,$intDataCount,$intLineCount,$preKeyField,'service_description',0);
+	if ($myContentClass->strErrorMessage != "") $myVisClass->processMessage($myContentClass->strErrorMessage,$strErrorMessage);
 }
 // Show messages
-$mastertp->setVariable("DBMESSAGE",$strMessage);
-$mastertp->parse("msgfooterhost");
-$mastertp->show("msgfooterhost");
+$arrTimeData 		= array();
+$strTimeInfoString 	= "";
+$myContentClass->showMessages($mastertp,$strErrorMessage,$strInfoMessage,$strConsistMessage,$arrTimeData,$strTimeInfoString,$intNoTime);
 //
 // Process footer
 // ==============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
-$maintp->parse("footer");
-$maintp->show("footer");
+$myContentClass->showFooter($maintp,$setFileVersion);
 ?>

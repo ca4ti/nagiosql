@@ -5,22 +5,21 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Template definition list
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-04-05 08:11:59 +0200 (Thu, 05 Apr 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1315 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
 $preAccess  	= 1;
-$intSub     	= 2;
 $preNoMain  	= 1;
 //
 // Include preprocessing file
@@ -81,13 +80,16 @@ if ($chkLinkTab != "") {
 			foreach ($arrDataLines AS $elem) {
 				if ($elem['idTable'] == 1) {
 					$strSQL2 = "SELECT `template_name` FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$elem['idSlave'];
+					$strSQL3 = "SELECT `active` FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$elem['idSlave'];
 				} else {
 					$strSQL2 = "SELECT `name` FROM `tbl_".$chkPreTab."` WHERE `id` = ".$elem['idSlave'];
+					$strSQL3 = "SELECT `active` FROM `tbl_".$chkPreTab."` WHERE `id` = ".$elem['idSlave'];
 				}
 				$arrTemp['idSlave']       			= $elem['idSlave'];
 				$arrTemp['definition']      		= addslashes($myDBClass->getFieldData($strSQL2));
 				$arrTemp['idTable']       			= $elem['idTable'];
 				$arrTemp['idSort']       			= $elem['idSort'];
+				$arrTemp['active']       			= $myDBClass->getFieldData($strSQL3)+0;
 				$arrTemp['status']        			= 0;
 				$_SESSION['templatedefinition'][]   = $arrTemp;
 			}
@@ -100,8 +102,10 @@ if ($chkLinkTab != "") {
 if ($chkMode == "add") {
   	if ($arrDefinition[1] == 1) {
     	$strSQL2 = "SELECT `template_name` FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$arrDefinition[0];
+		$strSQL3 = "SELECT `active` FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$arrDefinition[0];
   	} else {
     	$strSQL2 = "SELECT `name` FROM `tbl_".$chkPreTab."` WHERE `id` = ".$arrDefinition[0];
+		$strSQL3 = "SELECT `active` FROM `tbl_".$chkPreTab."` WHERE `id` = ".$arrDefinition[0];
   	}
   	if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition'])) {
     	$intCheck = 0;
@@ -116,6 +120,7 @@ if ($chkMode == "add") {
 			$arrTemp['idTable'] = $arrDefinition[1];
 			$arrTemp['idSort']  = 0;
 			$arrTemp['status'] = 0;
+			$arrTemp['active'] = $myDBClass->getFieldData($strSQL3)+0;
 			$_SESSION['templatedefinition'][] = $arrTemp;
     	}
   	} else {
@@ -124,6 +129,7 @@ if ($chkMode == "add") {
 		$arrTemp['idTable'] = $arrDefinition[1];
 		$arrTemp['idSort']  = 0;
 		$arrTemp['status'] = 0;
+		$arrTemp['active'] = $myDBClass->getFieldData($strSQL3)+0;
 		$_SESSION['templatedefinition'][] = $arrTemp;
   	}
 }
@@ -200,17 +206,17 @@ if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefini
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>None</title>
-	<link href="<?php echo $SETS['path']['root']?>config/main.css" rel="stylesheet" type="text/css">
+	<link href="<?php echo $_SESSION['SETS']['path']['base_url']?>config/main.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" language="javascript">
   		<!--
   		function doDel(key) {
-    		document.location.href = "<?php echo $SETS['path']['root']; ?>admin/templatedefinitions.php?dataId=<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=del&def="+key;
+    		document.location.href = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/templatedefinitions.php?dataId=<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=del&def="+key;
   		}
   		function doUp(key,elem) {
-    		document.location.href = "<?php echo $SETS['path']['root']; ?>admin/templatedefinitions.php?dataId=<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortup&key="+key+"def="+elem;
+    		document.location.href = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/templatedefinitions.php?dataId=<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortup&key="+key+"def="+elem;
   		}
   		function doDown(key,elem) {
-    		document.location.href = "<?php echo $SETS['path']['root']; ?>admin/templatedefinitions.php?dataId=<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortdown&key="+key+"def="+elem;
+    		document.location.href = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/templatedefinitions.php?dataId=<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortdown&key="+key+"def="+elem;
   		}
   		//-->
 	</script>
@@ -223,8 +229,8 @@ if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefini
       if ($elem['status'] == 0) {
 ?>
   		<tr>
-      		<td class="tablerow" style="padding-bottom:2px;"><?php echo htmlspecialchars(stripslashes($elem['definition']),ENT_COMPAT,'UTF-8') ;?></td>
-        	<td class="tablerow" align="right"><img src="<?php echo $SETS['path']['root']; ?>images/up.gif" width="18" height="18" alt="<?php echo translate('Up');?>" title="<?php echo translate('Up');?>" onClick="doUp('<?php echo $key; ?>','<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $SETS['path']['root']; ?>images/down.gif" width="18" height="18" alt="<?php echo translate('Down'); ?>" title="<?php echo translate('Down'); ?>" onClick="doDown('<?php echo $key; ?>','<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $SETS['path']['root']; ?>images/delete.gif" width="18" height="18" alt="<?php echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer"></td>
+      		<td class="tablerow" style="padding-bottom:2px;"><?php echo htmlspecialchars(stripslashes($elem['definition']),ENT_COMPAT,'UTF-8'); if ($elem['active'] == 0) echo " [inactive]"; ?></td>
+        	<td class="tablerow" align="right"><img src="<?php echo $_SESSION['SETS']['path']['base_url']; ?>images/up.gif" width="18" height="18" alt="<?php echo translate('Up');?>" title="<?php echo translate('Up');?>" onClick="doUp('<?php echo $key; ?>','<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $_SESSION['SETS']['path']['base_url']; ?>images/down.gif" width="18" height="18" alt="<?php echo translate('Down'); ?>" title="<?php echo translate('Down'); ?>" onClick="doDown('<?php echo $key; ?>','<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer"></td>
 		</tr>
 <?php
       }

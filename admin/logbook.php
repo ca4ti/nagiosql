@@ -5,64 +5,54 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Admin logbook
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-01-13 07:40:23 +0100 (Fri, 13 Jan 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1158 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
-$intMain    	= 7;
-$intSub     	= 21;
-$intMenu    	= 2;
-$preContent 	= "admin/admin_master.tpl.htm";
-$intError   	= 0;
-$strMessage 	= "";
+$prePageId			= 37;
+$preContent   		= "admin/admin_master.tpl.htm";
+$preAccess    		= 1;
+$preFieldvars 		= 1;
 //
-// Include preprocessing file
-// ==========================
-$preAccess    	= 1;
-$preFieldvars 	= 1;
+// Include preprocessing files
+// ===========================
 require("../functions/prepend_adm.php");
-//
-// Process post parameters
-// =======================
-$chkFromLine  	= isset($_GET['from_line'])   ? filter_var($_GET['from_line'], FILTER_SANITIZE_NUMBER_INT)  : 0;
-$chkDelFrom   	= isset($_POST['txtFrom'])    ? htmlspecialchars($_POST['txtFrom'], ENT_QUOTES, 'utf-8')    : "";
-$chkDelTo     	= isset($_POST['txtTo'])      ? htmlspecialchars($_POST['txtTo'], ENT_QUOTES, 'utf-8')  	: "";
-$chkSearch    	= isset($_POST['txtSearch'])  ? htmlspecialchars($_POST['txtSearch'], ENT_QUOTES, 'utf-8') 	: "";
+require("../functions/prepend_content.php");
 //
 // Delete log entries
 // ==================
-if (isset($_POST['txtFrom']) && (($chkDelFrom != "") || ($chkDelTo != ""))) {
+if (isset($_POST['tfValue1']) && (($chkTfValue1 != "") || ($chkTfValue2 != ""))) {
   	$strWhere = "";
-  	if ($chkDelFrom != "") {
-    	$strWhere 	.= "AND `time` > '$chkDelFrom 00:00:00'";
+  	if ($chkTfValue1 != "") {
+    	$strWhere 	.= "AND `time` > '$chkTfValue1 00:00:00'";
   	}
-  	if ($chkDelTo != "") {
-    	$strWhere .= "AND `time` < '$chkDelTo 23:59:59'";
+  	if ($chkTfValue2 != "") {
+    	$strWhere .= "AND `time` < '$chkTfValue2 23:59:59'";
   	}
   	$strSQL  	= "DELETE FROM `tbl_logbook` WHERE 1=1 $strWhere";
   	$booReturn  = $myDBClass->insertData($strSQL);
   	if ($booReturn == false) {
-    	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
-    	$intError = 1;
+		$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	} else {
-    	$strMessage .= translate('Dataset successfully deleted. Affected rows:')." ".$myDBClass->intAffectedRows;
+		$myVisClass->processMessage(translate('Dataset successfully deleted. Affected rows:')." ".$myDBClass->intAffectedRows,$strInfoMessage);
   	}
 }
 //
 // Search data
 // ===========
-if ($chkSearch != "") {
-  	$strWhere = "WHERE `user` LIKE '%$chkSearch%' OR `ipadress` LIKE '%$chkSearch%' OR `domain` LIKE '%$chkSearch%' OR `entry` LIKE '%$chkSearch%'";
+if ($chkTfSearch != "") {
+  	$strWhere = "WHERE `user` LIKE '%$chkTfSearch%' OR `ipadress` LIKE '%$chkTfSearch%' OR `domain` LIKE '%$chkTfSearch%' OR `entry` LIKE '%$chkTfSearch%'";
 } else {
   	$strWhere = "";
 }
@@ -70,17 +60,14 @@ if ($chkSearch != "") {
 // Get data
 // ========
 $intNumRows = $myDBClass->getFieldData("SELECT count(*) FROM `tbl_logbook` $strWhere");
+if ($intNumRows <= $chkFromLine) $chkFromLine = 0;
 $strSQL     = "SELECT DATE_FORMAT(time,'%Y-%m-%d %H:%i:%s') AS `time`, `user`, `ipadress`, `domain`, `entry`
          	   FROM `tbl_logbook` $strWhere ORDER BY `time` DESC LIMIT $chkFromLine,".$SETS['common']['pagelines'];
 $booReturn  = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
 if ($booReturn == false) {
-  	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
-  	$intError 	 = 1;
+	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+	$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
 }
-//
-// Build content menu
-// ==================
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Start content
 // =============
@@ -92,7 +79,7 @@ $conttp->setVariable("LANG_ENTRIES_BEFORE",translate('Delete logentries between:
 $conttp->setVariable("LOCALE",$SETS['data']['locale']);
 $conttp->setVariable("LANG_SELECT_DATE",translate('Please at least fill in a start or a stop time'));
 $conttp->setVariable("LANG_DELETELOG",translate('Do you really want to delete all log entries between the selected dates?'));
-$conttp->setVariable("DAT_SEARCH",$chkSearch);
+$conttp->setVariable("DAT_SEARCH",$chkTfSearch);
 // Legende einblenden
 if ($chkFromLine > 1) {
   	$intPrevNumber = $chkFromLine - 20;
@@ -122,13 +109,10 @@ if ($intDataCount != 0) {
 		$conttp->parse("logdatacell");
   	}
 }
-if ($strMessage != "") {
-  	if ($intError == 1) {
-    	$conttp->setVariable("LOGDBMESSAGE",$strMessage);
-  	} else {
-    	$conttp->setVariable("OKDATA",$strMessage);
-  	}
-}
+$conttp->setVariable("ERRORMESSAGE","<br>".$strErrorMessage);
+$conttp->setVariable("INFOMESSAGE","<br>".$strInfoMessage);
+// Check access rights for adding new objects
+if ($myVisClass->checkAccGroup($prePageKey,'write') != 0) $conttp->setVariable("ADD_CONTROL","disabled=\"disabled\"");
 $conttp->parse("logbooksite");
 $conttp->show("logbooksite");
 //

@@ -11,10 +11,10 @@
 /* Project  : NagiosQL
 /* Component: Installer CSS
 /* Website  : http://www.nagiosql.org
-/* Date     : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-/* Author   : $LastChangedBy: rouven $
+/* Date     : $LastChangedDate: 2012-02-23 07:49:34 +0100 (Thu, 23 Feb 2012) $
+/* Author   : $LastChangedBy: martin $
 /* Version  : 3.1.1
-/* Revision : $LastChangedRevision: 1058 $
+/* Revision : $LastChangedRevision: 1237 $
 /*
 /**********************************************/
 
@@ -207,7 +207,7 @@ body {
 	}
 	
 #install-center {
-	text-align: center;
+	padding-left: 240px;
 	}
 	
 #install-button-index {
@@ -351,22 +351,68 @@ h3 {
   display:none;
   }
 
+.showfield {
+	
+}
+.hidefield {
+	display:none;	
+}
+
 /* Required fields validation */
 
-input.disabled {
-  border: 1px solid #F2F2F2;
-  background-color: #F2F2F2;
+input[type=text].required,input[type=password].required {
+	width:200px;
+	border: 1px solid #053056;
+	background: #941616 url(../images/inputmust.png);
+	font-family:Verdana, Helvetica, sans-serif;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size:12px;
+	height:18px;
 }
-
-input.validation-failed, textarea.validation-failed {
-  border: 1px solid #FF3300;
-  color : #FF3300;
+input[type=text] {
+	width:200px;
+	border: 1px solid #053056;
+	background: #941616 url(../images/input.png);
+	font-family:Verdana, Helvetica, sans-serif;
+	color: #000000;
+	font-size:12px;
+	height:18px;
 }
-input.validation-passed, textarea.validation-passed {
-  border: 1px solid #00CC00;
-  color : #000;
+input[type=text].locked {
+	width:200px;
+	border: 1px solid #053056;
+	background: #666666 url(../images/inputlock.png);
+	font-family:Verdana, Helvetica, sans-serif;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size:12px;
+	height:18px;
 }
-
+input[type=submit] {
+	border:1px solid #6CF;
+	background: #d1e2fd url(../images/input.png);
+	font-family:Verdana, Helvetica, sans-serif;
+	font-size:12px;
+	color:#0c4271;
+	height:25px;
+	padding-left:10px;
+	padding-right:10px;
+	margin:0px;
+	padding-bottom:2px;
+}
+input[type=submit][disabled] {
+	border:1px solid #6CF;
+	background: #d1e2fd url(../images/input.png);
+	font-family:Verdana, Helvetica, sans-serif;
+	font-size:12px;
+	color:#999;
+	height:25px;
+	padding-left:10px;
+	padding-right:10px;
+	margin:0px;
+	padding-bottom:2px;
+}
 .validation-advice {
   margin: 5px 0;
   padding: 5px;

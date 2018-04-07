@@ -5,109 +5,102 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Project  : NagiosQL
-// Component: Installer
-// Website  : http://www.nagiosql.org
-// Date     : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author   : $LastChangedBy: rouven $
-// Version  : 3.1.1
-// Revision : $LastChangedRevision: 1058 $
+// (c) 2005-2012 by Martin Willisegger
+//
+// Project   : NagiosQL
+// Component : Installer script - step 2
+// Website   : http://www.nagiosql.org
+// Date      : $LastChangedDate: 2012-02-23 11:44:55 +0100 (Thu, 23 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1239 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Security
-// =========
-if(preg_match('#' . basename(__FILE__) . '#', filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING))) {
-  die("You can't access this file directly!");
+// Prevent this file from direct access
+// ====================================
+if(preg_match('#' . basename(__FILE__) . '#', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'utf-8'))) {
+  exit;
 }
-if (!isset($_SESSION['SETS']['install']['step'])) {
-  header("Location: index.php");
-} else {
-  $_SESSION['SETS']['install']['step'] = 2;
+//
+// Define common variables
+// =======================
+$preIncludeContent	= "templates/step2.tpl.htm";
+$intError 			= 0;
+//
+// Build content
+// =============
+$arrTemplate['PASSWD_MESSAGE'] 	= translate('The NagiosQL first passwords are not equal!');
+$arrTemplate['FIELDS_MESSAGE'] 	= translate('Please fill in all fields marked with an *');
+$arrTemplate['STEP1_BOX'] 		= translate('Requirements');
+$arrTemplate['STEP2_BOX']		= translate($_SESSION['install']['mode']);
+$arrTemplate['STEP3_BOX'] 		= translate('Finish');
+$arrTemplate['STEP2_TITLE'] 	= "NagiosQL ".translate($_SESSION['install']['mode']).": ".translate("Setup");
+$arrTemplate['STEP2_TEXT1_1'] 	= translate("Please complete the form below. Mandatory fields marked <em>*</em>");
+$arrTemplate['STEP2_TEXT2_1'] 	= translate("Database Configuration");
+$arrTemplate['STEP2_TEXT2_2'] 	= translate("Database Type");
+$arrTemplate['STEP2_VALUE2_2'] 	= htmlspecialchars($_SESSION['install']['dbtype'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_3'] 	= translate("Database Server");
+$arrTemplate['STEP2_VALUE2_3'] 	= htmlspecialchars($_SESSION['install']['dbserver'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_4'] 	= translate("Local hostname or IP address");
+if (htmlspecialchars($_SESSION['install']['dbserver'], ENT_QUOTES, 'utf-8') == "localhost") {
+	$arrTemplate['STEP2_VALUE2_4'] 	= htmlspecialchars($_SESSION['install']['dbserver'], ENT_QUOTES, 'utf-8');
+}else {
+	$arrTemplate['STEP2_VALUE2_4'] 	= $_SERVER['SERVER_ADDR'];
 }
-if ((isset($_GET['SETS']) AND htmlspecialchars($_GET['SETS'], ENT_QUOTES, 'utf-8') != "") OR (isset($_GET['SETS']) AND htmlspecialchars($_POST['SETS'], ENT_QUOTES, 'utf-8') != "")) {
-  $SETS = "";
-}
-$intError = 0;
-$output="";
-// Default: Remove existing database
-if (isset($_SESSION['SETS']['install']['db_drop']) && ($_SESSION['SETS']['install']['db_drop'] == 1)) {
-  $valDrop = "checked";
-} else {
-  $valDrop = "";
-}
-// Default: Nagios sample data
-if (isset($_SESSION['SETS']['install']['sampleData']) && ($_SESSION['SETS']['install']['sampleData'] == 1)) {
-  $valSample = "checked";
-} else {
-  $valSample = "";
-}
-?>
-<!-- DIV Container for installer Menu -->
-<div id="installmenu">
-  <div id="installmenu_content">
-    <?php include "status.php"; ?>
-  </div>
-</div>
-<!-- DIV Container for installer content -->
-<div id="installmain">
-  <div id="installmain_content">
-    <h1>NagiosQL <?php echo translate($_SESSION['SETS']['install']['InstallType']). ": ". translate("Setup"); ?></h1>
-    <form action="" method="post" class="cmxform" id="setup" name="setup">
-      <?php
-		echo "<p class='hint'>".translate("Please complete the form below. Mandatory fields marked <em>*</em>")."</p>\n";
-		if ($_SESSION['SETS']['install']['InstallType'] == "Update") echo "<p><b>".translate("Please backup your database before proceeding!")."</b></p>\n";
-		echo "<fieldset>\n";
-		echo "<legend>".translate("Database Configuration")."</legend>\n";
-		echo "<ol>\n";
-		echo "<li><label>".translate("MySQL Server")." <em>*</em></label> <input name='txtDBserver' id='txtDBserver' class='required' value='".htmlspecialchars($_SESSION['SETS']['db']['server'], ENT_QUOTES, 'utf-8')."' /></li>\n";
-		echo "<li><label>".translate("MySQL Server Port")." <em>*</em></label> <input name='txtDBport' id='txtDBport' class='required validate-number' value='".htmlspecialchars($_SESSION['SETS']['db']['port'], ENT_QUOTES, 'utf-8')."' /></li>\n";
-		echo "<li><label>".translate("Database name")." <em>*</em></label> <input name='txtDBname' id='txtDBname' class='required' value='".htmlspecialchars($_SESSION['SETS']['db']['database'], ENT_QUOTES, 'utf-8')."' /></li>\n";
-		if ($_SESSION['SETS']['install']['InstallType'] == "Installation") {
-			echo "<li><label>".translate("NagiosQL DB User")." <em>*</em></label> <input name='txtDBuser' id='txtDBuser' class='required' value='".htmlspecialchars($_SESSION['SETS']['db']['username'], ENT_QUOTES, 'utf-8')."' /></li>\n";
-			echo "<li><label>".translate("NagiosQL DB Password")." <em>*</em></label> <input type='password' name='txtDBpass' id='txtDBpass' class='required' value='".htmlspecialchars($_SESSION['SETS']['db']['password'], ENT_QUOTES, 'utf-8')."' /></li>\n";
-		} else {
-			$output .= "<input name='txtDBuser' type='hidden' value='".htmlspecialchars($_SESSION['SETS']['db']['username'], ENT_QUOTES, 'utf-8')."' />\n";
-			$output .= "<input name='txtDBpass' type='hidden' value='".htmlspecialchars($_SESSION['SETS']['db']['password'], ENT_QUOTES, 'utf-8')."' />\n";
-		}
-		echo "<li><label>".translate("Administrative MySQL User")." <em>*</em></label> <input id='txtDBprivUser' class='required' name='txtDBprivUser' value='root' size='15' /></li>\n";
-		echo "<li><label>".translate("Administrative MySQL Password")."</label> <input type='password' name='txtDBprivPass' id='txtDBprivPass' size='15' /></li>\n";
-		if ($_SESSION['SETS']['install']['InstallType'] == "Installation") { 
-			echo "<li><label>".translate("Drop database if already exists?")."</label> <input type='checkbox' name='chkDrop' value='1' ".$valDrop." /></li>\n";
-		} else {
-			$output .= "<input type='hidden' name='chkDrop' id='chkDrop' value='1' />\n";
-		}
-		echo "</ol>\n";
-		echo "</fieldset>\n";
-		if ($output != "") echo $output;
-		if ($_SESSION['SETS']['install']['InstallType'] == "Installation") {
-			// New Installation
-			echo "<fieldset>\n";
-			echo "<legend>".translate("NagiosQL User Setup")."</legend>\n";
-			echo "<ol>\n";
-			echo "<li><label>".translate("Initial NagiosQL User")." <em>*</em></label> <input type='text' name='txtQLuser' id='txtQLuser' class='required' value='admin' size='15' /></li>\n";
-			echo "<li><label>".translate("Initial NagiosQL Password")." <em>*</em></label> <input type='password' class='validate-equalto required' name='txtQLpass' id='txtQLpass' size='15' /></li>\n";
-			echo "<li><label>".translate("Please repeat the password")." <em>*</em></label> <input type='password' class='validate-equalto required' name='txtQLpassrepeat' id='txtQLpassrepeat' size='15' /></li>\n";
-			echo "</ol>\n";
-			echo "</fieldset>\n";
-			echo "<fieldset>\n";	
-			echo "<legend>".translate("Nagios Configuration")."</legend>\n";
-			echo "<ol>\n";			
-			echo "<li><label>".translate("Import Nagios sample config?")." </label> <input type='checkbox' name='chkSample' id='chkSample' value='1' ".$valSample." /></li>\n";
-			echo "</ol>\n";
-			echo "</fieldset>\n";
-		}
-    echo "<div id=\"install-next\">\n";
-    echo "<input type='hidden' name='step' value='3' />\n";
-    echo "<input type='hidden' name='PHPSESSID' value='".session_id()."' />";
-    echo "<input type='image' src='images/next.png' value='Submit' alt='Submit'><br>".translate("Next")."\n";
-    echo "</div>\n";
-    echo "</form>\n";
-    ?>
-    <script type="text/javascript">
-      new Validation('setup',{stopOnFirst:true});
-    </script>
+$arrTemplate['STEP2_TEXT2_5'] 	= translate("Database Server Port");
+$arrTemplate['STEP2_VALUE2_5'] 	= htmlspecialchars($_SESSION['install']['dbport'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_6'] 	= translate("Database name");
+$arrTemplate['STEP2_VALUE2_6'] 	= htmlspecialchars($_SESSION['install']['dbname'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_7'] 	= translate("NagiosQL DB User");
+$arrTemplate['STEP2_VALUE2_7'] 	= htmlspecialchars($_SESSION['install']['dbuser'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_8'] 	= translate("NagiosQL DB Password");
+$arrTemplate['STEP2_VALUE2_8'] 	= htmlspecialchars($_SESSION['install']['dbpass'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_9'] 	= translate("Administrative Database User");
+$arrTemplate['STEP2_VALUE2_9'] 	= htmlspecialchars($_SESSION['install']['admuser'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT2_10'] 	= translate("Administrative Database Password");
+$arrTemplate['STEP2_TEXT2_11'] 	= translate("Drop database if already exists?");
+if ($_SESSION['install']['dbdrop'] == 1) {$arrTemplate['STEP2_VALUE2_11'] = "checked";} else {$arrTemplate['STEP2_VALUE2_11'] = "";}
+$arrTemplate['STEP2_TEXT3_1'] 	= translate("NagiosQL User Setup");
+$arrTemplate['STEP2_TEXT3_2'] 	= translate("Initial NagiosQL User");
+$arrTemplate['STEP2_VALUE3_2'] 	= htmlspecialchars($_SESSION['install']['qluser'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT3_3'] 	= translate("Initial NagiosQL Password");
+$arrTemplate['STEP2_VALUE3_3'] 	= htmlspecialchars($_SESSION['install']['qlpass'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT3_4'] 	= translate("Please repeat the password");
+$arrTemplate['STEP2_TEXT4_1'] 	= translate("Nagios Configuration");
+$arrTemplate['STEP2_TEXT4_2'] 	= translate("Import Nagios sample config?");
+if ($_SESSION['install']['sample'] == 1) {$arrTemplate['STEP2_VALUE4_2'] = "checked";} else {$arrTemplate['STEP2_VALUE4_2'] = "";}
+$arrTemplate['STEP2_FORM_1'] 	= translate("Next");
+$arrTemplate['STEP2_TEXT5_1'] 	= translate("NagiosQL path values");
+$arrTemplate['STEP2_TEXT5_2'] 	= translate("Create NagiosQL config paths?");
+if ($_SESSION['install']['createpath'] == 1) {$arrTemplate['STEP2_VALUE5_2'] = "checked";} else {$arrTemplate['STEP2_VALUE5_2'] = "";}
+$arrTemplate['STEP2_TEXT5_3'] 	= translate("NagiosQL config path");
+$arrTemplate['STEP2_VALUE5_3'] 	= htmlspecialchars($_SESSION['install']['qlpath'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT5_4'] 	= translate("Nagios config path");
+$arrTemplate['STEP2_VALUE5_4'] 	= htmlspecialchars($_SESSION['install']['nagpath'], ENT_QUOTES, 'utf-8');
+$arrTemplate['STEP2_TEXT5_5'] 	= translate("Both path values were stored in your configuration target settings for localhost.");
+$arrTemplate['STEP2_TEXT5_6'] 	= translate("If you select the create path option, be sure that the NagiosQL base path exist and the webserver demon has write access to it. So the installer will create the required subdirectories in your localhost's filesystem (hosts, services, backup etc.)");
+$arrTemplate['INSTALL_FIELDS'] 	= "";
 
-  </div>
-</div>
-<div id="ie_clearing"> </div>
+//
+// Setting some template values to blank
+// =====================================
+$arrTemplate['STEP2_TEXT1_2'] = "";
+
+//
+// Conditional checks
+// =======================
+if ($_SESSION['install']['mode'] == "Update") {
+	$arrTemplate['STEP2_TEXT1_2'] = "<p style=\"color:red;\"><b>".translate("Please backup your database before proceeding!")."</b></p>\n";
+	$arrTemplate['INST_VISIBLE'] = "hidefield";
+} else {
+	$arrTemplate['INSTALL_FIELDS'] 	= ",tfDBprivUser,tfDBprivPass,tfQLuser,tfQLpass";
+	$arrTemplate['INST_VISIBLE'] = "showfield";
+}
+
+//
+// Write content
+// =============
+$strContent = $myInstClass->parseTemplate($arrTemplate,$preIncludeContent);
+echo $strContent;
+?>

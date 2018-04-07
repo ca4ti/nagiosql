@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : field language variables (for replace in templates)
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1229 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -45,6 +45,7 @@ $arrDescription[] = array ("name" => "LANG_ENABLE_UTF8_DECODE",         "string"
 $arrDescription[] = array ("name" => "LANG_ACCESS_KEY_HOLES",     		"string" => translate("Access key holes"));
 $arrDescription[] = array ("name" => "LANG_ACCESS_KEYS",        		"string" => translate("Access keys"));
 $arrDescription[] = array ("name" => "LANG_ACTIVE",           			"string" => translate("Active"));
+$arrDescription[] = array ("name" => "LANG_REGISTERED",           		"string" => translate("Registered"));
 $arrDescription[] = array ("name" => "LANG_REQUIRED",           		"string" => translate("required"));
 $arrDescription[] = array ("name" => "LANG_SAVE",             			"string" => translate("Save"));
 $arrDescription[] = array ("name" => "LANG_ABORT",            			"string" => translate("Abort"));
@@ -213,6 +214,7 @@ $arrDescription[] = array ("name" => "LANG_FIRST_NOTIFICATION",     	"string" =>
 $arrDescription[] = array ("name" => "LANG_LAST_NOTIFICATION",      	"string" => translate("Last notification"));
 $arrDescription[] = array ("name" => "LANG_DEPENDSERVICES",       		"string" => translate("Dependent services"));
 $arrDescription[] = array ("name" => "LANG_SERVICES",           		"string" => translate("Services"));
+$arrDescription[] = array ("name" => "LANG_DEPENDSERVICEGROUPS",        "string" => translate("Dependent servicegroups"));
 $arrDescription[] = array ("name" => "LANG_HELP",           			"string" => translate("Help"));
 $arrDescription[] = array ("name" => "LANG_CALENDAR",           		"string" => translate("Calendar"));
 $arrDescription[] = array ("name" => "LANG_GROUPNAME",           		"string" => translate("Group name"));
@@ -225,6 +227,10 @@ $arrDescription[] = array ("name" => "LANG_OBJECT_ACCESS_RESTRICTIONS",	"string"
 $arrDescription[] = array ("name" => "LANG_ADMIN_ENABLE",           	"string" => translate("Enable group administration"));
 $arrDescription[] = array ("name" => "LANG_SHOW_RELATION_DATA",         "string" => translate("Show relation data"));
 $arrDescription[] = array ("name" => "LANG_HIDE_RELATION_DATA",         "string" => translate("Hide relation data"));
+$arrDescription[] = array ("name" => "LANG_CONFIG_TARGET",         		"string" => translate("Configuration target"));
+$arrDescription[] = array ("name" => "LANG_LANGUAGE",         			"string" => translate("User language"));
+$arrDescription[] = array ("name" => "LANG_STANDARD_DOMAIN",         	"string" => translate("Standard domain"));
+$arrDescription[] = array ("name" => "LANG_SERVICES_WARNING",         	"string" => "<b>".translate("Warning:")."</b> ".translate("The associated services must be additionally written to the files. Only writing the host configuration is not sufficient because the modification is stored inside the service files!"));
 // weekdays
 $arrDescription[] = array ("name" => "LANG_MONDAY",     				"string" => translate("Monday"));
 $arrDescription[] = array ("name" => "LANG_TUESDAY",    				"string" => translate("Tuesday"));
@@ -284,4 +290,7 @@ translate('Host templates');
 translate('Service templates');
 translate('Contact templates');
 translate('Help editor');
+translate('Data domains');
+translate('Config targets');
+translate('Support');
 ?>

@@ -5,33 +5,30 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Start script
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
+// Date      : $LastChangedDate: 2012-03-14 13:43:23 +0100 (Wed, 14 Mar 2012) $
 // Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1296 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// Destroy old session data
+// ========================
+session_start();
+session_destroy();
+//
 // Define common variables
 // =======================
-$intMain    	= 1;
-$intSub     	= 0;
-$intMenu    	= 1;
-$preContent   = "index.tpl.htm";
+$intPageID		= 0;
+$preContent		= "index.tpl.htm";
 //
-// Process post/get parameters
-// ===========================
-$chkInsName    	= isset($_POST['tfUsername'])		  ? $_POST['tfUsername']  : "";
-$chkInsPasswd  	= isset($_POST['tfPassword'])   	? $_POST['tfPassword']  : "";
-$chkLogout     	= isset($_GET['logout'])       		? htmlspecialchars($_GET['logout'], ENT_QUOTES, 'utf-8')       : "rr";
-//
-// Redirect to installation wizard if PHP smaller than 5.2
-//
+// Redirect to installation wizard
+// ===============================
 define('MIN_PHP_VERSION', '5.2.0');
 if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
 	header("Location: install/index.php");

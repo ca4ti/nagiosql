@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-04-13 14:49:45 +0200 (Mi, 13. Apr 2011) $
+// Date      : $LastChangedDate: 2012-03-05 07:55:49 +0100 (Mon, 05 Mar 2012) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1074 $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1271 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -27,21 +27,15 @@
 //
 // Name: nagdata
 //
-// Class variables:
-// $arrSettings  		Includes all global settings ($SETS)
-// $intDomainId			Domain ID
-// $myDBClass     		MySQL database class object
-// $myVisClass    		NagiosQL visualization class object
-// $strDBMessage		Process messages
-//
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class nagdata {
   	// Define class variables
-    var $arrSettings;       // Will be filled in class constructor
-  	var $intDomainId  = 0;  // Will be filled in class constructor
-  	var $strDBMessage = ""; // Will be filled in functions
-  	var $myDBClass;         // Will be filled in prepend_adm.php
-  	var $myVisClass;        // Will be filled in prepend_adm.php
+    var $arrSettings;       		// Array includes all global settings
+  	var $intDomainId  		= 0;	// Domain id value
+  	var $myDBClass;					// NagiosQL database class object
+  	var $myVisClass;				// NagiosQL visual class object
+    var $strErrorMessage 	= ""; 	// String including error messages
+  	var $strInfoMessage   	= ""; 	// String including information messages
 
 	///////////////////////////////////////////////////////////////////////////////////////////
   	//  Class constructor
@@ -70,7 +64,7 @@ class nagdata {
 	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataInsert($strSQL,&$intDataID) {
@@ -79,10 +73,10 @@ class nagdata {
 		$intDataID = $this->myDBClass->intLastId;
     	// Was the SQL command processed successfully?
     	if ($booReturn) {
-			$this->strDBMessage = translate('Data were successfully inserted to the data base!');
+			$this->processClassMessage(translate('Data were successfully inserted to the data base!')."::",$this->strInfoMessage);
 			return(0);
 		} else {
-			$this->strDBMessage = translate('Error while inserting the data to the data base:')."<br>".$this->myDBClass->strDBError;
+			$this->processClassMessage(translate('Error while inserting the data to the data base:')."::".$this->myDBClass->strErrorMessage."::",$this->strErrorMessage);
 			return(1);
 		}
   	}
@@ -98,37 +92,34 @@ class nagdata {
   	//  This function does not delete relation data!
   	//
   	//  Parameters:  		$strTableName 	Table name
-  	//            			$strKeyField  	Key field (includes data ID)
   	//            			$_POST[]    	Form variable (Checkboxes "chbId_n" n=DBId)
   	//						$intDataId    	Single data ID
   	//						$intTableId   	Table id for special relations
   	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-  	function dataDeleteEasy($strTableName,$strKeyField,$intDataId=0) {
-    	// Define variables
-    	$this->strDBMessage = "";
+  	function dataDeleteEasy($strTableName,$intDataId=0) {
     	// Special rule for tables with "nodelete" cells
-    	if (($strTableName == "tbl_domain") || ($strTableName == "tbl_user")) {
+    	if (($strTableName == "tbl_datadomain") || ($strTableName == "tbl_configtarget") || ($strTableName == "tbl_user")) {
       		$strNoDelete = "AND `nodelete` <> '1'";
     	} else {
       		$strNoDelete = "";
     	}
     	// Delete a single data set
     	if ($intDataId != 0) {
-      		$strSQL 	= "DELETE FROM `".$strTableName."` WHERE `".$strKeyField."` = $intDataId $strNoDelete";
+      		$strSQL 	= "DELETE FROM `".$strTableName."` WHERE `id` = $intDataId $strNoDelete";
       		$booReturn 	= $this->myDBClass->insertData($strSQL);
       		if ($booReturn == false) {
-        		$this->strDBMessage .= translate('Delete failed because a database error:')."<br>".mysql_error();
+				$this->processClassMessage(translate('Delete failed because a database error:')."::".mysql_error()."::",$this->strInfoMessage);
         		return(1);
       		} else if ($this->myDBClass->intAffectedRows == 0) {
-        		$this->strDBMessage .= translate('No data deleted. Probably the dataset does not exist or it is protected from delete.');
-        		return(0);
+				$this->processClassMessage(translate('No data deleted. Probably the dataset does not exist or it is protected from delete.')."::",$this->strErrorMessage);
+        		return(1);
       		} else {
-        		$this->strDBMessage .= translate('Dataset successfully deleted. Affected rows:')." ".$this->myDBClass->intAffectedRows;
+        		$this->strInfoMessage .= translate('Dataset successfully deleted. Affected rows:')." ".$this->myDBClass->intAffectedRows."::";
         		$this->writeLog(translate('Delete dataset id:')." $intDataId ".translate('- from table:')." $strTableName ".translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
 				$this->updateStatusTable($strTableName);
         		return(0);
@@ -143,10 +134,10 @@ class nagdata {
           			$strChbName = "chbId_".$elem['id'];
           			// Should this data id to be deleted?
           			if (isset($_POST[$strChbName]) && ($_POST[$strChbName] == "on")) {
-            			$strSQL = "DELETE FROM `".$strTableName."` WHERE `".$strKeyField."` = ".$elem['id'];
+            			$strSQL = "DELETE FROM `".$strTableName."` WHERE `id` = ".$elem['id'];
             			$booReturn = $this->myDBClass->insertData($strSQL);
             			if ($booReturn == false) {
-              				$this->strDBMessage .= translate('Delete failed because a database error:')."<br>".mysql_error();
+							$this->processClassMessage(translate('Delete failed because a database error:')."::".mysql_error()."::",$this->strInfoMessage);
               				return(1);
             			} else {
               				$intDeleteCount = $intDeleteCount + $this->myDBClass->intAffectedRows;
@@ -155,16 +146,16 @@ class nagdata {
         		}
         		// Process messsages
         		if ($intDeleteCount == 0) {
-          			$this->strDBMessage .= translate('No data deleted. Probably the dataset does not exist or it is protected from delete.');
-          			return(0);
+					$this->processClassMessage(translate('No data deleted. Probably the dataset does not exist or it is protected from delete.')."::",$this->strErrorMessage);
+          			return(1);
         		} else {
-          			$this->strDBMessage .= translate('Dataset successfully deleted. Affected rows:')." ".$intDeleteCount;
+					$this->processClassMessage(translate('Dataset successfully deleted. Affected rows:')." ".$intDeleteCount."::",$this->strInfoMessage);
           			$this->writeLog(translate('Delete data from table:')." $strTableName ".translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
 					$this->updateStatusTable($strTableName);
           			return(0);
         		}
       		} else {
-        		$this->strDBMessage .= translate('No data deleted. Probably the dataset does not exist or it is protected from delete.');
+				$this->processClassMessage(translate('No data deleted. Probably the dataset does not exist or it is protected from delete.')."::",$this->strErrorMessage);
         		return(1);
       		}
     	}
@@ -187,33 +178,39 @@ class nagdata {
   	//
   	//  Return value:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataDeleteFull($strTableName,$intDataId=0,$intForce=0) {
+		// Get write access groups
+		$strAccess = $this->myVisClass->getAccGroups('write');
     	// Get all relations
     	$this->fullTableRelations($strTableName,$arrRelations);
     	// Delete a single data set
     	if ($intDataId != 0) {
-      		$strChbName = "chbId_".$intDataId;
+      		$strChbName  = "chbId_".$intDataId;
       		$_POST[$strChbName] = "on";
     	}
 		// Get all datasets
-    	$strSQL = "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId;
+		if ($strTableName == 'tbl_group') {
+			$strSQL = "SELECT `id` FROM `".$strTableName."`";
+		} else {
+    		$strSQL = "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
+		}
     	$booReturn = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
     	if ($booReturn && ($intDataCount != 0)) {
       		$intDeleteCount = 0;
-      		$intFileRemoved = 0;
       		$strFileMessage = "";
       		foreach ($arrData AS $elem) {
         		$strChbName = "chbId_".$elem['id'];
+				// Single ID
+				if (($intDataId != 0) && ($intDataId != $elem['id'])) continue;
           		// Should this data id to be deleted?
         		if (isset($_POST[$strChbName]) && ($_POST[$strChbName] == "on")) {
-					// Define variables
-            		$this->strDBMessage = "";
 					// Check if deletion is possible (relations)
           			if (($this->infoRelation($strTableName,$elem['id'],"id",1) == 0) || ($intForce == 1)) {
             			// Delete relations
+						if (!is_array($arrRelations)) $arrRelations = array();
             			foreach($arrRelations AS $rel) {
               				$strSQL = "";					
               				// Process flags
@@ -257,15 +254,21 @@ class nagdata {
             			if (($strTableName == "tbl_host") && ($this->intDomainId != 0)) {
               				$strSQL    = "SELECT `host_name` FROM `tbl_host` WHERE `id`=".$elem['id'];
               				$strHost   = $this->myDBClass->getFieldData($strSQL);
-              				$intReturn = $this->myConfigClass->moveFile("host",$strHost.".cfg");
-              				if ($intReturn == 0) {
-                				$intFileRemoved  = 1;
-                				$strFileMessage .=  "<br>".translate('The assigned, no longer used configuration files were deleted successfully!');
-                				$this->writeLog(translate('Host file deleted:')." ".$strHost.".cfg");
-              				} else {
-                				$intFileRemoved = 2;
-                				$strFileMessage .=  "<br>".translate('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
-              				}
+							$arrConfigId = $this->myConfigClass->getConfigSets();
+							if ($arrConfigId != 1) {
+								$intReturn = 0;
+								foreach($arrConfigId AS $intConfigId) {
+									$this->myConfigClass->resConnectType = "none";
+									$this->resConnectId = "";
+									$intReturn += $this->myConfigClass->moveFile("host",$strHost.".cfg",$intConfigId);
+								}
+								if ($intReturn == 0) {
+									$this->processClassMessage(translate('The assigned, no longer used configuration files were deleted successfully!')."::",$strFileMessage);
+									$this->writeLog(translate('Host file deleted:')." ".$strHost.".cfg");
+								} else {
+									$strFileMessage .=  translate('Errors while deleting the old configuration file - please check!:')."::".$this->myConfigClass->strErrorMessage."::";
+								}								
+							}
             			}
             			// Delete service configuration file
             			if (($strTableName == "tbl_service") && ($this->intDomainId != 0)) {
@@ -274,15 +277,21 @@ class nagdata {
               				$strSQL     = "SELECT * FROM `tbl_service` WHERE `config_name` = '$strService'";
               				$booReturn  = $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
               				if ($intDataCount == 1) {
-                				$intReturn = $this->myConfigClass->moveFile("service",$strService.".cfg");
-                				if ($intReturn == 0) {
-                  					$intFileRemoved = 1;
-                  					$strFileMessage .=  "<br>".translate('The assigned, no longer used configuration files were deleted successfully!');
-                  					$this->writeLog(translate('Host file deleted:')." ".$strService.".cfg");
-                				} else {
-                  					$intFileRemoved = 2;
-                  					$strFileMessage .=  "<br>".translate('Errors while deleting the old configuration file - please check!:')."<br>".$this->myConfigClass->strDBMessage;
-                				}
+								$arrConfigId = $this->myConfigClass->getConfigSets();
+								if ($arrConfigId != 1) {
+									$intReturn = 0;
+									foreach($arrConfigId AS $intConfigId) {
+										$this->myConfigClass->resConnectType = "none";
+										$this->resConnectId = "";
+                						$intReturn += $this->myConfigClass->moveFile("service",$strService.".cfg",$intConfigId);
+									}
+									if ($intReturn == 0) {
+										$this->processClassMessage(translate('The assigned, no longer used configuration files were deleted successfully!')."::",$strFileMessage);
+										$this->writeLog(translate('Host file deleted:')." ".$strService.".cfg");
+									} else {
+										$strFileMessage .=  translate('Errors while deleting the old configuration file - please check!:')."::".$this->myConfigClass->strErrorMessage."::";
+									}
+								}
               				}
             			}
             			// delete main entry
@@ -294,17 +303,17 @@ class nagdata {
       		}
       		// Process messages
       		if ($intDeleteCount == 0) {
-        		$this->strDBMessage .= translate('No data deleted. Probably the dataset does not exist, is protected from deletion or has relations to other configurations which cannot be deleted. Use the "info" function for detailed informations about relations!');
+				$this->processClassMessage(translate('No data deleted. Probably the dataset does not exist, it is protected from deletion, you do not have write permission or it has relations to other configurations which cannot be deleted. Use the "info" function for detailed informations about relations!')."::",$this->strErrorMessage);
         		return(1);
       		} else {
-        		$this->strDBMessage .= translate('Dataset successfully deleted. Affected rows:')." ".$intDeleteCount;
-        		$this->writeLog(translate('Delete data from table:')." $strTableName ".translate('- with affected rows:')." ".$intDeleteCount);
 				$this->updateStatusTable($strTableName);
-        		$this->strDBMessage .= $strFileMessage;
+				$this->processClassMessage(translate('Dataset successfully deleted. Affected rows:')." ".$intDeleteCount."::",$this->strInfoMessage);
+        		$this->writeLog(translate('Delete data from table:')." $strTableName ".translate('- with affected rows:')." ".$intDeleteCount);
+				$this->processClassMessage($strFileMessage,$this->strInfoMessage);
         		return(0);
       		}
     	} else {
-      		$this->strDBMessage .= translate('No data deleted. Probably the dataset does not exist or it is protected from deletion.');
+			$this->processClassMessage(translate('No data deleted. Probably the dataset does not exist, it is protected from deletion or you do not have write permission.')."::".$this->myDBClass->strErrorMessage,$this->strErrorMessage);
       		return(1);
     	}
   	}
@@ -325,23 +334,27 @@ class nagdata {
   	//
   	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataCopyEasy($strTableName,$strKeyField,$intDataId=0,$intDomainId=-1) {
+		// Get write access groups
+		$strAccess = $this->myVisClass->getAccGroups('write');
     	// Declare variables
-    	$intError     		= 0;
-    	$intNumber      	= 0;
-    	$this->strDBMessage = "";
+    	$intError     			= 0;
+    	$intNumber      		= 0;
 		if ($intDomainId == -1) $intDomainId = $this->intDomainId;
-    	
 		// Get all data ID from target table
-    	$booReturn = $this->myDBClass->getDataArray("SELECT `id` FROM `".$strTableName."` ORDER BY `id`",$arrData,$intDataCount);
-    	if ($booReturn == false) {
-      		$this->strDBMessage = translate('Error while selecting data from database:')."<br>".$this->myDBClass->strDBError."<br>";
+		$strAccWhere = "WHERE `access_group` IN ($strAccess)";
+		if (($strTableName == "tbl_user") || ($strTableName == "tbl_group")) $strAccWhere = "";
+    	$booReturn = $this->myDBClass->getDataArray("SELECT `id` FROM `".$strTableName."` $strAccWhere ORDER BY `id`",$arrData,$intDataCount);
+		if ($booReturn == false) {
+			$this->processClassMessage(translate('Error while selecting data from database:')."::".$this->myDBClass->strErrorMessage."::",$this->strErrorMessage);
       		return(1);
     	} else if ($intDataCount != 0) {
-      		for ($i=0;$i<$intDataCount;$i++) {
+			for ($i=0;$i<$intDataCount;$i++) {
+				// Skip common domain value
+				if ($arrData[$i]['id'] == 0) continue;
         		// Build the name of the form variable
         		$strChbName = "chbId_".$arrData[$i]['id'];
         		// If a form variable with this name exists or a matching single data ID was passed
@@ -351,10 +364,17 @@ class nagdata {
           			// Build a temporary config name
           			for ($y=1;$y<=$intDataCount;$y++) {
             			$strNewName = $arrData[$i][$strKeyField]." ($y)";
-            			$booReturn = $this->myDBClass->getFieldData("SELECT `id` FROM `".$strTableName."` WHERE `".$strKeyField."`='$strNewName'");
+						if (($strTableName == "tbl_user") || ($strTableName == "tbl_group") || ($strTableName == "tbl_datadomain") || ($strTableName == "tbl_configtarget")) {
+            				$booReturn = $this->myDBClass->getFieldData("SELECT `id` FROM `".$strTableName."` WHERE `".$strKeyField."`='$strNewName'");
+						} else {
+							$booReturn = $this->myDBClass->getFieldData("SELECT `id` FROM `".$strTableName."` WHERE `".$strKeyField."`='$strNewName' AND `config_id`=$intDomainId");
+						}
             			// If the name is unused -> break the loop
             			if ($booReturn == false) break;
           			}
+					// Manually overwrite new name for extinfo tables
+					if ($strTableName == "tbl_hostextinfo")   	$strNewName="0";
+					if ($strTableName == "tbl_serviceextinfo")  $strNewName="0";
           			// Build the INSERT command based on the table name
           			$strSQLInsert = "INSERT INTO `".$strTableName."` SET `".$strKeyField."`='$strNewName',";
           			foreach($arrData[$i] AS $key => $value) {
@@ -371,8 +391,7 @@ class nagdata {
 							if (($key == "check_interval")      		&& ($value == ""))  $value="NULL";
 							if (($key == "retry_interval")      		&& ($value == ""))  $value="NULL";
 							// manually set some NULL values based on table name
-							if (($strTableName == "tbl_hostextinfo") 	&& ($key == "host_name"))   $value="0";
-							if (($strTableName == "tbl_serviceextinfo") && ($key == "host_name"))   $value="0";
+							if (($strTableName == "tbl_serviceextinfo") && ($key == "service_description"))   $value="0";
 							// Do not copy the password in tbl_user
 							if (($strTableName == "tbl_user") && ($key == "password"))        $value="xxxxxxx";
 							// Do not copy nodelete and webserver authentification values in tbl_user
@@ -386,7 +405,7 @@ class nagdata {
 							}
 						}
             		}
-					if (($strTableName == "tbl_user") || ($strTableName == "tbl_group") || ($strTableName == "tbl_domain")) {
+					if (($strTableName == "tbl_user") || ($strTableName == "tbl_group") || ($strTableName == "tbl_datadomain") || ($strTableName == "tbl_configtarget")) {
           				$strSQLInsert .= "`active`='0', `last_modified`=NOW()";
 					} else {
           				$strSQLInsert .= "`active`='0', `config_id`=$intDomainId, `last_modified`=NOW()";
@@ -399,7 +418,7 @@ class nagdata {
 
           			// Copy relations
           			if (($this->tableRelations($strTableName,$arrRelations) != 0) && ($intCheck == 0)){
-						foreach ($arrRelations AS $elem) {				
+						foreach ($arrRelations AS $elem) {
 							// Normal 1:n relation
 							if ($elem['type'] == "2") {
 								if ($arrData[$i][$elem['fieldName']] != 0) {
@@ -441,7 +460,7 @@ class nagdata {
 											$booReturn 	= $this->myDBClass->getDataArray($strSQL_Var,$arrData_Var,$intDC_Var);
 											if ($booReturn && ($intDC_Var != 0)) {
 												$strSQL_InsVar 	= "INSERT INTO `tbl_variabledefinition` 
-																   SET `name`='".$arrData_Var[0]['name']."', `value`='".$arrData_Var[0]['value']."',
+																   SET `name`='".addslashes($arrData_Var[0]['name'])."', `value`='".addslashes($arrData_Var[0]['value'])."',
 																	   `last_modified`=NOW()";
 												$booReturn   	= $this->myDBClass->insertData($strSQL_InsVar);	
 												if ($booReturn == false) $intCheck++;
@@ -494,7 +513,33 @@ class nagdata {
 							if ($intRelDataCountTP != 0) {
 								foreach ($arrRelDataTP AS $elem) {
 									$strSQLRel = "INSERT INTO `tbl_timedefinition` (`tipId`,`definition`,`range`,`last_modified`)
-												  VALUES ($intMasterId,'".$elem['definition']."','".$elem['range']."',now())";
+												  VALUES ($intMasterId,'".addslashes($elem['definition'])."','".addslashes($elem['range'])."',now())";
+									$booReturn   = $this->myDBClass->insertData($strSQLRel);
+									if ($booReturn == false) $intCheck++;
+								}
+							}
+						}
+						// 1:n relation for groups
+						if ($strTableName == "tbl_group") {
+							$strSQL    = "SELECT * FROM `".$elem['linkTable']."` WHERE `idMaster`=".$arrData[$i]['id'];
+							$booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelDataTP,$intRelDataCountTP);
+							if ($intRelDataCountTP != 0) {
+								foreach ($arrRelDataTP AS $elem2) {
+									$strSQLRel = "INSERT INTO `".$elem['linkTable']."` (`idMaster`,`idSlave`,`read`,`write`,`link`)
+												  VALUES ($intMasterId,'".$elem2['idSlave']."','".$elem2['read']."','".$elem2['write']."','".$elem2['link']."')";
+									$booReturn   = $this->myDBClass->insertData($strSQLRel);
+									if ($booReturn == false) $intCheck++;
+								}
+							}
+						}
+						// 1:n relation fot service to host connections
+						if ($strTableName == "tbl_host") {
+							$strSQL    = "SELECT * FROM `tbl_lnkServiceToHost` WHERE `idSlave`=".$arrData[$i]['id'];
+							$booReturn = $this->myDBClass->getDataArray($strSQL,$arrRelDataSH,$intRelDataCountSH);
+							if ($intRelDataCountSH != 0) {
+								foreach ($arrRelDataSH AS $elem2) {
+									$strSQLRel = "INSERT INTO `tbl_lnkServiceToHost` (`idMaster`,`idSlave`,`exclude`)
+												  VALUES ('".$elem2['idMaster']."',$intMasterId,'".$elem2['exclude']."')";
 									$booReturn   = $this->myDBClass->insertData($strSQLRel);
 									if ($booReturn == false) $intCheck++;
 								}
@@ -506,9 +551,11 @@ class nagdata {
 						// Error
 						$intError++;
 						$this->writeLog(translate('Data set copy failed - table [new name]:')." ".$strTableName." [".$strNewName."]");
+						$this->processClassMessage(translate('Data set copy failed - table [new name]:')." ".$strTableName." [".$strNewName."]::",$this->strInfoMessage);
 					} else {
 						// Success
 						$this->writeLog(translate('Data set copied - table [new name]:')." ".$strTableName." [".$strNewName."]");
+						$this->processClassMessage(translate('Data set copied - table [new name]:')." ".$strTableName." [".$strNewName."]::",$this->strInfoMessage);
 					}
 					$intNumber++;
         		}
@@ -516,17 +563,23 @@ class nagdata {
 			// Error processing
 			if ($intNumber > 0) {
 				if ($intError == 0) {
-					// Error
-					$this->strDBMessage = translate('Data were successfully inserted to the data base!');
+					// Success
+					$this->processClassMessage(translate('Data were successfully inserted to the data base!')."::",$this->strInfoMessage);
 					$this->updateStatusTable($strTableName);
 					return(0);
 				} else {
-					// Success
-					$this->strDBMessage = translate('Error while inserting the data to the data base:')."<br>".$this->myDBClass->strDBError;
+					// Error
+					$this->processClassMessage(translate('Error while inserting the data to the data base:')."::".$this->myDBClass->strErrorMessage,$this->strInfoMessage);
 					return(1);
 				}
+			} else {
+				$this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do not have write permission.')."::",$this->strErrorMessage);
+				return(1);
 			}
-		}
+		} else {
+			$this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do not have write permission.')."::",$this->strErrorMessage);
+			return(1);
+    	}
   	}
 	
   	///////////////////////////////////////////////////////////////////////////////////////////
@@ -545,17 +598,19 @@ class nagdata {
   	//
   	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataActivate($strTableName,$intDataId = 0) {
+		// Get write access groups
+		$strAccess = $this->myVisClass->getAccGroups('write');
     	// Activate a single dataset
     	if ($intDataId != 0) {
       		$strChbName = "chbId_".$intDataId;
       		$_POST[$strChbName] = "on";
     	}
     	// Activate datasets
-    	$strSQL 	= "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId;
+    	$strSQL 	= "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
     	$booReturn 	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
     	if ($booReturn && ($intDataCount != 0)) {
       		$intActivateCount = 0;
@@ -575,16 +630,16 @@ class nagdata {
       		}
       		// Process informations
       		if ($intActivateCount == 0) {
-				$this->strDBMessage .= translate('No dataset activated. Probably the dataset does not exist or no dataset was selected');
+				$this->processClassMessage(translate('No dataset activated. Maybe the dataset does not exist, no dataset was selected or you do not have write permission.')."::",$this->strErrorMessage);
 				return(1);
      		} else {
-				$this->strDBMessage .= translate('Dataset successfully activated. Affected rows:')." ".$intActivateCount;
-				$this->writeLog(translate('Activate dataset from table:')." $strTableName ".translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
 				$this->updateStatusTable($strTableName);
+				$this->processClassMessage(translate('Dataset successfully activated. Affected rows:')." ".$intActivateCount."::",$this->strInfoMessage);
+				$this->writeLog(translate('Activate dataset from table:')." $strTableName ".translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
 				return(0);
       		}
     	} else {
-			$this->strDBMessage .= translate('No dataset activated. Probably the dataset does not exist');
+			$this->processClassMessage(translate('No dataset activated. Maybe the dataset does not exist or you do not have write permission.')."::",$this->strErrorMessage);
 			return(1);
     	}
   	}
@@ -605,17 +660,19 @@ class nagdata {
   	//
   	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataDeactivate($strTableName,$intDataId = 0) {
-    	// Activate a single dataset
+		// Get write access groups
+		$strAccess = $this->myVisClass->getAccGroups('write');
+    	// Dectivate a single dataset
     	if ($intDataId != 0) {
       		$strChbName = "chbId_".$intDataId;
       		$_POST[$strChbName] = "on";
     	}
     	// Activate datasets
-    	$strSQL 	= "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId;
+    	$strSQL 	= "SELECT `id` FROM `".$strTableName."` WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
     	$booReturn 	= $this->myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
     	if ($booReturn && ($intDataCount != 0)) {
       		$intActivateCount = 0;
@@ -638,16 +695,16 @@ class nagdata {
       		}
       		// Process informations
       		if ($intActivateCount == 0) {
-        		$this->strDBMessage .= translate('No dataset deactivated. Probably the dataset does not exist, is protected from deactivation or no dataset was selected. Use the "info" function for detailed informations about relations!');
+				$this->processClassMessage(translate('No dataset deactivated. Maybe the dataset does not exist, it is protected from deactivation, no dataset was selected or you do not have write permission. Use the "info" function for detailed informations about relations!')."::",$this->strErrorMessage);
         		return(1);
       		} else {
-        		$this->strDBMessage .= translate('Dataset successfully deactivated. Affected rows:')." ".$intActivateCount;
-        		$this->writeLog(translate('Activate dataset from table:')." $strTableName ".translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
 				$this->updateStatusTable($strTableName);
+				$this->processClassMessage(translate('Dataset successfully deactivated. Affected rows:')." ".$intActivateCount."::",$this->strInfoMessage);
+        		$this->writeLog(translate('Activate dataset from table:')." $strTableName ".translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
         		return(0);
       		}
     	} else {
-      		$this->strDBMessage .= translate('No dataset deactivated. Probably the dataset does not exist');
+			$this->processClassMessage(translate('No dataset deactivated. Maybe the dataset does not exist or you do not have write permission.')."::",$this->strErrorMessage);
       		return(1);
     	}
   	}
@@ -658,35 +715,35 @@ class nagdata {
   	//
   	//  Saves a given string to the logbook
   	//
-  	//  Parameters:			$strMessage				Message string
+  	//  Parameters:			$strLogMessage				Message string
   	//            			$_SESSION['username'] 	User name
   	//
   	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
-  	function writeLog($strMessage) {
+  	function writeLog($strLogMessage) {
     	// Write string to database
 		if (isset($_SERVER) && isset($_SERVER["REMOTE_ADDR"])) {
 			// Webinterface
 			$strUserName = (isset($_SESSION['username']) && ($_SESSION['username'] != ""))  ? $_SESSION['username'] : "unknown";
-			$strDomain   = $this->myDBClass->getFieldData("SELECT `domain` FROM `tbl_domain` WHERE `id`=".$this->intDomainId);
-			$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$_SERVER["REMOTE_ADDR"]."', `domain`='$strDomain', `entry`='".addslashes($strMessage)."'");
+			$strDomain   = $this->myDBClass->getFieldData("SELECT `domain` FROM `tbl_datadomain` WHERE `id`=".$this->intDomainId);
+			$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$_SERVER["REMOTE_ADDR"]."', `domain`='$strDomain', `entry`='".addslashes($strLogMessage)."'");
 			if ($booReturn == false) return(1);
 			return(0);
 		} else {
 			// Scriptinginterface
 			$strUserName = "scripting";
 			if (isset($_SERVER['USER'])) $strUserName .= " - ".$_SERVER['USER'];
-			$strDomain   = $this->myDBClass->getFieldData("SELECT `domain` FROM `tbl_domain` WHERE `id`=".$this->intDomainId);
+			$strDomain   = $this->myDBClass->getFieldData("SELECT `domain` FROM `tbl_datadomain` WHERE `id`=".$this->intDomainId);
 			if (isset($_SERVER["HOSTNAME"])) {
-				$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$_SERVER["HOSTNAME"]."', `domain`='$strDomain', `entry`='".addslashes($strMessage)."'");
+				$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$_SERVER["HOSTNAME"]."', `domain`='$strDomain', `entry`='".addslashes($strLogMessage)."'");
 			} else if (isset($_SERVER["SSH_CLIENT"])) {
 				$arrSSHClient = explode(" ",$_SERVER["SSH_CLIENT"]);
-				$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$arrSSHClient[0]."', `domain`='$strDomain', `entry`='".addslashes($strMessage)."'");	
+				$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='".$arrSSHClient[0]."', `domain`='$strDomain', `entry`='".addslashes($strLogMessage)."'");	
 			} else {
-				$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='unknown', `domain`='$strDomain', `entry`='".addslashes($strMessage)."'");
+				$booReturn   = $this->myDBClass->insertData("INSERT INTO `tbl_logbook` SET `user`='".$strUserName."',`time`=NOW(), `ipadress`='unknown', `domain`='$strDomain', `entry`='".addslashes($strLogMessage)."'");
 			}
 			if ($booReturn == false) return(1);
 			return(0);
@@ -708,7 +765,7 @@ class nagdata {
   	//
 	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataInsertRelation($strTable,$intMasterId,$arrSlaveId,$intMulti=0) {
@@ -738,7 +795,7 @@ class nagdata {
 					$strService = $this->myDBClass->getFieldData("SELECT `service_description` FROM `tbl_service` WHERE id=$elem");
 		  			$strSQL 	= "INSERT INTO `".$strTable."` SET `idMaster`=$intMasterId, `idSlave`=$elem, 
 								   `strSlave`='".addslashes($strService)."', `exclude`=$intExclude";
-				} else if ($strTable != 'tbl_lnkTimeperiodToTimeperiod') {
+				} else if (($strTable != 'tbl_lnkTimeperiodToTimeperiod') && ($strTable != 'tbl_lnkDatadomainToConfigtarget')) {
         			$strSQL = "INSERT INTO `".$strTable."` SET `idMaster`=$intMasterId, `idSlave`=$elem, `exclude`=$intExclude";
 				} else {
         			$strSQL = "INSERT INTO `".$strTable."` SET `idMaster`=$intMasterId, `idSlave`=$elem";	
@@ -765,7 +822,7 @@ class nagdata {
   	//
 	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataUpdateRelation($strTable,$intMasterId,$arrSlaveId,$intMulti=0) {
@@ -789,7 +846,7 @@ class nagdata {
   	//
 	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function dataDeleteRelation($strTable,$intMasterId) {
@@ -814,7 +871,7 @@ class nagdata {
   	//
 	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function infoRelation($strTable,$intMasterId,$strMasterfield,$intReporting=0) {
@@ -831,8 +888,8 @@ class nagdata {
       		} else {
         		$strName 	= $arrSource[$strMasterfield];
       		}
-      		$this->strDBMessage = translate("<span style=\"color:#0000FF;\">Relation information for <b>").$strName.translate("</b> of table <b>").$strTable.":</b><br></span>\n";
-      		$this->strDBMessage .= "<span style=\"color:#0000FF;\">";
+      		$this->strInfoMessage .= "<span class=\"blackmessage\">".translate("Relation information for <b>").$strName.translate("</b> of table <b>").$strTable.":</b></span>::";
+      		$this->strInfoMessage .= "<span class=\"bluemessage\">";
 			// Walk through relations
 	  		foreach ($arrRelations AS $elem) {
         		// Process flags
@@ -885,13 +942,13 @@ class nagdata {
                        					   WHERE `".$strRef."` = ".$arrDSTarget[$strRef];
                 				$booReturn  = $this->myDBClass->getDataArray($strSQL,$arrDSCount,$intDCCount);
                 				if ($booReturn && ($intDCCount > 1)) {
-                  					$this->strDBMessage .= translate("Relation to <b>").$elem['target1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#00CC00;\">".translate("deletion <b>possible</b>")."</span><br>\n";
+                  					$this->strInfoMessage .= translate("Relation to <b>").$elem['target1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#00CC00;\">".translate("deletion <b>possible</b>")."</span>::";
                 				} else {
-                  					$this->strDBMessage .= translate("Relation to <b>").$elem['target1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#FF0000;\">".translate("deletion <b>not possible</b>")."</span><br>\n";
+                  					$this->strInfoMessage .= translate("Relation to <b>").$elem['target1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#FF0000;\">".translate("deletion <b>not possible</b>")."</span>::";
                   					$intDeletion = 1;
                 				}
               				} else {
-                				$this->strDBMessage .= translate("Relation to <b>").$elem['target1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#00CC00;\">".translate("deletion <b>possible</b>")."</span><br>\n";
+                				$this->strInfoMessage .= translate("Relation to <b>").$elem['target1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#00CC00;\">".translate("deletion <b>possible</b>")."</span>::";
               				}
             			}
           			} else if ($arrFlags[3] == 0) {
@@ -907,19 +964,19 @@ class nagdata {
                 					$strTarget = $data[$elem['targetKey']];
               					}
               					if ($arrFlags[0] == 1) {
-                					$this->strDBMessage .= translate("Relation to <b>").$elem['tableName1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#FF0000;\">".translate("deletion <b>not possible</b>")."</span><br>\n";
+                					$this->strInfoMessage .= translate("Relation to <b>").$elem['tableName1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#FF0000;\">".translate("deletion <b>not possible</b>")."</span>::";
                 					$intDeletion = 1;
               					} else {
-                					$this->strDBMessage .= translate("Relation to <b>").$elem['tableName1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#00CC00;\">".translate("deletion <b>possible</b>")."</span><br>\n";
+                					$this->strInfoMessage .= translate("Relation to <b>").$elem['tableName1'].translate("</b>, entry <b>").$strTarget."</b> - <span style=\"color:#00CC00;\">".translate("deletion <b>possible</b>")."</span>::";
               					}
             				}
 						}
           			}
         		}
       		}
-      		$this->strDBMessage .= "</span>";
+      		$this->strInfoMessage .= "</span>::";
     	}
-		if ($intReporting == 1) $this->strDBMessage = ""; 
+		if ($intReporting == 1) $this->strInfoMessage = ""; 
     	return($intDeletion);
   	}
 
@@ -933,7 +990,7 @@ class nagdata {
   	//
 	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function updateStatusTable($strTable) {
@@ -969,7 +1026,7 @@ class nagdata {
 	//  Return values:		$arrRelations 	Array with relations
   	//  					0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function tableRelations($strTable,&$arrRelations) {
@@ -1016,7 +1073,7 @@ class nagdata {
 	//  Return values:		$arrRelations 	Array with relations
   	//  					0 = no field with relation
 	//						1 = at least one field with relation
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
   	function fullTableRelations($strTable,&$arrRelations) {
@@ -1048,7 +1105,7 @@ class nagdata {
 	//  
 	//  Return values:		0 = successful
 	//						1 = error
-	//						Status message is stored in class variable  $this->strDBMessage
+	//						Status message is stored in message class variables
   	//
   	///////////////////////////////////////////////////////////////////////////////////////////
 	function updateHash($strTable,$intId) {
@@ -1205,5 +1262,29 @@ class nagdata {
 		//echo "Hash: ".$strRawString." --> ".sha1($strRawString)."<br>";
 		return($intReturn);
   	}
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//  Function: Processing message strings
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//  Merge message strings and check for duplicate messages
+	//
+  	//  Parameters:  		$strNewMessage	Message to add
+	//						$strSeparate	Separate string (<br> or \n)
+	//
+  	//  Return value:		&$strOldMessage	Modified message string
+	//
+	///////////////////////////////////////////////////////////////////////////////////////////
+	function processClassMessage($strNewMessage,&$strOldMessage) {
+		$strNewMessage = str_replace("::::","::",$strNewMessage);
+		if (($strOldMessage != "") && ($strNewMessage != "")) {
+			if (substr_count($strOldMessage,$strNewMessage) == 0) {
+				$strOldMessage .= $strNewMessage;
+			}
+		} else {
+			$strOldMessage .= $strNewMessage;
+		}
+		// Reset message variable (prevent duplicates)
+		$strNewMessage = "";
+	}
 }
 ?>

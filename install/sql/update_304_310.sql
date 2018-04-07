@@ -8,10 +8,10 @@
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 3.0.4 to NagiosQL 3.1.0
 --  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2011-04-10 17:08:11 +0200 (So, 10. Apr 2011) $
---  Author    : $LastChangedBy: rouven $
+--  Date      : $LastChangedDate: 2012-02-27 07:58:18 +0100 (Mon, 27 Feb 2012) $
+--  Author    : $LastChangedBy: martin $
 --  Version   : 3.1.1
---  Revision  : $LastChangedRevision: 1070 $
+--  Revision  : $LastChangedRevision: 1255 $
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
@@ -510,3 +510,26 @@ INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES ('', 'netw
 INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES ('', 'network', 'ProxyUser', '');
 INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES ('', 'network', 'ProxyPasswd', '');
 UPDATE `tbl_settings` SET `value` = '3.1.0' WHERE `tbl_settings`.`name` = 'version' LIMIT 1;
+
+--
+--  Modify some field settings (added for 3.2)
+--
+
+ALTER TABLE `tbl_hostextinfo` CHANGE `host_name` `host_name` INT( 11 ) NOT NULL;
+ALTER TABLE `tbl_info` CHANGE `key1` `key1` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `tbl_info` CHANGE `key2` `key2` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `tbl_info` CHANGE `language` `language` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+TRUNCATE `tbl_logbook`;
+ALTER TABLE `tbl_logbook` CHANGE `time` `time` DATETIME NOT NULL ;
+ALTER TABLE `tbl_serviceextinfo` CHANGE `host_name` `host_name` INT( 11 ) NOT NULL;
+ALTER TABLE `tbl_timeperiod` PACK_KEYS = DEFAULT;
+ALTER TABLE `tbl_user` CHANGE `last_login` `last_login` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';
+ALTER TABLE `tbl_user` CHANGE `last_modified` `last_modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';
+
+UPDATE `tbl_info` SET `infotext`='<p><strong>User - webserver authentification</strong></p>\r\n<p>If your webserver uses authentification and the NagiosQL user name is the same which is actually logged in - the NagiosQL login process will passed. This means, that NagiosQL no longer shows a login page if this user is already logged in by webserver authentification.</p>' WHERE `key1`='user' AND `key2`='webserverauth' AND `version`='all' AND `language`='default';
+UPDATE `tbl_info` SET `infotext`='<p><strong>Host - Templates</strong></p>\r\n<p>You can add one or more host templates to a host configuration. Nagios will add the definitions from each template to a host configuration.</p>\r\n<p>If you add more than one template - the sort order will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>' WHERE `key1`='host' AND `key2`='templateadd' AND `version`='all' AND `language`='default';
+UPDATE `tbl_info` SET `infotext`='<p><strong>Service - Templates</strong></p>\r\n<p>You can add one or more service templates to a service configuration. Nagios will add the definitions from each template to a service configuration.</p>\r\n<p>If you add more than one template - the sort order will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>' WHERE `key1`='service' AND `key2`='templateadd' AND `version`='all' AND `language`='default';
+UPDATE `tbl_info` SET `infotext`='<p><strong>Contact - Templates</strong></p>\r\n<p>You can add one or more contact templates to a contact configuration. Nagios will add the definitions from each template to a contact configuration.</p>\r\n<p>If you add more than one template - the sort order will be used to overwrite configuration items which are defined inside templates before.</p>\r\n<p>The host configuration itselves will overwrite all values which are defined in templates before and pass all values which are not defined.</p>' WHERE `key1`='contact' AND `key2`='templateadd' AND `version`='all' AND `language`='default';
+UPDATE `tbl_info` SET `infotext`='<p><strong>Timeperiod - </strong><strong>name</strong></p>\r\n<p>Its just a "template" name that can be referenced in other object  definitions so they can inherit the objects properties/variables.   Template names must be unique amongst objects of the same type, so you  can''t have two or more time definitions that have "mytemplate" as  their template name.</p>\r\n<p><em>Parameter name:</em> name<br /> <em>Required:</em> no</p>' WHERE `key1`='timeperiod' AND `key2`='name' AND `version`='all' AND `language`='default';
+UPDATE `tbl_info` SET `infotext`='<p><strong>Timeperiod - </strong><strong>include</strong></p>\r\n<p>This directive is used to specify the short names (template names) of other timeperiod  definitions whose time ranges should be included to this timeperiod.  Multiple timeperiod names should be separated with a comma.</p>\r\n<p><em>Parameter name:</em> use<br /> <em>Required:</em> no</p>' WHERE `key1`='timeperiod' AND `key2`='include' AND `version`='3' AND `language`='default';
+UPDATE `tbl_info` SET `infotext`='<p>This is an experimental option!</p>\r\n<p>If this option is enabled, UTF8 data from database will be translated to ISO in configuration file. So, the configuration files will be in ISO mode. This could be helpful, if nagios does not understand the UTF8 data from NagiosQL.</p>\r\n<p>Tested only with western european configurations!</p>' WHERE `key1`='domain' AND `key2`='utf8_decode' AND `version`='all' AND `language`='default';

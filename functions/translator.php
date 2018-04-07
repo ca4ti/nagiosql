@@ -8,10 +8,10 @@
 // Project   : NagiosQL
 // Component : Translation Functions
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-04-13 21:00:20 +0200 (Mi, 13. Apr 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.2
-// Revision  : $LastChangedRevision: 1075 $
+// Date      : $LastChangedDate: 2012-02-23 08:02:21 +0100 (Thu, 23 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1238 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -64,10 +64,6 @@ function getLanguageData() {
   $supportedLanguages['zh_CN']['description'] = translate('Chinese (Simplified)');
   $supportedLanguages['zh_CN']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
 
-  // Polish
-  $supportedLanguages['pl_PL']['description'] = translate('Polish');
-  $supportedLanguages['pl_PL']['nativedescription'] = 'Polski';
-
   // Italian
   $supportedLanguages['it_IT']['description'] = translate('Italian');
   $supportedLanguages['it_IT']['nativedescription'] = 'Italiano';
@@ -87,30 +83,35 @@ function getLanguageData() {
   // Brazilian Portuguese
   $supportedLanguages['pt_BR']['description'] = translate('Portuguese (Brazilian)');
   $supportedLanguages['pt_BR']['nativedescription'] = 'Portugu&#234;s do Brasil';
-  
-  // Japanese
-  $supportedLanguages['ja_JP']['description'] = translate('Japanese');
-  $supportedLanguages['ja_JP']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
 
   // Dutch
   $supportedLanguages['nl_NL']['description'] = translate('Dutch');
   $supportedLanguages['nl_NL']['nativedescription'] = 'Nederlands';
-  
-  // Spanish (Argentina)
-  $supportedLanguages['es_AR']['description'] = translate('Spanish (Argentina)');
-  $supportedLanguages['es_AR']['nativedescription'] = 'Espa&#241;ol Argentina';
 
   // Danish
   $supportedLanguages['da_DK']['description'] = translate('Danish');
   $supportedLanguages['da_DK']['nativedescription'] = 'Dansk';
    
+  // No longer supported language because of missing translators
+  //
+  //  // Japanese
+  //  $supportedLanguages['ja_JP']['description'] = translate('Japanese');
+  //  $supportedLanguages['ja_JP']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
+  //
+  //  // Polish
+  //  $supportedLanguages['pl_PL']['description'] = translate('Polish');
+  //  $supportedLanguages['pl_PL']['nativedescription'] = 'Polski';
+  //
+  //  // Spanish (Argentina)
+  //  $supportedLanguages['es_AR']['description'] = translate('Spanish (Argentina)');
+  //   $supportedLanguages['es_AR']['nativedescription'] = 'Espa&#241;ol Argentina';
   ///
   /// Currently not supported languages
   //
   //  // Albanian
   //  $supportedLanguages['sq']['description'] = $clang->translate('Albanian');
   //  $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
-  //
+  //   
   //  // Basque
   //  $supportedLanguages['eu']['description'] = translate('Basque');
   //  $supportedLanguages['eu']['nativedescription'] = 'Euskara';

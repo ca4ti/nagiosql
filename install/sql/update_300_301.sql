@@ -10,11 +10,11 @@
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 3.0.0 to NagiosQL 3.0.1
 --  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2009-02-02 11:24:55 +0100 (Mo, 02. Feb 2009) $
---  Author    : $LastChangedBy: rouven $
+--  Date      : $LastChangedDate: 2012-02-23 07:49:34 +0100 (Thu, 23 Feb 2012) $
+--  Author    : $LastChangedBy: martin $
 --  Version   : 3.0.2
---  Revision  : $LastChangedRevision: 654 $
---  SVN-ID    : $Id: update_300_301.sql 654 2009-02-02 10:24:55Z rouven $
+--  Revision  : $LastChangedRevision: 1237 $
+--  SVN-ID    : $Id: update_300_301.sql 1237 2012-02-23 06:49:34Z martin $
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --

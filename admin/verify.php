@@ -5,92 +5,333 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Configuration verification
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-14 11:04:07 +0100 (Mo, 14. Mär 2011) $
+// Date      : $LastChangedDate: 2012-09-24 14:42:29 +0200 (Mon, 24 Sep 2012) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1061 $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1347 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
-$intMain    	= 6;
-$intSub     	= 19;
-$intMenu    	= 2;
-$preContent 	= "admin/verify.tpl.htm";
-$strMessage 	= "";
-$strInfo    	= "";
+$prePageId			= 30;
+$preContent   		= "admin/verify.tpl.htm";
+$preAccess    		= 1;
+$preFieldvars 		= 1;
+$intModus			= 0;
+$strInfo			= "";
 //
-// Include preprocessing file
-// ==========================
-$preAccess    	= 1;
-$preFieldvars 	= 1;
+// Include preprocessing files
+// ===========================
 require("../functions/prepend_adm.php");
-$myConfigClass->getConfigData("method",$intMethod);
+require("../functions/prepend_content.php");
 //
-// Process post parameters
-// =======================
-$chkCheck    	= isset($_POST['checkConfig'])     ? $_POST['checkConfig']     : "";
-$chkReboot   	= isset($_POST['restartNagios'])   ? $_POST['restartNagios'] : "";
-$chkWriteMon 	= isset($_POST['writeMonitoring']) ? $_POST['writeMonitoring'] : "";
-$chkWriteAdd 	= isset($_POST['writeAdditional']) ? $_POST['writeAdditional'] : "";
+// Get configuration set ID
+// ========================
+$arrConfigSet = $myConfigClass->getConfigSets();
+$intConfigId  = $arrConfigSet[0];
+$myConfigClass->getConfigData($intConfigId,"method",$intMethod);
 //
 // Process form variables
 // ======================
-if ($chkCheck != "") {
-  	$myConfigClass->getConfigData("binaryfile",$strBinary);
-  	$myConfigClass->getConfigData("basedir",$strBaseDir);
-  	$myConfigClass->getConfigData("nagiosbasedir",$strNagiosBaseDir);
-  	$myConfigClass->getConfigData("conffile",$strConffile);
+$intProcessError = 0;
+// Write monitoring data
+if ($chkButValue1 != "") {
+	$strNoData = translate('Writing of the configuration failed - no dataset or not activated dataset found')."::";
+  	// Write host configuration
+  	$strSQL  = "SELECT `id` FROM `tbl_host` WHERE `config_id` = $chkDomainId AND `active`='1'";
+  	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+  	$intError = 0;
+  	if ($intDataCount != 0) {
+    	foreach ($arrData AS $data) {
+      		$intReturn = $myConfigClass->createConfigSingle("tbl_host",$data['id']);
+			$intError += $intReturn;
+    	}
+  	}
+  	if (($intError == 0) && ($intDataCount != 0)) {
+		$myVisClass->processMessage(translate("Write host configurations")." ...",$strInfo);
+		$myVisClass->processMessage("Hosts: ".translate("Configuration file successfully written!"),$strInfo);
+  	} else if ($intDataCount != 0) {
+		$myVisClass->processMessage("Hosts: ".translate("Cannot open/overwrite the configuration file (check the permissions)!"),$strErrorMessage);
+		$intProcessError = 1;
+  	} else {
+		$myVisClass->processMessage("Hosts: ".translate("No configuration items defined!"),$strErrorMessage);
+		$intProcessError = 1;
+	}
+  	// Write service configuration
+  	$strSQL   = "SELECT `id`, `config_name` FROM `tbl_service` WHERE `config_id` = $chkDomainId AND `active`='1' GROUP BY `config_name`";
+  	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
+  	$intError = 0;
+  	if ($intDataCount != 0) {
+    	foreach ($arrData AS $data) {
+      		$intReturn = $myConfigClass->createConfigSingle("tbl_service",$data['id']);
+      		$intError += $intReturn;
+    	}
+  	}
+  	if (($intError == 0) && ($intDataCount != 0)) {
+		$myVisClass->processMessage(translate("Write service configurations")." ...",$strInfo);
+		$myVisClass->processMessage("Services: ".translate("Configuration file successfully written!"),$strInfo);
+  	} else if ($intDataCount != 0) {
+    	$myVisClass->processMessage("Services: ".translate("Cannot open/overwrite the configuration file (check the permissions)!"),$strErrorMessage);
+		$intProcessError = 1;
+  	} else {
+    	$myVisClass->processMessage("Services: ".translate("No configuration items defined!"),$strErrorMessage);
+		$intProcessError = 1;
+	}
+	// Write hostgroup configuration
+	$intReturn = $myConfigClass->createConfig("tbl_hostgroup");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." hostgroups.cfg ...",$strInfo);
+		$myVisClass->processMessage("Hostgroups: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." hostgroups.cfg ...",$strInfo);
+			$myVisClass->processMessage("Hostgroups: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Hostgroups: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write servicegroup configuration
+	$intReturn = $myConfigClass->createConfig("tbl_servicegroup");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." servicegroups.cfg ...",$strInfo);
+		$myVisClass->processMessage("Servicegroups: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." servicegroups.cfg ...",$strInfo);
+			$myVisClass->processMessage("Servicegroups: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Servicegroups: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write hosttemplate configuration
+	$intReturn = $myConfigClass->createConfig("tbl_hosttemplate");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." hosttemplates.cfg ...",$strInfo);
+		$myVisClass->processMessage("Hosttemplates: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." hosttemplates.cfg ...",$strInfo);
+			$myVisClass->processMessage("Hosttemplates: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Hosttemplates: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write servicetemplate configuration
+	$intReturn = $myConfigClass->createConfig("tbl_servicetemplate");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." servicetemplates.cfg ...",$strInfo);
+		$myVisClass->processMessage("Servicetemplates: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." servicetemplates.cfg ...",$strInfo);
+			$myVisClass->processMessage("Servicetemplates: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Servicetemplates: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+}
+// Write additional data
+if ($chkButValue2 != "") {
+	$strNoData = translate('Writing of the configuration failed - no dataset or not activated dataset found')."::";
+	// Write timeperiod configuration
+	$intReturn = $myConfigClass->createConfig("tbl_timeperiod");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." timeperiods.cfg ...",$strInfo);
+		$myVisClass->processMessage("Timeperiods: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		$myVisClass->processMessage("Timeperiods: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+		$intProcessError = 1;
+	}
+	// Write command configuration
+	$intReturn = $myConfigClass->createConfig("tbl_command");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." commands.cfg ...",$strInfo);
+		$myVisClass->processMessage("Commands: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		$myVisClass->processMessage("Commands: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+		$intProcessError = 1;
+	}
+	// Write contact configuration
+	$intReturn = $myConfigClass->createConfig("tbl_contact");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." contacts.cfg ...",$strInfo);
+		$myVisClass->processMessage("Contacts: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		$myVisClass->processMessage("Contacts: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+		$intProcessError = 1;
+	}
+	// Write contactgroup configuration
+	$intReturn = $myConfigClass->createConfig("tbl_contactgroup");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." contactgroups.cfg ...",$strInfo);
+		$myVisClass->processMessage("Contactgroups: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		$myVisClass->processMessage("Contactgroups: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+		$intProcessError = 1;
+	}
+	// Write contacttemplate configuration
+	$intReturn = $myConfigClass->createConfig("tbl_contacttemplate");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." contacttemplates.cfg ...",$strInfo);
+		$myVisClass->processMessage("Contacttemplates: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." contacttemplates.cfg ...",$strInfo);
+			$myVisClass->processMessage("Contacttemplates: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Contacttemplates: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write servicedependency configuration
+	$intReturn = $myConfigClass->createConfig("tbl_servicedependency");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." servicedependencies.cfg ...",$strInfo);
+		$myVisClass->processMessage("Servicedependencies: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." servicedependencies.cfg ...",$strInfo);
+			$myVisClass->processMessage("Servicedependencies: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Servicedependencies: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write hostdependency configuration
+	$intReturn = $myConfigClass->createConfig("tbl_hostdependency");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." hostdependencies.cfg ...",$strInfo);
+		$myVisClass->processMessage("Hostdependencies: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." hostdependencies.cfg ...",$strInfo);
+			$myVisClass->processMessage("Hostdependencies: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Hostdependencies: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write serviceescalation configuration
+	$intReturn = $myConfigClass->createConfig("tbl_serviceescalation");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." serviceescalations.cfg ...",$strInfo);
+		$myVisClass->processMessage("Serviceescalations: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." serviceescalations.cfg ...",$strInfo);
+			$myVisClass->processMessage("Serviceescalations: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Serviceescalations: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write hostescalation configuration
+	$intReturn = $myConfigClass->createConfig("tbl_hostescalation");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." hostescalations.cfg ...",$strInfo);
+		$myVisClass->processMessage("Hostescalations: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." hostescalations.cfg ...",$strInfo);
+			$myVisClass->processMessage("Hostescalations: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Hostescalations: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write serviceextinfo configuration
+	$intReturn = $myConfigClass->createConfig("tbl_serviceextinfo");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." serviceextinfo.cfg ...",$strInfo);
+		$myVisClass->processMessage("Serviceextinfo: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." serviceextinfo.cfg ...",$strInfo);
+			$myVisClass->processMessage("Serviceextinfo: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Serviceextinfo: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+	// Write hostextinfo configuration
+	$intReturn = $myConfigClass->createConfig("tbl_hostextinfo");
+	if ($intReturn == 0) {
+		$myVisClass->processMessage(translate("Write")." hostextinfo.cfg ...",$strInfo);
+		$myVisClass->processMessage("Hostextinfo: ".$myConfigClass->strInfoMessage,$strInfo);
+	} else {
+		if ($myConfigClass->strErrorMessage == $strNoData) {
+			$myVisClass->processMessage(translate("Write")." hostextinfo.cfg ...",$strInfo);
+			$myVisClass->processMessage("Hostextinfo: ".translate('No dataset or no activated dataset found - empty configuration written')."::",$strInfo);
+		} else {
+			$myVisClass->processMessage("Hostextinfo: ".$myConfigClass->strErrorMessage,$strErrorMessage);
+			$intProcessError = 1;
+		}
+	}
+}
+// Check configuration
+if ($chkButValue3 != "") {
+  	$myConfigClass->getConfigData($intConfigId,"binaryfile",$strBinary);
+  	$myConfigClass->getConfigData($intConfigId,"basedir",$strBaseDir);
+  	$myConfigClass->getConfigData($intConfigId,"nagiosbasedir",$strNagiosBaseDir);
+  	$myConfigClass->getConfigData($intConfigId,"conffile",$strConffile);
   	if ($intMethod == 1) {
     	if (file_exists($strBinary) && is_executable($strBinary)) {
       		$resFile = popen($strBinary." -v ".$strConffile,"r");
     	} else {
-      		$strMessage = translate('Cannot find the Nagios binary or no rights for execution!');
+			$myVisClass->processMessage(translate('Cannot find the Nagios binary or no rights for execution!'),$strErrorMessage);
     	}
 	} else if ($intMethod == 2) {
 		$booReturn = 0;
 		if (!isset($myConfigClass->resConnectId) || !is_resource($myConfigClass->resConnectId)) {
-			$booReturn = $myConfigClass->getFTPConnection();
+			$booReturn = $myConfigClass->getFTPConnection($intConfigId);
 		}
 		if ($booReturn == 1) {
-      		$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
+      		$myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
 		} else {
+			$intErrorReporting = error_reporting();
+			error_reporting(0);
       		if (!($resFile = ftp_exec($myConfigClass->resConnectId,$strBinary.' -v '.$strConffile))) {
-        		$strMessage = translate('Remote execution (FTP SITE EXEC) is not supported on your system!');
+				$myVisClass->processMessage(translate('Remote execution (FTP SITE EXEC) is not supported on your system!'),$strErrorMessage);
       		}
-      		ftp_close($conn_id);		
+      		ftp_close($conn_id);	
+			error_reporting($intErrorReporting);
 		}
   	} else if ($intMethod == 3) {
 		$booReturn = 0;
 		if (!isset($myConfigClass->resConnectId) || !is_resource($myConfigClass->resConnectId)) {
-			$booReturn = $myConfigClass->getSSHConnection();
+			$booReturn = $myConfigClass->getSSHConnection($intConfigId);
 		}
 		if ($booReturn == 1) {
-      		$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
+      		$myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
 		} else {
 			if (($strBinary != "") && ($strConffile != "") && (is_array($myConfigClass->sendSSHCommand('ls '.$strBinary))) && 
 				(is_array($myConfigClass->sendSSHCommand('ls '.$strConffile)))) {
 				$arrResult = $myConfigClass->sendSSHCommand($strBinary.' -v '.$strConffile,15000);
 				if (!is_array($arrResult) || ($arrResult == false)) {
-					$myVisClass->processMessage(translate('Remote execution of nagios verify command failed (remote SSH)!'),$strMessage);
+					$myVisClass->processMessage(translate('Remote execution of nagios verify command failed (remote SSH)!'),$strErrorMessage);
 				}
 			} else {
-				$myVisClass->processMessage(translate('Nagios binary or configuration file not found (remote SSH)!'),$strMessage);	
+				$myVisClass->processMessage(translate('Nagios binary or configuration file not found (remote SSH)!'),$strErrorMessage);	
 			}
 		}
 	}
 }
-if ($chkReboot != "") {
+// Restart nagios
+if ($chkButValue4 != "") {
   	// Read config file
-  	$myConfigClass->getConfigData("commandfile",$strCommandfile);
-	$myConfigClass->getConfigData("binaryfile",$strBinary);
-  	$myConfigClass->getConfigData("pidfile",$strPidfile);
+  	$myConfigClass->getConfigData($intConfigId,"commandfile",$strCommandfile);
+	$myConfigClass->getConfigData($intConfigId,"binaryfile",$strBinary);
+  	$myConfigClass->getConfigData($intConfigId,"pidfile",$strPidfile);
   	// Check state nagios demon
   	clearstatcache();
   	if ($intMethod == 1) {
@@ -111,30 +352,31 @@ if ($chkReboot != "") {
         		if ($resCmdFile) {
           			fputs($resCmdFile,$strCommandString);
           			fclose($resCmdFile);
-          			$myDataClass->writeLog("<span class=\"verify-ok\">".translate('Nagios daemon successfully restarted')."</span><br><br>");
-          			$strInfo = "<span class=\"verify-ok\">".translate('Restart command successfully send to Nagios')."</span><br><br>";
+          			$myDataClass->writeLog(translate('Nagios daemon successfully restarted'));
+					$myVisClass->processMessage(translate('Restart command successfully send to Nagios'),$strInfoMessage);	
         		} else {
-          			$myDataClass->writeLog("<span class=\"verify-critical\">".translate('Restart failed - Nagios command file not found or no rights to execute')."</span><br><br>");
-          			$strMessage = "<span class=\"verify-critical\">".translate('Nagios command file not found or no rights to write!')."</span><br><br>";
+          			$myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no rights to execute'));
+					$myVisClass->processMessage(translate('Nagios command file not found or no rights to write!'),$strErrorMessage);	
         		}
       		} else {
-        		$myDataClass->writeLog("<span class=\"verify-critical\">".translate('Restart failed - Nagios command file not found or no rights to execute')."</span><br><br>");
-        		$strMessage = "<span class=\"verify-critical\">".translate('Restart failed - Nagios command file not found or no rights to execute')."</span><br><br>";
+				
+        		$myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no rights to execute'));
+				$myVisClass->processMessage(translate('Restart failed - Nagios command file not found or no rights to execute'),$strErrorMessage);	
       		}
     	} else {
       		$myDataClass->writeLog(translate('Restart failed - Nagios daemon was not running'));
-      		$strMessage = "<span class=\"verify-critical\">".translate('Nagios daemon is not running, cannot send restart command!')."</span><br><br>";
+			$myVisClass->processMessage(translate('Nagios daemon is not running, cannot send restart command!'),$strErrorMessage);	
     	}
   	} else if ($intMethod == 2) {
       	$myDataClass->writeLog(translate('Restart failed - FTP restrictions'));
-      	$strMessage = "<span class=\"verify-critical\">".translate('Nagios restart is not possible via FTP remote connection!')."</span><br><br>";
+		$myVisClass->processMessage(translate('Nagios restart is not possible via FTP remote connection!'),$strErrorMessage);
   	} else if ($intMethod == 3) {
 		$booReturn = 0;
 		if (!isset($myConfigClass->resConnectId) || !is_resource($myConfigClass->resConnectId)) {
-			$booReturn = $myConfigClass->getSSHConnection();
+			$booReturn = $myConfigClass->getSSHConnection($intConfigId);
 		}
 		if ($booReturn == 1) {
-      		$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
+      		$myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
 		} else {
 			if (is_array($myConfigClass->sendSSHCommand('ls '.$strCommandfile))) {
 				$strCommandString = "[".mktime()."] RESTART_PROGRAM;".mktime();
@@ -144,106 +386,17 @@ if ($chkReboot != "") {
 				$arrInfo = ssh2_sftp_stat($myConfigClass->resSFTP, $strCommandfile);
 				$intFileStamp2 = $arrInfo['mtime'];
 				if ($intFileStamp2 <= $intFileStamp1) {
-					$myVisClass->processMessage(translate('Restart failed - Nagios command file not found or no rights to execute (remote SSH)!'),$strMessage);
+					$myVisClass->processMessage(translate('Restart failed - Nagios command file not found or no rights to execute (remote SSH)!'),$strErrorMessage);
 				} else {
-					$myDataClass->writeLog("<span class=\"verify-ok\">".translate('Nagios daemon successfully restarted (remote SSH)')."</span><br><br>");
-          			$strInfo = "<span class=\"verify-ok\">".translate('Restart command successfully send to Nagios (remote SSH)')."</span><br><br>";
+					$myDataClass->writeLog(translate('Nagios daemon successfully restarted (remote SSH)'));
+					$myVisClass->processMessage(translate('Restart command successfully send to Nagios (remote SSH)'),$strInfoMessage);
 				}
 			} else {
-				$myVisClass->processMessage(translate('Nagios command file not found (remote SSH)!'),$strMessage);	
+				$myVisClass->processMessage(translate('Nagios command file not found (remote SSH)!'),$strErrorMessage);	
 			}
 		}
 	}
 }
-if ($chkWriteMon != "") {
-  	// Write host configuration
-  	$strInfo = translate("Write host configurations")." ...<br>";
-  	$strSQL  = "SELECT `id` FROM `tbl_host` WHERE `config_id` = $chkDomainId AND `active`='1'";
-  	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-  	$intError = 0;
-  	if ($intDataCount != 0) {
-    	foreach ($arrData AS $data) {
-      		$myConfigClass->createConfigSingle("tbl_host",$data['id']);
-      		if ($myConfigClass->strDBMessage != translate("Configuration file successfully written!")) $intError++;
-    	}
-  	}
-  	if (($intError == 0) && ($intDataCount != 0)) {
-    	$strInfo .= "<span class=\"verify-ok\">".translate("Configuration file successfully written!")."</span><br><br>";
-  	} else if ($intDataCount != 0) {
-    	$strInfo .= "<span class=\"verify-critical\">".translate("Cannot open/overwrite the configuration file (check the permissions)!")."</span><br>";
-  	} else {
-    	$strInfo .= "<span class=\"verify-critical\">".translate("No configuration items defined!")."</span><br><br>";
-	}
-  	// Write service configuration
-  	$strInfo .= translate("Write service configurations")." ...<br>";
-  	$strSQL   = "SELECT `id`, `config_name` FROM `tbl_service` WHERE `config_id` = $chkDomainId AND `active`='1' GROUP BY `config_name`";
-  	$myDBClass->getDataArray($strSQL,$arrData,$intDataCount);
-  	$intError = 0;
-  	if ($intDataCount != 0) {
-    	foreach ($arrData AS $data) {
-      		$myConfigClass->createConfigSingle("tbl_service",$data['id']);
-      		if ($myConfigClass->strDBMessage != translate("Configuration file successfully written!")) $intError++;
-    	}
-  	}
-  	if (($intError == 0) && ($intDataCount != 0)) {
-    	$strInfo .= "<span class=\"verify-ok\">".translate("Configuration file successfully written!")."</span><br><br>";
-  	} else if ($intDataCount != 0) {
-    	$strInfo .= "<span class=\"verify-critical\">".translate("Cannot open/overwrite the configuration file (check the permissions)!")."</span><br>";
-  	} else {
-    	$strInfo .= "<span class=\"verify-critical\">".translate("No configuration items defined!")."</span><br><br>";
-	}
-	$strInfo .= translate("Write")." hostgroups.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_hostgroup");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." servicegroups.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_servicegroup");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." hosttemplates.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_hosttemplate");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." servicetemplates.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_servicetemplate");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-}
-if ($chkWriteAdd != "") {
-	$strInfo = translate("Write")." timeperiods.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_timeperiod");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." commands.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_command");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." contacts.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_contact");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." contactgroups.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_contactgroup");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." contacttemplates.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_contacttemplate");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." servicedependencies.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_servicedependency");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." hostdependencies.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_hostdependency");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." serviceescalations.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_serviceescalation");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." hostescalations.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_hostescalation");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." serviceextinfo.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_serviceextinfo");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-	$strInfo .= translate("Write")." hostextinfo.cfg ...<br>";
-	$myConfigClass->createConfig("tbl_hostextinfo");
-	$strInfo .= $myConfigClass->strDBMessage."<br>";
-}
-//
-// Build content menu
-// ==================
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // include content
 // ===============
@@ -254,15 +407,12 @@ $conttp->setVariable("CHECK_CONFIG",translate('Check configuration files:'));
 $conttp->setVariable("RESTART_NAGIOS",translate('Restart Nagios:'));
 $conttp->setVariable("WRITE_MONITORING_DATA",translate('Write monitoring data'));
 $conttp->setVariable("WRITE_ADDITIONAL_DATA",translate('Write additional data'));
-if (($chkCheck == "") && ($chkReboot == "")) $conttp->setVariable("WARNING",translate('Warning, always check the configuration files before restart Nagios!'));
+if (($chkButValue3 == "") && ($chkButValue4 == "")) $conttp->setVariable("WARNING",translate('Warning, always check the configuration files before restart Nagios!'));
 $conttp->setVariable("MAKE",translate('Do it'));
-$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
+$conttp->setVariable("IMAGE_PATH",$_SESSION['SETS']['path']['base_url']."images/");
 $conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-$strOutput = "<br>";
-if ($strMessage != "") {
-	$conttp->setVariable("VERIFY_CLASS","dbmessage");
-	$conttp->setVariable("VERIFY_LINE",$strMessage);
-} else if (isset($resFile) && ($resFile != false)){
+$strOutput = "";
+if (isset($resFile) && ($resFile != false)){
 	$intError   = 0;
 	$intWarning = 0;
   	while(!feof($resFile)) {
@@ -287,7 +437,7 @@ if ($strMessage != "") {
   	pclose($resFile);
   	if (($intError == 0) && ($intWarning == 0)) {
     	$conttp->setVariable("VERIFY_CLASS","greenmessage");
-    	$conttp->setVariable("VERIFY_LINE","<br><b>".translate('Written configuration files are valid, Nagios can be restarted!')."</b>");
+    	$conttp->setVariable("VERIFY_LINE","<b>".translate('Written configuration files are valid, Nagios can be restarted!')."</b>");
     	$conttp->parse("verifyline");
   	}	
   	$conttp->setVariable("DATA",$strOutput);
@@ -315,18 +465,22 @@ if ($strMessage != "") {
   	$myDataClass->writeLog(translate('Written Nagios configuration checked - Warnings/Errors:')." ".$intWarning."/".$intError);
   	if (($intError == 0) && ($intWarning == 0)) {
     	$conttp->setVariable("VERIFY_CLASS","greenmessage");
-    	$conttp->setVariable("VERIFY_LINE","<br><b>".translate('Written configuration files are valid, Nagios can be restarted!')."</b>");
+    	$conttp->setVariable("VERIFY_LINE","<b>".translate('Written configuration files are valid, Nagios can be restarted!')."</b>");
     	$conttp->parse("verifyline");
   	}	
   	$conttp->setVariable("DATA",$strOutput);
   	$conttp->parse("verifyline");
 
 }
+if ($strErrorMessage != "") $conttp->setVariable("ERRORMESSAGE",$strErrorMessage);
+$conttp->setVariable("INFOMESSAGE",$strInfoMessage);
 if ($strInfo != "") {
-  	$conttp->setVariable("VERIFY_CLASS","okmessage");
+  	$conttp->setVariable("VERIFY_CLASS","greenmessage");
   	$conttp->setVariable("VERIFY_LINE","<br>".$strInfo);
   	$conttp->parse("verifyline");
 }
+// Check access rights for adding new objects
+if ($myVisClass->checkAccGroup($prePageKey,'write') != 0) $conttp->setVariable("ADD_CONTROL","disabled=\"disabled\"");
 $conttp->parse("main");
 $conttp->show("main");
 //

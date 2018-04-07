@@ -5,15 +5,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : CSS Main definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1229 $
 //
 /////////////////////////////////////////////////////////////////////////////*/
 body {
@@ -23,122 +23,95 @@ body {
 	padding: 0px;
 	font-size: 12px;
 }
-
 #login {
 	text-align: center;
 	margin:0pt auto;
 	max-width:80em;
 	min-width:740px;
-	}
-
-		#login-form {
-			background: transparent;
-			position: relative;
-			width: 75%;
-			margin:0pt auto;
-			text-align: left;
-			padding: 5px;
-			}
-			
+}
+/************************/
+/**  HEADER definitions */
+/************************/
 .header {
 	background: #FFFFFF url(../images/bg_top.png) repeat-x right top;
-	}
-		
-		.headerleft {
-			vertical-align: bottom;
-			text-align: left;
-			padding-left: 10px;
-		}
-		.headerleft a {
-			color: #002C52;
-			background-color: #FFFFFF;
-			}
-			
-		.headerleft a:hover {
-			color: #002C52;
-			background-color: #E5E9ED ;
-			}
-		.headerleft a:active {
-			color: #002C52;
-			background-color: #E5E9ED ;
-			}
-		
-		.top-link {
-			color: #002C52;
-			font-size: 10pt;
-			text-decoration: none;
-			font-weight: bold;
-			background-color: #FFFFFF;
-			padding: 2px 3px 0px 3px;
-			border-top:1px solid #002C52;
-			border-left:1px solid #002C52;
-			border-right:1px solid #002C52;
-			}		
-		
-		.headermiddle {
-			vertical-align: bottom;
-			height: 40px;
-			width: 200px;
-		}
-		
-		.headerright {
-			text-align: right;
-			vertical-align: bottom;
-			padding-right: 20px;
-		}
-		
-		.infoleft {
-			vertical-align: middle;
-			text-align: left;
-			font-size: 10px ;
-			padding-left: 20px;
-		}
-		.inforight {
-			width:200px;
-			vertical-align: middle;
-			text-align: right;
-			font-size: 10px;
-			padding: 4px 20px 4px 4px;
-		}
-		.inforight2 {
-			vertical-align: middle;
-			text-align: right;
-			font-size: 10px;
-		}
-			
+}
+.headerleft {
+	vertical-align: bottom;
+	text-align: left;
+	padding-left: 10px;
+}
+.headerleft a {
+	color: #002C52;
+	background-color: #FFFFFF;
+}		
+.headerleft a:hover {
+	color: #002C52;
+	background-color: #E5E9ED ;
+}
+.headerleft a:active {
+	color: #002C52;
+	background-color: #E5E9ED ;
+}	
+.top-link {
+	color: #002C52;
+	font-size: 10pt;
+	text-decoration: none;
+	font-weight: bold;
+	background-color: #FFFFFF;
+	padding: 2px 3px 0px 3px;
+	border-top:1px solid #002C52;
+	border-left:1px solid #002C52;
+	border-right:1px solid #002C52;
+}			
+.headermiddle {
+	vertical-align: bottom;
+	height: 40px;
+	width: 200px;
+}
+.headerright {
+	text-align: right;
+	vertical-align: bottom;
+	padding-right: 20px;
+}
+.infoleft {
+	vertical-align: middle;
+	text-align: left;
+	font-size: 10px ;
+	padding-left: 20px;
+}
+.inforight {
+	width:200px;
+	vertical-align: middle;
+	text-align: right;
+	font-size: 10px;
+	padding: 4px 20px 4px 4px;
+}
+.inforight2 {
+	vertical-align: middle;
+	text-align: right;
+	font-size: 10px;
+}			
 /********************/
 /**  Formatierungen */
 /********************/
 h1,h2,h3 {
 	color: #0c4271;
 	margin-top: 0px;
-	}
-
+}
 h1 {
 	text-align: left;
 	font-size: 22px;
-	}
-	
+}
 h2 {
 	font-size: 14px;
-	}
-	
+}
 h3 {
 	font-size: 14px;
 	font-style:italic;
-	}
-
-
-
-.imagelink {
-	background-color: #FFFFFF;
-	border: none #FFFFFF;
 }
-
 /********************/
 /**  Menu  **********/
 /********************/
-
 .menutable {
 	margin: 0px;
 	padding: 0px;
@@ -152,304 +125,75 @@ h3 {
 .menutable a:hover {
 	color: #FF00FF;
 }
-
-.menutable .menuaktiv {
+.menutable .menu_act {
 	color: #FF0000;
 	font-size: 12px;
 	font-weight: bold;
 	padding-left: 20px;
 	height: 20px;
 	background: url(../images/bg_menu_aktiv.png) repeat-x left top; 
-	vertical-align: bottom;
 	width: 140px;
 }
-
-
-
-.menutable .menuaktiv a {
+.menutable .menu_act a {
 	color: #00396a;
 }
-.menutable .menuaktiv a:hover {
+.menutable .menu_act a:hover {
 	color: #00396a;
 }
-
-.menutable .menuinaktiv:hover {
-	color: #FFFFFF;
-/*	background: #B9FFB9 url(../images/menu_bg.png) repeat-x left top; */
-}
-
-.menutable .menuinaktiv {
+.menutable .menu {
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
 	padding-left: 20px;
 	height: 20px;
 	background: url(../images/bg_menu_inaktiv.png) repeat-x left top; 
-	vertical-align: bottom;
 	width: 140px;
 }
-
-.menutable .menuinaktiv a {
+.menutable .menu a {
 	color: #d6d6d6;
 }
-.menutable .menuinaktiv a:hover {
+.menutable .menu a:hover {
 	color: #FFFFFF;
 }
-
-.menutable .menusub {
+.menutable .menu_sub {
 	font-size: 11px;
 	color: #666666;
 	text-decoration: none;
-	vertical-align: top;
 	height: 5px;
 	padding-left: 30px;
 	background: #FFFFFF url(../images/bg_submenu.png) repeat-y left top;
 }
-
-.menutable .menusub a {
+.menutable .menu_sub a {
 	color: #666666;
 }
-.menutable .menusub a:hover {
+.menutable .menu_sub a:hover {
 	color: #666666;
 	text-decoration: underline;
 }
-
-.menulink {
+.menutable .menu_sub_act {
 	font-size: 11px;
+	font-weight: bold;
 	color: #666666;
 	text-decoration: none;
+	height: 5px;
+	padding-left: 30px;
+	background: #FFFFFF url(../images/bg_submenu.png) repeat-y left top;
+}
+.menutable .menu_sub_act a {
+	color: #666666;
+}
+.menutable .menu_sub_act a:hover {
+	color: #666666;
+	text-decoration: underline;
 }
 .menulinksmall {
 	font-size: 10px;
 	color: #666666;
 	text-decoration: none;
 }
-
-/********************/
-/**  Main  **********/
-/********************/
-.main {
-	padding: 10px;
-	font-size: 12px;
-	vertical-align: top;
-}
-
-
-.main h2 {
-	font-size: 16px;
-/*	font-weight: lighter;*/
-}
-.main a {
-	text-decoration: none;
-	color: #666666;
-}
-.main a:hover {
-	color: #FF00FF;
-}
-
-/**************************/
-/** Input Felder **********/
-/**************************/
-
-.main input {
-	border: 1px solid #053056;
-	background: #d1e2fd url(../images/input.png);
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	padding: 1px;
-	min-height:16px;
-}
-.main input.checkbox {
-	background:none;
-}	
-.main select {
-	background-color: #d1e2fd;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	border: 1px solid #000066;
-}
-.main select:disabled {
-	color:#000000;
-}
-.main option {
-	background-color: #d1e2fd;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	border: none #FFFFFF;
-}
-.main textarea {
-	border: 1px solid #000066;
-	background-color: #d1e2fd;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
-.main input.inpmust {
-	border: 1px solid #053056;
-	background: #941616 url(../images/inputmust.png);
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #FFFFFF;
-	font-weight: bold;
-}
-.main input.inputlock {
-	border: 1px solid #053056;
-	background: #5d5d5d url(../images/inputlock.png);
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #f7f7f7;
-	font-weight: normal;
-}
-
-.main select.inpmust {
-	border: 1px solid #053056;
-	background: #941616;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #FFFFFF;
-	font-weight: bold;
-}
-
-.main option.ieselected {
-	background-color:#3399FF;
-	color:#000000;
-}
-
-.main option.inpmust {
-	background: #941616;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #FFFFFF;
-	font-weight: bold;
-}
-
-.main option.inpmustaccess {
-	background: #d1e2fd;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #000000;
-	font-weight: normal;
-}
-
-/*.main .inpmust {
-	border: 1px solid #000066;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #000000;
-	font-size: 12px;
-}*/
-
-.main iframe {
-    border: none;
-}
-.main .checkbox {
-	background:none;
-	border: none #FFFFFF;
-}
-.main .checkboxline {
-	background:none;
-	border: none #FFFFFF;
-}
-.main .loglegend {
-	border: 0px;
-	padding: 0px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
-.main .logtitlecell {
-	background-color: #0c4271;
-	border: 1px solid #333333;
-	padding: 2px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: #FFFFFF;
-}
-.main .logdatacell {
-	background-color: #FFFFFF;
-	padding: 2px;
-	border: 1px solid #333333;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
-.main .admintable th {
-	background-color: #0c4271;
-	font-size: 12px;
-	font-weight: bold;
-	color: #FFFFFF;
-	text-align: left;
-	vertical-align: middle;
-	padding-right: 5px;
-	padding-left: 5px;
-	padding-top: 2px;
-	padding-bottom: 3px;
-}
-.main .admintable .tdlb {
-	font-size: 12px;
-	vertical-align: middle;
-}
-.main .admintable .tdld {
-	font-size: 12px;
-	background-color: #dbe6ff;
-	vertical-align: middle;
-}
-.admintable .tdmb {
-	font-size: 12px;
-	text-align: center;
-	vertical-align: middle;
-}
-.main .admintable .tdmd {
-	font-size: 12px;
-	text-align: center;
-	vertical-align: middle;
-	background-color: #dbe6ff;
-}
-.main .buttontable {
-	font-size: 12px;
-}
-.main .inserttable {
-	font-size: 12px;
-}
-.main .dbmessage {
-	font-size: 12px;
-	color: #FF0000;
-}
-.main .warnmessage {
-	font-size: 12px;
-	color: #FF9900;
-	font-weight: bold;
-}
-.main .errormessage {
-	font-size: 12px;
-	color: #FF0000;
-	font-weight: bold;
-}
-.main .greenmessage {
-	font-size: 12px;
-	color: #009900;	
-}
-.main .okmessage {
-	font-size: 12px;
-}
-.main .infoline {
-	font-size: 12px;
-	color: #000000;
-}
-.version {
-	font-size: 9px;
-	color: #999999;
-	text-align: center;
-}
-	.version a {
-		text-decoration:none;
-		color:#999999;
-	}
-	.version a:hover {
-		text-decoration:none;
-		color:#333333;
-	}	
-.main .pagelinks {
-	font-size: 12px;
-	color: #006600;
-	margin: 0 auto;
-	width: 25%;
-}
-.elementHide {
-	display:none;
-}
-.elementShow {
-
-}
-/*YUI*/
+/************************/
+/**  YUI definitions    */
+/************************/
 #cal-cont .bd:after {
 	content:".";
 	display:block;
@@ -479,80 +223,4 @@ h3 {
 }
 .yui-content input[type="checkbox"] {
 	background-color:#EDF5FF;
-}
-/*AutoCompleter*/
-.suggestionsBox {
-  position: relative;
-  left: 30px;
-  margin: 10px 0px 0px 0px;
-  width: 200px;
-  background-color: #212427;
-  -moz-border-radius: 7px;
-  /*-webkit-border-radius: 7px;*/
-  border: 2px solid #000; 
-  color: #fff;
-}
-
-.suggestionList {
-  margin: 0px;
-  padding: 0px;
-}
-
-.suggestionList li {
-  margin: 0px 0px 3px 0px;
-  padding: 3px;
-  cursor: pointer;
-}
-
-.suggestionList li:hover {
-  background-color: #659CD8;
- }
- 
-/* Nagios Control */
-.verify-ok {
-	color: #009900;
-	font-weight: bold;
-	}
-	
-.verify-critical {
-	color: #941616;
-	font-weight: bold;
-	}
- 
- /* Custom */
-	.tablerow {
-		border-bottom:1px solid #0c4271;
-		font-size:12px;
-		height:20px;
-		padding-top:2px;
-		padding-left:5px;
-		padding-right:5px;
-	}
-	
-/* Page links / site numbers */
-.sitenumber {
-	background-color:#4080BE;
-	width:25px;
-	height:25px;
-	color:#d6d6d6;
-	border:1px solid #FFF;
-	text-align:center;
-	cursor:pointer;
-}
-.sitenumber a {
-	color:#d6d6d6;
-	text-decoration:none;
-}
-.sitenumber a:hover {
-	color:#d6d6d6;
-	text-decoration:none;
-}
-.sitenumber-sel {
-	background-color:#CCC;;
-	color:#00396a;
-	width:25px;
-	height:25px;
-	border:1px solid #FFF;
-	text-align:center;
-	font-weight:bold;
 }

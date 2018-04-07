@@ -1,15 +1,15 @@
-<!-- (c) 2005-2011 by Martin Willisegger -->
+<!-- (c) 2005-2012 by Martin Willisegger -->
 <!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : Verification template -->
 <!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $ -->
-<!-- Author     : $LastChangedBy: rouven $ -->
-<!-- Version    : 3.1.1 -->
-<!-- Revision   : $LastChangedRevision: 1058 $ -->
+<!-- Date       : $LastChangedDate: 2012-02-21 14:10:41 +0100 (Tue, 21 Feb 2012) $ -->
+<!-- Author     : $LastChangedBy: martin $ -->
+<!-- Version    : 3.2.0 -->
+<!-- Revision   : $LastChangedRevision: 1229 $ -->
 <!-- BEGIN header -->
-<td class="main">
-	<h1>{TITLE}</h1>
+<div id="content_main">
+    <div id="content_title">{TITLE}</div>
 <!-- END header -->
 <!-- BEGIN main -->
 	<script language="JavaScript" type="text/JavaScript">
@@ -21,45 +21,41 @@
     	//-->
   	</script>
   	<form name="frmImport" method="post" action="{ACTION_INSERT}">
-        <table border="0"  class="inserttable">
+        <table border="0" cellpadding="0" class="content_formtable">
             <tr>
-                <td>{WRITE_MONITORING_DATA}</td>
-                <td><input name="writeMonitoring" type="submit" id="writeMonitoring" value="{MAKE}"></td>
+                <td style="width:250px;">{WRITE_MONITORING_DATA}</td>
+                <td><input name="butValue1" type="submit" id="butValue1" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
             </tr>	
             <tr>
                 <td>{WRITE_ADDITIONAL_DATA}</td>
-                <td><input name="writeAdditional" type="submit" id="writeAdditional" value="{MAKE}"></td>
+                <td><input name="butValue2" type="submit" id="butValue2" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
             <tr>
-                <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="200" height="1"></td>
-                <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="80" height="1"></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
             </tr>	
             <tr>
-                <td width="300">{CHECK_CONFIG}</td>
-                <td><input name="checkConfig" type="submit" id="checkConfig" value="{MAKE}"></td>
+                <td>{CHECK_CONFIG}</td>
+                <td><input name="butValue3" type="submit" id="butValue3" value="{MAKE}"></td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
             </tr>	
             <tr>
                 <td>{RESTART_NAGIOS}</td>
-                <td><input name="restartNagios" type="submit" id="restartNagios" value="{MAKE}"></td>
+                <td><input name="butValue4" type="submit" id="butValue4" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>	
         </table>
 	</form>
-	<p><span class="dbmessage">{WARNING}</span></p>
+    <br>
+	<p><span class="redmessage">{ERRORMESSAGE}</span><span class="greenmessage">{INFOMESSAGE}</span></p>
 	<p>
-<!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}{DATA}</span><br><!-- END verifyline -->
-	&nbsp;</p>
-	<br>
-</td>
+<!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}</span><br><!-- END verifyline -->
+	{DATA}</p>
+</div>
 <!-- END main -->

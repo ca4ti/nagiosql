@@ -5,22 +5,22 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Admin time definition list
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-27 13:01:17 +0100 (Mon, 27 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1257 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
 $preAccess  = 1;
-$intSub     = 2;
+//$prePageId	= 33;
 $preNoMain  = 1;
 require("../functions/prepend_adm.php");
 //
@@ -119,11 +119,11 @@ if ($chkMode == "del") {
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>None</title>
-		<link href="<?php echo $SETS['path']['root']; ?>config/main.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo $_SESSION['SETS']['path']['base_url']; ?>config/main.css" rel="stylesheet" type="text/css">
 		<script type="text/javascript" language="javascript">
   			<!--
   			function doDel(key) {
-    			document.location.href = "<?php echo $SETS['path']['root']; ?>admin/groupusers.php?dataId=<?php echo $chkDataId; ?>&mode=del&user="+key;
+    			document.location.href = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/groupusers.php?dataId=<?php echo $chkDataId; ?>&mode=del&user="+key;
   			}
   			//-->
 		</script>
@@ -139,7 +139,7 @@ if ($chkMode == "del") {
             <tr>
                 <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo $strUser; ?></td>
                 <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['rights']),ENT_COMPAT,'UTF-8'); ?></td>
-                <td class="tablerow" style="width:50px" align="right"><img src="<?php echo $SETS['path']['root']; ?>images/delete.gif" width="18" height="18" alt="<?php echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php echo $elem['user']; ?>')" style="cursor:pointer"></td>
+                <td class="tablerow" style="width:50px" align="right"><img src="<?php echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php echo $elem['user']; ?>')" style="cursor:pointer"></td>
             </tr>
 <?php
       }

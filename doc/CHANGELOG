@@ -1,0 +1,23 @@
+CHANGELOG 3.2.0
+---------------
+
+- [OK] Enable/Disable regardless of register
+- [OK] HTML reworking
+- [OK] Domain separation (Data / Configuration)
+- [OK] Additional user settings
+  o Language
+  o Standard domain
+- [OK] Better HTML/CSS implementation for IE (scroll fields)
+- [OK] Configuration name is stored as free variable inside the configuration file
+- [OK] New support page with additional checks
+- [OK] New/reworked installer
+- [OK] Servicegroup support for servicedependencies and serviceescalations
+- [OK][BUG] Reworked service selection in servicedependencies and serviceescalations
+- [OK][BUG] Reworked right management (menu access / read rights)
+
+OPEN in 3.2.0
+-------------
+- YUI3 - YUI3 is still BETA
+- Reworking templates for better integration
+- Support for different time zones of remote systems (timestamp/file_stamp)
+- PosgresQL support (comes with 3.2.x)

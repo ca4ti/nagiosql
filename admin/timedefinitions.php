@@ -5,22 +5,22 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Admin time definition list
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-27 13:01:17 +0100 (Mon, 27 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1257 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
 $preAccess  	= 1;
-$intSub     	= 2;
+//$prePageId		= 16;
 $preNoMain  	= 1;
 //
 // Include preprocessing file
@@ -30,11 +30,11 @@ require("../functions/prepend_adm.php");
 // Process post parameters
 // =======================
 $chkTipId   	= (isset($_GET['tipId']) && ($_GET['tipId'] != ""))   ? htmlspecialchars($_GET['tipId'], ENT_QUOTES, 'utf-8')   : 0;
-$chkMode    	= isset($_GET['mode'])    ? htmlspecialchars($_GET['mode'], ENT_QUOTES, 'utf-8')     : "";
-$chkDef     	= isset($_GET['def'])     ? htmlspecialchars($_GET['def'], ENT_QUOTES, 'utf-8')      : "";
-$chkRange   	= isset($_GET['range'])   ? htmlspecialchars($_GET['range'], ENT_QUOTES, 'utf-8')    : "";
-$chkId      	= isset($_GET['id'])      ? htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8')       : "";
-$chkVersion 	= isset($_GET['version']) ? htmlspecialchars($_GET['version'], ENT_QUOTES, 'utf-8')  : 0;
+$chkMode    	= isset($_GET['mode'])    ? htmlspecialchars($_GET['mode'], ENT_QUOTES, 'utf-8')	: "";
+$chkDef     	= isset($_GET['def'])     ? html_entity_decode($_GET['def'])      					: "";
+$chkRange   	= isset($_GET['range'])   ? html_entity_decode($_GET['range'])    					: "";
+$chkId      	= isset($_GET['id'])      ? htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8')		: "";
+$chkVersion 	= isset($_GET['version']) ? htmlspecialchars($_GET['version'], ENT_QUOTES, 'utf-8')	: 0;
 if (get_magic_quotes_gpc() == 0) {
   $chkDef   = addslashes($chkDef);
   $chkRange = addslashes($chkRange);
@@ -44,21 +44,19 @@ if (get_magic_quotes_gpc() == 0) {
 // ========
 $strSQL    = "SELECT * FROM `tbl_timedefinition` WHERE `tipId` = $chkTipId ORDER BY `definition`";
 $booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-if ($booReturn && ($intDataCount != 0)) {
-	//
-  	// Store data to session
-  	// ============================
-	if ($chkMode == "") {
-  		$_SESSION['timedefinition'] = "";
-  		if ($intDataCount != 0) {
-    		foreach ($arrDataLines AS $elem) {
-      			$arrTemp['id']          = $elem['id'];
-      			$arrTemp['definition']      = addslashes($elem['definition']);
-      			$arrTemp['range']         = addslashes($elem['range']);
-      			$arrTemp['status']        = 0;
-      			$_SESSION['timedefinition'][]   = $arrTemp;
-    		}
-  		}
+//
+// Store data to session
+// ============================
+if ($chkMode == "") {
+	$_SESSION['timedefinition'] = "";
+	if ($booReturn && ($intDataCount != 0)) {
+		foreach ($arrDataLines AS $elem) {
+			$arrTemp['id']            = $elem['id'];
+			$arrTemp['definition']    = addslashes($elem['definition']);
+			$arrTemp['range']         = addslashes($elem['range']);
+			$arrTemp['status']        = 0;
+			$_SESSION['timedefinition'][]   = $arrTemp;
+		}
 	}
 }
 //
@@ -107,15 +105,15 @@ if ($chkMode == "del") {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>None</title>
-	<link href="<?php echo $SETS['path']['root']; ?>config/main.css" rel="stylesheet" type="text/css">
+	<link href="<?php echo $_SESSION['SETS']['path']['base_url']; ?>config/main.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" language="javascript">
   		<!--
   		function doEdit(key,range) {
 <?php
 if ($chkVersion == 3) {
 ?>
-  			parent.document.frmDetail.txtTimedefinition.value = key;
-  			parent.document.frmDetail.txtTimerange2.value = range;
+  			parent.document.frmDetail.txtTimedefinition.value = decodeURIComponent(key);
+  			parent.document.frmDetail.txtTimerange2.value = decodeURIComponent(range);
 <?php
 } else {
 ?>
@@ -140,7 +138,7 @@ if ($chkVersion == 3) {
 ?>
   		}
   		function doDel(key) {
-    		document.location.href = "<?php echo $SETS['path']['root']; ?>admin/timedefinitions.php?tipId=<?php echo $chkTipId; ?>&mode=del&def="+key;
+    		document.location.href = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/timedefinitions.php?tipId=<?php echo $chkTipId; ?>&mode=del&def="+key;
   		}
   		//-->
 	</script>
@@ -163,9 +161,9 @@ if (isset($_SESSION['timedefinition']) && is_array($_SESSION['timedefinition']) 
 		if ($elem['status'] == 0) {
 ?>
 		<tr>
-            <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['definition']),ENT_COMPAT,'UTF-8'); ?></td>
-            <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlspecialchars(stripslashes($elem['range']),ENT_COMPAT,'UTF-8'); ?></td>
-            <td class="tablerow" style="width:50px" align="right"><img src="<?php echo $SETS['path']['root'];?>images/edit.gif" width="18" height="18" alt="<?php echo translate('Modify');?>" title="<?php echo translate('Modify'); ?>" onClick="doEdit('<?php echo $elem['definition'];?>','<?php echo $elem['range']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $SETS['path']['root']; ?>images/delete.gif" width="18" height="18" alt="<?php echo translate('Delete');?>" title="<?php echo translate('Delete');?>" onClick="doDel('<?php echo $elem['definition']; ?>')" style="cursor:pointer"></td>
+            <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlentities(stripslashes($elem['definition']),ENT_COMPAT,'UTF-8'); ?></td>
+            <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo htmlentities(stripslashes($elem['range']),ENT_COMPAT,'UTF-8'); ?></td>
+            <td class="tablerow" style="width:50px" align="right"><img src="<?php echo $_SESSION['SETS']['path']['base_url'];?>images/edit.gif" width="18" height="18" alt="<?php echo translate('Modify');?>" title="<?php echo translate('Modify'); ?>" onClick="doEdit('<?php echo rawurlencode(stripslashes($elem['definition']));?>','<?php echo rawurlencode(stripslashes($elem['range'])); ?>')" style="cursor:pointer">&nbsp;<img src="<?php echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php echo translate('Delete');?>" title="<?php echo translate('Delete');?>" onClick="doDel('<?php echo rawurlencode(stripslashes($elem['definition'])); ?>')" style="cursor:pointer"></td>
 		</tr>
 <?php
 		}

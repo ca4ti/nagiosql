@@ -1,37 +1,33 @@
-<!-- (c) 2005-2011 by Martin Willisegger -->
+<!-- (c) 2005-2012 by Martin Willisegger -->
 <!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : index template -->
 <!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $ -->
-<!-- Author     : $LastChangedBy: rouven $ -->
-<!-- Version    : 3.1.1 -->
-<!-- Revision   : $LastChangedRevision: 1058 $ -->
+<!-- Date       : $LastChangedDate: 2012-03-12 12:02:46 +0100 (Mon, 12 Mar 2012) $ -->
+<!-- Author     : $LastChangedBy: martin $ -->
+<!-- Version    : 3.2.0 -->
+<!-- Revision   : $LastChangedRevision: 1290 $ -->
 <!-- BEGIN main -->
-<td class="main">
 	<div id="login">
 		<p><a href="{ACTION_INSERT}"><img src="{IMAGE_PATH}nagiosql_logo.png" alt="NagiosQL" title='NagiosQL' border="0"></a></p>
-						<h1 style="text-align:center">{TITLE_LOGIN}</h1>
-		<div id="login-form">
-			<form name="frmPassword" method="post" action="{ACTION_INSERT}">
-			<table align="center">
-				<tr>
-					<td>{USERNAME}:</td>
-					<td><input type="text" name="tfUsername"></td>
-				</tr><tr>
-					<td>{PASSWORD}</td>
-					<td><input type="password" name="tfPassword"></td>
-				</tr><tr>
-					<td>&nbsp;</td>
-					<td><input type="submit" name="Submit" value="{LOGIN}"></td>
-				</tr>
-			</table>
-			</form>
-		</div>
-		<div class="dbmessage"><p>{MESSAGE}</p></div>
+		<h1 style="text-align:center">{TITLE_LOGIN}</h1>
+        <form name="frmPassword" method="post" action="{ACTION_INSERT}">
+            <table border="0" cellpadding="0" cellspacing="1" class="content_formtable" style="margin:0pt auto;">
+                <tr>
+                    <td style="padding-right:10px;">{USERNAME}: </td>
+                    <td><input type="text" name="tfUsername"></td>
+                </tr><tr>
+                    <td style="padding-right:10px;">{PASSWORD}: </td>
+                    <td><input type="password" name="tfPassword"></td>
+                </tr><tr>
+                    <td>&nbsp;</td>
+                    <td><input type="submit" name="Submit" value="{LOGIN}"></td>
+                </tr>
+            </table>
+		</form>
+		<div class="redmessage"><p>{MESSAGE}</p></div>
 		<div id="login-text">
 			<p>{LOGIN_TEXT}</p>
 		</div>
 	</div>
-</td>
 <!-- END main -->

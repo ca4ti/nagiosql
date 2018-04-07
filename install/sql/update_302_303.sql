@@ -10,11 +10,11 @@
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 3.0.2 to NagiosQL 3.0.3
 --  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2010-11-01 17:54:21 +0100 (Mo, 01. Nov 2010) $
+--  Date      : $LastChangedDate: 2012-02-23 07:49:34 +0100 (Thu, 23 Feb 2012) $
 --  Author    : $LastChangedBy: martin $
 --  Version   : 3.0.3
---  Revision  : $LastChangedRevision: 839 $
---  SVN-ID    : $Id: update_302_303.sql 839 2010-11-01 16:54:21Z martin $
+--  Revision  : $LastChangedRevision: 1237 $
+--  SVN-ID    : $Id: update_302_303.sql 1237 2012-02-23 06:49:34Z martin $
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --

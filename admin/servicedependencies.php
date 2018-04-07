@@ -5,246 +5,152 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Service dependencies definition
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-03-09 07:43:00 +0100 (Fri, 09 Mar 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1282 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
-$intMain      	= 5;
-$intSub       	= 10;
-$intMenu      	= 2;
-$preContent   	= "admin/servicedependencies.tpl.htm";
-$strDBWarning 	= "";
-$intCount     	= 0;
+$prePageId			= 22;
+$preContent   		= "admin/servicedependencies.tpl.htm";
+$preSearchSession	= 'servicedependencies';
+$preTableName		= 'tbl_servicedependency';
+$preKeyField		= 'config_name';
+$preAccess    		= 1;
+$preFieldvars 		= 1;
 //
-// Include preprocessing file
-// ==========================
-$preAccess    	= 1;
-$preFieldvars 	= 1;
+// Include preprocessing files
+// ===========================
 require("../functions/prepend_adm.php");
-//
-// Process post parameters
-// =======================
-$chkTfSearch    		= isset($_POST['txtSearch'])		? $_POST['txtSearch']			: "";
-$chkSelHostDepend   	= isset($_POST['selHostDepend'])    ? $_POST['selHostDepend']       : array("");
-$chkSelHostgroupDep   	= isset($_POST['selHostgroupDep'])  ? $_POST['selHostgroupDep']     : array("");
-$chkSelServiceDepend  	= isset($_POST['selServiceDepend'])	? $_POST['selServiceDepend']    : array("");
-$chkSelHost       		= isset($_POST['selHost'])        	? $_POST['selHost']           	: array("");
-$chkSelHostgroup    	= isset($_POST['selHostgroup'])     ? $_POST['selHostgroup']        : array("");
-$chkSelService      	= isset($_POST['selService'])       ? $_POST['selService']          : array("");
-$chkTfConfigName    	= isset($_POST['tfConfigName'])     ? $_POST['tfConfigName']        : "";
-$chkEOo         		= isset($_POST['chbEOo'])       	? $_POST['chbEOo'].","          : "";
-$chkEOw         		= isset($_POST['chbEOw'])       	? $_POST['chbEOw'].","          : "";
-$chkEOu         		= isset($_POST['chbEOu'])       	? $_POST['chbEOu'].","          : "";
-$chkEOc         		= isset($_POST['chbEOc'])       	? $_POST['chbEOc'].","          : "";
-$chkEOp         		= isset($_POST['chbEOp'])       	? $_POST['chbEOp'].","          : "";
-$chkEOn         		= isset($_POST['chbEOn'])       	? $_POST['chbEOn'].","          : "";
-$chkNOo         		= isset($_POST['chbNOo'])       	? $_POST['chbNOo'].","          : "";
-$chkNOw         		= isset($_POST['chbNOw'])       	? $_POST['chbNOw'].","          : "";
-$chkNOu         		= isset($_POST['chbNOu'])       	? $_POST['chbNOu'].","          : "";
-$chkNOc         		= isset($_POST['chbNOc'])       	? $_POST['chbNOc'].","          : "";
-$chkNOp         		= isset($_POST['chbNOp'])       	? $_POST['chbNOp'].","          : "";
-$chkNOn         		= isset($_POST['chbNOn'])       	? $_POST['chbNOn'].","          : "";
-$chkSelDependPeriod 	= isset($_POST['selDependPeriod'])  ? $_POST['selDependPeriod']+0   : 0;
-$chkInherit       		= isset($_POST['chbInherit'])     	? $_POST['chbInherit']          : 0;
-$chkSelAccessGroup		= isset($_POST['selAccessGroup'])	? $_POST['selAccessGroup']+0	: 0;
-//
-// Quote special characters
-// ==========================
-if (get_magic_quotes_gpc() == 0) {
-  	$chkTfSearch		= addslashes($chkTfSearch);
-  	$chkTfConfigName 	= addslashes($chkTfConfigName);
-}
-//
-// Search/Filter - Session data
-// ============================
-if (!isset($_SESSION['search']) || !isset($_SESSION['search']['servicedependencies'])) $_SESSION['search']['servicedependencies'] = "";
-if (($chkModus == "checkform") || ($chkModus == "filter")) {
-  	$_SESSION['search']['servicedependencies'] = $chkTfSearch;
-}
+require("../functions/prepend_content.php");
 //
 // Data processing
 // ===============
-$strEO = substr($chkEOo.$chkEOw.$chkEOu.$chkEOc.$chkEOp.$chkEOn,0,-1);
-$strNO = substr($chkNOo.$chkNOw.$chkNOu.$chkNOc.$chkNOp.$chkNOn,0,-1);
-if (($chkSelHostDepend[0]      	== "") 	|| ($chkSelHostDepend[0]    == "0")) {$intSelHostDepend    	= 0;} else {$intSelHostDepend    = 1;}
-if ($chkSelHostDepend[0]       	== "*") $intSelHostDepend 	 = 2;
-if (($chkSelHostgroupDep[0]    	== "") 	|| ($chkSelHostgroupDep[0]  == "0")) {$intSelHostgroupDep   = 0;} else {$intSelHostgroupDep  = 1;}
-if ($chkSelHostgroupDep[0]     	== "*") $intSelHostgroupDep  = 2;
-if (($chkSelServiceDepend[0]	== "") 	|| ($chkSelServiceDepend[0] == "0")) {$intSelServiceDepend	= 0;} else {$intSelServiceDepend = 1;}
-if ($chkSelServiceDepend[0]    	== "*") $intSelServiceDepend = 2;
-if (($chkSelHost[0]        		== "") 	|| ($chkSelHost[0]      	== "0")) {$intSelHost        	= 0;} else {$intSelHost      	 = 1;}
-if ($chkSelHost[0]        		== "*") $intSelHost 		 = 2;
-if (($chkSelHostgroup[0]     	== "") 	|| ($chkSelHostgroup[0]     == "0")) {$intSelHostgroup     	= 0;} else {$intSelHostgroup     = 1;}
-if ($chkSelHostgroup[0]        	== "*") $intSelHostgroup 	 = 2;
-if (($chkSelService[0]       	== "") 	|| ($chkSelService[0]     	== "0")) {$intSelService     	= 0;} else {$intSelService     	 = 1;}
-if ($chkSelService[0]        	== "*") $intSelService 		 = 2;
+$strEO = substr($chkChbGr1a.$chkChbGr1b.$chkChbGr1c.$chkChbGr1d.$chkChbGr1e.$chkChbGr1f,0,-1);
+$strNO = substr($chkChbGr2a.$chkChbGr2b.$chkChbGr2c.$chkChbGr2d.$chkChbGr2e.$chkChbGr2f,0,-1);
 // 
 // Add or modify data
 // ==================
-if (($chkModus == "insert") || ($chkModus == "modify")) {
-	if ($hidActive   == 1) $chkActive = 1;
-	if ($chkGroupAdm == 1) {$strGroupSQL = "`access_group`=$chkSelAccessGroup, ";} else {$strGroupSQL = "";}
-  	$strSQLx = "`tbl_servicedependency` SET `dependent_host_name`=$intSelHostDepend, `dependent_hostgroup_name`=$intSelHostgroupDep,
-        		`dependent_service_description`=$intSelServiceDepend, `host_name`=$intSelHost, `hostgroup_name`=$intSelHostgroup,
-        		`service_description`=$intSelService, `config_name`='$chkTfConfigName', `inherits_parent`='$chkInherit',
-        		`execution_failure_criteria`='$strEO', `notification_failure_criteria`='$strNO', `dependency_period`=$chkSelDependPeriod,
-        		$strGroupSQL `active`='$chkActive', `config_id`=$chkDomainId, `last_modified`=NOW()";
-  	if ($chkModus == "insert") {
-    	$strSQL = "INSERT INTO ".$strSQLx;
+if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+  	$strSQLx = "`$preTableName` SET `dependent_host_name`=$intMselValue2, `dependent_hostgroup_name`=$intMselValue4, `dependent_service_description`=$intMselValue6,
+				`dependent_servicegroup_name`=$intMselValue8, `host_name`=$intMselValue1, `hostgroup_name`=$intMselValue3, `service_description`=$intMselValue5,
+				`servicegroup_name`=$intMselValue7,`$preKeyField`='$chkTfValue1', `inherits_parent`='$chkChbValue1', `execution_failure_criteria`='$strEO',
+				`notification_failure_criteria`='$strNO', `dependency_period`=$chkSelValue1, $preSQLCommon1";
+	if ($chkModus == "insert") {
+		$strSQL 		= "INSERT INTO ".$strSQLx;
   	} else {
-    	$strSQL = "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
+    	$strSQL			= "UPDATE ".$strSQLx." WHERE `id`=$chkDataId";
   	}
-	
-  	if ((($intSelHost != 0) || ($intSelHostgroup != 0)) && (($intSelHostDepend != 0) || ($intSelHostgroupDep != 0)) &&
-    	($intSelService != 0) && ($intSelServiceDepend != 0)) {
-    	$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
-		$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-		$myDataClass->updateStatusTable("tbl_servicedependency");
-    	if ($chkModus == "insert") $chkDataId = $intInsertId;
-    	if ($intInsert == 1) {
-      		$intReturn = 1;
-    	} else {
-      		if ($chkModus == "insert") $myDataClass->writeLog(translate('New service dependency inserted:')." ".$chkTfConfigName);
-      		if ($chkModus == "modify") $myDataClass->writeLog(translate('Service dependency modified:')." ".$chkTfConfigName);
-      		//
-      		// Insert/update relations
-      		// =======================
-      		if ($chkModus == "insert") {
-        		if ($intSelHostDepend	 != 0) $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHost_DH",$chkDataId,$chkSelHostDepend);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHostgroupDep  != 0) $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHostgroup_DH",$chkDataId,$chkSelHostgroupDep);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelServiceDepend != 0) $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToService_DS",$chkDataId,$chkSelServiceDepend);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHost       	 != 0) $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHost_H",$chkDataId,$chkSelHost);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHostgroup     != 0) $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHostgroup_H",$chkDataId,$chkSelHostgroup);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelService       != 0) $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToService_S",$chkDataId,$chkSelService);
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		} else if ($chkModus == "modify") {
-        		if ($intSelHostDepend != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHost_DH",$chkDataId,$chkSelHostDepend);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHost_DH",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHostgroupDep != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHostgroup_DH",$chkDataId,$chkSelHostgroupDep);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHostgroup_DH",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelServiceDepend != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToService_DS",$chkDataId,$chkSelServiceDepend);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToService_DS",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHost != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHost_H",$chkDataId,$chkSelHost);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHost_H",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelHostgroup != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHostgroup_H",$chkDataId,$chkSelHostgroup);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHostgroup_H",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-        		if ($intSelService != 0) {
-          			$myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToService_S",$chkDataId,$chkSelService);
-        		} else {
-          			$myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToService_S",$chkDataId);
-        		}
-				$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		}
-			//
-			// Update Import HASH
-			// ==================
-			$booReturn = $myDataClass->updateHash('tbl_servicedependency',$chkDataId);
-			$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-      		$intReturn = 0;
-    	}
-  	} else {
-    	$myVisClass->processMessage(translate('Database entry failed! Not all necessary data filled in!'),$strMessage);
-  	}
-  	$chkModus = "display";
-} else if ($chkModus == "make") {
-	// Write configuration file
-  	$intReturn   = $myConfigClass->createConfig("tbl_servicedependency",0);
-	$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "info")) {
-	// Display additional relation information
-  	$myDataClass->infoRelation("tbl_servicedependency",$chkListId,"config_name");
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	$intReturn   = 0;
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
-	// Delete selected datasets
-  	$intReturn   = $myDataClass->dataDeleteFull("tbl_servicedependency",$chkListId);
-  	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
-	// Copy selected datasets
-  	$intReturn   = $myDataClass->dataCopyEasy("tbl_servicedependency","config_name",$chkListId,$chkSelTargetDomain);
-	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-  	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "activate")) {
-	// Activate selected datasets
-	$intReturn   = $myDataClass->dataActivate("tbl_servicedependency",$chkListId);
-	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-	$chkModus    = "display";
-} else if (($chkModus == "checkform") && ($chkSelModify == "deactivate")) {
-	// Deactivate selected datasets
-	$intReturn   = $myDataClass->dataDeactivate("tbl_servicedependency",$chkListId);
-	$myVisClass->processMessage($myDataClass->strDBMessage,$strMessage);
-	$chkModus    = "display"; 
-} else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
-	// Open a dataset to modify
-	$booReturn   = $myDBClass->getSingleDataset("SELECT * FROM `tbl_servicedependency` WHERE `id`=".$chkListId,$arrModifyData);
-	$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
-	if ($booReturn == false) {
-		$myVisClass->processMessage(translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError,$strMessage);
-		$chkModus    = "add";
-	} else {
-		// Check access permission
-		$intAccess = $myVisClass->checkAccGroup($_SESSION['userid'],$arrModifyData['access_group']);  
-		if ($intAccess == 1) {
-	  		$myVisClass->processMessage(translate('No permission to open configuration!'),$strMessage);
-	  		$arrModifyData  = "";
-	 		$chkModus       = "display";
+	if ($intWriteAccessId == 0) {
+		if (($chkTfValue1 != "") && (($intMselValue5 != 0) || ($intMselValue7 != 0)) && (($intMselValue6 != 0) || ($intMselValue8 != 0))) {
+			$intReturn = $myDataClass->dataInsert($strSQL,$intInsertId);
+			if ($chkModus == "insert")  $chkDataId = $intInsertId;
+			if ($intReturn == 1) {
+				$myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+			} else {
+				$myVisClass->processMessage($myDataClass->strInfoMessage,$strInfoMessage);
+				$myDataClass->updateStatusTable($preTableName);
+				if ($chkModus == "insert") $myDataClass->writeLog(translate('New service dependency inserted:')." ".$chkTfValue1);
+				if ($chkModus == "modify") $myDataClass->writeLog(translate('Service dependency modified:')." ".$chkTfValue1);
+				//
+				// Insert/update relations
+				// =======================
+				if ($chkModus == "insert") {
+					if ($intMselValue1 != 0) $intRet1 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHost_H",$chkDataId,$chkMselValue1);
+					if (isset($intRet1) && ($intRet1 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue2 != 0) $intRet2 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHost_DH",$chkDataId,$chkMselValue2);
+					if (isset($intRet2) && ($intRet2 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue3 != 0) $intRet3 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHostgroup_H",$chkDataId,$chkMselValue3);
+					if (isset($intRet3) && ($intRet3 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue4 != 0) $intRet4 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToHostgroup_DH",$chkDataId,$chkMselValue4);
+					if (isset($intRet4) && ($intRet4 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue5 != 0) $intRet5 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToService_S",$chkDataId,$chkMselValue5);
+					if (isset($intRet5) && ($intRet5 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue6 != 0) $intRet6 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToService_DS",$chkDataId,$chkMselValue6);
+					if (isset($intRet6) && ($intRet6 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue7 != 0) $intRet7 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToServicegroup_S",$chkDataId,$chkMselValue7);
+					if (isset($intRet7) && ($intRet7 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue8 != 0) $intRet8 = $myDataClass->dataInsertRelation("tbl_lnkServicedependencyToServicegroup_DS",$chkDataId,$chkMselValue8);
+					if (isset($intRet8) && ($intRet8 != 0)) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				} else if ($chkModus == "modify") {
+					if ($intMselValue1 != 0) {
+						$intRet1 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHost_H",$chkDataId,$chkMselValue1);
+					} else {
+						$intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHost_H",$chkDataId);
+					}
+					if ($intRet1 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue2 != 0) {
+						$intRet2 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHost_DH",$chkDataId,$chkMselValue2);
+					} else {
+						$intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHost_DH",$chkDataId);
+					}
+					if ($intRet2 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue3 != 0) {
+						$intRet3 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHostgroup_H",$chkDataId,$chkMselValue3);
+					} else {
+						$intRet3 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHostgroup_H",$chkDataId);
+					}
+					if ($intRet3 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue4 != 0) {
+						$intRet4 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToHostgroup_DH",$chkDataId,$chkMselValue4);
+					} else {
+						$intRet4 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHostgroup_DH",$chkDataId);
+					}
+					if ($intRet4 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue5 != 0) {
+						$intRet5 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToService_S",$chkDataId,$chkMselValue5);
+					} else {
+						$intRet5 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToService_S",$chkDataId);
+					}
+					if ($intRet5 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue6 != 0) {
+						$intRet6 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToService_DS",$chkDataId,$chkMselValue6);
+					} else {
+						$intRet6 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToService_DS",$chkDataId);
+					}
+					if ($intRet6 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue7 != 0) {
+						$intRet7 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToServicegroup_S",$chkDataId,$chkMselValue7);
+					} else {
+						$intRet7 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToServicegroup_S",$chkDataId);
+					}
+					if ($intRet7 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+					if ($intMselValue8 != 0) {
+						$intRet8 = $myDataClass->dataUpdateRelation("tbl_lnkServicedependencyToServicegroup_DS",$chkDataId,$chkMselValue8);
+					} else {
+						$intRet8 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToServicegroup_DS",$chkDataId);
+					}
+					if ($intRet8 != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+				}
+				if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5 + $intRet6 + $intRet7 + $intRet8) != 0) $strInfoMessage = "";
+				//
+				// Update Import HASH
+				// ==================
+				$booReturn = $myDataClass->updateHash($preTableName,$chkDataId);
+				if ($booReturn != 0) $myVisClass->processMessage($myDataClass->strErrorMessage,$strErrorMessage);
+			}
 		} else {
-	  		$chkModus 	  = "add";	
+			$myVisClass->processMessage(translate('Database entry failed! Not all necessary data filled in!'),$strErrorMessage);
 		}
+	} else {
+		$myVisClass->processMessage(translate('Database entry failed! No write access!'),$strErrorMessage);
 	}
-} else if (($chkModus != "add") && ($chkModus != "refresh")) {
-  $chkModus    = "display"; 
+  	$chkModus = "display";
 }
-// Get status messages from database
-if (isset($intReturn) && ($intReturn == 1)) $strMessage = $strMessage;
-if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$strMessage."</span>";
+if (($chkModus != "add") && ($chkModus != "refresh")) $chkModus    = "display"; 
 //
 // Get date/time of last database and config file manipulation
 // ===========================================================
-$myConfigClass->lastModified("tbl_servicedependency",$strLastModified,$strFileDate,$strOld);
-$myVisClass->processMessage($myConfigClass->strDBMessage,$strMessage);
-//
-// Build content menu
-// ==================
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
+$intReturn = $myConfigClass->lastModifiedFile($preTableName,$arrTimeData,$strTimeInfoString);
+if ($intReturn != 0) $myVisClass->processMessage($myConfigClass->strErrorMessage,$strErrorMessage);
 //
 // Start content
 // =============
@@ -256,59 +162,63 @@ $conttp->show("header");
 // ===============
 if (($chkModus == "add") || ($chkModus == "refresh")) {
 	if ($chkModus == "refresh") {
-    	$_SESSION['refresh']['sd_dependent_host'] 		= $chkSelHostDepend;
-		$_SESSION['refresh']['sd_host']           		= $chkSelHost;
-		$_SESSION['refresh']['sd_dependent_hostgroup'] 	= $chkSelHostgroupDep;
-    	$_SESSION['refresh']['sd_hostgroup']       		= $chkSelHostgroup;
-    	$_SESSION['refresh']['sd_dependent_service'] 	= $chkSelServiceDepend;
-		$_SESSION['refresh']['sd_service']           	= $chkSelService;
+		$_SESSION['refresh']['sd_host']           			= $chkMselValue1;
+    	$_SESSION['refresh']['sd_dependent_host'] 			= $chkMselValue2;
+		$_SESSION['refresh']['sd_hostgroup']       			= $chkMselValue3;
+		$_SESSION['refresh']['sd_dependent_hostgroup'] 		= $chkMselValue4;
+    	$_SESSION['refresh']['sd_service']           		= $chkMselValue5;
+    	$_SESSION['refresh']['sd_dependent_service'] 		= $chkMselValue6;
+    	$_SESSION['refresh']['sd_servicegroup']           	= $chkMselValue7;
+    	$_SESSION['refresh']['sd_dependent_servicegroup'] 	= $chkMselValue8;
   	} else {
-    	$_SESSION['refresh']['sd_dependent_service'] 	= $chkSelServiceDepend;
-		$_SESSION['refresh']['sd_service']           	= $chkSelService;
-		$_SESSION['refresh']['sd_dependent_host'] 		= $chkSelHostDepend;
-		$_SESSION['refresh']['sd_host']           		= $chkSelHost;
-		$_SESSION['refresh']['sd_dependent_hostgroup'] 	= $chkSelHostgroupDep;
-    	$_SESSION['refresh']['sd_hostgroup']       		= $chkSelHostgroup;
+    	$_SESSION['refresh']['sd_host']           			= $chkMselValue1;
+		$_SESSION['refresh']['sd_dependent_host'] 			= $chkMselValue2;
+		$_SESSION['refresh']['sd_hostgroup']       			= $chkMselValue3;
+		$_SESSION['refresh']['sd_dependent_hostgroup'] 		= $chkMselValue4;
+		$_SESSION['refresh']['sd_service']           		= $chkMselValue5;
+		$_SESSION['refresh']['sd_dependent_service'] 		= $chkMselValue6;
+    	$_SESSION['refresh']['sd_servicegroup']           	= $chkMselValue7;
+    	$_SESSION['refresh']['sd_dependent_servicegroup'] 	= $chkMselValue8;
 		if (isset($arrModifyData['dependent_host_name']) && ($arrModifyData['dependent_host_name'] > 0 )) {
+			$arrTemp = array();
 			$strSQL   	= "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHost_DH` WHERE `idMaster` = ".$arrModifyData['id'];
 			$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDC);
-			$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
+			if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
 			if ($booReturn && ($intDC != 0)) {
-				$arrTemp = "";	
 				foreach ($arrData AS $elem) {
 					if ($elem['exclude'] == 1) {
 						$arrTemp[] = "e".$elem['idSlave'];
 					} else {
 						$arrTemp[] = $elem['idSlave'];
 					}
-        		}
-				if ($arrModifyData['dependent_host_name'] == 2) $arrTemp[] = '*';
-				$_SESSION['refresh']['sd_dependent_host'] = $arrTemp;
+				}
 			}
+			if ($arrModifyData['dependent_host_name'] == 2) $arrTemp[] = '*';
+			$_SESSION['refresh']['sd_dependent_host'] = $arrTemp;				
 		}
 		if (isset($arrModifyData['host_name']) && ($arrModifyData['host_name'] > 0 )){
-		  	$strSQL   	= "SELECT `idSlave`, `exclude` FROM `tbl_lnkServicedependencyToHost_H` WHERE `idMaster` = ".$arrModifyData['id'];
-		  	$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDC);
-			$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
-		  	if ($intDC != 0) {
-				$arrTemp = "";
+			$arrTemp = array();
+			$strSQL   	= "SELECT `idSlave`, `exclude` FROM `tbl_lnkServicedependencyToHost_H` WHERE `idMaster` = ".$arrModifyData['id'];
+			$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDC);
+			if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
+			if ($intDC != 0) {
 				foreach ($arrData AS $elem) {
 					if ($elem['exclude'] == 1) {
 						$arrTemp[] = "e".$elem['idSlave'];
 					} else {
 						$arrTemp[] = $elem['idSlave'];
 					}
-        		}
-				if ($arrModifyData['host_name'] == 2) $arrTemp[] = '*';
-				$_SESSION['refresh']['sd_host'] = $arrTemp;
-		  	}
+				}
+			}
+			if ($arrModifyData['host_name'] == 2) $arrTemp[] = '*';
+			$_SESSION['refresh']['sd_host'] = $arrTemp;
 		}
 		if (isset($arrModifyData['dependent_hostgroup_name']) && ($arrModifyData['dependent_hostgroup_name'] > 0 )){
-		  	$strSQL   	= "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_DH` WHERE `idMaster` = ".$arrModifyData['id'];
+		  	$arrTemp = array();
+			$strSQL   	= "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_DH` WHERE `idMaster` = ".$arrModifyData['id'];
 		  	$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDC);
-			$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
+			if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
 		  	if ($intDC != 0) {
-				$arrTemp = "";
 				foreach ($arrData AS $elem) {
 					if ($elem['exclude'] == 1) {
 						$arrTemp[] = "e".$elem['idSlave'];
@@ -316,16 +226,16 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
 						$arrTemp[] = $elem['idSlave'];
 					}
         		}
-				if ($arrModifyData['dependent_hostgroup_name'] == 2) $arrTemp[] = '*';
-				$_SESSION['refresh']['sd_dependent_hostgroup']  = $arrTemp;
 		  	}
+			if ($arrModifyData['dependent_hostgroup_name'] == 2) $arrTemp[] = '*';
+			$_SESSION['refresh']['sd_dependent_hostgroup']  = $arrTemp;
 		}
 		if (isset($arrModifyData['hostgroup_name']) && ($arrModifyData['hostgroup_name'] > 0 )){
-		  	$strSQL   = "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_H` WHERE `idMaster` = ".$arrModifyData['id'];
+		  	$arrTemp = array();
+			$strSQL   = "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_H` WHERE `idMaster` = ".$arrModifyData['id'];
 		  	$booReturn  = $myDBClass->getDataArray($strSQL,$arrData,$intDC);
-			$myVisClass->processMessage($myDBClass->strDBError,$strMessage);
+			if ($booReturn == false) $myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
 		  	if ($intDC != 0) {
-				$arrTemp = "";
 				foreach ($arrData AS $elem) {
 					if ($elem['exclude'] == 1) {
 						$arrTemp[] = "e".$elem['idSlave'];
@@ -333,99 +243,100 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
 						$arrTemp[] = $elem['idSlave'];
 					}
         		}
-				if ($arrModifyData['hostgroup_name'] == 2) $arrTemp[] = '*';
-				$_SESSION['refresh']['sd_hostgroup']  = $arrTemp;
 		  	}
+			if ($arrModifyData['hostgroup_name'] == 2) $arrTemp[] = '*';
+			$_SESSION['refresh']['sd_hostgroup']  = $arrTemp;			
 		}
   	}
+	// Do not show modified time list
+	$intNoTime = 1;
 	// Process host selection field
-  	$intReturn1 = 0;
 	if (isset($arrModifyData['dependent_host_name'])) {$intFieldId = $arrModifyData['dependent_host_name'];} else {$intFieldId = 0;}
-	if (($chkModus == "refresh") && (count($chkSelHostDepend) != 0)) {$strRefresh = 'sd_dependent_host';} else {$strRefresh = '';}
-	$intReturn1 = $myVisClass->parseSelectMulti('tbl_host','host_name','dependent_host','tbl_lnkServicedependencyToHost_DH',2,$intFieldId,-9,$strRefresh);
+	if (($chkModus == "refresh") && (count($chkMselValue2) != 0)) {$strRefresh = 'sd_dependent_host';} else {$strRefresh = '';}
+	$intReturn1 = $myVisClass->parseSelectMulti('tbl_host','host_name','dependent_host','tbl_lnkServicedependencyToHost_DH',0,$intFieldId,-9,$strRefresh);
+	if  ($intReturn1 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
 	if (isset($arrModifyData['host_name'])) {$intFieldId = $arrModifyData['host_name'];} else {$intFieldId = 0;}
-	if (($chkModus == "refresh") && (count($chkSelHost) != 0)) {$strRefresh = 'sd_host';} else {$strRefresh = '';}
-	$intReturn1 = $myVisClass->parseSelectMulti('tbl_host','host_name','host','tbl_lnkServicedependencyToHost_H',2,$intFieldId,-9,$strRefresh);
+	if (($chkModus == "refresh") && (count($chkMselValue1) != 0)) {$strRefresh = 'sd_host';} else {$strRefresh = '';}
+	$intReturn1 = $myVisClass->parseSelectMulti('tbl_host','host_name','host','tbl_lnkServicedependencyToHost_H',0,$intFieldId,-9,$strRefresh);
+	if  ($intReturn1 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
 	// Process time period selection field
   	if (isset($arrModifyData['dependency_period'])) {$intFieldId = $arrModifyData['dependency_period'];} else {$intFieldId = 0;}
-	if ($chkModus == "refresh") {$intFieldId = $chkSelDependPeriod;}
+	if ($chkModus == "refresh") {$intFieldId = $chkSelValue1;}
   	$intReturn = $myVisClass->parseSelectSimple('tbl_timeperiod','timeperiod_name','timeperiod',1,$intFieldId);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
 	// Process host group selection field
-  	$intReturn2 = 0;
 	if (isset($arrModifyData['dependent_hostgroup_name'])) {$intFieldId = $arrModifyData['dependent_hostgroup_name'];} else {$intFieldId = 0;}
-	if (($chkModus == "refresh") && (count($chkSelHostgroupDep) != 0)) {$strRefresh = 'sd_dependent_hostgroup';} else {$strRefresh = '';}
-	$intReturn2 = $myVisClass->parseSelectMulti('tbl_hostgroup','hostgroup_name','dependent_hostgroup','tbl_lnkServicedependencyToHostgroup_DH',2,$intFieldId,-9,$strRefresh);
+	if (($chkModus == "refresh") && (count($chkMselValue4) != 0)) {$strRefresh = 'sd_dependent_hostgroup';} else {$strRefresh = '';}
+	$intReturn2 = $myVisClass->parseSelectMulti('tbl_hostgroup','hostgroup_name','dependent_hostgroup','tbl_lnkServicedependencyToHostgroup_DH',0,$intFieldId,-9,$strRefresh);
+	if  ($intReturn2 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
 	if (isset($arrModifyData['hostgroup_name'])) {$intFieldId = $arrModifyData['hostgroup_name'];} else {$intFieldId = 0;}
-	if (($chkModus == "refresh") && (count($chkSelHostgroup) != 0)) {$strRefresh = 'sd_hostgroup';} else {$strRefresh = '';}
-	$intReturn2 = $myVisClass->parseSelectMulti('tbl_hostgroup','hostgroup_name','hostgroup','tbl_lnkServicedependencyToHostgroup_H',2,$intFieldId,-9,$strRefresh);
-  	if (($intReturn1 != 0) && ($intReturn2 != 0)) $strDBWarning .= translate('Attention, no hosts and hostgroups defined!')."<br>";
+	if (($chkModus == "refresh") && (count($chkMselValue3) != 0)) {$strRefresh = 'sd_hostgroup';} else {$strRefresh = '';}
+	$intReturn2 = $myVisClass->parseSelectMulti('tbl_hostgroup','hostgroup_name','hostgroup','tbl_lnkServicedependencyToHostgroup_H',0,$intFieldId,-9,$strRefresh);
+	if  ($intReturn2 != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+  	if (($intReturn1 != 0) && ($intReturn2 != 0)) {
+		$myVisClass->processMessage(translate('Attention, no hosts and hostgroups defined!'),$strDBWarning);
+		$intDataWarning = 1;
+	}
   	// Process services selection field
 	if (isset($arrModifyData['dependent_service_description'])) {$intFieldId = $arrModifyData['dependent_service_description'];} else {$intFieldId = 0;}
-	if (($chkModus == "refresh") && (count($chkSelHostgroup) != 0)) {$strRefresh = 'sd_dependent_service';} else {$strRefresh = '';}
+	if (($chkModus == "refresh") && (count($chkMselValue6) != 0)) {$strRefresh = 'sd_dependent_service';} else {$strRefresh = '';}
 	$intReturn = $myVisClass->parseSelectMulti('tbl_service','service_description','dependent_service','tbl_lnkServicedependencyToService_DS',2,$intFieldId,-9,$strRefresh);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
 	if (isset($arrModifyData['service_description'])) {$intFieldId = $arrModifyData['service_description'];} else {$intFieldId = 0;}
-	if (($chkModus == "refresh") && (count($chkSelHostgroup) != 0)) {$strRefresh = 'sd_service';} else {$strRefresh = '';}
+	if (($chkModus == "refresh") && (count($chkMselValue5) != 0)) {$strRefresh = 'sd_service';} else {$strRefresh = '';}
 	$intReturn = $myVisClass->parseSelectMulti('tbl_service','service_description','service','tbl_lnkServicedependencyToService_S',2,$intFieldId,-9,$strRefresh);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+  	// Process servicegroup selection field
+	if (isset($arrModifyData['dependent_servicegroup_name'])) {$intFieldId = $arrModifyData['dependent_servicegroup_name'];} else {$intFieldId = 0;}
+	if (($chkModus == "refresh") && (count($chkMselValue8) != 0)) {$strRefresh = 'sd_dependent_servicegroup';} else {$strRefresh = '';}
+	$intReturn = $myVisClass->parseSelectMulti('tbl_servicegroup','servicegroup_name','dependent_servicegroup','tbl_lnkServicedependencyToServicegroup_DS',0,$intFieldId,-9,$strRefresh);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	if (isset($arrModifyData['servicegroup_name'])) {$intFieldId = $arrModifyData['servicegroup_name'];} else {$intFieldId = 0;}
+	if (($chkModus == "refresh") && (count($chkMselValue7) != 0)) {$strRefresh = 'sd_servicegroup';} else {$strRefresh = '';}
+	$intReturn = $myVisClass->parseSelectMulti('tbl_servicegroup','servicegroup_name','servicegroup','tbl_lnkServicedependencyToServicegroup_S',0,$intFieldId,-9,$strRefresh);
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
   	// Process access group selection field
   	if (isset($arrModifyData['access_group'])) {$intFieldId = $arrModifyData['access_group'];} else {$intFieldId = 0;}
-	if ($chkModus == "refresh") {$intFieldId = $chkSelAccessGroup;}
+	if ($chkModus == "refresh") {$intFieldId = $chkSelAccGr;}
   	$intReturn = $myVisClass->parseSelectSimple('tbl_group','groupname','acc_group',0,$intFieldId);
-	// Process template text raplacements
-	foreach($arrDescription AS $elem) {
-		$conttp->setVariable($elem['name'],str_replace("</","<\/",$elem['string']));
-	}
-	$conttp->setVariable("ACTION_INSERT",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-	$conttp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$conttp->setVariable("LIMIT",$chkLimit);
-	$conttp->setVariable("MENU_ID",$intSub);
-	if ($strDBWarning != "") $conttp->setVariable("WARNING",$strDBWarning.translate('Saving not possible!'));
-	$conttp->setVariable("ACT_CHECKED","checked");
-	$conttp->setVariable("MODUS","insert");
-	$conttp->setVariable("VERSION",$intVersion);
-	$conttp->setVariable("SELECT_FIELD_DISABLED","disabled");
-	if ($SETS['common']['seldisable'] == 0)$conttp->setVariable("SELECT_FIELD_DISABLED","enabled");
-	if ($chkGroupAdm == 0) $conttp->setVariable("RESTRICT_GROUP_ADMIN","class=\"elementHide\"");
-	// Process additional fields based on nagios version
-  	if ($intVersion == 3) {
-    	$conttp->setVariable("CLASS_NAME_20","elementHide");
-    	$conttp->setVariable("CLASS_NAME_30","elementShow");
-  	} else {
-    	$conttp->setVariable("CLASS_NAME_20","elementShow");
-    	$conttp->setVariable("CLASS_NAME_30","elementHide");
-    	$conttp->setVariable("CLASS_20_MUST_ONLY","class=\"inpmust\"");
-    	$conttp->setVariable("MUST_20_STAR","*");
-    	$conttp->setVariable("MEMBER_20_MUST","selMembers,");
-  	}
+	if  ($intReturn != 0) $myVisClass->processMessage($myVisClass->strErrorMessage,$strErrorMessage);
+	// Initial add/modify form definitions
+	$myContentClass->addFormInit($conttp);
+	if ($intDataWarning == 1) 	$conttp->setVariable("WARNING",$strDBWarning."<br>".translate('Saving not possible!'));
+	if ($intVersion != 3) 		$conttp->setVariable("VERSION_20_VALUE_MUST","mselValue1,");
   	if ($chkModus == "refresh") {
-    	if ($chkTfConfigName != "") $conttp->setVariable("DAT_CONFIG_NAME",$chkTfConfigName);
+    	if ($chkTfValue1 != "") $conttp->setVariable("DAT_CONFIG_NAME",$chkTfValue1);
     	foreach(explode(",",$strEO) AS $elem) {
       		$conttp->setVariable("DAT_EO".strtoupper($elem)."_CHECKED","checked");
     	}
     	foreach(explode(",",$strNO) AS $elem) {
       		$conttp->setVariable("DAT_NO".strtoupper($elem)."_CHECKED","checked");
     	}
-    	if ($chkActive != 1)  $conttp->setVariable("ACT_CHECKED","");
-    	if ($chkInherit == 1) $conttp->setVariable("ACT_INHERIT","checked");
+    	if ($chkActive   != 1) $conttp->setVariable("ACT_CHECKED","");
+		if ($chkRegister != 1) $conttp->setVariable("REG_CHECKED","");
+    	if ($chkChbValue1  == 1) $conttp->setVariable("ACT_INHERIT","checked");
     	if ($chkDataId != 0) {
       		$conttp->setVariable("DAT_ID",$chkDataId);
-			$conttp->setVariable("MODUS",$chkModus);
-    	}
-  	// Insert data from database in "modify" mode
-  	} else if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-    	foreach($arrModifyData AS $key => $value) {
-      		if (($key == "active") || ($key == "last_modified")) continue;
-      		$conttp->setVariable("DAT_".strtoupper($key),htmlentities($value,ENT_QUOTES,'UTF-8'));
-    	}
-		// Process option fields
-    	foreach(explode(",",$arrModifyData['execution_failure_criteria']) AS $elem) {
+			$conttp->setVariable("MODUS","modify");
+    	}	
+	// Insert data from database in "modify" mode
+	} else if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+		// Check relation information to find out locked configuration datasets
+		$intLocked = $myDataClass->infoRelation($preTableName,$arrModifyData['id'],$preKeyField);
+		$myVisClass->processMessage($myDataClass->strInfoMessage,$strRelMessage);
+		$strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by another configuration').":</span>";
+		$strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+		// Process data
+		$myContentClass->addInsertData($conttp,$arrModifyData,$intLocked,$strInfo);
+		// Setting special data
+		if ($arrModifyData['inherits_parent'] == 1) $conttp->setVariable("ACT_INHERIT","checked");
+		foreach(explode(",",$arrModifyData['execution_failure_criteria']) AS $elem) {
       		$conttp->setVariable("DAT_EO".strtoupper($elem)."_CHECKED","checked");
     	}
     	foreach(explode(",",$arrModifyData['notification_failure_criteria']) AS $elem) {
       		$conttp->setVariable("DAT_NO".strtoupper($elem)."_CHECKED","checked");
     	}
-    	if ($arrModifyData['inherits_parent'] == 1) $conttp->setVariable("ACT_INHERIT","checked");
-    	if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
-    	$conttp->setVariable("MODUS","modify");
+		
   	}
   	$conttp->parse("datainsert");
   	$conttp->show("datainsert");
@@ -434,118 +345,44 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
 // List view
 // ==========
 if ($chkModus == "display") {
-  	// Process template text raplacements
-  	foreach($arrDescription AS $elem) {
-    	$mastertp->setVariable($elem['name'],$elem['string']);
-  	} 
-  	$mastertp->setVariable("FIELD_1",translate('Config name'));
-  	$mastertp->setVariable("FIELD_2",translate('Dependent services'));
-  	$mastertp->setVariable("LIMIT",$chkLimit);
-  	$mastertp->setVariable("ACTION_MODIFY",filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING));
-  	$mastertp->setVariable("TABLE_NAME","tbl_servicedependency");
-  	$mastertp->setVariable("DAT_SEARCH",$_SESSION['search']['servicedependencies']);
-  	// Get Group id's with READ
-  	$strAccess = $myVisClass->getAccGroupRead($_SESSION['userid']);
-	// Include domain list
-	$myVisClass->insertDomainList($mastertp);
-  	// Process filter string
-  	$strSearchWhere = "";
- 	if ($_SESSION['search']['servicedependencies'] != "") {
-  		$strSearchTxt   = $_SESSION['search']['servicedependencies'];
-  		$strSearchWhere = "AND (`config_name` LIKE '%".$strSearchTxt."%')";
+	// Initial list view definitions
+	$myContentClass->listViewInit($mastertp);
+	$mastertp->setVariable("FIELD_1",translate('Config name'));
+	$mastertp->setVariable("FIELD_2",translate('Dependent services'));
+	// Process search string
+ 	if ($_SESSION['search'][$preSearchSession] != "") {
+  		$strSearchTxt   = $_SESSION['search'][$preSearchSession];
+  		$strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%')";
   	}
+	// Row sorting
+	$strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
+	if ($hidSortBy == 2) $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
+	$mastertp->setVariable("DISABLE_SORT_2","disable");
   	// Count datasets
-  	$strSQL    = "SELECT count(*) AS `number` FROM `tbl_servicedependency` WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
+  	$strSQL    = "SELECT count(*) AS `number` FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
   	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
   	if ($booReturn == false) {
-    	$strMessage .= translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError."<br>";
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	} else {
-    	$intCount = (int)$arrDataLinesCount['number'];
+    	$intLineCount = (int)$arrDataLinesCount['number'];
+		if ($intLineCount < $chkLimit) $chkLimit = 0;
   	}
   	// Get datasets
-  	$strSQL    = "SELECT `id`, `config_name`, `dependent_service_description`, `active`, `config_id`  FROM `tbl_servicedependency`WHERE $strDomainWhere 
-          		  $strSearchWhere AND `access_group` IN ($strAccess) ORDER BY `config_id`, `config_name` LIMIT $chkLimit,".$SETS['common']['pagelines'];
+  	$strSQL    = "SELECT `id`, `$preKeyField`, `dependent_service_description`, `register`, `active`, `config_id`, `access_group` FROM `$preTableName`WHERE $strDomainWhere
+				  $strSearchWhere AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
   	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-	$mastertp->setVariable("CELLCLASS_L","tdlb");
-	$mastertp->setVariable("CELLCLASS_M","tdmb");	
-	$mastertp->setVariable("DISABLED","disabled");
-	$mastertp->setVariable("DATA_FIELD_1",translate('No data'));
-	$mastertp->setVariable("DATA_FIELD_2","&nbsp;");
-	$mastertp->setVariable("DATA_ACTIVE","&nbsp;");
-	$mastertp->setVariable("CHB_CLASS","checkbox");
-	$mastertp->setVariable("PICTURE_CLASS","elementHide");
-  	if ($booReturn == false) {
-    	$myVisClass->processMessage(translate('Error while selecting data from database:')."<br>".$myDBClass->strDBError,$strMessage);
-  	} else if ($intDataCount != 0) {
-    	for ($i=0;$i<$intDataCount;$i++) {
-      		// Line colours
-      		$strClassL = "tdld"; $strClassM = "tdmd"; $strChbClass = "checkboxline";
-      		if ($i%2 == 1) {$strClassL = "tdlb"; $strClassM = "tdmb"; $strChbClass = "checkbox";}
-      		if ($arrDataLines[$i]['active'] == 0) {$strActive = translate('No');} else {$strActive = translate('Yes');}
-      		// Set datafields
-      		foreach($arrDescription AS $elem) {
-        		$mastertp->setVariable($elem['name'],$elem['string']);
-      		}
-      		$mastertp->setVariable("DATA_FIELD_1",htmlspecialchars(stripslashes($arrDataLines[$i]['config_name']),ENT_COMPAT,'UTF-8'));
-      		$strDataline = "";
-      		if ($arrDataLines[$i]['dependent_service_description'] != 0) {
-        		$strSQLService 	= "SELECT `strSlave` FROM `tbl_lnkServicedependencyToService_DS` WHERE `idMaster`=".$arrDataLines[$i]['id'];
-        		$booReturn 		= $myDBClass->getDataArray($strSQLService,$arrDataService,$intDCService);
-        		if ($intDCService != 0) {
-          			foreach($arrDataService AS $elem) {
-            			$strDataline .= $elem['strSlave'].",";
-          			}
-        		}
-      		}
-      		if (strlen(substr($strDataline,0,-1)) > 50) {$strAdd = "...";} else {$strAdd = "";}
-      		$mastertp->setVariable("DATA_FIELD_2",htmlspecialchars(substr(substr($strDataline,0,-1),0,50).$strAdd,ENT_COMPAT,'UTF-8'));
-      		$mastertp->setVariable("DATA_ACTIVE",$strActive);
-      		$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
-      		$mastertp->setVariable("CELLCLASS_L",$strClassL);
-      		$mastertp->setVariable("CELLCLASS_M",$strClassM);
-      		$mastertp->setVariable("CHB_CLASS",$strChbClass);
-      		$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-			$mastertp->setVariable("PICTURE_CLASS","elementShow");
-			$mastertp->setVariable("DISABLED","");
-			if ($chkModus != "display") $conttp->setVariable("DISABLED","disabled");
-			// Disable common domain objects
-			if ($arrDataLines[$i]['config_id'] != $chkDomainId) {
-				$mastertp->setVariable("DISABLED","disabled");
-				$mastertp->setVariable("PICTURE_CLASS","elementHide");
-				$mastertp->setVariable("DOMAIN_SPECIAL"," [common]");
-			}
-			$mastertp->parse("datarow");
-    	}
-  	} else {
-		// Disable common domain objects
-		if ($chkDomainId == 0) {
-			$mastertp->setVariable("DISABLED","disabled");
-			$mastertp->setVariable("DOMAIN_SPECIAL","&nbsp;");
-		}
-		$mastertp->parse("datarow");
+	if ($booReturn == false) {
+    	$myVisClass->processMessage(translate('Error while selecting data from database:'),$strErrorMessage);
+		$myVisClass->processMessage($myDBClass->strErrorMessage,$strErrorMessage);
   	}
-	$mastertp->setVariable("BUTTON_CLASS","elementShow");
-	if ($chkDomainId == 0) $mastertp->setVariable("BUTTON_CLASS","elementHide");
-	// Show page numbers
-  	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
-  	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks(filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_STRING),$intCount,$chkLimit));
-  	$mastertp->parse("datatable");
-  	$mastertp->show("datatable");
+	// Process data
+	$myContentClass->listData($mastertp,$arrDataLines,$intDataCount,$intLineCount,$preKeyField,'process_field',40);
 }
 // Show messages
-$mastertp->setVariable("DBMESSAGE",$strMessage);
-if ($chkDomainId != 0) {
-	if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."&nbsp;</span><br>");
-	$mastertp->setVariable("LAST_MODIFIED",translate('Last database update:')." <b>".$strLastModified."</b>");
-	$mastertp->setVariable("FILEDATE",translate('Last change of the configuration file:')." <b>".$strFileDate."</b>");
-}
-$mastertp->parse("msgfooter");
-$mastertp->show("msgfooter");
+$myContentClass->showMessages($mastertp,$strErrorMessage,$strInfoMessage,$strConsistMessage,$arrTimeData,$strTimeInfoString,$intNoTime);
 //
 // Process footer
 // ==============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
-$maintp->parse("footer");
-$maintp->show("footer");
+$myContentClass->showFooter($maintp,$setFileVersion);
 ?>

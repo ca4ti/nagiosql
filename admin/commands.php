@@ -5,32 +5,26 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2011 by Martin Willisegger
+// (c) 2005-2012 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Commands overview
 // Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2011-03-13 14:00:26 +0100 (So, 13. Mär 2011) $
-// Author    : $LastChangedBy: rouven $
-// Version   : 3.1.1
-// Revision  : $LastChangedRevision: 1058 $
+// Date      : $LastChangedDate: 2012-02-08 15:13:31 +0100 (Wed, 08 Feb 2012) $
+// Author    : $LastChangedBy: martin $
+// Version   : 3.2.0
+// Revision  : $LastChangedRevision: 1189 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Define common variables
 // =======================
-$intMain 		= 4;
-$intSub  		= 0;
-$intMenu 		= 2;
+$prePageId		= 4;
 $preContent 	= "admin/mainpages.tpl.htm";
 //
 // Include preprocessing file
 // ==========================
 require("../functions/prepend_adm.php");
-//
-// Build content menu
-// ==================
-$myVisClass->getMenu($intMain,$intSub,$intMenu);
 //
 // Include content
 // ===============
@@ -45,10 +39,14 @@ $conttp->setVariable("INACTIVE",translate('Inactive'));
 //
 // Include statistical data
 // ========================
-$conttp->setVariable("NAME",translate('Check commands'));
-$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_command WHERE active='1' AND config_id=$chkDomainId"));
-$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_command WHERE active='0' AND config_id=$chkDomainId"));
-$conttp->parse("statisticrow");
+// Get read access groups
+$strAccess = $myVisClass->getAccGroups('read');
+if ($myVisClass->checkAccGroup($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=18")+0,'read') == 0) {
+	$conttp->setVariable("NAME",translate('Check commands'));
+	$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_command WHERE active='1' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
+	$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_command WHERE active='0' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
+	$conttp->parse("statisticrow");
+}
 $conttp->parse("statistics");
 $conttp->parse("main");
 $conttp->show("main");

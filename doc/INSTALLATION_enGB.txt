@@ -1,0 +1,110 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// NagiosQL
+//
+///////////////////////////////////////////////////////////////////////////////
+//
+// (c) 2008-2012 by Martin Willisegger
+//
+// Project  : NagiosQL
+// Component: Installation HowTo
+// Website  : http://www.nagiosql.org
+// Date     : $LastChangedDate: 2012-03-12 08:30:07 +0100 (Mon, 12 Mar 2012) $
+// Author   : $LastChangedBy: martin $
+// Version  : 3.2.0
+// Revision : $LastChangedRevision: 1288 $
+// SVN-ID   : $Id: INSTALLATION_enGB.txt 1288 2012-03-12 07:30:07Z martin $
+//
+///////////////////////////////////////////////////////////////////////////////
+
+================
+= REQUIREMENTS =
+================
+
+  * Webserver like Apache 2.x
+  * MySQL 5.x or greater
+  * Nagios 2.x/3.x or Nagios compatible monitoring software
+  * PHP 5.2.0 or greater including:
+    * PHP Module: Session
+    * PHP Module: MySQL
+    * PHP Module: gettext
+    * PHP Module: filter
+    * PHP Module: FTP (optional)
+    * PECL Extension: SSH (optional)
+  * Javascript activated in Webbrowser
+  * Recommended Webbrowser: Mozilla Firefox
+
+================
+NEW INSTALLATION
+================
+
+  1. Download and extract NagiosQL 3.2 to a directory within your Apache Document Root
+  2. Start the Installation Wizard by opening install/index.php
+  3. Switch to your preferred language (see Appendix 1.)
+  4. Follow the instructions to install NagiosQL
+
+================
+=== UPGRADES ===
+================
+
+  1. Upgrade from NagiosQL 1.x and 2.x are not possible, you should better start at "New Installation" and after the installation is done, 
+     import Nagios configuration files with NagiosQL
+  2. Upgrade from NagiosQL 3.x 
+    a. Download and extract NagiosQL 3.2 to a NEW directory and change your Apache DocumentRoot to the new directory
+	b. If the same Apache configuration is used (old NagiosQL directory moved away and new NagiosQL directory moved to the old
+	   DocumentRoot), you should restart the apache demon before upgrade
+    b. Move your old config/settings.php file to the new NagiosQL 3.2 config/ folder
+	c. Backup your old NagiosQL database (as example with mysqldump)
+    d. Start the Installation Wizard by opening install/index.php
+    e. Switch to your preferred language (see Appendix) and follow the instructions
+
+
+=================
+= CONFIGURATION =
+=================
+  1. NagiosQL
+    a. Login to your new installed NagiosQL
+    b. Verify automatically detected settings at Administration => Settings
+    c. Configure your Nagios Installation at Administration => Domains
+  2. Nagios
+    a. Verify that the webserver user has sufficent permission to the required Nagios directories. You could check that, if you execute "nagios -v" as the webserver user.
+    b. Verify that all required directories and files (defined in 1.c "Configuration") exists and have sufficent permissions for the webserver user
+    c. Replace all existing cfg_dir and cfg_file definitions in nagios.cfg by:
+    
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/timeperiods.cfg
+          
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/commands.cfg
+          
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/contacts.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/contactgroups.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/contacttemplates.cfg
+
+          cfg_dir=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/hosts
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/hosttemplates.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/hostgroups.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/hostextinfo.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/hostescalations.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/hostdependencies.cfg          
+                    
+          cfg_dir=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/services
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/servicetemplates.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/servicegroups.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/serviceextinfo.cfg          
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/serviceescalations.cfg
+          cfg_file=<BASE DIRECTORY DEFINED IN DOMAIN CONFIGURATION/servicedependencies.cfg
+
+================
+==== Checks ====
+================
+After installation - go to administration - support and check your installation. This page shows the most common errors.   
+
+================
+=== PROBLEMS ===
+================
+There are currently no known issues. If you having questions, please visit our forum http://www.nagiosql.org/forum.html. If you probably found a bug, please help us and open a new bug report at http://dev.nagigosql.org
+
+================
+=== APPENDIX ===
+================
+  1. To enable multilanguage support, you must have the encoding installed in your locales, e.g. en_GB.utf8. If you want to see which encodings your system provides, try "locale -a".
+  2. If you have problems with language presentation or lack of translation during installation, an apache restart may help
