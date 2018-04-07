@@ -1,6 +1,6 @@
 *******************************************************************************
 *                                                                             *
-*                   NagiosQL 2005 - Upgrade Instructions                      *
+*                   NagiosQL - Upgrade Instructions                      *
 *                                                                             *
 *******************************************************************************
 
@@ -45,3 +45,65 @@ INSERT INTO tbl_submenu (id_main,order_id,item,link,rights) VALUES (6,4,'item_ad
 UPDATE tbl_submenu SET order_id=5 WHERE item='item_admsub19';
 
 7. Use the new version :)
+
+
+Upgrade from RC2 to RC3
+=======================
+
+1. Backup your settings.ini file
+
+2. Delete your old nagiosQL directory
+
+3. Unpack the new distribution to your web directory
+
+4. Restore the settings.ini file
+
+5. Add the location of your nagios pidfile to your old settings.ini:
+  ; Nagios PID File (look at file_lock in your nagios.cfg)
+  pidfile = "/var/run/nagios.pid"
+  
+6. Update the database using this sql commands:
+ALTER TABLE tbl_contact CHANGE host_notification_commands host_notification_commands TEXT DEFAULT NULL,
+  CHANGE service_notification_commands service_notification_commands TEXT DEFAULT NULL;
+
+  
+  Upgrade from any V1.00 to V2.00-P00
+=======================================
+
+1. Save your settings.ini file
+
+2. Delete your old nagiosQL directory
+
+3. Unpack the new distribution to your web directory
+
+4. Install the new database using nagiosQL_v2_db_mysql.sql
+
+4. Fill in the settings to the new setting.ini file by hand 
+   (look at the old values from Version 1.00)
+
+5. Database upgrade
+   There is _no_ upgrade path from your old to the new database
+   Import your old configuration files with the import function to the new database
+   Note, that inactive objects must be inserted by hand because there are not written 
+         to the config files
+
+6. Use the new version :)
+
+
+
+  Special Upgrade from V2.00-BETA to V2.00-P00
+================================================
+
+1. Save your settings.ini file
+
+2. Delete your old nagiosQL directory
+
+3. Unpack the new distribution to your web directory
+
+5. Database upgrade
+   Connect to your NagiosQL 2.00-BETA Database and run this SQL command:
+INSERT INTO `tbl_language` (`id`, `version`, `category`, `keyword`, `lang_de`, `lang_en`, `lang_xy`)
+(450, '2.00', 'file', 'write_monitoring_data', 'Schreibe alle Überwachungskonfigurationen:', 'Write all monitoring configurations:', NULL),
+(451, '2.00', 'file', 'write_additional_data', 'Schreibe alle Zusatzkonfigurationen:', 'Write all additional configurations:', NULL);
+
+6. Use the new version

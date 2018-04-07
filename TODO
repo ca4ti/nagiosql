@@ -1,0 +1,11 @@
+*******************************************************************************
+*                                                                             *
+*                            NagiosQL - TODO List                             *
+*                                                                             *
+*******************************************************************************
+
+Version 2.00-P00 open issues
+----------------------------
+- Network version which supports more than one server
+- Templates for Services/Hosts
+- User management on object base

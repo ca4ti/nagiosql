@@ -1,5 +1,5 @@
-<!-- Version 1.02 -->
-<!-- Last modified 02.04.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,11 +8,12 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmHostdepcyInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -21,52 +22,59 @@
         document.frmHostdepcyInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
-      if((document.frmHostdepcyInsert.selHostDepend.value == "") &&
-	     (document.frmHostdepcyInsert.selHost.value == "") &&
-		 (document.frmHostdepcyInsert.selHostgroupDep.value == "") &&
-		 (document.frmHostdepcyInsert.selHostgroup.value == "")) {
+	  // Sind Hosts oder Hostgruppen ausgewählt?
+      if((document.frmHostdepcyInsert.selHostDepend.value == 0) &&
+	     (document.frmHostdepcyInsert.selHost.value == 0) &&
+		 (document.frmHostdepcyInsert.selHostgroupDep.value == 0) &&
+		 (document.frmHostdepcyInsert.selHostgroup.value == 0)) {
         alert("{FILL_HOST_GR}");
         document.frmHostdepcyInsert.selHostDepend.focus();
         return false;
       }
-	  if (((document.frmHostdepcyInsert.selHostDepend.value != "") &&
-	    (document.frmHostdepcyInsert.selHostgroupDep.value != "")) ||
-	    ((document.frmHostdepcyInsert.selHost.value != "") &&
-	    (document.frmHostdepcyInsert.selHostgroup.value != "")) ||
-	    ((document.frmHostdepcyInsert.selHost.value != "") &&
-	    (document.frmHostdepcyInsert.selHostgroupDep.value != "")) ||		
-	    ((document.frmHostdepcyInsert.selHostDepend.value != "") &&
-	    (document.frmHostdepcyInsert.selHostgroup.value != ""))) {
+	  // Sind Hosts und Hostgruppen gleichzeitigausgewählt?
+	  if (((document.frmHostdepcyInsert.selHostDepend.value != 0) &&
+	    (document.frmHostdepcyInsert.selHostgroupDep.value != 0)) ||
+	    ((document.frmHostdepcyInsert.selHost.value != 0) &&
+	    (document.frmHostdepcyInsert.selHostgroup.value != 0)) ||
+	    ((document.frmHostdepcyInsert.selHost.value != 0) &&
+	    (document.frmHostdepcyInsert.selHostgroupDep.value != 0)) ||		
+	    ((document.frmHostdepcyInsert.selHostDepend.value != 0) &&
+	    (document.frmHostdepcyInsert.selHostgroup.value != 0))) {
         alert("{FILL_HOSTORGR}");
         document.frmHostdepcyInsert.selHostDepend.focus();
         return false;
       }	
-      if((document.frmHostdepcyInsert.selHostDepend.value == "") &&
-	     (document.frmHostdepcyInsert.selHost.value != "")) {
+	  // Ist ein Hosts zusammen mit einem abhängigen Host ausgewählt?
+      if((document.frmHostdepcyInsert.selHostDepend.value == 0) &&
+	     (document.frmHostdepcyInsert.selHost.value != 0)) {
         alert("{FILL_DEPHOST}");
         document.frmHostdepcyInsert.selHostDepend.focus();
         return false;
-      }		 
-      if((document.frmHostdepcyInsert.selHostDepend.value != "") &&
-	     (document.frmHostdepcyInsert.selHost.value == "")) {		 
+      }		
+	  // Ist ein abhängiger Hosts zusammen mit einem Host ausgewählt? 
+      if((document.frmHostdepcyInsert.selHostDepend.value != 0) &&
+	     (document.frmHostdepcyInsert.selHost.value == 0)) {		 
         alert("{FILL_HOSTS}");
         document.frmHostdepcyInsert.selHostDepend.focus();
         return false;
       }		 
-	  if((document.frmHostdepcyInsert.selHostgroupDep.value == "") &&
-		 (document.frmHostdepcyInsert.selHostgroup.value != "")) {		 
+	  // Ist eine Hostgruppe zusammen mit einer abhängigen Hostgruppe ausgewählt?
+	  if((document.frmHostdepcyInsert.selHostgroupDep.value == 0) &&
+		 (document.frmHostdepcyInsert.selHostgroup.value != 0)) {		 
         alert("{FILL_DEPHOSTGR}");
         document.frmHostdepcyInsert.selHostDepend.focus();
         return false;
-      }		 
-	  if((document.frmHostdepcyInsert.selHostgroupDep.value != "") &&
-		 (document.frmHostdepcyInsert.selHostgroup.value == "")) {		 
+      }		
+	  // Ist eine abhängige Hostgruppe zusammen mit einer Hostgruppe ausgewählt? 
+	  if((document.frmHostdepcyInsert.selHostgroupDep.value != 0) &&
+		 (document.frmHostdepcyInsert.selHostgroup.value == 0)) {		 
         alert("{FILL_HOSTGR}");
         document.frmHostdepcyInsert.selHostDepend.focus();
         return false;
       }		  
+	  // Ist eine Konfigurationsname erfasst? 
       if(document.frmHostdepcyInsert.tfConfigName.value == "") {
         alert("{FILL_CONFIG}");
         document.frmHostdepcyInsert.tfConfigName.focus();
@@ -76,7 +84,7 @@
       var strDependHosts = ""
       for(var i=0;i<document.frmHostdepcyInsert.selHostDepend.length;i++) {
         if (document.frmHostdepcyInsert.selHostDepend.options[i].selected == true) {
-          if ((document.frmHostdepcyInsert.selHostDepend.options[i].text != "") &&
+          if ((document.frmHostdepcyInsert.selHostDepend.options[i].text != 0) &&
 		      (document.frmHostdepcyInsert.selHostDepend.options[i].text != "*")) {
 		  	strDependHosts += document.frmHostdepcyInsert.selHostDepend.options[i].text+",";
 		  }
@@ -84,7 +92,7 @@
       }
       for(var i=0;i<document.frmHostdepcyInsert.selHost.length;i++) {
         if (document.frmHostdepcyInsert.selHost.options[i].selected == true) {
-		  if (document.frmHostdepcyInsert.selHost.options[i].text != "") {
+		  if (document.frmHostdepcyInsert.selHost.options[i].text != 0) {
             var checkCircHost = strDependHosts.indexOf(document.frmHostdepcyInsert.selHost.options[i].text);
             if(checkCircHost != -1) {
               alert("{FILL_CIRCHOST}");
@@ -97,7 +105,7 @@
       var strDependHostsGroups = ""
       for(var i=0;i<document.frmHostdepcyInsert.selHostgroupDep.length;i++) {
         if (document.frmHostdepcyInsert.selHostgroupDep.options[i].selected == true) {
-          if ((document.frmHostdepcyInsert.selHostgroupDep.options[i].text != "") &&
+          if ((document.frmHostdepcyInsert.selHostgroupDep.options[i].text != 0) &&
 		      (document.frmHostdepcyInsert.selHostgroupDep.options[i].text != "*")) {
             strDependHostsGroups += document.frmHostdepcyInsert.selHostgroupDep.options[i].text+",";
 		  }
@@ -105,7 +113,7 @@
       }
       for(var i=0;i<document.frmHostdepcyInsert.selHostgroup.length;i++) {
         if (document.frmHostdepcyInsert.selHostgroup.options[i].selected == true) {
-          if (document.frmHostdepcyInsert.selHostgroup.options[i].text != "") {
+          if (document.frmHostdepcyInsert.selHostgroup.options[i].text != 0) {
 		    var checkCircHostGroup = strDependHostsGroups.indexOf(document.frmHostdepcyInsert.selHostgroup.options[i].text);
             if(checkCircHostGroup != -1) {
               alert("{FILL_CIRCHOSTGR}");
@@ -121,15 +129,15 @@
   <table border="0" class="inserttable">
     <tr>
       <td>{LANG_DEPENDHOSTS}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selHostDepend[]" size="4" multiple id="selHostDepend" style="width:200px;">
+      <td colspan="2" rowspan="2"><select name="selHostDepend[]" size="8" multiple id="selHostDepend" style="width:200px;">
 <!-- BEGIN hostdepend -->
-          <option title="{DAT_HOSTDEPEND}" value="{DAT_HOSTDEPEND}" {DAT_HOSTDEPEND_SEL}>{DAT_HOSTDEPEND}</option>
+          <option value="{DAT_HOSTDEPEND_ID}" {DAT_HOSTDEPEND_SEL}>{DAT_HOSTDEPEND}</option>
 <!-- END hostdepend -->
         </select></td>
       <td>{LANG_DEPENDHOSTGRS}(*)</td>
-      <td rowspan="2"><select name="selHostgroupDep[]" size="4" multiple id="selHostgroupDep" style="width:200px;">
+      <td rowspan="2"><select name="selHostgroupDep[]" size="8" multiple id="selHostgroupDep" style="width:200px;">
 <!-- BEGIN hostgroupdepend -->
-          <option value="{DAT_HOSTGROUPDEP}" {DAT_HOSTGROUPDEP_SEL}>{DAT_HOSTGROUPDEP}</option>
+          <option value="{DAT_HOSTGROUPDEP_ID}" {DAT_HOSTGROUPDEP_SEL}>{DAT_HOSTGROUPDEP}</option>
 <!-- END hostgroupdepend -->
         </select></td>
     </tr>
@@ -142,15 +150,15 @@
       </tr>
     <tr>
       <td>{LANG_HOSTNAMES}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selHost[]" size="4" multiple id="selHost" style="width:200px;">
+      <td colspan="2" rowspan="2"><select name="selHost[]" size="8" multiple id="selHost" style="width:200px;">
 <!-- BEGIN host -->
-          <option title="{DAT_HOST}" value="{DAT_HOST}" {DAT_HOST_SEL}>{DAT_HOST}</option>
+          <option value="{DAT_HOST_ID}" {DAT_HOST_SEL}>{DAT_HOST}</option>
 <!-- END host -->
         </select></td>
       <td>{LANG_HOSTGROUPS}(*)</td>
-      <td rowspan="2"><select name="selHostgroup[]" size="4" multiple id="selHostgroup" style="width:200px;">
+      <td rowspan="2"><select name="selHostgroup[]" size="8" multiple id="selHostgroup" style="width:200px;">
 <!-- BEGIN hostgroup -->
-        <option value="{DAT_HOSTGROUP}" {DAT_HOSTGROUP_SEL}>{DAT_HOSTGROUP}</option>
+        <option value="{DAT_HOSTGROUP_ID}" {DAT_HOSTGROUP_SEL}>{DAT_HOSTGROUP}</option>
 <!-- END hostgroup -->
       </select></td>
     </tr>
@@ -215,5 +223,4 @@
     </tr>
   </table>
 </form>
-<br>
 <!-- END datainsert -->

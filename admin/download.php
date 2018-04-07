@@ -1,24 +1,23 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	27.02.2005
+// Datum:	12.03.2007
 // Zweck:	Konfiguration herunterladen
 // Datei:	admin/download.php
-// Version:	1.00
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
-//error_reporting(E_ALL);
+// error_reporting(E_ALL);
 //
 // Versionskontrolle:
-$setFileVersion = "1.00";
 session_cache_limiter('private_no_expire');
 //
 // Vorgabedatei einbinden
@@ -58,9 +57,9 @@ header("Content-Type: text/plain");
 // Daten abrufen und ausgeben
 // ==========================
 if ($chkLine == 0) {
-	$myVisClass->createConfig($chkTable,1);
+	$myConfigClass->createConfig($chkTable,1);
 } else {
-	$myVisClass->createConfigSingle($chkTable,$chkLine,1);
+	$myConfigClass->createConfigSingle($chkTable,$chkLine,1);
 }
-$myVisClass->writeLog($LANG['logbook']['download']." ".$strFile);
+$myDataClass->writeLog($LANG['logbook']['download']." ".$strFile);
 ?>

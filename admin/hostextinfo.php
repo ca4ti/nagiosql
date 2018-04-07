@@ -1,21 +1,21 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
-// Projekt:	Nagios NG Applikation
+// Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
+// Datum:	12.03.2007
 // Zweck:	Host Zusatzinfos definieren
 // Datei:	admin/hostextinfo.php
-// Version:	1.02
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
-//error_reporting(E_ALL);
+// error_reporting(E_ALL);
 // 
 // Variabeln deklarieren
 // =====================
@@ -23,80 +23,80 @@ $intMain 		= 5;
 $intSub  		= 14;
 $intMenu 		= 2;
 $preContent 	= "hostextinfo.tpl.htm";
-$setFileVersion = "1.02";
 $strDBWarning	= "";
 $intCount		= 0;
 $strMessage		= "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin1";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
 // Übergabeparameter
 // =================
-$chkSelHost 		= isset($_POST['selHost']) 			? $_POST['selHost'] 		: "";
-$chkTfNotes		 	= isset($_POST['tfNotes']) 			? $_POST['tfNotes'] 		: "";
-$chkTfNotesURL		= isset($_POST['tfNotesURL']) 		? $_POST['tfNotesURL'] 		: "";
-$chkTfActionURL 	= isset($_POST['tfActionURL']) 		? $_POST['tfActionURL'] 	: "";
-$chkTfIconImage		= isset($_POST['tfIconImage']) 		? $_POST['tfIconImage'] 	: "";
-$chkTfIconImageAlt 	= isset($_POST['tfIconImageAlt']) 	? $_POST['tfIconImageAlt'] 	: "";
-$chkTfVmrlImage 	= isset($_POST['tfVmrlImage']) 		? $_POST['tfVmrlImage'] 	: "";
-$chkTfStatusImage 	= isset($_POST['tfStatusImage']) 	? $_POST['tfStatusImage'] 	: "";
-$chkTfD2Coords	 	= isset($_POST['tfD2Coords']) 		? $_POST['tfD2Coords'] 		: "";
-$chkTfD3Coords 		= isset($_POST['tfD3Coords']) 		? $_POST['tfD3Coords'] 		: "";
+$chkSelHost 		= isset($_POST['selHost']) 			? $_POST['selHost'] 						: 0;
+$chkTfNotes		 	= isset($_POST['tfNotes']) 			? stripslashes($_POST['tfNotes']) 			: "";
+$chkTfNotesURL		= isset($_POST['tfNotesURL']) 		? stripslashes($_POST['tfNotesURL']) 		: "";
+$chkTfActionURL 	= isset($_POST['tfActionURL']) 		? stripslashes($_POST['tfActionURL']) 		: "";
+$chkTfIconImage		= isset($_POST['tfIconImage']) 		? stripslashes($_POST['tfIconImage']) 		: "";
+$chkTfIconImageAlt 	= isset($_POST['tfIconImageAlt']) 	? stripslashes($_POST['tfIconImageAlt'])	: "";
+$chkTfVmrlImage 	= isset($_POST['tfVmrlImage']) 		? stripslashes($_POST['tfVmrlImage']) 		: "";
+$chkTfStatusImage 	= isset($_POST['tfStatusImage']) 	? stripslashes($_POST['tfStatusImage']) 	: "";
+$chkTfD2Coords	 	= isset($_POST['tfD2Coords']) 		? stripslashes($_POST['tfD2Coords'])		: "";
+$chkTfD3Coords 		= isset($_POST['tfD3Coords']) 		? stripslashes($_POST['tfD3Coords']) 		: "";
 //
 // Daten verarbeiten
 // =================
+// Datein einfügen oder modifizieren
 if (($chkModus == "insert") || ($chkModus == "modify")) {
-	// Daten Einfügen oder Aktualisieren
-	$strSQL2 = "tbl_hostextinfo SET host_name='$chkSelHost', notes='$chkTfNotes', notes_url='$chkTfNotesURL', 
+	$strSQLx = "tbl_hostextinfo SET host_name=$chkSelHost, notes='$chkTfNotes', notes_url='$chkTfNotesURL', 
 				action_url='$chkTfActionURL', icon_image='$chkTfIconImage', icon_image_alt='$chkTfIconImageAlt', 
 				vrml_image='$chkTfVmrlImage', statusmap_image='$chkTfStatusImage', 2d_coords='$chkTfD2Coords', 
 				3d_coords='$chkTfD3Coords', active='$chkActive', last_modified=NOW()";
 	if ($chkModus == "insert") {
-		$strSQL1 = "INSERT INTO ";
-		$strSQL3 = "";
+		$strSQL = "INSERT INTO ".$strSQLx; 
 	} else {
-		$strSQL1 = "UPDATE ";
-		$strSQL3 = " WHERE id=$chkDataId";	
+		$strSQL = "UPDATE ".$strSQLx." WHERE id=$chkDataId";   
 	}	
-	$strSQL = $strSQL1.$strSQL2.$strSQL3;
 	if ($chkSelHost != "") {
-		$myVisClass->dataInsert($strSQL);
-		$strMessage = $myVisClass->strDBMessage;
-		if ($chkModus == "insert") $myVisClass->writeLog($LANG['logbook']['newhostext']." ".$chkSelHost);
-		if ($chkModus == "modify") $myVisClass->writeLog($LANG['logbook']['modifyhostext']." ".$chkSelHost);
+		$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
+		if ($intInsert == 1) {
+			$intReturn = 1;
+		} else {
+			if ($chkModus  == "insert") 	$myDataClass->writeLog($LANG['logbook']['newhostext']." ".$chkSelHost);
+			if ($chkModus  == "modify") 	$myDataClass->writeLog($LANG['logbook']['modifyhostext']." ".$chkSelHost);
+			$intReturn = 0;
+		}
 	} else {
-		$strMessage  = $LANG['db']['datamissing'];
+		$strMessage .= $LANG['db']['datamissing'];
 	}
 	$chkModus = "display";
 }  else if ($chkModus == "make") {
 	// Konfigurationsdatei schreiben
-	$myVisClass->createConfig("tbl_hostextinfo");
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myConfigClass->createConfig("tbl_hostextinfo",0);
+	$chkModus  = "display";
 }  else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
 	// Gewählte Datensätze löschen
-	$myVisClass->dataDelete("tbl_hostextinfo",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataDeleteSimple("tbl_hostextinfo",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
 	// Gewählte Datensätze kopieren
-	$myVisClass->dataCopy("tbl_hostextinfo",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataCopySimple("tbl_hostextinfo",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
 	// Daten des gewählten Datensatzes holen
 	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM tbl_hostextinfo WHERE id=".$chkListId,$arrModifyData);
-	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";	
+	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
 	$chkModus      = "add";
 }
+// Statusmitteilungen setzen
+if (isset($intReturn) && ($intReturn == 1)) $strMessage = $myDataClass->strDBMessage;
+if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
 //
 // Letzte Datenbankänderung und Filedatum
 // ======================================
-$myVisClass->lastModified("tbl_hostextinfo",$strLastModified,$strFileDate,$strOld);
+$myConfigClass->lastModified("tbl_hostextinfo",$strLastModified,$strFileDate,$strOld);
 //
 // HTML Template laden
 // ===================
@@ -117,14 +117,19 @@ $conttp->show("header");
 // Eingabeformular
 // ===============
 if ($chkModus == "add") {
-	// Datenbankabfragen
-	$myVisClass->strTempValue1 = $chkSelModify;
-	$myVisClass->resTemplate   =& $conttp;
-	if (isset($arrModifyData)) $myVisClass->arrWorkdata = $arrModifyData;
-	// Hostfelder füllem
+	// Klassenvariabeln definieren
+	$myVisClass->resTemplate     =& $conttp;
+	$myVisClass->strTempValue1   = $chkSelModify;
+	$myVisClass->intTabA   	     = $myDataClass->tableID("tbl_hostextinfo");
+	if (isset($arrModifyData)) {
+		$myVisClass->arrWorkdata = $arrModifyData;
+		$myVisClass->intTabA_id  = $arrModifyData['id'];
+	} else {
+		$myVisClass->intTabA_id  = 0;
+	}	
+	// Hostfelder füllen
 	$intReturn = 0;
-	$strSQL    = "SELECT host_name FROM tbl_host ORDER BY host_name";
-	$intReturn = $myVisClass->parseSelect($strSQL,"DAT_HOST","host_name","host_name","host");
+	$intReturn = $myVisClass->parseSelectNew('tbl_host','host_name','DAT_HOST','host','host_name',1,0);
 	if ($intReturn != 0) $strDBWarning .= $LANG['admintable']['warn_host']."<br>";
 	// Feldbeschriftungen setzen
 	foreach($LANG['admintable'] AS $key => $value) {
@@ -139,13 +144,13 @@ if ($chkModus == "add") {
 	if ($strDBWarning != "") $conttp->setVariable("WARNING",$strDBWarning.$LANG['admintable']['warn_save']);
 	$conttp->setVariable("ACT_CHECKED","checked");
 	$conttp->setVariable("MODUS","insert");	
+	// Im Modus "Modifizieren" die Datenfelder setzen
 	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-		// Im Modus "Modifizieren" die Datenfelder setzen
 		foreach($arrModifyData AS $key => $value) {
-			if (($key == "active") || ($key == "last_modified")) continue;
-			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars($value));
+			if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
+			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars(stripslashes($value)));
 		}
-		if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
+		if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED",""); 
 		$conttp->setVariable("MODUS","modify");	
 	}
 	$conttp->parse("datainsert");
@@ -170,9 +175,15 @@ if ($chkModus == "display") {
 	// Anzahl Datensätze holen
 	$strSQL    = "SELECT count(*) AS number FROM tbl_hostextinfo";
 	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
-	if ($booReturn == false) {$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";} else {$intCount = (int)$arrDataLinesCount['number'];}
+	if ($booReturn == false) {
+		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
+	} else {
+		$intCount = (int)$arrDataLinesCount['number'];
+	}
 	// Datensätze holen
-	$strSQL    = "SELECT id, host_name, notes, active FROM tbl_hostextinfo ORDER BY host_name,notes LIMIT $chkLimit,15";
+	$strSQL    = "SELECT tbl_hostextinfo.id, tbl_host.host_name, tbl_hostextinfo.notes, tbl_hostextinfo.active FROM tbl_hostextinfo 
+				  LEFT JOIN tbl_host ON tbl_hostextinfo.host_name = tbl_host.id 
+				  ORDER BY host_name,notes LIMIT $chkLimit,".$SETS['common']['pagelines'];
 	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
 	if ($booReturn == false) {
 		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
@@ -186,8 +197,12 @@ if ($chkModus == "display") {
 			foreach($LANG['admintable'] AS $key => $value) {
 				$mastertp->setVariable("LANG_".strtoupper($key),$value);
 			} 
-			$mastertp->setVariable("DATA_FIELD_1",$arrDataLines[$i]['host_name']);
-			$mastertp->setVariable("DATA_FIELD_2",$arrDataLines[$i]['notes']);
+			if ($arrDataLines[$i]['host_name'] != "") {
+				$mastertp->setVariable("DATA_FIELD_1",stripslashes($arrDataLines[$i]['host_name']));
+			} else {
+				$mastertp->setVariable("DATA_FIELD_1","NOT DEFINED - ".$arrDataLines[$i]['id']);
+			}
+			$mastertp->setVariable("DATA_FIELD_2",stripslashes($arrDataLines[$i]['notes']));
 			$mastertp->setVariable("DATA_ACTIVE",$strActive);
 			$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
 			$mastertp->setVariable("CELLCLASS_L",$strClassL);
@@ -206,22 +221,23 @@ if ($chkModus == "display") {
 		$mastertp->setVariable("CHB_CLASS","checkbox");
 		$mastertp->setVariable("DISABLED","disabled");
 	}
+	// Seiten anzeigen
 	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
 	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks($_SERVER['PHP_SELF'],$intCount,$chkLimit));
 	$mastertp->parse("datatable");
 	$mastertp->show("datatable");
 }
 // Mitteilungen ausgeben
-if (isset($strMessage)) $mastertp->setVariable("DBMESSAGE",$strMessage);
+if (isset($strMessage) && ($strMessage != "")) $mastertp->setVariable("DBMESSAGE",$strMessage);
 $mastertp->setVariable("LAST_MODIFIED",$LANG['db']['last_modified']."<b>".$strLastModified."</b>");
 $mastertp->setVariable("FILEDATE",$LANG['common']['filedate']."<b>".$strFileDate."</b>");
-$mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span>");
+if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span><br>");
 $mastertp->parse("msgfooter");
 $mastertp->show("msgfooter");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

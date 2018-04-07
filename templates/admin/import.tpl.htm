@@ -1,5 +1,5 @@
-<!-- Version 1.00 -->
-<!-- Last modified 11.3.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
 <td class="main">
       <h1>{TITLE}</h1>
@@ -7,11 +7,12 @@
 <!-- BEGIN main -->
 <form name="frmImport" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
         document.frmImport.submit();
         document.frmImport.subForm.disabled = true;
@@ -22,13 +23,21 @@
     <tr>
       <td valign="top">{IMPORTFILE}*</td>
       <td colspan="2" rowspan="2"><select name="selImportFile[]" size="10" multiple id="selImportFile">
-<!-- BEGIN filelist -->
-          <option value="{DAT_IMPORTFILE}">{DAT_IMPORTFILE}</option>
-<!-- END filelist -->
+<!-- BEGIN filelist2 -->
+          <option value="{DAT_IMPORTFILE_2}">{DAT_IMPORTFILE_2}</option>
+<!-- END filelist2 -->
         </select></td>
     </tr>
     <tr>
       <td valign="top"><small>{CTRL_INFO}</small></td>
+    </tr>
+    <tr>
+      <td>{TEMPLATE}</td>
+      <td colspan="2" ><select name="selTemplateFile" id="selTemplateFile">
+<!-- BEGIN filelist1 -->
+          <option value="{DAT_IMPORTFILE_1}">{DAT_IMPORTFILE_1}</option>
+<!-- END filelist1 -->
+        </select></td>
     </tr>
     <tr>
       <td>{OVERWRITE}*</td>

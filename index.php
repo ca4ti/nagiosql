@@ -1,21 +1,21 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2007 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
-// Zweck:	Hauptseite
+// Datum:	12.03.2007
+// Zweck:	Indexseite
 // Datei:	index.php
-// Version:	1.00
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
 // 
 // Menuvariabeln für diese Seite
 // =============================
@@ -23,7 +23,6 @@ $intMain 		= 1;
 $intSub  		= 0;
 $intMenu 		= 1;
 $preContent 	= "index.tpl.htm";
-$setFileVersion = "1.00-RC2";
 //
 // Übergabeparameter
 // =================
@@ -39,10 +38,9 @@ if ($chkInsName != "") {
 // ======================
 $preNoLogin = true;
 $SETS 		= parse_ini_file("config/settings.ini",TRUE);
-// Update Warnung
-if (!isset($SETS['path']['physical']) || !isset($SETS['path']['protocol'])) {
-	echo "<b>Please update the [path] section of your settings.ini file as described in update.txt!</b><br>";
-	exit;
+if (!file_exists($SETS['path']['physical']."functions/prepend_adm.php")) {
+   echo "Please check your site configuration in config/settings.ini!";
+   exit;
 }
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
@@ -72,7 +70,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

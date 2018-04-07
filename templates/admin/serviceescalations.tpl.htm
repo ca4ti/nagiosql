@@ -1,5 +1,5 @@
-<!-- Version 1.02 -->
-<!-- Last modified 02.04.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,15 +8,21 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmServEscInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
+    // Seite refreshen
 	function update() {
+	  if ((document.frmServEscInsert.selHost.value != 0) &&
+	     (document.frmServEscInsert.selHostGroup.value != 0)) {
+        alert("{FILL_HOSTORGR}");
+      }
 	  document.forms.frmServEscInsert.modus.value = "refresh";
 	  document.forms.frmServEscInsert.submit();
 	}
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
     if (checkForm() == false) {
         return false;
@@ -25,31 +31,31 @@
         document.frmServEscInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
-      if ((document.frmServEscInsert.selServiceGroup.value != "") &&
-	     ((document.frmServEscInsert.selHost.value != "") ||
-		  (document.frmServEscInsert.selHostGroup.value != "") ||
-		  (document.frmServEscInsert.selService.value != ""))) {
+      if ((document.frmServEscInsert.selServiceGroup.value != 0) &&
+	     ((document.frmServEscInsert.selHost.value != 0) ||
+		  (document.frmServEscInsert.selHostGroup.value != 0) ||
+		  (document.frmServEscInsert.selService.value != 0))) {
         alert("{FILL_SERVG_ONLY}");
         document.frmServEscInsert.selServiceGroup.focus();
         return false;
       }
-	  if ((document.frmServEscInsert.selHost.value != "") &&
-	     (document.frmServEscInsert.selHostGroup.value != "")) {
+	  if ((document.frmServEscInsert.selHost.value != 0) &&
+	     (document.frmServEscInsert.selHostGroup.value != 0)) {
         alert("{FILL_HOSTORGR}");
         document.frmServEscInsert.selHost.focus();
         return false;
       }
-      if ((document.frmServEscInsert.selService.value == "") &&
-	      (document.frmServEscInsert.selServiceGroup.value == "")) {
+      if ((document.frmServEscInsert.selService.value == 0) &&
+	      (document.frmServEscInsert.selServiceGroup.value == 0)) {
         alert("{FILL_SERVICE_GR}");
         document.frmServEscInsert.selService.focus();
         return false;
       }	
-      if ((document.frmServEscInsert.selHost.value == "") &&
-	      (document.frmServEscInsert.selHostGroup.value == "") &&
-		  (document.frmServEscInsert.selService.value != "")) {
+      if ((document.frmServEscInsert.selHost.value == 0) &&
+	      (document.frmServEscInsert.selHostGroup.value == 0) &&
+		  (document.frmServEscInsert.selService.value != 0)) {
         alert("{FILL_HOST_GR}");
         document.frmServEscInsert.selHost.focus();
         return false;
@@ -89,7 +95,7 @@
         document.frmServEscInsert.tfNotifInterval.focus();
         return false;
       }
-      if(document.frmServEscInsert.selContactGroup.value == "") {
+      if(document.frmServEscInsert.selContactGroup.value == 0) {
         alert("{FILL_CGROUP}");
         document.frmServEscInsert.selContactGroup.focus();
         return false;
@@ -100,15 +106,15 @@
   <table border="0"  class="inserttable">
     <tr>
       <td>{LANG_HOSTNAME}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selHost[]" size="4" multiple id="selHost" style="width:200px;" onChange="update()">
+      <td colspan="2" rowspan="2"><select name="selHost[]" size="6" multiple id="selHost" style="width:200px;" onChange="update()">
 <!-- BEGIN host -->
-          <option title="{DAT_HOST}" value="{DAT_HOST}" {DAT_HOST_SEL}>{DAT_HOST}</option>
+          <option value="{DAT_HOST_ID}" {DAT_HOST_SEL}>{DAT_HOST}</option>
 <!-- END host -->
         </select></td>
       <td>{LANG_HOSTGROUPS}(*) </td>
-      <td rowspan="2"><select name="selHostGroup[]" size="4" multiple id="selHostGroup" style="width:200px;" onChange="update()">
+      <td rowspan="2"><select name="selHostGroup[]" size="6" multiple id="selHostGroup" style="width:200px;" onChange="update()">
 <!-- BEGIN hostgroup -->
-          <option value="{DAT_HOSTGROUP}" {DAT_HOSTGROUP_SEL}>{DAT_HOSTGROUP}</option>
+          <option value="{DAT_HOSTGROUP_ID}" {DAT_HOSTGROUP_SEL}>{DAT_HOSTGROUP}</option>
 <!-- END hostgroup -->
         </select></td>
     </tr>
@@ -124,15 +130,15 @@
     </tr>
     <tr>
       <td>{LANG_SERVICE}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selService[]" size="4" multiple id="selService" style="width:200px;">
+      <td colspan="2" rowspan="2"><select name="selService[]" size="6" multiple id="selService" style="width:200px;">
 <!-- BEGIN service -->
-          <option value="{DAT_SERVICE}" {DAT_SERVICE_SEL}>{DAT_SERVICE}</option>
+          <option value="{DAT_SERVICE_ID}" {DAT_SERVICE_SEL}>{DAT_SERVICE}</option>
 <!-- END service -->
         </select></td>
       <td>{LANG_SERVICEGROUPS}(*) </td>
-      <td rowspan="2"><select name="selServiceGroup[]" size="4" multiple id="selServiceGroup" style="width:200px;">
+      <td rowspan="2"><select name="selServiceGroup[]" size="6" multiple id="selServiceGroup" style="width:200px;">
 <!-- BEGIN servicegroup -->
-          <option value="{DAT_SERVICEGROUP}" {DAT_SERVICEGROUP_SEL}>{DAT_SERVICEGROUP}</option>
+          <option value="{DAT_SERVICEGROUP_ID}" {DAT_SERVICEGROUP_SEL}>{DAT_SERVICEGROUP}</option>
 <!-- END servicegroup -->
          </select></td>
     </tr>
@@ -152,7 +158,7 @@
       <td>{LANG_CONTACTGROUP}*</td>
       <td rowspan="3"><select name="selContactGroup[]" size="4" multiple id="selContactGroup" style="width:200px;">
 <!-- BEGIN contactgroup -->
-        <option value="{DAT_CONTACTGROUP}" {DAT_CONTACTGROUP_SEL}>{DAT_CONTACTGROUP}</option>
+        <option value="{DAT_CONTACTGROUP_ID}" {DAT_CONTACTGROUP_SEL}>{DAT_CONTACTGROUP}</option>
 <!-- END contactgroup -->
       </select></td>
       </tr>
@@ -172,7 +178,7 @@ min</td>
       <td>{LANG_ESCPERIOD}</td>
       <td><select name="selEscPeriod" id="selEscPeriod" style="width:200px;">
 <!-- BEGIN escperiod -->
-          <option value="{DAT_ESCPERIOD}" {DAT_ESCPERIOD_SEL}>{DAT_ESCPERIOD}</option>
+          <option value="{DAT_ESCPERIOD_ID}" {DAT_ESCPERIOD_SEL}>{DAT_ESCPERIOD}</option>
 <!-- END escperiod -->
         </select></td>
     </tr>

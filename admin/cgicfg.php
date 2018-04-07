@@ -1,18 +1,18 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
-// Projekt:	Nagios NG Applikation
+// Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	26.02.2005
+// Datum:	12.03.2007
 // Zweck:	CGI Konfiguration
 // Datei:	admin/cgicfg.php
-// Version: 1.00
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -23,13 +23,12 @@ $intMain 		= 6;
 $intSub  		= 23;
 $intMenu 		= 2;
 $preContent 	= "nagioscfg.tpl.htm";
-$setFileVersion = "1.00";
 $strConfig		= "";
 $strMessage		= "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin2";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
@@ -54,10 +53,10 @@ if ($chkCgiConf != "") {
 		fputs($resFile,$chkCgiConf);
 		fclose($resFile);
 		$strMessage = $LANG['file']['success'];
-		$myVisClass->writeLog($LANG['logbook']['config']." ".$strFilename);
+		$myDataClass->writeLog($LANG['logbook']['config']." ".$strFilename);
 	} else {
 		$strMessage = $LANG['file']['failed'];
-		$myVisClass->writeLog($LANG['logbook']['configfail']." ".$strFilename);	
+		$myDataClass->writeLog($LANG['logbook']['configfail']." ".$strFilename);	
 	}
 }
 //
@@ -104,7 +103,7 @@ $conttp->show("naginsert");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

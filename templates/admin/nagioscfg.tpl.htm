@@ -1,6 +1,5 @@
-<!-- Version 1.00 -->
-<!-- Last modified 11.3.2005 -->
-<!-- Version 1.00 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,11 +7,12 @@
 <!-- BEGIN naginsert -->
 <form name="frmNagiosConfig" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{MAINSITE}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -21,8 +21,9 @@
         document.frmNagiosConfig.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
+      // Wurde ein leeres Dokument übergeben?
       if(document.frmNagiosConfig.taNagiosCfg.value == "")  {
         alert("{FILL_FIELDEMPTY}");
         document.frmNagiosConfig.taNagiosCfg.focus();

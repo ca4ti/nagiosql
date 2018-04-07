@@ -1,22 +1,23 @@
-<!-- Version 1.00 -->
-<!-- Last modified 11.3.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
-<td class="main">
-<h1>{TITLE}</h1>
+    <td class="main">
+      <h1>{TITLE}</h1>
 <!-- END header -->
 <!-- BEGIN datainsert -->
 <h2>{TITLE_FORM}</h2>
-  <form name="frmServiceInsert" method="post" action="{ACTION_INSERT}">
-    <script language="JavaScript" type="text/JavaScript">
+<form name="frmServiceInsert" method="post" action="{ACTION_INSERT}">
+  <script language="JavaScript" type="text/JavaScript">
     <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?orderby={ORDER_BY}&limit={LIMIT}";
     }
-	<!-- Iframe URL setzen -->
+	// Iframe URL setzen -->
     function setIframe(cname) {
       document.getElementById("fullcommand").src = "{DOCUMENT_ROOT}admin/commandline.php?cname="+cname;
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -25,110 +26,131 @@
         document.frmServiceInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
+	  // Ist der Konfigurationsname leer?
       if(document.frmServiceInsert.tfConfigName.value == "")  {
         alert("{FILL_CONFIG}");
         document.frmServiceInsert.tfConfigName.focus();
         return false;
       }
-      if(document.frmServiceInsert.tfConfigName.value.match(/\W/))  {
-        alert("{FILL_ILLEGCHAR1}\"{LANG_HOSTNAME}\"{FILL_ILLEGCHAR2}");
+      // Kommen unerlaubte Zeichen im Konfigurationsnamen vor?
+      if(document.frmServiceInsert.tfConfigName.value.match(/[^\w\.-]/))  {
+        alert("{FILL_ILLEGCHAR1} \"{LANG_CONFIGNAME}\"{FILL_ILLEGCHAR2}");
         document.frmServiceInsert.tfConfigName.focus();
         return false;
       }
-      if((document.frmServiceInsert.selHosts.value == "") &&
-	     (document.frmServiceInsert.selHostgroups.value == ""))  {
+      // Wurde kein Host und keine Hostgruppe ausgewaehlt?
+      if((document.frmServiceInsert.selHosts.value == 0) &&
+	     (document.frmServiceInsert.selHostgroups.value == 0))  {
         alert("{FILL_HOST_GR}");
         document.frmServiceInsert.selHosts.focus();
         return false;
       }
-      if((document.frmServiceInsert.selHosts.value != "") &&
-	     (document.frmServiceInsert.selHostgroups.value != ""))  {
+      // Wurde ein Host und eine Hostgruppe ausgewaehlt?
+      if((document.frmServiceInsert.selHosts.value != 0) &&
+	     (document.frmServiceInsert.selHostgroups.value != 0))  {
         alert("{FILL_HOSTORGR}");
         document.frmServiceInsert.selHosts.focus();
         return false;
       }
+	  // Wurde ein Servicename eingetragen?
       if(document.frmServiceInsert.tfService.value == "")  {
         alert("{FILL_SERVNAME}");
         document.frmServiceInsert.tfService.focus();
         return false;
       }
+      // Wurde keine Pruefperiode ausgewaehlt?
       if(document.frmServiceInsert.selCheckPeriod.value == "")  {
         alert("{FILL_CHECKPER}");
         document.frmServiceInsert.selCheckPeriod.focus();
         return false;
       }
+      // Wurde keine maximale Pruefungszeit erfasst?
       if(document.frmServiceInsert.tfMaxCheckAttempts.value == "")  {
         alert("{FILL_CHECKATT}");
         document.frmServiceInsert.tfMaxCheckAttempts.focus();
         return false;
       }
+      // Enthält die maximale Pruefungszeit unerlaubte Zeichen?
       if(document.frmServiceInsert.tfMaxCheckAttempts.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_MAXCHECKATT}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfMaxCheckAttempts.focus();
         return false;
       }
+      // Wurde ein normales Pruefintervall eingetragen?
       if(document.frmServiceInsert.tfNormCheckInt.value == "")  {
         alert("{FILL_NOCHKINT}");
         document.frmServiceInsert.tfNormCheckInt.focus();
         return false;
       }
+      // Enthält das normales Pruefintervall unerlaubte Zeichen?
       if(document.frmServiceInsert.tfNormCheckInt.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_NORMCHECKINT}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfNormCheckInt.focus();
         return false;
       }
+      // Wurde ein wiederholendes Pruefintervall eingetragen?
       if(document.frmServiceInsert.tfRetryCheckInt.value == "")  {
         alert("{FILL_RECHKINT}");
         document.frmServiceInsert.tfRetryCheckInt.focus();
         return false;
       }
+      // Enthält das wiederholendes Pruefintervall unerlaubte Zeichen?
       if(document.frmServiceInsert.tfRetryCheckInt.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_RETRYCHECKINT}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfRetryCheckInt.focus();
         return false;
       }
+      // Wurde kein Servicebefehl ausgewaehlt?
       if(document.frmServiceInsert.selServiceCommand.value == "")  {
         alert("{FILL_CHKCOMM}");
         document.frmServiceInsert.selServiceCommand.focus();
         return false;
       }
+      // Wurde keine Kontaktgruppe ausgewaehlt?
       if(document.frmServiceInsert.selContactGroups.value == "")  {
         alert("{FILL_CGROUP}");
         document.frmServiceInsert.selContactGroups.focus();
         return false;
       }
+      // Wurde keine Alarmierungsperiode ausgewaehlt?
       if(document.frmServiceInsert.selNotifPeriod.value == "")  {
         alert("{FILL_NOTPERIOD}");
         document.frmServiceInsert.selNotifPeriod.focus();
         return false;
       }
+      // Wurde kein Alarmierungsintervall eingetragen?
       if(document.frmServiceInsert.tfNotifIntervall.value == "")  {
         alert("{FILL_NFINT}");
         document.frmServiceInsert.tfNotifIntervall.focus();
         return false;
       }
+      // Enthaelt das Alarmierungsintervall unerlaubte Zeichen?
       if(document.frmServiceInsert.tfNotifIntervall.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_NOTIFINTERVAL}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfNotifIntervall.focus();
         return false;
       }
+      // Enthält die Aktualisierungsschwelle unerlaubte Zeichen?
       if(document.frmServiceInsert.tfFreshTreshold.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_FRESHTRESH}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfFreshTreshold.focus();
         return false;
       }	  
+      // Enthaelt die obere Flappingschwelle unerlaubte Zeichen?	  
       if(document.frmServiceInsert.tfHighFlat.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_HIGHFLAP}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfHighFlat.focus();
         return false;
       }
+      // Enthaelt die untere Flappingschwelle unerlaubte Zeichen?
       if(document.frmServiceInsert.tfLowFlat.value.match(/[^0-9]/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_LOWFLAP}\"{FILL_ILLEGCHAR3}");
         document.frmServiceInsert.tfLowFlat.focus();
         return false;
       }
+      // Wurden die Alarmierungsoptionen erfasst?
       if((document.frmServiceInsert.chbNOw.checked == false) &&
 	     (document.frmServiceInsert.chbNOu.checked == false) &&
 		 (document.frmServiceInsert.chbNOc.checked == false) &&
@@ -154,15 +176,16 @@
     </tr>
     <tr>
       <td>{LANG_HOSTNAME}(*)</td>
-      <td colspan="3" rowspan="2"><select name="selHosts[]" size="4" multiple id="selHosts" style="width:200px;">
+      <td colspan="3" rowspan="2">        
+	  	<select name="selHosts[]" size="8" multiple id="selHosts" style="width:200px;">
 <!-- BEGIN hostname -->
-          <option title="{DAT_HOST}" value="{DAT_HOST}" {DAT_HOST_SEL}>{DAT_HOST}</option>
+              <option value="{DAT_HOST_ID}" {DAT_HOST_SEL}>{DAT_HOST}</option>
 <!-- END hostname -->
-        </select></td>
+          </select></td>
       <td>{LANG_HOSTGROUPS}(*)</td>
-      <td rowspan="2"><select name="selHostGroups[]" size="4" multiple id="selHostgroups" style="width:200px;">
+      <td rowspan="2" valign="top"><select name="selHostGroups[]" size="8" multiple id="selHostgroups" style="width:200px;">
 <!-- BEGIN hostgroups -->
-        <option value="{DAT_HOSTGROUPS}" {DAT_HOSTGROUPS_SEL}>{DAT_HOSTGROUPS}</option>
+        <option value="{DAT_HOSTGROUPS_ID}" {DAT_HOSTGROUPS_SEL}>{DAT_HOSTGROUPS}</option>
 <!-- END hostgroups -->
       </select></td>
     </tr>
@@ -178,12 +201,12 @@
     </tr>
     <tr>
       <td>{LANG_SERVICE}*</td>
-      <td colspan="3"><input name="tfService" type="text" id="tfService4" value="{DAT_SERVICE_DESCRIPTION}" size="35" maxlength="40">
+      <td colspan="3"><input name="tfService" type="text" id="tfService" value="{DAT_SERVICE_DESCRIPTION}" size="35" maxlength="63">
 </td>
       <td>{LANG_SERVICEGROUPS}</td>
       <td rowspan="3"><select name="selServiceGroups[]" size="4" multiple id="select2" style="width:200px;">
 <!-- BEGIN servicegroups -->
-        <option value="{DAT_SERVICEGROUPITEM}" {DAT_SERVICEGROUPITEM_SEL}>{DAT_SERVICEGROUPITEM}</option>
+        <option value="{DAT_SERVICEGROUPITEM_ID}" {DAT_SERVICEGROUPITEM_SEL}>{DAT_SERVICEGROUPITEM}</option>
 <!-- END servicegroups -->
       </select></td>
     </tr>
@@ -198,7 +221,8 @@
       </tr>
     <tr>
       <td>{LANG_ACTIVE}</td>
-      <td><input name="chbActive" type="checkbox" class="checkbox" id="chbActive2" value="1" {ACT_CHECKED}>
+      <td><input name="chbActive" type="checkbox" class="checkbox" id="chbActive2" value="1" {ACT_CHECKED} {ACT_DISABLED}>
+        <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}">
         <input name="modus" type="hidden" id="modus" value="{MODUS}">
         <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}"></td>
       <td><input name="selOrderBy" type="hidden" id="selOrderBy" value="{ORDER_BY}">
@@ -206,7 +230,7 @@
       <td>&nbsp;</td>
       </tr>
     <tr>
-      <td colspan="6">&nbsp;</td>
+      <td colspan="6">{CHECK_MUST_DATA2}</td>
       </tr>
     <tr>
       <td colspan="4" valign="top"><strong>{LANG_CHECKTITLE}</strong></td>
@@ -216,13 +240,13 @@
       <td>{LANG_CHECKPERIOD}*</td>
       <td colspan="3"><select name="selCheckPeriod" id="selCheckPeriod" style="width:200px;">
 <!-- BEGIN checkperiod -->
-          <option value="{DAT_CHECK_PERIOD}" {DAT_CHECK_PERIOD_SEL}>{DAT_CHECK_PERIOD}</option>
+          <option value="{DAT_CHECK_PERIODS_ID}" {DAT_CHECK_PERIODS_SEL}>{DAT_CHECK_PERIODS}</option>
 <!-- END checkperiod -->
         </select></td>
       <td>{LANG_CONTACTGROUPS}*</td>
       <td rowspan="3"><select name="selContactGroups[]" size="4" multiple id="selContactGroups" style="width:200px;">
 <!-- BEGIN contactgroups -->
-          <option value="{DAT_CONTACTGROUPS}" {DAT_CONTACTGROUPS_SEL}>{DAT_CONTACTGROUPS}</option>
+          <option value="{DAT_CONTACTGROUPS_ID}" {DAT_CONTACTGROUPS_SEL}>{DAT_CONTACTGROUPS}</option>
 <!-- END contactgroups -->
         </select></td>
     </tr>
@@ -253,7 +277,7 @@
       <td>{LANG_CHECKCMD}*</td>
       <td colspan="3"><select name="selServiceCommand" id="selServiceCommand" style="width:200px;" onChange="setIframe(this.value);">
 <!-- BEGIN servicecommand -->
-          <option value="{DAT_SERVICE_COMMAND}" {DAT_SERVICE_COMMAND_SEL}>{DAT_SERVICE_COMMAND}
+          <option value="{DAT_SERVICE_COMMAND_ID}" {DAT_SERVICE_COMMAND_SEL}>{DAT_SERVICE_COMMAND}</option>
 <!-- END servicecommand -->
         </select></td>
       <td colspan="2">&nbsp;</td>
@@ -291,13 +315,13 @@
       <td>{LANG_NOTIFPERIOD}*</td>
       <td colspan="3"><select name="selNotifPeriod" id="selNotifPeriod" style="width:200px;">
 <!-- BEGIN notifperiod -->
-          <option value="{DAT_NOTIF_PERIOD}" {DAT_NOTIF_PERIOD_SEL}>{DAT_NOTIF_PERIOD}</option>
+          <option value="{DAT_NOTIF_PERIOD_ID}" {DAT_NOTIF_PERIOD_SEL}>{DAT_NOTIF_PERIOD}</option>
 <!-- END notifperiod -->
         </select></td>
       <td>{LANG_EVENTHANDLER}</td>
       <td><select name="selEventHandler" id="selEventHandler" style="width:200px;">
 <!-- BEGIN eventhandler -->
-          <option value="{DAT_EVENT_HANDLERITEM}" {DAT_EVENT_HANDLERITEM_SEL}>{DAT_EVENT_HANDLERITEM}</option>
+          <option value="{DAT_EVENT_HANDLERITEM_ID}" {DAT_EVENT_HANDLERITEM_SEL}>{DAT_EVENT_HANDLERITEM}</option>
 <!-- END eventhandler -->
         </select></td>
     </tr>
@@ -348,13 +372,13 @@
     </tr>
     <tr>
       <td>{LANG_STALKING}</td>
-      <td colspan="3"><input name="chbSOo" type="checkbox" class="checkbox" id="chbSOo" value="1" {DAT_SOO_CHECKED}>
+      <td colspan="3"><input name="chbSOo" type="checkbox" class="checkbox" id="chbSOo" value="o" {DAT_SOO_CHECKED}>
         o&nbsp;
-        <input name="chbSOw" type="checkbox" class="checkbox" id="chbSOw" value="1" {DAT_SOW_CHECKED}>
+        <input name="chbSOw" type="checkbox" class="checkbox" id="chbSOw" value="w" {DAT_SOW_CHECKED}>
         w&nbsp;        
-		<input name="chbSOu" type="checkbox" class="checkbox" id="chbSOu" value="1" {DAT_SOU_CHECKED}>
+		<input name="chbSOu" type="checkbox" class="checkbox" id="chbSOu" value="u" {DAT_SOU_CHECKED}>
         u&nbsp;
-        <input name="chbSOc" type="checkbox" class="checkbox" id="chbSOc" value="1" {DAT_SOC_CHECKED}>
+        <input name="chbSOc" type="checkbox" class="checkbox" id="chbSOc" value="c" {DAT_SOC_CHECKED}>
         c&nbsp;</td>
       <td>{LANG_LOWFLAP}</td>
       <td><input name="tfLowFlat" type="text" id="tfLowFlat" value="{DAT_LOW_FLAP_THRESHOLD}" size="5"> 
@@ -381,5 +405,6 @@
     </tr>
   </table>
 </form>
+{CHECK_MUST_DATA}
 <br>
 <!-- END datainsert -->

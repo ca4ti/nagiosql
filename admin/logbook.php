@@ -1,18 +1,18 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
+// Datum:	12.03.2007
 // Zweck:	Logbuch ansehen
 // Datei:	admin/logbook.php
-// Version:	1.02
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -23,19 +23,33 @@ $intMain 		= 7;
 $intSub  		= 21;
 $intMenu        = 2;
 $preContent     = "admin_master.tpl.htm";
-$setFileVersion = "1.02";
-$strDBWarning	= "";
 $strMessage		= "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin3";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
 // Übergabeparameter
 // =================
-$chkFromLine	= isset($_GET['from_line'])	 ? $_GET['from_line']+0	: 0;
+$chkFromLine	= isset($_GET['from_line'])	 	? $_GET['from_line']+0	: 0;
+$chkDelYear 	= isset($_POST['tfYear']) 		? $_POST['tfYear'] 		: "0000";
+$chkDelMonth 	= isset($_POST['tfMonth']) 		? $_POST['tfMonth'] 	: "00";
+$chkDelDay 		= isset($_POST['tfDay']) 		? $_POST['tfDay'] 		: "00";
+//
+// Daten löschen
+// =============
+if (isset($_POST['submit'])) {
+	$strDate = $chkDelYear."-".$chkDelMonth."-".$chkDelDay." 00:00:00";
+	$strSQL  = "DELETE FROM tbl_logbook WHERE time < '$strDate'";
+	$booReturn  = $myDBClass->insertData($strSQL);
+	if ($booReturn == false) {
+		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
+	} else {
+		$strMessage .= $LANG['db']['success_del'];	
+	}
+}
 //
 // Datenbank abfragen
 // ==================
@@ -49,7 +63,7 @@ if ($booReturn == false) {
 //
 // HTML Template laden
 // ===================
-$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm3']." -> ".$LANG['menu']['item_admsub4']);
+$maintp->setVariable("POSITION",$LANG['position']['admin']." -> ".$LANG['menu']['item_adm7']." -> ".$LANG['menu']['item_admsub21']);
 $maintp->parse("header");
 $maintp->show("header");
 //
@@ -91,7 +105,7 @@ $conttp->show("logbooksite");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

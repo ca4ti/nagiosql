@@ -1,18 +1,18 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	11.03.2005
+// Datum:	12.03.2007
 // Zweck:	MySQL Datenbank Klasse
 // Datei:	functions/mysql_class.php
-// Version:	1.00
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -25,7 +25,8 @@
 // Behandelt sämtliche Funktionen, die für den Datenaustausch mit einem MySQL Server
 // nötig sind
 //
-// Version 1.00 - 29.03.2005 wim
+// Version:	2.00.00 (Internal)
+// Datum:	12.03.2007
 //
 // Name: mysqldb
 //
@@ -48,13 +49,14 @@ class mysqldb {
 	var $strDBError   = "";
 	var $error        = false;
 	var $strDBId      = "";
+	var $intLastId	  = 0;
 	
     ///////////////////////////////////////////////////////////////////////////////////////////
 	//  Klassenkonstruktor
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Tätigkeiten bei Klasseninitialisierung
 	//
@@ -70,13 +72,13 @@ class mysqldb {
 	//  Funktion: Verbindung mit der Datenbank herstellen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Verbindet mit dem Datenbankserver und wählt eine Datenbank aus
 	//
 	//  Übergabeparameter:	$arrSettings	Array mit den Verbindungsdaten
-	//	------------------					-> Key server 	= Servername
+	//										-> Key server 	= Servername
 	//										-> Key username = Benutzername
 	//										-> Key password	= Passwort
 	//										-> Key database = Datenbank	
@@ -87,12 +89,10 @@ class mysqldb {
 	function getdatabase($arrSettings) {
 		$this->dbconnect($arrSettings['server'],$arrSettings['username'],$arrSettings['password']);
 		if ($this->error == true) {
-			echo $this->strDBError;
 			return false;
 		}
 		$this->dbselect($arrSettings['database']);
 		if ($this->error == true) {
-			echo $this->strDBError;
 			return false;
 		}
 		return true;	
@@ -102,8 +102,8 @@ class mysqldb {
 	//  Funktion: Einzelnes Datenfeld holen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Ruft mehrere Datensätze ab und speichert diese in ein nummerisches Array
 	//
@@ -131,8 +131,8 @@ class mysqldb {
 	//  Funktion: Einzelner Datensatz abfragen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Ruft einen einzelnen Datensatz ab und gibt diesen als assoziiertes Array zurück
 	//
@@ -164,8 +164,8 @@ class mysqldb {
 	//  Funktion: Mehrere Datensätze holen und in Array speichern
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Ruft mehrere Datensätze ab und speichert diese in ein nummerisches Array
 	//
@@ -206,22 +206,25 @@ class mysqldb {
 	//  Funktion: Daten einfügen oder aktualisieren
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		30.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Fügt Daten in die Datenbank ein oder aktualisiert diese
 	//
-	//  Übergabeparameter:	$strSQL			SQL Statement	
+	//  Übergabeparameter:	$strSQL				SQL Statement	
+	//
+	//  Rückgabeparameter:	$this->intLastId	ID des erzeugten Datensatzes
 	//
 	//  Returnwert:			true bei Erfolg / false bei Misserfolg
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////
 	function insertData($strSQL) {
 		// SQL Statement an Server senden
-		$resQuery = mysql_query($strSQL);
+		$resQuery        = mysql_query($strSQL);
 		// Fehlerbehandlung
 		if (mysql_error() == "") {
 			// Array abfüllen
+			$this->intLastId = mysql_insert_id();
 			return true;
 		} else {
 			$this->strDBError 	= mysql_error();
@@ -234,8 +237,8 @@ class mysqldb {
 	//  Funktion: Datenzeilen zählen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		30.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Zählt die Anzahl Datenzeilen einer Abfrage
 	//
@@ -267,13 +270,13 @@ class mysqldb {
 	//  Funktion: Datenbankserver verbinden
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Verbindung mit dem Datenbankserver herstellen
 	//
 	//  Übergabeparameter:	$dbserver	Servername
-	//	------------------	$dbuser		Datenbankbenutzer
+	//						$dbuser		Datenbankbenutzer
 	//						$dbpasswd	Datenbankpasswort
 	//
 	//  Returnwert:			true bei Erfolg / false bei Misserfolg
@@ -302,13 +305,12 @@ class mysqldb {
 	//  Funktion: Datenbank wählen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00.00 (Internal)
+	//  Datum:		12.03.2007
 	//  
 	//  Verbindung mit einer Datenbank herstellen
 	//
 	//  Übergabeparameter:	$database	Datenbankname
-	//	------------------	
 	//
 	//  Returnwert:			true bei Erfolg / false bei Misserfolg
 	//
@@ -335,13 +337,12 @@ class mysqldb {
 	//  Funktion: Datenbankserververbindung schliessen
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//  
-	//  Version:	1.00
-	//  Datum:		29.03.2005	
+	//  Version:	2.00-BETA-1
+	//  Datum:		12.03.2007	
 	//  
 	//  Schliesst die Verbindung zum Datenbankserver
 	//
 	//  Übergabeparameter:	keine
-	//	------------------	
 	//
 	//  Returnwert:			true bei Erfolg / false bei Misserfolg
 	//

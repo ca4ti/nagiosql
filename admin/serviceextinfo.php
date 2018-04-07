@@ -1,21 +1,21 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2007 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
-// Projekt:	Nagios NG Applikation
+// Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
+// Datum:	12.03.2007
 // Zweck:	Service Zusatzinformationen definieren
 // Datei:	admin/serviceextinfo.php
-// Version: 1.02
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
-//error_reporting(E_ALL);
+// error_reporting(E_ALL);
 // 
 // Variabeln deklarieren
 // =====================
@@ -23,76 +23,77 @@ $intMain 		= 5;
 $intSub  		= 15;
 $intMenu 		= 2;
 $preContent 	= "serviceextinfo.tpl.htm";
-$setFileVersion = "1.02";
 $strDBWarning	= "";
 $intCount		= 0;
 $strMessage		= "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin1";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
 // Übergabeparameter
 // =================
-$chkSelHost 		= isset($_POST['selHost']) 			? $_POST['selHost'] 		: "";
-$chkSelService	 	= isset($_POST['selService']) 		? $_POST['selService']		: "";
-$chkTfNotes		 	= isset($_POST['tfNotes']) 			? $_POST['tfNotes'] 		: "";
-$chkTfNotesURL		= isset($_POST['tfNotesURL']) 		? $_POST['tfNotesURL'] 		: "";
-$chkTfActionURL 	= isset($_POST['tfActionURL']) 		? $_POST['tfActionURL'] 	: "";
-$chkTfIconImage		= isset($_POST['tfIconImage']) 		? $_POST['tfIconImage'] 	: "";
-$chkTfIconImageAlt 	= isset($_POST['tfIconImageAlt']) 	? $_POST['tfIconImageAlt'] 	: "";
+$chkSelHost 		= isset($_POST['selHost']) 			? $_POST['selHost'] 					: 0;
+$chkSelService	 	= isset($_POST['selService']) 		? $_POST['selService']					: 0;
+$chkTfNotes		 	= isset($_POST['tfNotes']) 			? addslashes($_POST['tfNotes']) 		: "";
+$chkTfNotesURL		= isset($_POST['tfNotesURL']) 		? addslashes($_POST['tfNotesURL']) 		: "";
+$chkTfActionURL 	= isset($_POST['tfActionURL']) 		? addslashes($_POST['tfActionURL']) 	: "";
+$chkTfIconImage		= isset($_POST['tfIconImage']) 		? addslashes($_POST['tfIconImage']) 	: "";
+$chkTfIconImageAlt 	= isset($_POST['tfIconImageAlt']) 	? addslashes($_POST['tfIconImageAlt']) 	: "";
 //
 // Daten verarbeiten
 // =================
 if (($chkModus == "insert") || ($chkModus == "modify")) {
 	// Daten Einfügen oder Aktualisieren
-	$strSQL2 = "tbl_serviceextinfo SET host_name='$chkSelHost', service_description='$chkSelService', notes='$chkTfNotes', 
+	$strSQLx = "tbl_serviceextinfo SET host_name='$chkSelHost', service_description='$chkSelService', notes='$chkTfNotes', 
 				notes_url='$chkTfNotesURL', action_url='$chkTfActionURL', icon_image='$chkTfIconImage', 
 				icon_image_alt='$chkTfIconImageAlt', active='$chkActive', last_modified=NOW()";
 	if ($chkModus == "insert") {
-		$strSQL1 = "INSERT INTO ";
-		$strSQL3 = "";
+		$strSQL = "INSERT INTO ".$strSQLx; 
 	} else {
-		$strSQL1 = "UPDATE ";
-		$strSQL3 = " WHERE id=$chkDataId";	
+		$strSQL = "UPDATE ".$strSQLx." WHERE id=$chkDataId";   
 	}	
-	$strSQL = $strSQL1.$strSQL2.$strSQL3;
 	if (($chkSelHost != "") && ($chkSelService != "")) {
-		$myVisClass->dataInsert($strSQL);
-		$strMessage = $myVisClass->strDBMessage;
-		if ($chkModus == "insert") $myVisClass->writeLog($LANG['logbook']['newservext']." ".$chkSelHost."::".$chkSelService);
-		if ($chkModus == "modify") $myVisClass->writeLog($LANG['logbook']['modifyservext']." ".$chkSelHost."::".$chkSelService);
+		$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
+		if ($intInsert == 1) {
+			$intReturn = 1;
+		} else {
+			if ($chkModus  == "insert") 	$myDataClass->writeLog($LANG['logbook']['newservext']." ".$chkSelHost."::".$chkSelService);
+			if ($chkModus  == "modify") 	$myDataClass->writeLog($LANG['logbook']['modifyservext']." ".$chkSelHost."::".$chkSelService);
+			$intReturn = 0;
+		}
 	} else {
 		$strMessage  = $LANG['db']['datamissing'];
 	}
 	$chkModus = "display";
 }  else if ($chkModus == "make") {
 	// Konfigurationsdatei schreiben
-	$myVisClass->createConfig("tbl_serviceextinfo");
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myConfigClass->createConfig("tbl_serviceextinfo",0);
+	$chkModus  = "display";
 }  else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
 	// Gewählte Datensätze löschen
-	$myVisClass->dataDelete("tbl_serviceextinfo",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataDeleteSimple("tbl_serviceextinfo",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
 	// Gewählte Datensätze kopieren
-	$myVisClass->dataCopy("tbl_serviceextinfo",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataCopySimple("tbl_serviceextinfo",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
 	// Daten des gewählten Datensatzes holen
 	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM tbl_serviceextinfo WHERE id=".$chkListId,$arrModifyData);
-	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";	
-	$chkModus      = "add";
+	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
+	$chkSelHost	= $arrModifyData['host_name'];
+	$chkModus = "add";
 }
+// Statusmitteilungen setzen
+if (isset($intReturn) && ($intReturn == 1)) $strMessage = $myDataClass->strDBMessage;
+if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
 //
 // Letzte Datenbankänderung und Filedatum
 // ======================================
-$myVisClass->lastModified("tbl_serviceextinfo",$strLastModified,$strFileDate,$strOld);
+$myConfigClass->lastModified("tbl_serviceextinfo",$strLastModified,$strFileDate,$strOld);
 //
 // HTML Template laden
 // ===================
@@ -113,23 +114,45 @@ $conttp->show("header");
 // Eingabeformular
 // ===============
 if (($chkModus == "add") || ($chkModus == "refresh")) {
-	// Datenbankabfragen
-	$chkGetHost 				= $chkSelHost;
-	$myVisClass->strTempValue1 	= $chkSelModify;
-	$myVisClass->strTempValue2 	= $chkModus;
-	$myVisClass->resTemplate   	=& $conttp;
-	if (isset($arrModifyData)) $myVisClass->arrWorkdata = $arrModifyData;
+	// Klassenvariabeln definieren
+	$myVisClass->resTemplate     =& $conttp;
+	$myVisClass->strTempValue1   = $chkSelModify;	
+	$myVisClass->intTabA   	     = $myDataClass->tableID("tbl_serviceextinfo");	
+	$arrHosts[]					 = $chkSelHost;
+	if (isset($arrModifyData)) {
+		$myVisClass->arrWorkdata = $arrModifyData;
+		$myVisClass->intTabA_id  = $arrModifyData['id'];
+	} else {
+		$myVisClass->intTabA_id  = 0;
+	}	
 	// Hostfelder füllen
 	$intReturn = 0;
-	$strSQL    = "SELECT host_name FROM tbl_host ORDER BY host_name";
-	$intReturn = $myVisClass->parseSelect($strSQL,"DAT_HOST","host_name","host_name","host",0,$chkGetHost);
-	if ($chkGetHost == "") 	$chkGetHost = $myVisClass->strTempValue3;
-	if ($intReturn != 0) $strDBWarning .= $LANG['admintable']['warn_host']."<br>";
+	$intReturn = $myVisClass->parseSelectNew('tbl_host','host_name','DAT_HOST','host','host_name',1,0,0,$arrHosts);
+	if ($intReturn != 0) $strDBWarning .= $LANG['admintable']['warn_host']."<br>";	
 	// Servicefelder füllen
-	$intReturn = 0;
-	$strSQL    = "SELECT service_description FROM tbl_service WHERE host_name='$chkGetHost' ORDER BY service_description";
-	$intReturn = $myVisClass->parseSelect($strSQL,"DAT_SERVICE","service_description","service_description","service",0,$chkSelService);
-	if ($intReturn != 0) $strDBWarning .= $LANG['admintable']['warn_service']."<br>";	
+	if ($chkSelHost == 0) $chkSelHost = $myVisClass->strTempValue2;
+	$strSQL    = "SELECT DISTINCT tbl_service.id, tbl_service.service_description FROM tbl_service 
+				  LEFT JOIN tbl_relation ON tbl_service.id = tbl_relation.tbl_A_id
+				  LEFT JOIN tbl_host ON tbl_relation.tbl_B_id = tbl_host.id
+				  WHERE (tbl_service.host_name = 1 AND tbl_host.id = $chkSelHost AND 
+				  	    tbl_relation.tbl_A = ".$myDataClass->tableID("tbl_service")."
+				        AND tbl_relation.tbl_B = ".$myDataClass->tableID("tbl_host").") 
+						OR (tbl_service.host_name = 2 AND tbl_host.id IS NULL)
+						OR tbl_service.host_name = 0
+				  ORDER BY tbl_service.service_description";   
+	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataGroups,$intDataCount);
+	if ($booReturn && ($intDataCount != 0)) {
+		foreach($arrDataGroups AS $key) {
+			$conttp->setVariable("DAT_SERVICE",$key['service_description']);
+			$conttp->setVariable("DAT_SERVICE_ID",$key['id']);
+			if (isset($arrModifyData) && ($key['id'] == $arrModifyData['service_description'])) {
+				$conttp->setVariable("DAT_SERVICE_SEL","selected");
+			}
+			$conttp->parse("service");
+		}		
+	} else {
+		$strDBWarning .= $LANG['admintable']['warn_service']."<br>";
+	}
 	// Feldbeschriftungen setzen
 	foreach($LANG['admintable'] AS $key => $value) {
 		$conttp->setVariable("LANG_".strtoupper($key),$value);
@@ -152,13 +175,13 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
 		if ($chkActive != 1) $conttp->setVariable("ACT_CHECKED","");
 		if ($chkDataId != 0) {
 			$conttp->setVariable("MODUS","modify");
-			$conttp->setVariable("ID",$chkDataId);
+			$conttp->setVariable("DAT_ID",$chkDataId);
 		}
+	// Im Modus "Modifizieren" die Datenfelder setzen
 	} else if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-		// Im Modus "Modifizieren" die Datenfelder setzen
 		foreach($arrModifyData AS $key => $value) {
-			if (($key == "active") || ($key == "last_modified")) continue;
-			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars($value));
+			if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
+			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars(stripslashes($value)));
 		}
 		if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
 		$conttp->setVariable("MODUS","modify");
@@ -185,10 +208,17 @@ if ($chkModus == "display") {
 	// Anzahl Datensätze holen
 	$strSQL    = "SELECT count(*) AS number FROM tbl_serviceextinfo";
 	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
-	if ($booReturn == false) {$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";} else {$intCount = (int)$arrDataLinesCount['number'];}
+	if ($booReturn == false) {
+		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
+	} else {
+		$intCount = (int)$arrDataLinesCount['number'];
+	}
 	// Datensätze holen
-	$strSQL    = "SELECT id, host_name, service_description, active
-				  FROM tbl_serviceextinfo ORDER BY host_name,service_description LIMIT $chkLimit,15";
+	$strSQL    = "SELECT tbl_serviceextinfo.id, tbl_host.host_name, tbl_service.service_description, tbl_serviceextinfo.active 
+				  FROM tbl_serviceextinfo 
+				  LEFT JOIN tbl_host ON tbl_serviceextinfo.host_name = tbl_host.id 
+				  LEFT JOIN tbl_service ON tbl_serviceextinfo.service_description = tbl_service.id
+				  ORDER BY tbl_host.host_name,tbl_service.service_description, active LIMIT $chkLimit,".$SETS['common']['pagelines'];
 	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
 	if ($booReturn == false) {
 		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
@@ -202,8 +232,12 @@ if ($chkModus == "display") {
 			foreach($LANG['admintable'] AS $key => $value) {
 				$mastertp->setVariable("LANG_".strtoupper($key),$value);
 			} 
-			$mastertp->setVariable("DATA_FIELD_1",$arrDataLines[$i]['host_name']);
-			$mastertp->setVariable("DATA_FIELD_2",$arrDataLines[$i]['service_description']);
+			if ($arrDataLines[$i]['host_name'] != "") {
+				$mastertp->setVariable("DATA_FIELD_1",stripslashes($arrDataLines[$i]['host_name']));
+			} else {
+				$mastertp->setVariable("DATA_FIELD_1","NOT DEFINED - ".$arrDataLines[$i]['id']);
+			}
+			$mastertp->setVariable("DATA_FIELD_2",stripslashes($arrDataLines[$i]['service_description']));
 			$mastertp->setVariable("DATA_ACTIVE",$strActive);
 			$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
 			$mastertp->setVariable("CELLCLASS_L",$strClassL);
@@ -222,22 +256,23 @@ if ($chkModus == "display") {
 		$mastertp->setVariable("CHB_CLASS","checkbox");
 		$mastertp->setVariable("DISABLED","disabled");
 	}
+	// Seiten anzeigen
 	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
 	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks($_SERVER['PHP_SELF'],$intCount,$chkLimit));
 	$mastertp->parse("datatable");
 	$mastertp->show("datatable");
 }
 // Mitteilungen ausgeben
-if (isset($strMessage)) $mastertp->setVariable("DBMESSAGE",$strMessage);
+if (isset($strMessage) && ($strMessage != "")) $mastertp->setVariable("DBMESSAGE",$strMessage);
 $mastertp->setVariable("LAST_MODIFIED",$LANG['db']['last_modified']."<b>".$strLastModified."</b>");
 $mastertp->setVariable("FILEDATE",$LANG['common']['filedate']."<b>".$strFileDate."</b>");
-$mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span>");
+if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span><br>");
 $mastertp->parse("msgfooter");
 $mastertp->show("msgfooter");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

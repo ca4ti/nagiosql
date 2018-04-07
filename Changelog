@@ -1,0 +1,68 @@
+###################
+NagiosQL Change Log
+###################
+
+*******************************************************************************
+*                                                                             *
+*                           NagiosQL 2005 - History                           *
+*                                                                             *
+*******************************************************************************
+
+19.03.2005 - V1.00RC1
+Release Candidate 1 - First public version
+
+24.03.2005 - V1.00RC1a
+- Minor changes to English language file
+- Minor bug fixed in consistency check
+- Minor bug fixed in field description of host dependencies
+
+29.03.2005 - V1.00RC2
+- Import of files using templates is now supported
+- IP address field of hosts now also supports FQDN
+- Fixed major bug while changing passwords
+- Minor bug fixed in service escalation (unknown variable)
+- Moved all MySQL functions to mysql_class.php (for more flexible DB support)
+- Add support for CGI configuration file
+- Include consistency test to Nagios control site
+- Points are now allowed in host names for support of FQDN
+- Bug fixed in nagiosql_41.sql
+- Minor changes to English language file
+- Add support for Apache Alias configuration (physical path outsite web directory)
+- Add support for http and https protocol
+- Minor bug fixed in host and service config (duplicate entries)
+- Increase some fields to allow more data (hostnames, aliases host- and servicegroups)
+
+xx.xx.2006 - V1.00-RC3 (Attention: Update your settings.ini with the new params!)
+- Several typos in language files fixed
+- Support for multiple commands in contact configuration added
+- Minor bug in services configuration fixed - (configuration names are now case sensitive)
+- Minor bug fixed in service groups (no longer displays a service with no hosts associated)
+- Major bug fixed in service extinfo (function was not working correctltly when modify an entry)
+- Minor bug fixed in common javascript (comments were not correct - some IE6 versions fails with javascript error)
+- Major bug fixed in service groups if more than one host is associated to a single service (hosta,hostb,service -> hosta,service,hostb,service)
+- Major bug fixed with FreeBSD incompatibility (http://bugs.nagiosql.org/view.php?id=4)
+- Minor bug fixed in verification before restarting nagios - switched checks
+- Added Dutch language support (thx to Paul Wouters)
+- Typo fixed in nagiosql_41b.sql (db name was wrong to configuration settings)
+- Changed the footer with correct project version number (and build if you enable it in your settings.ini)
+- Added support to define entries per page in settings.ini (default is 15)
+- Major bug fixed in contacts (reported as bug 0000023, host/service commands are now inserted correctly to the db)
+- changed the db layout to resume the latest changes for this rc3, renamed 41b to 5 for better understanding
+- Small improvements and bug fixes as reported to the bugtracker
+- Major bug fixed in services where stalking options won't be set
+- Added flapping option to contacts (thx to mgothard)
+- Minor bug fixed with freshness checks (thx to Ken)
+- Updated testQL.php to check about required php modules
+
+05.12.2006 - V2.00-BETA2
+Major changes:
+- New database structure
+- Language definitions in database
+- Menu access rights via keys/keyholes
+- Importing of template definitions from different cfg-files is now supported
+Minor changes:
+- Some minor bugs fixed
+
+12.03.2007 - V2.00-P00 (Version 2.00 patch level 00)
+First productive release of version 2.00
+ 

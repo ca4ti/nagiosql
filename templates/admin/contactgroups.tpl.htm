@@ -1,5 +1,5 @@
-<!-- Version 1.02 -->
-<!-- Last modified 02.04.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,11 +8,12 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmContGroupInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -21,23 +22,27 @@
         document.frmContGroupInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
+      // Ist der Kontaktgruppenname leer?
       if(document.frmContGroupInsert.tfName.value == "")  {
         alert("{FILL_CGNAME}");
         document.frmContGroupInsert.tfName.focus();
         return false;
       }
+      // Kommen unerlaubte Zeichen im Kontaktgruppennamen vor?
       if(document.frmContGroupInsert.tfName.value.match(/{FILL_SPECIALS}/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_CONTACTGROUP}\"{FILL_ILLEGCHAR2}");
         document.frmContGroupInsert.tfName.focus();
         return false;
       }
+      // Wurde keine Beschreibung erfasst?
       if(document.frmContGroupInsert.tfFriendly.value == "") {
         alert("{FILL_DESC}");
         document.frmContGroupInsert.tfFriendly.focus();
         return false;
       }
+      // Wurden Hosts ausgewählt?
       if(document.frmContGroupInsert.selMembers.value == "") {
         alert("{FILL_MEMBER}");
         document.frmContGroupInsert.selMembers.focus();
@@ -51,9 +56,9 @@
       <td>{LANG_CONTACTGROUP}*</td>
       <td colspan="2"><input name="tfName" type="text" id="tfName" value="{DAT_CONTACTGROUP_NAME}" size="20" maxlength="40"></td>
       <td>{LANG_MEMBERS}*</td>
-      <td rowspan="3"><select name="selMembers[]" size="4" multiple id="selMembers" style="width:200px;">      
+      <td rowspan="6" valign="top"><select name="selMembers[]" size="8" multiple id="selMembers" style="width:200px;">      
 <!-- BEGIN contacts -->
-        <option value="{DAT_CONTACTS}" {DAT_CONTACTS_SEL}>{DAT_CONTACTS}</option>
+        <option value="{DAT_CONTACTS_ID}" {DAT_CONTACTS_SEL}>{DAT_CONTACTS}</option>
 <!-- END contacts -->
       </select></td>
     </tr>
@@ -68,19 +73,29 @@
     </tr>
     <tr>
       <td>{LANG_ACTIVE}</td>
-      <td colspan="2"><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED}>
-      <input name="modus" type="hidden" id="modus" value="{MODUS}">
-      <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}">
-      <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>
+      <td colspan="2"><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED}>
+        <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}">
+        <input name="modus" type="hidden" id="modus" value="{MODUS}">
+        <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}">
+        <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>
       <td>&nbsp;</td>
+      </tr>
+    <tr>
       <td>&nbsp;</td>
-    </tr>
+      <td colspan="2">&nbsp;</td>
+      <td>&nbsp;</td>
+      </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="2">&nbsp;</td>
+      <td>&nbsp;</td>
+      </tr>
     <tr>
       <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="110" height="1"></td>
       <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="150" height="1"></td>
       <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="180" height="1"></td>
       <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="150" height="1"></td>
-      <td>&nbsp;</td>
+      <td><img src="{IMAGE_PATH}pixel.gif" alt="" width="150" height="1"></td>
     </tr>
       <tr>
       <td colspan="2" valign="bottom"><input name="subForm" type="button" id="subForm" value="{LANG_SAVE}" onClick="LockButton()">
@@ -88,68 +103,13 @@
       <td>{LANG_MUSTDATA}</td>
       <td colspan="2"><span class="dbmessage">{WARNING}</span></td>
     </tr>
+      <tr>
+        <td colspan="2" valign="bottom">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
   </table>
 </form>
+{CHECK_MUST_DATA}
 <br>
 <!-- END datainsert -->
-<!-- BEGIN datatable -->
-<form name="frmDatalist" method="post" action="{ACTION_MODIFY}">
-  <table width="100%" border="0" class="admintable">
-    <tr>
-      <th>{NAME}</th>
-      <th>{FRIENDLY}</th>
-      <th style="text-align: center">{ACTIVE}</th>
-      <th style="text-align: center">{FUNCTION}</th>
-    </tr>
-<!-- BEGIN datarow -->		
-    <tr>
-      <td class="{CELLCLASS_L}">{DATA_NAME}</td>
-      <td class="{CELLCLASS_L}">{DATA_FRIENDLY}</td>
-      <td class="{CELLCLASS_M}">{DATA_ACTIVE}</td>
-      <td class="{CELLCLASS_M}"><input type="checkbox" class="{CHB_CLASS}" name="chbId_{LINE_ID}" {DISABLED}></td>
-    </tr>
-<!-- END datarow -->
-  </table>
-<!-- END datatable -->
-<!-- BEGIN buttontable -->
-  <script language="JavaScript" type="text/JavaScript">
-  <!--
-    function addDataset() {
-			document.forms.frmDatalist.modus.value = "add";
-			document.forms.frmDatalist.submit();
-    }
-    function writeConfig() {
-			document.forms.frmDatalist.modus.value = "make";
-			document.forms.frmDatalist.submit();
-    }
-	function checkMode() {
-      if ((document.forms.frmDatalist.selModify.value == "delete") && !(confirm("{DELETE_OK}"))) {
-	    return false; 
-	  }
-      document.frmDatalist.submit();
-      document.frmDatalist.subDo.disabled = true;	
-	}
-  //-->
-  </script>
-  <table width="100%" border="0" class="buttontable">
-    <tr>
-      <td><input name="subAdd" type="button" id="subAdd" onClick="addDataset()" value="{ADD}">
-        <input name="subMake" type="button" id="subMake" onClick="writeConfig()" value="{WRITE_CONFIG}">
-        <input name="modus" type="hidden" id="modus" value="checkform"></td>
-      <td align="right">
-        <select name="selModify" id="selModify" >
-          <option value="delete">{DELETE}</option>
-          <option value="copy">{DUPLICATE}</option>
-          <option value="modify">{MODIFY}</option>
-        </select>
-        <input name="subDo" type="button" id="subDo" value="{DO}" onClick="checkMode()"></td>
-    </tr>
-  </table>
-</form>  
-<!-- END buttontable -->
-<!-- BEGIN footer -->
-  <p class="infoline">{LAST_MODIFIED}<br>{FILEDATE}{FILEISOLD}</p>
-  <p class="dbmessage">{DBMESSAGE}</p>
-  <p class="{CGROUP_MSGCLASS}">{CONSUSAGE_CGROUPS}</p>
-</td>
-<!-- END footer -->

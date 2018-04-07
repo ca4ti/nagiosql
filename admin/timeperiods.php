@@ -1,18 +1,18 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
-// Projekt:	Nagios NG Applikation
+// Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
+// Datum:	12.03.2007
 // Zweck:	Zeitperioden erfassen
 // Datei:	admin/timeperiods.php
-// Version: 1.02
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -22,78 +22,79 @@
 $intMain 		= 3;
 $intSub  		= 2;
 $intMenu 		= 2;
-$preContent 	= "timeperiod.tpl.htm";
-$setFileVersion = "1.02";
+$preContent 	= "timeperiods.tpl.htm";
 $intCount		= 0;
 $strMessage		= "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin1";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
 // Übergabeparameter
 // =================
-$chkInsName 	= isset($_POST['tfName']) 		? $_POST['tfName'] 		: "";
-$chkInsAlias    = isset($_POST['tfFriendly']) 	? $_POST['tfFriendly'] 	: "";
-$chkInsMon 		= isset($_POST['tfMonday']) 	? $_POST['tfMonday'] 	: "";
-$chkInsTue 		= isset($_POST['tfTuesday']) 	? $_POST['tfTuesday'] 	: "";
-$chkInsWed 		= isset($_POST['tfWednesday']) 	? $_POST['tfWednesday'] : "";
-$chkInsThu 		= isset($_POST['tfThursday']) 	? $_POST['tfThursday'] 	: "";
-$chkInsFri 		= isset($_POST['tfFriday']) 	? $_POST['tfFriday'] 	: "";
-$chkInsSat 		= isset($_POST['tfSaturday']) 	? $_POST['tfSaturday'] 	: "";
-$chkInsSun 		= isset($_POST['tfSunday']) 	? $_POST['tfSunday'] 	: "";
+$chkInsName 	= isset($_POST['tfName']) 		? addslashes($_POST['tfName']) 		: "";
+$chkInsAlias    = isset($_POST['tfFriendly']) 	? addslashes($_POST['tfFriendly']) 	: "";
+$chkInsMon 		= isset($_POST['tfMonday']) 	? addslashes($_POST['tfMonday']) 	: "";
+$chkInsTue 		= isset($_POST['tfTuesday']) 	? addslashes($_POST['tfTuesday']) 	: "";
+$chkInsWed 		= isset($_POST['tfWednesday']) 	? addslashes($_POST['tfWednesday']) : "";
+$chkInsThu 		= isset($_POST['tfThursday']) 	? addslashes($_POST['tfThursday']) 	: "";
+$chkInsFri 		= isset($_POST['tfFriday']) 	? addslashes($_POST['tfFriday']) 	: "";
+$chkInsSat 		= isset($_POST['tfSaturday']) 	? addslashes($_POST['tfSaturday']) 	: "";
+$chkInsSun 		= isset($_POST['tfSunday']) 	? addslashes($_POST['tfSunday']) 	: "";
 //
 // Daten verarbeiten
 // =================
 if (($chkModus == "insert") || ($chkModus == "modify")) {
 	// Daten Einfügen oder Aktualisieren
-	$strSQL2 = "tbl_timeperiod SET timeperiod_name='$chkInsName', alias='$chkInsAlias', sunday='$chkInsSun', monday='$chkInsMon', 
+	if ($hidActive == 1) $chkActive = 1;
+	$strSQLx = "tbl_timeperiod SET timeperiod_name='$chkInsName', alias='$chkInsAlias', sunday='$chkInsSun', monday='$chkInsMon', 
 				tuesday='$chkInsTue', wednesday='$chkInsWed', thursday='$chkInsThu', friday='$chkInsFri', saturday='$chkInsSat', 
 				active='$chkActive', last_modified=NOW()";
 	if ($chkModus == "insert") {
-		$strSQL1 = "INSERT INTO "; 
-		$strSQL3 = "";
+		$strSQL = "INSERT INTO ".$strSQLx; 
 	} else {
-		$strSQL1 = "UPDATE ";      
-		$strSQL3 = " WHERE id=$chkDataId";	
+		$strSQL = "UPDATE ".$strSQLx." WHERE id=$chkDataId";      
 	}	
-	$strSQL = $strSQL1.$strSQL2.$strSQL3;
 	if (($chkInsName != "") && ($chkInsAlias != "")) {
-		$myVisClass->dataInsert($strSQL);
-		$strMessage = $myVisClass->strDBMessage;
-		if ($chkModus == "insert") $myVisClass->writeLog($LANG['logbook']['newtimep']." ".$chkInsName);
-		if ($chkModus == "modify") $myVisClass->writeLog($LANG['logbook']['modifytimep']." ".$chkInsName);
+		$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
+		if ($intInsert == 1) {
+			$intReturn = 1;
+		} else {
+			if ($chkModus  == "insert") 	$myDataClass->writeLog($LANG['logbook']['newtimep']." ".$chkInsName);
+			if ($chkModus  == "modify") 	$myDataClass->writeLog($LANG['logbook']['modifytimep']." ".$chkInsName);
+			$intReturn = 0;
+		}
 	} else {
-		$strMessage  = $LANG['db']['datamissing'];
+		$strMessage    .= $LANG['db']['datamissing'];
 	}
 	$chkModus = "display";
 }  else if ($chkModus == "make") {
 	// Konfigurationsdatei schreiben
-	$myVisClass->createConfig("tbl_timeperiod");
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myConfigClass->createConfig("tbl_timeperiod",0);
+	$chkModus  = "display";
 }  else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
 	// Gewählte Datensätze löschen
-	$myVisClass->dataDelete("tbl_timeperiod",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataDeleteSimple("tbl_timeperiod",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
 	// Gewählte Datensätze kopieren
-	$myVisClass->dataCopy("tbl_timeperiod",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataCopySimple("tbl_timeperiod",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
 	// Daten des gewählten Datensatzes holen
 	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM tbl_timeperiod WHERE id=".$chkListId,$arrModifyData);
 	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
 	$chkModus      = "add";
 }
+// Statusmitteilungen setzen
+if (isset($intReturn) && ($intReturn == 1)) $strMessage = $myDataClass->strDBMessage;
+if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
 //
 // Letzte Datenbankänderung und Filedatum
 // ======================================
-$myVisClass->lastModified("tbl_timeperiod",$strLastModified,$strFileDate,$strOld);
+$myConfigClass->lastModified("tbl_timeperiod",$strLastModified,$strFileDate,$strOld);
 //
 // HTML Template laden
 // ===================
@@ -126,13 +127,19 @@ if ($chkModus == "add") {
 	$conttp->setVariable("LIMIT",$chkLimit);
 	$conttp->setVariable("ACT_CHECKED","checked");
 	$conttp->setVariable("MODUS","insert");
+	// Im Modus "Modifizieren" die Datenfelder setzen
 	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-		// Im Modus "Modifizieren" die Datenfelder setzen
 		foreach($arrModifyData AS $key => $value) {
-			if (($key == "active") || ($key == "last_modified")) continue;
-			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars($value));
+			if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
+			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars(stripslashes($value)));
 		}
 		if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
+		// Prüfen, ob dieser Eintrag in einer anderen Konfiguration verwendet wird
+		if ($myDataClass->checkMustdata("tbl_timeperiod",$arrModifyData['id'],$arrInfo) != 0) {
+			$conttp->setVariable("ACT_DISABLED","disabled");
+			$conttp->setVariable("ACTIVE","1");
+			$conttp->setVariable("CHECK_MUST_DATA","<span class=\"dbmessage\">".$LANG['admintable']['noactivate']."</span>");
+		}  
 		$conttp->setVariable("MODUS","modify");
 	}
 	$conttp->parse("datainsert");
@@ -157,9 +164,14 @@ if ($chkModus == "display") {
 	// Anzahl Datensätze holen
 	$strSQL    = "SELECT count(*) AS number FROM tbl_timeperiod";
 	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
-	if ($booReturn == false) {$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";} else {$intCount = (int)$arrDataLinesCount['number'];}
+	if ($booReturn == false) {
+		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
+	} else {
+		$intCount = (int)$arrDataLinesCount['number'];
+	}
 	// Datensätze holen
-	$strSQL    = "SELECT id, timeperiod_name, alias, active FROM tbl_timeperiod ORDER BY timeperiod_name LIMIT $chkLimit,15";
+	$strSQL    = "SELECT id, timeperiod_name, alias, active FROM tbl_timeperiod 
+				  ORDER BY timeperiod_name LIMIT $chkLimit,".$SETS['common']['pagelines'];
 	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
 	if ($booReturn == false) {
 		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
@@ -173,8 +185,8 @@ if ($chkModus == "display") {
 			foreach($LANG['admintable'] AS $key => $value) {
 				$mastertp->setVariable("LANG_".strtoupper($key),$value);
 			} 
-			$mastertp->setVariable("DATA_FIELD_1",$arrDataLines[$i]['timeperiod_name']);
-			$mastertp->setVariable("DATA_FIELD_2",$arrDataLines[$i]['alias']);
+			$mastertp->setVariable("DATA_FIELD_1",stripslashes($arrDataLines[$i]['timeperiod_name']));
+			$mastertp->setVariable("DATA_FIELD_2",stripslashes($arrDataLines[$i]['alias']));
 			$mastertp->setVariable("DATA_ACTIVE",$strActive);
 			$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
 			$mastertp->setVariable("CELLCLASS_L",$strClassL);
@@ -200,24 +212,16 @@ if ($chkModus == "display") {
 	$mastertp->show("datatable");
 }
 // Mitteilungen ausgeben
-if (isset($strMessage)) $mastertp->setVariable("DBMESSAGE",$strMessage);
+if (isset($strMessage) && ($strMessage != "")) $mastertp->setVariable("DBMESSAGE",$strMessage);
 $mastertp->setVariable("LAST_MODIFIED",$LANG['db']['last_modified']."<b>".$strLastModified."</b>");
 $mastertp->setVariable("FILEDATE",$LANG['common']['filedate']."<b>".$strFileDate."</b>");
-$mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span>");
-$strContMessage = $myVisClass->checkConsistTimeperiods();
-$mastertp->setVariable("CONSISTUSAGE",$strContMessage);
-if ($strContMessage == $LANG['admincontent']['timeperiodsok']) {
-	$mastertp->setVariable("CON_MSGCLASS","okmessage");
-} else {
-	$mastertp->setVariable("CON_MSGCLASS","dbmessage");
-}
-if ($myVisClass->strTempValue1 != "") $mastertp->setVariable("FREEDATA",$myVisClass->strTempValue1);
+if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span><br>");
 $mastertp->parse("msgfooter");
 $mastertp->show("msgfooter");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

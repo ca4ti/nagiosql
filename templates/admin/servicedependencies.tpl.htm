@@ -1,5 +1,5 @@
-<!-- Version 1.02 -->
-<!-- Last modified 02.04.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,15 +8,25 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmServDepInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
-	function update() {
+	// Formular refreshen
+	function update(intMode) {
+	  if (intMode == 2) {
+	  	document.frmServDepInsert.selHost.value = "";
+	  	document.frmServDepInsert.selHost.selectedIndex = -1;
+	  }
+	  if (intMode == 4) {
+	  	document.frmServDepInsert.selHostDepend.value = "";
+	  	document.frmServDepInsert.selHostDepend.selectedIndex = -1;
+	  }
 	  document.forms.frmServDepInsert.modus.value = "refresh";
 	  document.forms.frmServDepInsert.submit();
 	}
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -25,108 +35,108 @@
         document.frmServDepInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
-	  if (((document.frmServDepInsert.selServicegroupDep.value != "") ||
-		(document.frmServDepInsert.selServicegroup.value != "")) &&
-		((document.frmServDepInsert.selHostDepend.value != "") ||
-		(document.frmServDepInsert.selHostgroupDep.value != "") ||
-		(document.frmServDepInsert.selHost.value != "") ||
-		(document.frmServDepInsert.selHostgroup.value != "") ||
-		(document.frmServDepInsert.selServiceDepend.value != "") ||
-		(document.frmServDepInsert.selService.value != ""))) {
+	  if (((document.frmServDepInsert.selServicegroupDep.value != 0) ||
+		(document.frmServDepInsert.selServicegroup.value != 0)) &&
+		((document.frmServDepInsert.selHostDepend.value != 0) ||
+		(document.frmServDepInsert.selHostgroupDep.value != 0) ||
+		(document.frmServDepInsert.selHost.value != 0) ||
+		(document.frmServDepInsert.selHostgroup.value != 0) ||
+		(document.frmServDepInsert.selServiceDepend.value != 0) ||
+		(document.frmServDepInsert.selService.value != 0))) {
         alert("{FILL_SERVG_ONLY}");
         document.frmServDepInsert.selServicegroupDep.focus();
         return false;
       }
-	  if (((document.frmServDepInsert.selHostDepend.value != "") &&
-	    (document.frmServDepInsert.selHostgroupDep.value != "")) ||
-	    ((document.frmServDepInsert.selHost.value != "") &&
-	    (document.frmServDepInsert.selHostgroup.value != "")) ||
-	    ((document.frmServDepInsert.selHost.value != "") &&
-	    (document.frmServDepInsert.selHostgroupDep.value != "")) ||		
-	    ((document.frmServDepInsert.selHostDepend.value != "") &&
-	    (document.frmServDepInsert.selHostgroup.value != ""))) {
+	  if (((document.frmServDepInsert.selHostDepend.value != 0) &&
+	    (document.frmServDepInsert.selHostgroupDep.value != 0)) ||
+	    ((document.frmServDepInsert.selHost.value != 0) &&
+	    (document.frmServDepInsert.selHostgroup.value != 0)) ||
+	    ((document.frmServDepInsert.selHost.value != 0) &&
+	    (document.frmServDepInsert.selHostgroupDep.value != 0)) ||		
+	    ((document.frmServDepInsert.selHostDepend.value != 0) &&
+	    (document.frmServDepInsert.selHostgroup.value != 0))) {
         alert("{FILL_HOSTORGR}");
         document.frmServDepInsert.selHostDepend.focus();
         return false;
       }		
-	  if (((document.frmServDepInsert.selHostDepend.value == "") &&
-	     (document.frmServDepInsert.selHostgroupDep.value == "") &&
-	     (document.frmServDepInsert.selHost.value == "") &&
-	     (document.frmServDepInsert.selHostgroup.value == "")) &&
-		 ((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		 (document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if (((document.frmServDepInsert.selHostDepend.value == 0) &&
+	     (document.frmServDepInsert.selHostgroupDep.value == 0) &&
+	     (document.frmServDepInsert.selHost.value == 0) &&
+	     (document.frmServDepInsert.selHostgroup.value == 0)) &&
+		 ((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		 (document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_HOSTORSGR}");
         document.frmServDepInsert.selHostDepend.focus();
         return false;
       }		
-	  if (((document.frmServDepInsert.selHostDepend.value == "") &&
-	     (document.frmServDepInsert.selHost.value != "")) &&
-		 ((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		 (document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if (((document.frmServDepInsert.selHostDepend.value == 0) &&
+	     (document.frmServDepInsert.selHost.value != 0)) &&
+		 ((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		 (document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_DEPHOST}");
         document.frmServDepInsert.selHostDepend.focus();
         return false;
       }		
-	  if (((document.frmServDepInsert.selHostgroupDep.value == "") &&
-	     (document.frmServDepInsert.selHostgroup.value != "")) &&
-		 ((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		 (document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if (((document.frmServDepInsert.selHostgroupDep.value == 0) &&
+	     (document.frmServDepInsert.selHostgroup.value != 0)) &&
+		 ((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		 (document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_DEPHOSTGR}");
         document.frmServDepInsert.selHostDepend.focus();
         return false;
       }		
-	  if (((document.frmServDepInsert.selHostDepend.value != "") &&
-	     (document.frmServDepInsert.selHost.value == "")) &&
-		 ((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		 (document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if (((document.frmServDepInsert.selHostDepend.value != 0) &&
+	     (document.frmServDepInsert.selHost.value == 0)) &&
+		 ((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		 (document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_HOSTS}");
         document.frmServDepInsert.selHost.focus();
         return false;
       }		
-	  if (((document.frmServDepInsert.selHostgroupDep.value != "") &&
-	     (document.frmServDepInsert.selHostgroup.value == "")) &&
-		 ((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		 (document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if (((document.frmServDepInsert.selHostgroupDep.value != 0) &&
+	     (document.frmServDepInsert.selHostgroup.value == 0)) &&
+		 ((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		 (document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_HOSTGR}");
         document.frmServDepInsert.selHostDepend.focus();
         return false;
       }		
-	  if ((document.frmServDepInsert.selService.value == "") &&
-		((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		(document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if ((document.frmServDepInsert.selService.value == 0) &&
+		((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		(document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_SERVS}");
         document.frmServDepInsert.selService.focus();
         return false;
       }
-	  if ((document.frmServDepInsert.selServiceDepend.value == "") &&
-		((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		(document.frmServDepInsert.selServicegroup.value == ""))) {
+	  if ((document.frmServDepInsert.selServiceDepend.value == 0) &&
+		((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		(document.frmServDepInsert.selServicegroup.value == 0))) {
         alert("{FILL_DEPSERV}");
         document.frmServDepInsert.selServiceDepend.focus();
         return false;
       }
-	  if ((document.frmServDepInsert.selServicegroupDep.value != "") &&
-		(document.frmServDepInsert.selServicegroup.value == "") &&
-		(document.frmServDepInsert.selHostDepend.value == "") &&
-		(document.frmServDepInsert.selHostgroupDep.value == "") &&
-		(document.frmServDepInsert.selHost.value == "") &&
-		(document.frmServDepInsert.selHostgroup.value == "") &&
-		(document.frmServDepInsert.selServiceDepend.value == "") &&
-		(document.frmServDepInsert.selService.value == "")) {
+	  if ((document.frmServDepInsert.selServicegroupDep.value != 0) &&
+		(document.frmServDepInsert.selServicegroup.value == 0) &&
+		(document.frmServDepInsert.selHostDepend.value == 0) &&
+		(document.frmServDepInsert.selHostgroupDep.value == 0) &&
+		(document.frmServDepInsert.selHost.value == 0) &&
+		(document.frmServDepInsert.selHostgroup.value == 0) &&
+		(document.frmServDepInsert.selServiceDepend.value == 0) &&
+		(document.frmServDepInsert.selService.value == 0)) {
         alert("{FILL_SERVGR}");
         document.frmServDepInsert.selServicegroupDep.focus();
         return false;
       }
-	  if ((document.frmServDepInsert.selServicegroupDep.value == "") &&
-		(document.frmServDepInsert.selServicegroup.value != "") &&
-		(document.frmServDepInsert.selHostDepend.value == "") &&
-		(document.frmServDepInsert.selHostgroupDep.value == "") &&
-		(document.frmServDepInsert.selHost.value == "") &&
-		(document.frmServDepInsert.selHostgroup.value == "") &&
-		(document.frmServDepInsert.selServiceDepend.value == "") &&
-		(document.frmServDepInsert.selService.value == "")) {
+	  if ((document.frmServDepInsert.selServicegroupDep.value == 0) &&
+		(document.frmServDepInsert.selServicegroup.value != 0) &&
+		(document.frmServDepInsert.selHostDepend.value == 0) &&
+		(document.frmServDepInsert.selHostgroupDep.value == 0) &&
+		(document.frmServDepInsert.selHost.value == 0) &&
+		(document.frmServDepInsert.selHostgroup.value == 0) &&
+		(document.frmServDepInsert.selServiceDepend.value == 0) &&
+		(document.frmServDepInsert.selService.value == 0)) {
         alert("{FILL_DEPSERVGR}");
         document.frmServDepInsert.selServicegroupDep.focus();
         return false;
@@ -142,15 +152,15 @@
   <table border="0" class="inserttable">
     <tr>
       <td>{LANG_DEPENDHOSTS}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selHostDepend[]" size="4" multiple id="selHostDepend" style="width:200px;" onChange="update()">
+      <td colspan="2" rowspan="2"><select name="selHostDepend[]" size="6" multiple id="selHostDepend" style="width:200px;" onChange="update(3)">
 <!-- BEGIN hostdepend -->
-          <option title="{DAT_HOSTDEPEND}" value="{DAT_HOSTDEPEND}" {DAT_HOSTDEPEND_SEL}>{DAT_HOSTDEPEND}</option>
+          <option value="{DAT_HOSTDEPEND_ID}" {DAT_HOSTDEPEND_SEL}>{DAT_HOSTDEPEND}</option>
 <!-- END hostdepend -->
         </select></td>
       <td>{LANG_HOSTNAMES}(*)</td>
-      <td rowspan="2"><select name="selHost[]" size="4" multiple id="selHost" style="width:200px;" onChange="update()">
+      <td rowspan="2"><select name="selHost[]" size="6" multiple id="selHost" style="width:200px;" onChange="update(1)">
 <!-- BEGIN host -->
-        <option title="{DAT_HOST}" value="{DAT_HOST}" {DAT_HOST_SEL}>{DAT_HOST}</option>
+        <option value="{DAT_HOST_ID}" {DAT_HOST_SEL}>{DAT_HOST}</option>
 <!-- END host -->
       </select></td>
     </tr>
@@ -163,15 +173,15 @@
       </tr>
     <tr>
       <td>{LANG_DEPENDSERVICES}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selServiceDepend[]" size="4" multiple id="selServiceDepend" style="width:200px;">
+      <td colspan="2" rowspan="2"><select name="selServiceDepend[]" size="6" multiple id="selServiceDepend" style="width:200px;">
 <!-- BEGIN servicedepend -->
-          <option value="{DAT_SERVICEDEPEND}" {DAT_SERVICEDEPEND_SEL}>{DAT_SERVICEDEPEND}</option>
+          <option value="{DAT_SERVICEDEPEND_ID}" {DAT_SERVICEDEPEND_SEL}>{DAT_SERVICEDEPEND}</option>
 <!-- END servicedepend -->
         </select></td>
       <td>{LANG_SERVICES}(*)</td>
-      <td rowspan="2"><select name="selService[]" size="4" multiple id="selService" style="width:200px;">
+      <td rowspan="2"><select name="selService[]" size="6" multiple id="selService" style="width:200px;">
 <!-- BEGIN service -->
-          <option value="{DAT_SERVICE}" {DAT_SERVICE_SEL}>{DAT_SERVICE}</option>
+          <option value="{DAT_SERVICE_ID}" {DAT_SERVICE_SEL}>{DAT_SERVICE}</option>
 <!-- END service -->
         </select></td>
     </tr>
@@ -184,15 +194,15 @@
       </tr>
     <tr>
       <td>{LANG_DEPENDHOSTGRS}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selHostgroupDep[]" size="4" multiple id="selHostgroupDep" style="width:200px;" onChange="update()">
+      <td colspan="2" rowspan="2"><select name="selHostgroupDep[]" size="6" multiple id="selHostgroupDep" style="width:200px;" onChange="update(4)">
 <!-- BEGIN hostgroupdepend -->
-            <option value="{DAT_HOSTGROUPDEP}" {DAT_HOSTGROUPDEP_SEL}>{DAT_HOSTGROUPDEP}</option>
+            <option value="{DAT_HOSTGROUPDEP_ID}" {DAT_HOSTGROUPDEP_SEL}>{DAT_HOSTGROUPDEP}</option>
 <!-- END hostgroupdepend -->
-          </select></td>
+          </select>        </td>
       <td>{LANG_HOSTGROUPS}(*)</td>
-      <td rowspan="2"><select name="selHostgroup[]" size="4" multiple id="selHostgroup" style="width:200px;" onChange="update()">
+      <td rowspan="2"><select name="selHostgroup[]" size="6" multiple id="selHostgroup" style="width:200px;" onChange="update(2)">
 <!-- BEGIN hostgroup -->
-          <option value="{DAT_HOSTGROUP}" {DAT_HOSTGROUP_SEL}>{DAT_HOSTGROUP}</option>
+          <option value="{DAT_HOSTGROUP_ID}" {DAT_HOSTGROUP_SEL}>{DAT_HOSTGROUP}</option>
 <!-- END hostgroup -->
         </select></td>
     </tr>
@@ -205,15 +215,15 @@
       </tr>
     <tr>
       <td>{LANG_DEPENDSERGRS}(*)</td>
-      <td colspan="2" rowspan="2"><select name="selServicegroupDep[]" size="4" multiple id="selServicegroupDep" style="width:200px;">
-<!-- BEGIN servicegroupdepend -->
-          <option value="{DAT_SERVICEGROUPDEP}" {DAT_SERVICEGROUPDEP_SEL}>{DAT_SERVICEGROUPDEP}</option>
-<!-- END servicegroupdepend -->
-        </select></td>
+      <td colspan="2" rowspan="2"><select name="selServicegroupDep[]" size="6" multiple id="selServicegroupDep" style="width:200px;">
+        <!-- BEGIN servicegroupdepend -->
+        <option value="{DAT_SERVICEGROUPDEP_ID}" {dat_servicegroupdep_sel}>{DAT_SERVICEGROUPDEP}</option>
+        <!-- END servicegroupdepend -->
+      </select></td>
       <td>{LANG_SERVICEGROUPS}(*)</td>
-      <td rowspan="2"><select name="selServicegroup[]" size="4" multiple id="selServicegroup" style="width:200px;">
+      <td rowspan="2"><select name="selServicegroup[]" size="6" multiple id="selServicegroup" style="width:200px;">
 <!-- BEGIN servicegroup -->
-          <option value="{DAT_SERVICEGROUP}" {DAT_SERVICEGROUP_SEL}>{DAT_SERVICEGROUP}</option>
+          <option value="{DAT_SERVICEGROUP_ID}" {DAT_SERVICEGROUP_SEL}>{DAT_SERVICEGROUP}</option>
 <!-- END servicegroup -->
         </select></td>
     </tr>

@@ -1,18 +1,18 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
+// Datum:	12.03.2007
 // Zweck:	Vollständiges Kommando ausgeben innerhalb des IFRAME
 // Datei:	admin/commandline.php
-// Version:	1.02
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -26,9 +26,9 @@ $strCommandLine = "&nbsp;";
 // Datenbank abfragen
 // ===================
 if (isset($_GET['cname']) && ($_GET['cname'] != "")) {
-	$strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_checkcommand WHERE command_name='".$_GET['cname']."'");
+	$strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_checkcommand WHERE id='".$_GET['cname']."'");
 	if ($strResult != false) {
-		$strCommandLine = htmlspecialchars($strResult);
+		$strCommandLine = htmlspecialchars(stripslashes($strResult));
 	}
 }
 ?>

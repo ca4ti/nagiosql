@@ -1,18 +1,18 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	30.03.2005
+// Datum:	12.03.2007
 // Zweck:	Kontaktgruppen definieren
 // Datei:	admin/contactgroups.php
-// Version:	1.02
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
 // error_reporting(E_ALL);
@@ -23,71 +23,86 @@ $intMain 		= 3;
 $intSub  		= 6;
 $intMenu 		= 2;
 $preContent 	= "contactgroups.tpl.htm";
-$setFileVersion = "1.02";
 $strDBWarning	= "";
 $intCount		= 0;
 $strMessage		= "";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin1";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
 // Übergabeparameter
 // =================
-$chkTfName 				= isset($_POST['tfName']) 			? $_POST['tfName'] 				: "";
-$chkTfFriendly 			= isset($_POST['tfFriendly']) 		? $_POST['tfFriendly'] 			: "";
-$chkSelMembers 			= isset($_POST['selMembers']) 		? $_POST['selMembers'] 			: array("");
+$chkTfName 		= isset($_POST['tfName']) 		? addslashes($_POST['tfName']) 		: "";
+$chkTfFriendly 	= isset($_POST['tfFriendly']) 	? addslashes($_POST['tfFriendly']) 	: "";
+$chkSelMembers 	= isset($_POST['selMembers']) 	? $_POST['selMembers'] 				: array("");
 //
 // Daten verarbeiten
 // =================
-$strMembers = $myVisClass->makeCommaString($chkSelMembers);
+if (($chkSelMembers[0] == "")   || ($chkSelMembers[0] == "0"))   {$intSelMembers = 0;}  else {$intSelMembers = 1;}
+// Datein einfügen oder modifizieren
 if (($chkModus == "insert") || ($chkModus == "modify")) {
-	// Daten Einfügen oder Aktualisieren
-	$strSQL2 = "tbl_contactgroup SET contactgroup_name='$chkTfName', alias='$chkTfFriendly', members='$strMembers', active='$chkActive', last_modified=NOW()";
+	if ($hidActive == 1) $chkActive = 1;
+	$strSQLx = "tbl_contactgroup SET contactgroup_name='$chkTfName', alias='$chkTfFriendly', members=$intSelMembers, 
+			    active='$chkActive', last_modified=NOW()";
 	if ($chkModus == "insert") {
-		$strSQL1 = "INSERT INTO "; 
-		$strSQL3 = "";
+		$strSQL = "INSERT INTO ".$strSQLx; 
 	} else {
-		$strSQL1 = "UPDATE ";      
-		$strSQL3 = " WHERE id=$chkDataId";	
+		$strSQL = "UPDATE ".$strSQLx." WHERE id=$chkDataId";   
 	}	
-	$strSQL = $strSQL1.$strSQL2.$strSQL3;
-	if (($chkTfName != "") && ($chkTfFriendly != "") && ($strMembers != "")) {
-		$myVisClass->dataInsert($strSQL);
-		$strMessage = $myVisClass->strDBMessage;
-		if ($chkModus == "insert") $myVisClass->writeLog($LANG['logbook']['newcontgr']." ".$chkTfName);
-		if ($chkModus == "modify") $myVisClass->writeLog($LANG['logbook']['modifycontgr']." ".$chkTfName);
+	if (($chkTfName != "") && ($chkTfFriendly != "") && ($chkSelMembers[0] != "")) {
+		$intInsert = $myDataClass->dataInsert($strSQL,$intInsertId);
+		if ($intInsert == 1) {
+			$intReturn = 1;
+		} else {		
+			if ($chkModus  == "insert") 	$myDataClass->writeLog($LANG['logbook']['newcontgr']." ".$chkTfName);
+			if ($chkModus  == "modify") 	$myDataClass->writeLog($LANG['logbook']['modifycontgr']." ".$chkTfName);
+			//
+			// Relationen eintragen/updaten
+			// ============================
+			$intTableA = $myDataClass->tableID("tbl_contactgroup");
+			if ($chkModus == "insert") {
+				if ($intSelMembers == 1)  $myDataClass->dataInsertRelation($intTableA,$myDataClass->tableID("tbl_contact"),$intInsertId,'members',$chkSelMembers);
+			} else if ($chkModus == "modify") {		
+				if ($intSelMembers == 1) {
+					$myDataClass->dataUpdateRelation($intTableA,$myDataClass->tableID("tbl_contact"),$chkDataId,'members',$chkSelMembers);
+				} else {
+					$myDataClass->dataDeleteRelation($intTableA,$myDataClass->tableID("tbl_contact"),$chkDataId,'members');
+				}
+			}			
+			$intReturn = 0;
+		}	
 	} else {
-		$strMessage  = $LANG['db']['datamissing'];
+		$strMessage .= $LANG['db']['datamissing'];
 	}
 	$chkModus = "display";
 }  else if ($chkModus == "make") {
 	// Konfigurationsdatei schreiben
-	$myVisClass->createConfig("tbl_contactgroup");
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myConfigClass->createConfig("tbl_contactgroup",0);
+	$chkModus  = "display";
 }  else if (($chkModus == "checkform") && ($chkSelModify == "delete")) {
 	// Gewählte Datensätze löschen
-	$myVisClass->dataDelete("tbl_contactgroup",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataDeleteSimple("tbl_contactgroup",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "copy")) {
 	// Gewählte Datensätze kopieren
-	$myVisClass->dataCopy("tbl_contactgroup",$chkListId);
-	$strMessage = $myVisClass->strDBMessage;
-	$chkModus = "display";
+	$intReturn = $myDataClass->dataCopySimple("tbl_contactgroup",$chkListId);
+	$chkModus  = "display";
 } else if (($chkModus == "checkform") && ($chkSelModify == "modify")) {
 	// Daten des gewählten Datensatzes holen
 	$booReturn = $myDBClass->getSingleDataset("SELECT * FROM tbl_contactgroup WHERE id=".$chkListId,$arrModifyData);
 	if ($booReturn == false) $strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
 	$chkModus      = "add";
 }
+// Statusmitteilungen setzen
+if (isset($intReturn) && ($intReturn == 1)) $strMessage = $myDataClass->strDBMessage;
+if (isset($intReturn) && ($intReturn == 0)) $strMessage = "<span class=\"greenmessage\">".$myDataClass->strDBMessage."</span>";
 //
 // Letzte Datenbankänderung und Filedatum
 // ======================================
-$myVisClass->lastModified("tbl_contactgroup",$strLastModified,$strFileDate,$strOld);
+$myConfigClass->lastModified("tbl_contactgroup",$strLastModified,$strFileDate,$strOld);
 //
 // HTML Template laden
 // ===================
@@ -108,14 +123,19 @@ $conttp->show("header");
 // Eingabeformular
 // ===============
 if ($chkModus == "add") {
-	// Datenbankabfragen
-	$myVisClass->strTempValue1 = $chkSelModify;
-	$myVisClass->resTemplate   =& $conttp;
-	if (isset($arrModifyData)) $myVisClass->arrWorkdata = $arrModifyData;	
-	// Kontaktfelder füllem
+	// Klassenvariabeln definieren
+	$myVisClass->resTemplate     =& $conttp;
+	$myVisClass->strTempValue1 	 = $chkSelModify;
+	$myVisClass->intTabA   	   	 = $myDataClass->tableID("tbl_contactgroup");
+	if (isset($arrModifyData)) {
+		$myVisClass->arrWorkdata = $arrModifyData;
+		$myVisClass->intTabA_id  = $arrModifyData['id'];
+	} else {
+		$myVisClass->intTabA_id  = 0;
+	}	
+	// Kontaktfelder füllen
 	$intReturn = 0;
-	$strSQL    = "SELECT contact_name FROM tbl_contact ORDER BY contact_name";
-	$intReturn = $myVisClass->parseSelect($strSQL,"DAT_CONTACTS","contact_name","members","contacts");
+	$intReturn = $myVisClass->parseSelectNew('tbl_contact','contact_name','DAT_CONTACTS','contacts','members',2,0);
 	if ($intReturn != 0) $strDBWarning .= $LANG['admintable']['warn_contacts']."<br>";		
 	// Feldbeschriftungen setzen
 	foreach($LANG['admintable'] AS $key => $value) {
@@ -130,13 +150,18 @@ if ($chkModus == "add") {
 	if ($strDBWarning != "") $conttp->setVariable("WARNING",$strDBWarning.$LANG['admintable']['warn_save']);
 	$conttp->setVariable("ACT_CHECKED","checked");
 	$conttp->setVariable("MODUS","insert");
+	// Im Modus "Modifizieren" die Datenfelder setzen
 	if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-		// Im Modus "Modifizieren" die Datenfelder setzen
 		foreach($arrModifyData AS $key => $value) {
-			if (($key == "active") || ($key == "last_modified")) continue;
-			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars($value));
+			if (($key == "active") || ($key == "last_modified") || ($key == "access_rights")) continue;
+			$conttp->setVariable("DAT_".strtoupper($key),htmlspecialchars(stripslashes($value)));
 		}
 		if ($arrModifyData['active'] != 1) $conttp->setVariable("ACT_CHECKED","");
+		// Prüfen, ob dieser Eintrag in einer anderen Konfiguration verwendet wird
+		if ($myDataClass->checkMustdata("tbl_contactgroup",$arrModifyData['id'],$arrInfo) != 0) {
+			$conttp->setVariable("ACT_DISABLED","disabled");
+			$conttp->setVariable("ACTIVE","1");
+			$conttp->setVariable("CHECK_MUST_DATA","<span class=\"dbmessage\">".$LANG['admintable']['noactivate']."</span>");		}   
 		$conttp->setVariable("MODUS","modify");
 	}
 	$conttp->parse("datainsert");
@@ -161,9 +186,14 @@ if ($chkModus == "display") {
 	// Anzahl Datensätze holen
 	$strSQL    = "SELECT count(*) AS number FROM tbl_contactgroup";
 	$booReturn = $myDBClass->getSingleDataset($strSQL,$arrDataLinesCount);
-	if ($booReturn == false) {$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";} else {$intCount = (int)$arrDataLinesCount['number'];}
+	if ($booReturn == false) {
+		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";
+	} else {
+		$intCount = (int)$arrDataLinesCount['number'];
+	}
 	// Datensätze holen
-	$strSQL    = "SELECT id, contactgroup_name, alias, active FROM tbl_contactgroup ORDER BY contactgroup_name LIMIT $chkLimit,15";
+	$strSQL    = "SELECT id, contactgroup_name, alias, active FROM tbl_contactgroup 
+				  ORDER BY contactgroup_name LIMIT $chkLimit,".$SETS['common']['pagelines'];
 	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
 	if ($booReturn == false) {
 		$strMessage .= $LANG['db']['dberror']."<br>".$myDBClass->strDBError."<br>";		
@@ -177,8 +207,8 @@ if ($chkModus == "display") {
 			foreach($LANG['admintable'] AS $key => $value) {
 				$mastertp->setVariable("LANG_".strtoupper($key),$value);
 			} 
-			$mastertp->setVariable("DATA_FIELD_1",$arrDataLines[$i]['contactgroup_name']);
-			$mastertp->setVariable("DATA_FIELD_2",$arrDataLines[$i]['alias']);
+			$mastertp->setVariable("DATA_FIELD_1",stripslashes($arrDataLines[$i]['contactgroup_name']));
+			$mastertp->setVariable("DATA_FIELD_2",stripslashes($arrDataLines[$i]['alias']));
 			$mastertp->setVariable("DATA_ACTIVE",$strActive);
 			$mastertp->setVariable("LINE_ID",$arrDataLines[$i]['id']);
 			$mastertp->setVariable("CELLCLASS_L",$strClassL);
@@ -197,30 +227,23 @@ if ($chkModus == "display") {
 		$mastertp->setVariable("CHB_CLASS","checkbox");
 		$mastertp->setVariable("DISABLED","disabled");
 	}
+	// Seiten anzeigen
 	$mastertp->setVariable("IMAGE_PATH",$SETS['path']['root']."images/");
 	if (isset($intCount)) $mastertp->setVariable("PAGES",$myVisClass->buildPageLinks($_SERVER['PHP_SELF'],$intCount,$chkLimit));
 	$mastertp->parse("datatable");
 	$mastertp->show("datatable");
 }
 // Mitteilungen ausgeben
-if (isset($strMessage)) $mastertp->setVariable("DBMESSAGE",$strMessage);
+if (isset($strMessage) && ($strMessage != "")) $mastertp->setVariable("DBMESSAGE",$strMessage);
 $mastertp->setVariable("LAST_MODIFIED",$LANG['db']['last_modified']."<b>".$strLastModified."</b>");
 $mastertp->setVariable("FILEDATE",$LANG['common']['filedate']."<b>".$strFileDate."</b>");
-$mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span>");
-$strContMessage = $myVisClass->checkConsistContactgroups();
-$mastertp->setVariable("CONSISTUSAGE",$strContMessage);
-if ($strContMessage == $LANG['admincontent']['cgroupssok']) {
-	$mastertp->setVariable("CON_MSGCLASS","okmessage");
-} else {
-	$mastertp->setVariable("CON_MSGCLASS","dbmessage");
-}
-if ($myVisClass->strTempValue1 != "") $mastertp->setVariable("FREEDATA",$myVisClass->strTempValue1);
+if ($strOld != "") $mastertp->setVariable("FILEISOLD","<br><span class=\"dbmessage\">".$strOld."</span><br>");
 $mastertp->parse("msgfooter");
 $mastertp->show("msgfooter");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

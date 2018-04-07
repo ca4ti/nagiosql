@@ -1,5 +1,5 @@
-<!-- Version 1.00 -->
-<!-- Last modified 11.3.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN main -->
 <td class="main">
       <h1>{TITLE}</h1>
@@ -7,11 +7,12 @@
 <!-- BEGIN main -->
 <form name="frmImport" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
         document.frmImport.submit();
         document.frmImport.subForm.disabled = true;

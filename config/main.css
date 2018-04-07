@@ -1,17 +1,17 @@
 /*/////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
-////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	11.03.2005
+// Datum:	12.03.2007
 // Zweck:	CSS Formatdefinitionen
 // Datei:	config/main.css
-// Version:	1.00
+// Version: 2.00.00 (Internal)
 //
 /////////////////////////////////////////////////////////////////////////////*/
 body {
@@ -28,16 +28,16 @@ body {
 	padding-left: 2px;
 }
 .headermiddle {
-	background-color: #FFFFFF;
+	background-color: #FFFFFF; 
 	vertical-align: bottom;
 	height: 40px;
 	border-bottom: 2px solid #006600;
 	width: 200px;
 }
 .headerright {
-	background-color: #FFFFFF;
-	vertical-align: bottom;
+	background-color: #FFFFFF; 
 	text-align: right;
+	vertical-align: bottom;
 	border-bottom: 2px solid #006600;
 	padding-right: 20px;
 }

@@ -1,5 +1,5 @@
-<!-- Version 1.00 -->
-<!-- Last modified 11.3.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,11 +8,12 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmCommandInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -21,18 +22,21 @@
         document.frmCommandInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben ueberpruefen
     function checkForm() {
+      // Ist der Commandname leer?
       if(document.frmCommandInsert.tfName.value == "")  {
         alert("{FILL_NAME}");
         document.frmCommandInsert.tfName.focus();
         return false;
       }
+      // Kommen unerlaubte Zeichen im Commandnamen vor?
       if(document.frmCommandInsert.tfName.value.match(/{FILL_SPECIALS}/))  {
         alert("{FILL_ILLEGCHAR1}\"{LANG_COMMAND}\"{FILL_ILLEGCHAR2}");
         document.frmCommandInsert.tfName.focus();
         return false;
       }
+      // Wurde keine Commandline erfasst?
       if(document.frmCommandInsert.tfCommand.value == "") {
         alert("{FILL_COMMAND}");
         document.frmCommandInsert.tfCommand.focus();
@@ -56,8 +60,9 @@
     </tr>
     <tr>
       <td>{LANG_ACTIVE}</td>
-      <td colspan="2"><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED}>
-        <input name="modus" type="hidden" id="modus" value="{MODUS}">
+      <td colspan="2"><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED}>
+        <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}">
+	    <input name="modus" type="hidden" id="modus" value="{MODUS}">
         <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}">
         <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>
     </tr>
@@ -73,5 +78,6 @@
     </tr>
   </table>
 </form>
+{CHECK_MUST_DATA}
 <br>
 <!-- END datainsert -->

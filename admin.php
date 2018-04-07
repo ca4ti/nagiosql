@@ -1,33 +1,31 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	11.03.2005
-// Zweck:	Nagios Administration
+// Datum:	12.03.2007
+// Zweck:	NagiosQL Eingangsseite (Administration)
 // Datei:	admin.php
-// Version: 1.00
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
 // 
 // Menuvariabeln für diese Seite
 // =============================
 $intMain 		= 1;
 $intSub  		= 0;
 $intMenu 		= 2;
-$preContent 	= "admin.tpl.htm";
-$setFileVersion = "1.00";
+$preContent 	= "mainpages.tpl.htm";
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin_all";
 $SETS 		= parse_ini_file("config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
@@ -52,7 +50,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

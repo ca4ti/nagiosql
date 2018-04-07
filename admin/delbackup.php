@@ -1,21 +1,21 @@
 <?php
 ///////////////////////////////////////////////////////////////////////////////
 //
-// NagiosQL 2005
+// NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005 by Martin Willisegger / nagios.ql2005@wizonet.ch
+// (c) 2006 by Martin Willisegger / nagiosql_v2@wizonet.ch
 //
 // Projekt:	NagiosQL Applikation
 // Author :	Martin Willisegger
-// Datum:	27.02.2005
+// Datum:	12.03.2007
 // Zweck:	Löschen der Backupdateien
 // Datei:	admin/delback.php
-// Version: 1.00
+// Version: 2.00.00 (Internal)
 //
 ///////////////////////////////////////////////////////////////////////////////
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
 // 
 // Menuvariabeln für diese Seite
 // =============================
@@ -23,7 +23,6 @@ $intMain 		= 6;
 $intSub  		= 17;
 $intMenu 		= 2;
 $preContent 	= "delback.tpl.htm";
-$setFileVersion = "1.00";
 $intModus		= 0;
 //
 // Übergabeparameter
@@ -32,7 +31,7 @@ $chkSelFilename	= isset($_POST['selImportFile'])	? $_POST['selImportFile']	: arr
 //
 // Vorgabedatei einbinden
 // ======================
-$preRights 	= "admin2";
+$preAccess	= 1;
 $SETS 		= parse_ini_file("../config/settings.ini",TRUE);
 require($SETS['path']['physical']."functions/prepend_adm.php");
 //
@@ -42,12 +41,12 @@ if ($chkSelFilename[0] != "") {
 	$intModus = 1;
 	$strMessage = "";
 	foreach($chkSelFilename AS $elem) {
-		if (is_writeable($elem)) {
-			unlink($elem);
-			$myVisClass->writeLog($LANG['logbook']['delfile']." ".$elem);
-			$strMessage .= $elem." erfolgreich gelöscht!<br>";
+		if (is_writeable(trim($elem))) {
+			unlink(trim($elem));
+			$myDataClass->writeLog($LANG['logbook']['delfile']." ".trim($elem));
+			$strMessage .= $elem.$LANG['file']['deleteok']."<br>";
 		} else {
-			$strMessage .= $elem." konnte nicht gelöscht werden (Berechtigungen)!<br>";
+			$strMessage .= $elem.$LANG['file']['deletefail']."<br>";
 		}
 	}
 }
@@ -93,7 +92,7 @@ $conttp->show("main");
 //
 // Footer ausgeben
 // ===============
-$maintp->setVariable("VERSION_INFO","NagiosQL 2005 - Version: $setFileVersion");
+$maintp->setVariable("VERSION_INFO","NagiosQL - Version: $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
 ?>

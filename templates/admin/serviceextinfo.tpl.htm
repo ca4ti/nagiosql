@@ -1,5 +1,5 @@
-<!-- Version 1.02 -->
-<!-- Last modified 02.04.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,15 +8,17 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmServExtInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
+    // Formular aktualisieren
     function update() {
       document.forms.frmServExtInsert.modus.value = "refresh";
       document.forms.frmServExtInsert.submit();
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -25,13 +27,15 @@
         document.frmServExtInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
+      // Wurde ein Host ausgewählt?
       if(document.frmServExtInsert.selHost.value == "")  {
         alert("{FILL_HOST}");
         document.frmServExtInsert.selHost.focus();
         return false;
 	  }
+      // Wurde ein Service ausgewählt?
       if(document.frmServExtInsert.selService.value == "")  {
         alert("{FILL_SERV}");
         document.frmServExtInsert.selService.focus();
@@ -45,7 +49,7 @@
       <td>{LANG_HOSTNAME}*</td>
       <td colspan="2"><select name="selHost" id="selHost" style="width:200px;" onChange="update()">
 <!-- BEGIN host -->
-          <option title="{DAT_HOST}" value="{DAT_HOST}" {DAT_HOST_SEL}>{DAT_HOST}</option>
+          <option value="{DAT_HOST_ID}" {DAT_HOST_SEL}>{DAT_HOST}</option>
 <!-- END host -->
         </select></td>
       <td>{LANG_SERVICONIMAGE}</td>
@@ -55,7 +59,7 @@
       <td>{LANG_SERVICE}*</td>
       <td colspan="2"><select name="selService" id="selService" style="width:200px;">
 <!-- BEGIN service -->
-          <option value="{DAT_SERVICE}" {DAT_SERVICE_SEL}>{DAT_SERVICE}</option>
+          <option value="{DAT_SERVICE_ID}" {DAT_SERVICE_SEL}>{DAT_SERVICE}</option>
 <!-- END service -->
         </select></td>
       <td>{LANG_ICONIMAGEALT}</td>
@@ -77,7 +81,7 @@
       <td>{LANG_ACTIONURL}</td>
       <td colspan="2"><input name="tfActionURL" type="text" id="tfActionURL" value="{DAT_ACTION_URL}" size="50" maxlength="1024"></td>
       <td>{LANG_ACTIVE}</td>
-      <td><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED}>
+      <td><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED}>
         <input name="modus" type="hidden" id="modus" value="{MODUS}">
         <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}">
         <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>

@@ -1,13 +1,13 @@
 *******************************************************************************
 *                                                                             *
-*                  NagiosQL 2005 - Installationsanleitung                     *
+*                       NagiosQL - Install documentation                      *
 *                                                                             *
 *******************************************************************************
 
-Vorwort
-=======
+Disclaimer
+==========
 
-Diese Software unterliegt der "New BSD License"
+This software is subject to the "New BSD License"
 
 Copyright (c) 2005, Martin Willisegger
 All rights reserved.
@@ -40,49 +40,49 @@ About Nagios
 Nagios is a registered trademark of Ethan Galstad. - http://www.nagios.org
 
 
-Version 1.00-RC1
+Version 2.00-P00
 ================
 
-1. Voraussetzungen
+1. Requirements
 2. Installation
-3. Einstellungen
-4. Berechtigungen
-5. Verwendung
+3. Settings
+4. Rights
+5. Using
 
-1. Voraussetzungen
-   ===============   
+1. Requirements
+   ============   
 
-   - Webserver (Apache 1.3.x/2.0.x)
-   - PHP Version 4.1 oder höher bzw. 5.0 oder höher
-   - MySQL Version 4.0 oder höher bzw. 4.1 oder höher
-   - Pear Modul HTML_Template_IT Version 1.1 (http://pear.php.net)
-   - Nagios Version 2.x (1.x wird nicht unterstützt)
+   - Web server (Apache 1.3.x/2.0.x)
+   - PHP Version 4.1 or higher / 5.0 or higher
+   - MySQL Version 4.0 or higher / 4.1 or higher / 5.0 or higher
+   - Pear modul HTML_Template_IT Version 1.1 (http://pear.php.net)
+   - Nagios Version 2.x (1.x is not supported)
 
-   Pear Module können normalerweise mit folgendem Befehl automatisch installiert werden:
+   Pear modules can be normally installed with the following instruction automatically:
    # pear install HTML_Template_IT 
 
 2. Installation
    ============
 
-a. Packet nagiosql-1.0RC1.tar.gz im Webserverhauptverzeichnis entpacken. Es wird ein Unter-
-   verzeichnis "nagiosQL" erzeugt.
+a. Unpack nagiosql-2.00-P00.tar.gz into your webserver's root, a subdirectory "nagiosQL"
+   will be created:
    
    # cd /srv/www/htdocs/
-   # cp nagiosql-1.0RC1.tar.gz /srv/www/htdocs/
-   # gunzip -c nagiosql-1.0RC1.tar.gz | tar xf -
+   # cp nagiosql-2.00-P00.tar.gz /srv/www/htdocs/nagiosQL/
+   # gunzip -c nagiosql-2.00-P00.tar.gz | tar xf -
    
-b. MySQL Datenbank erstellen - Version nagiosql_40.sql ist für MySQL 4.0, nagiosql_41.sql 
-   ist für MySQL Version 4.1. 
-   Das Script erstellt automatisch eine neue Datenbank mit dem Namen db_nagiosql, alle 
-   Tabellen sowie den Benutzer nagiosqlusr mit dem Vorgabepasswort "nagiosqlpwd".
+b. Create the MySQL database - version nagiosQL_v2_db_mysql.sql is for all supported MySQL 
+   versions..
+   The Script creates automatically a new data base with the name db_nagiosql_v2, all tables 
+   as well as the user "nagiosqlusr" with the password "nagiosqlpwd".
 
    # cd /srv/www/htdocs/nagiosQL/config
-   # mysql -uroot -p < nagiosql_40.sql
+   # mysql -uroot -p < nagiosQL_v2_db_mysql.sql
    # Password: xxxx
    
-   (Beispiel für Datenbankuser "root" und Passwort "xxxx"
+   (Example for data base administrator "root" with password "xxxx"
    
-   Dem Benutzer nagiosqlusr ein neues Passwort zuteilen
+   It is very important to set a new password for the user:
    
    # mysql -uroot -p
    # Password: xxxx
@@ -92,42 +92,44 @@ b. MySQL Datenbank erstellen - Version nagiosql_40.sql ist für MySQL 4.0, nagios
    mysql> exit
    #
    
-c. Webserver einstellen
-   Das Webverzeichnis "nagiosQL" muss so eingerichtet sein, dass .htaccess Dateien 
-   gelesen und interpretiert werden.
+c. Webserver settings
+   The webserver directory for nagiosQL must be set up that .htaccess files are 
+   read and interpreted.
    
    <Directory  /srv/www/htdocs/nagiosQL>
      AllowOverride All
    </Directory>
    
-   Alternativ kann der Inhalt der Datei congig/.htaccess auch in die Serverkonfiguration 
-   einfliessen. Wichtig ist, das die *.ini Einstellungsdateien nicht über den Browser 
-   angezeigt werden können.
+   Alternatively the settings of the file congig/.htaccess can also be written into the 
+   server configuration. It is important, that the *.ini files cannot be shown with a 
+   browser.
    
-d. Konfigurationsverzeichnis (Struktur)
-   Das Konfigurationsverzeichnis muss folgende Struktur aufweisen:
+d. Configuration directories (Structure)
+   The configuration directories must have the following structure:
    
-   /etc/nagios/ 				-> Allgemeine Konfigurationsdateien
-   		"	  /hosts			-> Host Konfigurationsdateien
-		"	  /services			-> Service Konfigurationsdateien
-		"	  /backup/			-> Backups der allgemeinen Konfigurationsdateien
-		"	  	 "   /hosts		-> Backups der Host Konfigurationsdateien
-		"		 "	 /services	-> Backups der Service Konfigurationsdateien
+   /etc/nagios/ 			-> Common configuration files
+   	"     /hosts			-> Host configuration files
+	"     /services			-> Service configuration files
+	"     /backup/			-> Backups of the common configuration files
+	"	 "   /hosts		-> Backups of the host configuration files
+	"	 "   /services		-> Backups of the service configuration files
 		
-   Die Verzeichnisnamen sind änderbar (settings.ini), die Struktur muss aber eingehalten
-   werden!
+   The directory names are changeable but the structure must be kept!
    
+e. Inside the configuration file of PHP for Apache (php.ini), the following parameter
+   must be set like this:
+   
+   magic_quotes_gpc = On
 
-3. Einstellungen
-   =============
+3. Settings
+   ========
    
-   Die Einstellungen werden in der Datei config/settings.ini gemacht. Die einzelnen Werte
-   sind innerhalb dieser Datei beschrieben.
+   The application settings are made in the file config/settings.ini. The individual 
+   values are described within this file.
    
-a. Die Nagios Hauptkonfigurationsdatei muss folgendermassen eingestellt werden, wobei das 
-   Hauptverzeichnis nicht zwingend /etc/nagios heissen muss. Die Konfigurationsdateien
-   müssen aber entsprechend benannt werden. Untenstehende Einstellung passt auf die mit-
-   gelieferte settings.ini Einstellung. 
+a. The Nagios main configuration file must be adjusted as follows, whereby the main directory 
+   does not have to be called /etc/nagios. The configuration files must be designated however 
+   accordingly. Following settings fits on them supplied by settings.ini. 
    
    cfg_file=/etc/nagios/contactgroups.cfg
    cfg_file=/etc/nagios/contacts.cfg
@@ -146,15 +148,14 @@ a. Die Nagios Hauptkonfigurationsdatei muss folgendermassen eingestellt werden, 
    cfg_dir=/etc/nagios/hosts
    cfg_dir=/etc/nagios/services
    
-   Die mit # auskommentierten Zeilen nur bei Bedarf freigeben.
+   The lines started with # are optional.
    
-4. Berechtigungen
-   ==============
+4. Rights
+   ======
    
-   Folgende Dateiberechtigungen sind nötig - angenommen wird, dass der Webserver unter 
-   dem User "wwwrun" und der Gruppe "www" sowie Nagios unter dem User "nagios" und 
-   der Gruppe "daemon" läuft. Als Konfigurationsverzeichnis wird hier als Beispiel
-   /etc/nagios verwendet:
+   The following file rights are necessary - for example the web server runs by the 
+   user "wwwrun" and the group "www" as well as Nagios runs by the user "nagios" and 
+   the group "daemon". As configuration directory is used /etc/nagios:
    
    # chmod 6755 /etc/nagios
    # chown wwwrun.daemon /etc/nagios
@@ -173,44 +174,45 @@ a. Die Nagios Hauptkonfigurationsdatei muss folgendermassen eingestellt werden, 
    # chmod 644 /etc/nagios/*.cfg
    # chown wwwrun.daemon /etc/nagios/*.cfg
    
-   Falls diese Verzeichnisse schon entsprechende Dateien enthalten:
+   If these directories already have files inside:
    # chmod 644 /etc/nagios/hosts/*.cfg
    # chown wwwrun.daemon /etc/nagios/hosts/*.cfg   
    # chmod 644 /etc/nagios/services/*.cfg
    # chown wwwrun.daemon /etc/nagios/services/*.cfg    
 
-   Zudem muss das Nagios Binary durch den Webserveruser ausgeführt werden dürfen:
+   Also the Nagios binary must be allowed to be execute by the web server user:
    
    # chown nagios.www /usr/sbin/nagios
    # chmod 750 /usr/sbin/nagios
    
-   Zuletzt muss der Webserver User auch noch in das Nagios Commandfile schreiben dürfen:
+   Last the web server user must be allowed to write to the Nagios commandfile:
    
    # chown nagios.www /usr/local/nagios/var/rw/nagios.cmd
    # chmod 660 /usr/local/nagios/var/rw/nagios.cmd
    
-   (Achtung - die Pfade können anders lauten!)
+   (attention - the paths can be differently!)
    
-5. Verwendung
-   ==========
+5. Using
+   =====
    
-   Nun kann NagiosQL 2005 via Browser gestartet werden:
+   Now you can start NagiosQL with any browser you want:
    http://www.domain.tld/nagiosQL/index.php
    
-   Voraussetzungen für den Browser
-   - Javascript akzeptiert
-   - Cookies akzeptiert
+   Requirements for the browser
+   - Javascript accepted
+   - Cookies accepted
    
-   Für das erste Login ist folgender User eingerichtet:
+   The first login can be done with the following user:
    Username: admin
-   Passwort: admin
-   -> Achtung, als erste Tätigkeit ein neues Passworts setzen!!!
+   Password: admin
+   -> Attention, as the first activity you should set a new password for admin!!!
    
-   Bei Problemen hilft das NagiosQL Support Forum weiter:
+   For problems the NagiosQL support forum helps:
    http://www.secretdoor.ch/nagiosqlsupport
    
-   Falls das Programm in einem kommerziellen Umfeld eingesetzt wird oder
-   es ganz einfach gefällt, würde ich mich über eine Unterstützung der
-   weiteren Entwicklung und den Support freuen. Details unter "Donation" auf:
+   If you like this tool or if you use it in an commercial environment, it would make
+   me happy when you support the furter development with a donation. Look at
    http://sourceforge.net/projects/nagiosql
    http://sourceforge.net/donate/index.php?group_id=134390
+   for more details.
+   

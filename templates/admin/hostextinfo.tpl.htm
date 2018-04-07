@@ -1,5 +1,5 @@
-<!-- Version 1.02 -->
-<!-- Last modified 02.04.2005 -->
+<!-- Version 2.00.00 -->
+<!-- Last modified 12.03.2007 -->
 <!-- BEGIN header -->
     <td class="main">
       <h1>{TITLE}</h1>
@@ -8,11 +8,12 @@
 <h2>{TITLE_FORM}</h2>
 <form name="frmHostExtInsert" method="post" action="{ACTION_INSERT}">
   <script language="JavaScript" type="text/JavaScript">
-  <!--
+    <!--
+    // Eingabe abbrechen
     function abort() {
       this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
     }
-    <!-- Formular absenden
+    // Formular absenden
     function LockButton() {
       if (checkForm() == false) {
         return false;
@@ -21,8 +22,9 @@
         document.frmHostExtInsert.subForm.disabled = true;
       }
     }
-    <!-- Formulareingaben überprüfen
+    // Formulareingaben überprüfen
     function checkForm() {
+      // Wurde ein Host ausgewählt? 
       if(document.frmHostExtInsert.selHost.value == "")  {
         alert("{FILL_HOST}");
         document.frmHostExtInsert.selHost.focus();
@@ -36,7 +38,7 @@
       <td>{LANG_HOSTNAME}*</td>
       <td colspan="2"><select name="selHost" id="selHost" style="width:200px;" onChange="update()">
 <!-- BEGIN host -->
-          <option title="{DAT_HOST}" value="{DAT_HOST}" {DAT_HOST_SEL}>{DAT_HOST}</option>
+          <option value="{DAT_HOST_ID}" {DAT_HOST_SEL}>{DAT_HOST}</option>
 <!-- END host -->
         </select></td>
       <td>{LANG_ICONIMAGE}</td>
