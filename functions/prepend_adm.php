@@ -95,7 +95,7 @@ functions\Autoloader::register($preBasePath);
 // ===========================
 $myDBClass = new functions\MysqliDbClass;
 $myDBClass->arrParams = $_SESSION['SETS']['db'];
-$myDBClass->getDatabase();
+$myDBClass->hasDBConnection();
 if ($myDBClass->error == true) {
     $strDBMessage = $myDBClass->strErrorMessage;
     $booError     = $myDBClass->error;
@@ -106,7 +106,7 @@ if ($myDBClass->error == true) {
 // ========================================================
 if ($intError == 0) {
     $strSQL    = "SELECT `category`,`name`,`value` FROM `tbl_settings`";
-    $booReturn = $myDBClass->getDataArray($strSQL, $arrDataLines, $intDataCount);
+    $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn == false) {
         $strErrorMessage .= translate('Error while selecting data from database:')."::".$myDBClass->strErrorMessage;
         $intError     = 1;
@@ -279,7 +279,7 @@ $strRemoteUser = filter_input(INPUT_SERVER, 'REMOTE_USER', FILTER_SANITIZE_STRIN
 if (isset($strRemoteUser) && ($strRemoteUser != "") && ($_SESSION['logged_in'] == 0) &&
     ($chkLogout != "yes") && ($chkInsName == "")) {
     $strSQL    = "SELECT * FROM `tbl_user` WHERE `username`='".$strRemoteUser."' AND `wsauth`='1' AND `active`='1'";
-    $booReturn = $myDBClass->getDataArray($strSQL, $arrDataUser, $intDataCount);
+    $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataUser, $intDataCount);
     if ($booReturn && ($intDataCount == 1)) {
         // Set session variables
         $_SESSION['username']  = $arrDataUser[0]['username'];
@@ -315,7 +315,7 @@ if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") &
     $chkInsPasswd = $myDBClass->realEscape($chkInsPasswd);
     $strSQL    = "SELECT * FROM `tbl_user` "
         . "WHERE `username`='".$chkInsName."' AND `password`=MD5('".$chkInsPasswd."') AND `active`='1'";
-    $booReturn = $myDBClass->getDataArray($strSQL, $arrDataUser, $intDataCount);
+    $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataUser, $intDataCount);
     if ($booReturn == false) {
         $strErrorMessage = str_replace("::", "<br>", $strErrorMessage);
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -374,7 +374,7 @@ if (!isset($_SESSION['userid']) && ($_SESSION['logged_in'] == 1)) {
 // =======================
 if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
     $strSQL  = "SELECT * FROM `tbl_user` WHERE `username`='".$myDBClass->realEscape($_SESSION['username'])."'";
-    $booReturn = $myDBClass->getDataArray($strSQL, $arrDataUser, $intDataCount);
+    $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataUser, $intDataCount);
     if ($booReturn == false) {
         $strErrorMessage = str_replace("::", "<br>", $strErrorMessage);
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -435,7 +435,7 @@ if (isset($prePageId) && ($prePageId != 1)) {
         exit;
     }
     $strSQL     = "SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=$prePageId";
-    $prePageKey = $myDBClass->getFieldData($strSQL)+0;
+    $prePageKey = intval($myDBClass->getFieldData($strSQL));
     if ($myVisClass->checkAccountGroup($prePageKey, 'read') != 0) {
         header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
             filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
@@ -488,7 +488,7 @@ if (isset($preContent) && ($preContent != "") && (!isset($preNoMain) || ($preNoM
             $myContentClass->intDomainId = $intDomain;
         }
         $strSQL    = "SELECT * FROM `tbl_datadomain` WHERE `active` <> '0' ORDER BY `domain`";
-        $booReturn = $myDBClass->getDataArray($strSQL, $arrDataDomain, $intDataCount);
+        $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataDomain, $intDataCount);
         if ($booReturn == false) {
             $strErrorMessage = str_replace("::", "<br>", $strErrorMessage);
             $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -519,7 +519,7 @@ if (isset($preContent) && ($preContent != "") && (!isset($preNoMain) || ($preNoM
                         $strSQL    = "SELECT id FROM `tbl_datadomain` "
                             . "WHERE `active` <> '0' AND `access_group` IN (".$strDomAcc.") "
                             . "ORDER BY domain LIMIT 1";
-                        $booReturn = $myDBClass->getDataArray($strSQL, $arrDataDomain, $intDataCount);
+                        $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataDomain, $intDataCount);
                         if ($booReturn == false) {
                             $strErrorMessage = str_replace("::", "<br>", $strErrorMessage);
                             $myVisClass->processMessage(

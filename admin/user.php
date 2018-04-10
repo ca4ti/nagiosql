@@ -184,7 +184,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL     = "SELECT count(*) AS `number` FROM `$preTableName`";
-    $booReturn1 = $myDBClass->getSingleDataset($strSQL, $arrDataLinesCount);
+    $booReturn1 = $myDBClass->hasSingleDataset($strSQL, $arrDataLinesCount);
     if ($booReturn1 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -197,7 +197,7 @@ if ($chkModus == "display") {
     // Get datasets
     $strSQL     = "SELECT `id`, `$preKeyField`, `alias`, `active`, `nodelete` "
         . "FROM `$preTableName` $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
-    $booReturn2 = $myDBClass->getDataArray($strSQL, $arrDataLines, $intDataCount);
+    $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);

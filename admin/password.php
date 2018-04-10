@@ -39,7 +39,7 @@ if (($chkTfValue1 != "") && ($chkTfValue2 != "")) {
     // Check old password
     $strSQL    = "SELECT * FROM `tbl_user` "
         . "WHERE `username`='".$_SESSION['username']."' AND `password`=MD5('$chkTfValue1')";
-    $booReturn = $myDBClass->getDataArray($strSQL, $arrDataLines, $intDataCount);
+    $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
