@@ -19,7 +19,7 @@
 //
 // Define common variables
 // =======================
-$preContent	= "templates/index.tpl.htm";
+$preContent	= "templates/index.htm.tpl";
 $preEncode	= 'utf-8';
 $preLocale 	= "../config/locale";
 $filConfig  = "../config/settings.php";

@@ -232,11 +232,11 @@ if(file_exists($strFile) && is_readable($strFile)) {
 	$arrTemplate['CHECK_6_CONTENT_4'] = $strHTMLPart2.$myInstClass->translate("Read test on startsite file (admin.php)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
-$strFile = "../templates/index.tpl.htm";
+$strFile = "../templates/index.htm.tpl";
 if(file_exists($strFile) && is_readable($strFile)) {
-	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart1.$myInstClass->translate("Read test on a template file (templates/index.tpl.htm)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart1.$myInstClass->translate("Read test on a template file (templates/index.htm.tpl)").$strHTMLPart4.$myInstClass->translate("OK")."</span><br>\n";
 } else {
-	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart2.$myInstClass->translate("Read test on a template file (templates/index.tpl.htm)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
+	$arrTemplate['CHECK_6_CONTENT_5'] = $strHTMLPart2.$myInstClass->translate("Read test on a template file (templates/index.htm.tpl)").$strHTMLPart5.$myInstClass->translate("failed")."</span><br>\n";
 	$intError = 1;
 }
 $strFile = "../templates/admin/admin_master.tpl.htm";

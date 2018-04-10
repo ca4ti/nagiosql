@@ -3294,8 +3294,8 @@ msgstr "Teste de leitura no arquivo inicial do site (admin.php)"
 
 #: install/step1.php:227
 #: install/step1.php:229
-msgid "Read test on a template file (templates/index.tpl.htm)"
-msgstr "Teste de leitura no arquivo de modelo (templates/index.tpl.htm)"
+msgid "Read test on a template file (templates/index.htm.tpl)"
+msgstr "Teste de leitura no arquivo de modelo (templates/index.htm.tpl)"
 
 #: install/step1.php:234
 #: install/step1.php:236

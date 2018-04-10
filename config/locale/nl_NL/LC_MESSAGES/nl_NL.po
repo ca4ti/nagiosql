@@ -3292,8 +3292,8 @@ msgstr "Lees test op het start site bestand (admin.php)"
 
 #: install/step1.php:227
 #: install/step1.php:229
-msgid "Read test on a template file (templates/index.tpl.htm)"
-msgstr "Lees test op een template bestand (templates/index.tpl.htm)"
+msgid "Read test on a template file (templates/index.htm.tpl)"
+msgstr "Lees test op een template bestand (templates/index.htm.tpl)"
 
 #: install/step1.php:234
 #: install/step1.php:236

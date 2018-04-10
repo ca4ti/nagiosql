@@ -350,7 +350,7 @@ if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
       		}
       		// Update login time
       		$_SESSION['timestamp'] = time();
-	  		if (isset($preContent) && ($preContent == "index.tpl.htm")) {
+	  		if (isset($preContent) && ($preContent == "index.htm.tpl")) {
 		  		header("Location: ".$_SESSION['SETS']['path']['protocol']."://".$_SERVER['HTTP_HOST'].$_SESSION['startsite']);
 	  		}
     	}
