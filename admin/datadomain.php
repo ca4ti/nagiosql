@@ -24,6 +24,7 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 // =======================
 $prePageId    = 35;
 $preContent   = "admin/datadomain.htm.tpl";
+$preListTpl   = "admin/datalist_common.htm.tpl";
 $preTableName = 'tbl_datadomain';
 $preKeyField  = 'domain';
 $preAccess    = 1;
@@ -80,12 +81,6 @@ if ($chkModus != "add") {
     $chkModus = "display";
 }
 //
-// Start content
-// =============
-$conttp->setVariable("TITLE", translate('Data domain administration'));
-$conttp->parse("header");
-$conttp->show("header");
-//
 // Single view
 // ===========
 if ($chkModus == "add") {
@@ -117,6 +112,7 @@ if ($chkModus == "add") {
     if ($intDataWarning == 1) {
         $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
     }
+    $conttp->setVariable("TITLE", translate('Data domain administration'));
     $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
     $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
     $conttp->setVariable("ENABLE", translate('Enable'));
@@ -150,6 +146,7 @@ if ($chkModus == "add") {
 if ($chkModus == "display") {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
+    $mastertp->setVariable("TITLE", translate('Data domain administration'));
     $mastertp->setVariable("FIELD_1", translate('Data domain'));
     $mastertp->setVariable("FIELD_2", translate('Description'));
     // Row sorting

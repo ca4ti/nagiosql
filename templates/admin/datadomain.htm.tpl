@@ -5,12 +5,10 @@
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
 <!-- Version   : 3.4.0 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
-<!-- BEGIN header -->
+<!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <div class="redmessage">{ERRMESSAGE}</div>
-    <!-- END header -->
-    <!-- BEGIN datainsert -->
     <script>
         <!--
         // Interrupt input

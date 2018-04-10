@@ -24,6 +24,7 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 // =======================
 $prePageId        = 33;
 $preContent       = "admin/group.htm.tpl";
+$preListTpl       = "admin/datalist_common.htm.tpl";
 $preSearchSession = 'group';
 $preTableName     = 'tbl_group';
 $preKeyField      = 'groupname';
@@ -122,12 +123,6 @@ if ($chkModus != "add") {
     $chkModus  = "display";
 }
 //
-// Start content
-// =============
-$conttp->setVariable("TITLE", translate('Group administration'));
-$conttp->parse("header");
-$conttp->show("header");
-//
 // Singe data form
 // ===============
 if ($chkModus == "add") {
@@ -144,6 +139,7 @@ if ($chkModus == "add") {
     }
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
+    $conttp->setVariable("TITLE", translate('Group administration'));
     $conttp->setVariable("LANG_READ", translate("Read"));
     $conttp->setVariable("LANG_WRITE", translate("Write"));
     $conttp->setVariable("LANG_LINK", translate("Link"));
@@ -164,6 +160,7 @@ if ($chkModus == "add") {
 if ($chkModus == "display") {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
+    $mastertp->setVariable("TITLE", translate('Group administration'));
     $mastertp->setVariable("FIELD_1", translate('Groupname'));
     $mastertp->setVariable("FIELD_2", translate('Description'));
     // Row sorting

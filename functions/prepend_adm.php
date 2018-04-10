@@ -585,7 +585,11 @@ if (isset($preContent) && ($preContent != "")) {
         $conttp->setVariable("IMAGE_PATH", $strRootPath."images/");
     }
     $mastertp = new HTML_Template_IT($preBasePath ."templates/");
-    $mastertp->loadTemplatefile("admin/admin_master.htm.tpl", true, true);
+    if (isset($preListTpl) && ($preListTpl != '')) {
+        $mastertp->loadTemplatefile($preListTpl, true, true);
+    } else {
+        $mastertp->loadTemplatefile("admin/admin_master.htm.tpl", true, true);
+    }
     $mastertp->setOptions($arrTplOptions);
 } elseif (isset($pluginTemplate) && ($pluginTemplate != "")) {
     //
@@ -604,7 +608,11 @@ if (isset($preContent) && ($preContent != "")) {
         $conttp->setVariable("IMAGE_PATH", $strRootPath."/plugins/".$pluginType."/".$pluginName."/images/");
     }
     $mastertp = new HTML_Template_IT($preBasePath ."templates/");
-    $mastertp->loadTemplatefile("admin/admin_master.htm.tpl", true, true);
+    if (isset($preListTpl) && ($preListTpl != '')) {
+        $mastertp->loadTemplatefile($preListTpl, true, true);
+    } else {
+        $mastertp->loadTemplatefile("admin/admin_master.htm.tpl", true, true);
+    }
     $mastertp->setOptions($arrTplOptions);
 }
 //

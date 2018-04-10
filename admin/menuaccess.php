@@ -23,7 +23,7 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 // Define common variables
 // =======================
 $prePageId      = 34;
-$preContent     = "admin/admin_master.htm.tpl";
+$preContent     = "admin/menuaccess.htm.tpl";
 $preAccess      = 1;
 $preFieldvars   = 1;
 $preNoAccessGrp = 1;

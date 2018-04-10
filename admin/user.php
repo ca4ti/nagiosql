@@ -24,6 +24,7 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 // =======================
 $prePageId        = 32;
 $preContent       = "admin/user.htm.tpl";
+$preListTpl       = "admin/datalist_common.htm.tpl";
 $preSearchSession = 'user';
 $preTableName     = 'tbl_user';
 $preKeyField      = 'username';
@@ -93,12 +94,6 @@ if ($chkModus != "add") {
     $chkModus = "display";
 }
 //
-// Start content
-// =============
-$conttp->setVariable("TITLE", translate('User administration'));
-$conttp->parse("header");
-$conttp->show("header");
-//
 // Singe data form
 // ===============
 if ($chkModus == "add") {
@@ -128,6 +123,7 @@ if ($chkModus == "add") {
     }
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
+    $conttp->setVariable("TITLE", translate('User administration'));
     $conttp->setVariable("WSAUTH_DISABLE", "disabled");
     $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
     $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
@@ -175,6 +171,7 @@ if ($chkModus == "add") {
 if ($chkModus == "display") {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
+    $mastertp->setVariable("TITLE", translate('User administration'));
     $mastertp->setVariable("FIELD_1", translate('Username'));
     $mastertp->setVariable("FIELD_2", translate('Description'));
     // Row sorting

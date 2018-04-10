@@ -23,7 +23,7 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 // Define common variables
 // =======================
 $prePageId     = 31;
-$preContent    = "admin/admin_master.htm.tpl";
+$preContent    = "admin/password.htm.tpl";
 $preAccess     = 1;
 $preFieldvars  = 1;
 $preShowHeader = 0;
