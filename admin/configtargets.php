@@ -112,12 +112,13 @@ if (($chkModus == "modify" || $chkModus == "insert")) {
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `server`='$chkTfValue4', "
         . "`method`='$chkSelValue1', `user`='$chkTfValue5', `password`='$chkTfValue6', "
-        . "`ssh_key_path`='$chkTfValue7', `basedir`='$chkTfValue8', `hostconfig`='$chkTfValue9', "
-        . "`serviceconfig`='$chkTfValue10', `backupdir`='$chkTfValue11', `hostbackup`='$chkTfValue12', "
-        . "`servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', `importdir`='$chkTfValue15', "
-        . "`picturedir`='$chkTfValue16', `commandfile`='$chkTfValue17', `binaryfile`='$chkTfValue18', "
-        . "`pidfile`='$chkTfValue19', `conffile`='$chkTfValue20', `cgifile`='$chkTfValue21', "
-        . "`version`=$chkSelValue2, `access_group`=$chkSelAccGr, `active`='$chkActive', `last_modified`=NOW()";
+        . "`ssh_key_path`='$chkTfValue7', `ftp_secure`=$chkChbValue1, `basedir`='$chkTfValue8', "
+        . "`hostconfig`='$chkTfValue9', `serviceconfig`='$chkTfValue10', `backupdir`='$chkTfValue11', "
+        . "`hostbackup`='$chkTfValue12', `servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', "
+        . "`importdir`='$chkTfValue15', `picturedir`='$chkTfValue16', `commandfile`='$chkTfValue17', "
+        . "`binaryfile`='$chkTfValue18', `pidfile`='$chkTfValue19', `conffile`='$chkTfValue20', "
+        . "`cgifile`='$chkTfValue21', `version`=$chkSelValue2, `access_group`=$chkSelAccGr, `active`='$chkActive',"
+        . "`last_modified`=NOW()";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -169,11 +170,12 @@ if ($chkModus == "add") {
     $myContentClass->addFormInit($conttp);
     $conttp->setVariable("TITLE", translate('Configuration domain administration'));
     if ($intIsError == 1) {
-        $conttp->setVariable("PATHMESSAGE", "<h2 style=\"padding-bottom:5px;\">".translate("Warning, at least one error "
-                . "occured, please check!")."</h2>".$strPathMessage);
+        $conttp->setVariable("PATHMESSAGE", "<h2 style=\"padding-bottom:5px;\">".translate("Warning, at least one ".
+                "error occured, please check!")."</h2>".$strPathMessage);
     }
     $conttp->setVariable("CLASS_NAME_1", "elementHide");
     $conttp->setVariable("CLASS_NAME_2", "elementHide");
+    $conttp->setVariable("CLASS_NAME_3", "elementHide");
     $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
     $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
     // Insert data from database in "modify" mode
@@ -187,11 +189,17 @@ if ($chkModus == "add") {
         if ($arrModifyData['method'] == 2) {
             $conttp->setVariable("FTP_SELECTED", "selected");
             $conttp->setVariable("CLASS_NAME_1", "elementShow");
+            $conttp->setVariable("CLASS_NAME_2", "elementHide");
+            $conttp->setVariable("CLASS_NAME_3", "elementShow");
         }
         if ($arrModifyData['method'] == 3) {
             $conttp->setVariable("SFTP_SELECTED", "selected");
             $conttp->setVariable("CLASS_NAME_1", "elementShow");
             $conttp->setVariable("CLASS_NAME_2", "elementShow");
+            $conttp->setVariable("CLASS_NAME_3", "elementHide");
+        }
+        if ($arrModifyData['ftp_secure'] == 1) {
+            $conttp->setVariable("FTPS_CHECKED", "checked");
         }
         // Nagios version
         $conttp->setVariable("VER_SELECTED_".$arrModifyData['version'], "selected");
@@ -223,18 +231,27 @@ if ($chkModus == "add") {
         // Connection method
         if ($chkSelValue1 == 1) {
             $conttp->setVariable("FILE_SELECTED", "selected");
+            $conttp->setVariable("CLASS_NAME_1", "elementHide");
+            $conttp->setVariable("CLASS_NAME_2", "elementHide");
+            $conttp->setVariable("CLASS_NAME_3", "elementHide");
         }
         if ($chkSelValue1 == 2) {
             $conttp->setVariable("FTP_SELECTED", "selected");
             $conttp->setVariable("CLASS_NAME_1", "elementShow");
+            $conttp->setVariable("CLASS_NAME_2", "elementHide");
+            $conttp->setVariable("CLASS_NAME_3", "elementShow");
         }
         if ($chkSelValue1 == 3) {
             $conttp->setVariable("SFTP_SELECTED", "selected");
             $conttp->setVariable("CLASS_NAME_1", "elementShow");
             $conttp->setVariable("CLASS_NAME_2", "elementShow");
+            $conttp->setVariable("CLASS_NAME_3", "elementHide");
         }
         $conttp->setVariable("DAT_USER", $chkTfValue5);
         $conttp->setVariable("DAT_SSH_KEY_PATH", $chkTfValue7);
+        if ($chkChbValue1== 1) {
+            $conttp->setVariable("FTPS_CHECKED", "checked");
+        }
         $conttp->setVariable("DAT_BASEDIR", $chkTfValue8);
         $conttp->setVariable("DAT_HOSTCONFIG", $chkTfValue9);
         $conttp->setVariable("DAT_SERVICECONFIG", $chkTfValue10);

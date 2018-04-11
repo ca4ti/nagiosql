@@ -115,7 +115,8 @@ if ($chkModus == "add") {
     }
     if ($intFieldId == 0) {
         $intFieldId = $myDBClass->getFieldData("SELECT `id` FROM `tbl_language` "
-                . "WHERE `locale`='".$_SESSION['SETS']['data']['locale']."'")+0;
+            . "WHERE `locale`='".$_SESSION['SETS']['data']['locale']."'");
+        $intFieldId = intval($intFieldId);
     }
     $intReturn2 = $myVisClass->parseSelectSimple('tbl_language', 'language', 'language_name', 0, $intFieldId);
     if ($intReturn2 != 0) {

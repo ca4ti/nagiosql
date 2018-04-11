@@ -105,20 +105,24 @@
         }
         // Enable hidden fields
         function showFields(key) {
-            if (key === 1) {
+            alert(key);
+            if (key === '1') {
                 document.getElementById('user').className    = "elementHide";
                 document.getElementById('passwd').className  = "elementHide";
                 document.getElementById('keypath').className = "elementHide";
-            } else if (key === 2) {
+                document.getElementById('ftps').className    = "elementHide";
+            } else if (key === '2') {
                 document.getElementById('user').className    = "elementShow";
                 document.getElementById('passwd').className  = "elementShow";
                 document.getElementById('keypath').className = "elementHide";
+                document.getElementById('ftps').className    = "elementShow";
                 document.frmDomainInsert.tfValue6.className  = "inpmust";
                 document.frmDomainInsert.tfValue5.className  = "inpmust";
             } else {
                 document.getElementById('user').className    = "elementShow";
                 document.getElementById('passwd').className  = "elementShow";
                 document.getElementById('keypath').className = "elementShow";
+                document.getElementById('ftps').className    = "elementHide";
                 document.frmDomainInsert.tfValue5.className  = "inpmust";
                 document.frmDomainInsert.tfValue6.className  = "inpmust";
                 document.frmDomainInsert.tfValue7.className  = "inpmust";
@@ -168,6 +172,11 @@
                 <td>{LANG_SSH_KEY} *</td>
                 <td><input title="{LANG_SSH_KEY}" name="tfValue7" type="text" id="tfValue7" tabindex="7" value="{DAT_SSH_KEY_PATH}" style="width:350px;" class="inpmust" onchange="checkMust();"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','ssh_host_key','all','Info');" class="infobutton_1"></td>
+            </tr>
+            <tr id="ftps" class="{CLASS_NAME_3}">
+                <td>{LANG_FTPS}</td>
+                <td><input title="{LANG_ACTIVE}" name="chbValue1" type="checkbox" class="checkbox" id="chbValue1" value="1" {FTPS_CHECKED}></td>
+                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','ftps_option','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td colspan="3">&nbsp;</td>

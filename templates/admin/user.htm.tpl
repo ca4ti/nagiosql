@@ -8,7 +8,7 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <script lang="JavaScript" type="text/JavaScript" >
+    <script>
         <!--
         // Abort form
         function abort() {
