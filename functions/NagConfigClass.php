@@ -10,8 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
+// Date      : $LastChangedDate: 2018-04-12 00:34:22 +0200 (Thu, 12 Apr 2018) $
+// Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
+// Revision  : $LastChangedRevision: 23 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -31,27 +33,27 @@ namespace functions;
 class NagConfigClass
 {
     // Define class variables
-    private $arrSettings         = array();  // Array includes all global settings
-    private $resConnectServer    = '';       // Connection server name for FTP and SSH connections
-    private $resConnectType      = 'none';    // Connection type for FTP and SSH connections
-    public $resConnectId;                    // Connection id for FTP and SSH connections
-    private $resSFTP;                        // SFTP ressource id
+    private $arrSettings         = array();     // Array includes all global settings
+    private $resConnectServer    = '';          // Connection server name for FTP and SSH connections
+    private $resConnectType      = 'none';      // Connection type for FTP and SSH connections
+    public $resConnectId;                       // Connection id for FTP and SSH connections
+    public $resSFTP;                            // SFTP ressource id
 
-    //private $arrRelData         = "";        // Relation data
+    //private $arrRelData         = "";         // Relation data
     //
-    public $arrSession           = array();  // Session content
-    public $strRelTable          = "";       // Relation table name
-    public $intNagVersion        = 0;        // Nagios version id
-    public $strPicPath           = "none";   // Picture path string
-    public $intDomainId          = 0;        // Configuration domain ID
-    public $strErrorMessage      = "";       // String including error messages
-    public $strInfoMessage       = "";       // String including information messages
+    public $arrSession           = array();     // Session content
+    public $strRelTable          = "";          // Relation table name
+    public $intNagVersion        = 0;           // Nagios version id
+    public $strPicPath           = "none";      // Picture path string
+    public $intDomainId          = 0;           // Configuration domain ID
+    public $strErrorMessage      = "";          // String including error messages
+    public $strInfoMessage       = "";          // String including information messages
 
     // Class includes
     /** @var MysqliDbClass */
-    public $myDBClass;                       // Database class reference
+    public $myDBClass;                          // Database class reference
     /** @var NagDataClass */
-    public $myDataClass;                     // Data processing class reference
+    public $myDataClass;                        // Data processing class reference
 
     /**
      * NagConfigClass constructor.
@@ -309,7 +311,6 @@ class NagConfigClass
             } else {
                 $this->resConnectId = ftp_connect($strServer);
             }
-
             // Login with username and password
             if ($this->resConnectId) {
                 $this->getConfigValues($intConfigID, "user", $strUser);
@@ -325,6 +326,9 @@ class NagConfigClass
                     $this->resConnectType   = 'none';
                     $this->resConnectId     = null;
                     $intReturn = 1;
+                } else {
+                    // Change to PASV mode
+                    ftp_pasv($this->resConnectId, true);
                 }
             }
             // Check connection
@@ -467,7 +471,6 @@ class NagConfigClass
         // Define variables
         $intCount1 = 0; // empty lines
         $intCount2 = 0; // data lines
-        $intReturn = 1;
         $booBreak = false;
         $this->getConfigTargets($arrConfigSet);
         // Check connection
@@ -591,15 +594,21 @@ class NagConfigClass
                 if (file_exists($strSourceFile) && is_writable($strBackupDir) &&  is_writable($strConfigDir)) {
                     copy($strSourceFile, $strDestinationFile);
                     unlink($strSourceFile);
+                } elseif (!file_exists($strSourceFile)) {
+                    $this->processClassMessage(translate('Cannot backup the old file because the source file is '
+                            . 'missing - source file: ') . $strSourceFile . "::", $this->strErrorMessage);
+                    $intReturn = 1;
                 } else {
-                    $this->processClassMessage(translate('Cannot backup and delete the old configuration file '
-                            . '(check the permissions)!')."::", $this->strErrorMessage);
+                    $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
+                            .'wrong - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 2) { // Remote file (FTP)
                 // Check connection
                 $intReturn = $this->getFTPConnection($intConfigID);
                 if ($intReturn == 0) {
+                    $strSourceFile      = str_replace("//", "/", $strSourceFile);
+                    $strDestinationFile = str_replace("//", "/", $strDestinationFile);
                     // Save configuration file
                     $intFileStamp = ftp_mdtm($this->resConnectId, $strSourceFile);
                     if ($intFileStamp > -1) {
@@ -607,31 +616,115 @@ class NagConfigClass
                         error_reporting(0);
                         $booRetVal = ftp_rename($this->resConnectId, $strSourceFile, $strDestinationFile);
                         error_reporting($intErrorReporting);
+                    } else {
+                        $this->processClassMessage(translate('Cannot backup the old file because the source file is '
+                                .'missing (remote FTP) - source file: '). $strSourceFile."::", $this->strErrorMessage);
+                        $intReturn = 1;
                     }
                 }
-                if ($booRetVal == false) {
-                    $this->processClassMessage(translate('Cannot backup the old configuration file because '
-                            . 'the permissions are wrong (remote FTP)!')."::", $this->strErrorMessage);
+                if (($booRetVal == false) && ($intReturn == 0)) {
+                    $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
+                            .'wrong (remote FTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 3) { // Remote file (SFTP)
                 // Check connection
                 $intReturn = $this->getSSHConnection($intConfigID);
                 // Save configuration file
-                $arrResult  = array();
-                $strCommand = 'ls '.str_replace("//", "/", $strSourceFile);
-                if (($intReturn == 0) && ($this->sendSSHCommand($strCommand, $arrResult))) {
-                    $arrInfo = ssh2_sftp_stat($this->resSFTP, str_replace("//", "/", $strSourceFile));
-                    $intFileStamp = $arrInfo['mtime'];
-                    if ($intFileStamp > -1) {
-                        $booRetVal  = ssh2_sftp_rename($this->resSFTP, $strSourceFile, $strDestinationFile);
+                $arrResult          = array();
+                $strSourceFile      = str_replace("//", "/", $strSourceFile);
+                $strDestinationFile = str_replace("//", "/", $strDestinationFile);
+                $strCommand         = 'ls '.$strSourceFile;
+                if (($intReturn == 0) && ($this->sendSSHCommand($strCommand, $arrResult) == 0)) {
+                    if (isset($arrResult[0]) && $arrResult[0] == $strSourceFile) {
+                        $arrInfo      = ssh2_sftp_stat($this->resSFTP, $strSourceFile);
+                        if ($arrInfo['mtime'] > -1) {
+                            $booRetVal  = ssh2_sftp_rename($this->resSFTP, $strSourceFile, $strDestinationFile);
+                        }
+                    } else {
+                        $this->processClassMessage(translate('Cannot backup the old file because the source file is '
+                                .'missing (remote SFTP) - source file: '). $strSourceFile."::", $this->strErrorMessage);
+                        $intReturn = 1;
                     }
                 }
-                if ($booRetVal == false) {
-                    $this->processClassMessage(translate('Cannot backup the old configuration file because the '
-                            . 'permissions are wrong (remote SFTP)!')."::", $this->strErrorMessage);
+                if (($booRetVal == false) && ($intReturn == 0)) {
+                    $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
+                            .'wrong (remote SFTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
+            }
+        }
+        return($intReturn);
+    }
+
+    /**
+     * Remove a file
+     * @param string $strFileName               Filename including path to remove
+     * @param int $intConfigID                  Configuration target ID
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function removeFile($strFileName, $intConfigID)
+    {
+        // Variable definitions
+        $intMethod = 1;
+        $intReturn = 0;
+        $booRetVal = false;
+        // Get connection method
+        $this->getConfigData($intConfigID, "method", $intMethod);
+        // Local file system
+        if ($intMethod == 1) {
+            // Save configuration file
+            if (file_exists($strFileName) && is_writable($strFileName)) {
+                unlink($strFileName);
+            } elseif (!file_exists($strFileName)) {
+                $this->processClassMessage(translate('Cannot delete the file (file does not exist)!').'::'.
+                    $strFileName."::", $this->strErrorMessage);
+                $intReturn = 1;
+            } elseif (!is_writable($strFileName)) {
+                $this->processClassMessage(translate('Cannot delete the file (wrong permissions)!').'::'.
+                    $strFileName."::", $this->strErrorMessage);
+                $intReturn = 1;
+            }
+        } elseif ($intMethod == 2) { // Remote file (FTP)
+            // Check connection
+            $intReturn = $this->getFTPConnection($intConfigID);
+            if ($intReturn == 0) {
+                // Save configuration file
+                $intFileStamp = ftp_mdtm($this->resConnectId, $strFileName);
+                if ($intFileStamp > -1) {
+                    $intErrorReporting = error_reporting();
+                    error_reporting(0);
+                    $booRetVal = ftp_delete($this->resConnectId, $strFileName);
+                    error_reporting($intErrorReporting);
+                } else {
+                    $this->processClassMessage(translate('Cannot delete file because it does not exists (remote '
+                            . 'FTP)!')."::", $this->strErrorMessage);
+                    $intReturn = 1;
+                }
+            }
+            if ($booRetVal == false) {
+                $this->processClassMessage(translate('Cannot delete file because the permissions are wrong '
+                        . '(remote FTP)!')."::", $this->strErrorMessage);
+                $intReturn = 1;
+            }
+        } elseif ($intMethod == 3) { // Remote file (SFTP)
+            // Check connection
+            $intReturn = $this->getSSHConnection($intConfigID);
+            // Save configuration file
+            if (($intReturn == 0) && ($this->sendSSHCommand('ls '.$strFileName, $arrResult) == 0)) {
+                if (isset($arrResult[0])) {
+                    $booRetVal = ssh2_sftp_unlink($this->resSFTP, $strFileName);
+                } else {
+                    $this->processClassMessage(translate('Cannot delete file because it does not exists (remote '
+                            . 'SFTP)!')."::", $this->strErrorMessage);
+                    $intReturn = 1;
+                }
+            }
+            if (($intReturn == 0) && ($booRetVal == false)) {
+                $this->processClassMessage(translate('Cannot delete file because the permissions are wrong '
+                        . '(remote SFTP)!')."::", $this->strErrorMessage);
+                $intReturn = 1;
             }
         }
         return($intReturn);
@@ -720,7 +813,6 @@ class NagConfigClass
             if (($intReturn == 0) && ($intDirection == 0)) {
                 $intErrorReporting = error_reporting();
                 error_reporting(0);
-                ftp_pasv($this->resConnectId, true);
                 if (!ftp_get($this->resConnectId, $strFileLocal, $strFileRemote, FTP_ASCII)) {
                     $this->processClassMessage(translate('Cannot get the remote file (it does not exist or is not '
                             . 'readable) - remote file: '). $strFileRemote."::", $this->strErrorMessage);
@@ -730,7 +822,6 @@ class NagConfigClass
             } elseif (($intReturn == 0) && ($intDirection == 1)) {
                 $intErrorReporting = error_reporting();
                 error_reporting(0);
-                ftp_pasv($this->resConnectId, true);
                 if (!ftp_put($this->resConnectId, $strFileRemote, $strFileLocal, FTP_ASCII)) {
                     $this->processClassMessage(translate('Cannot write the remote file (remote file is not writeable)'
                             . '- remote file: ').$strFileRemote."::", $this->strErrorMessage);
@@ -740,6 +831,7 @@ class NagConfigClass
             }
             ftp_close($this->resConnectId);
         } elseif ($intMethod == 3) { // Remote file (SFTP)
+            $intReturn = $this->getSSHConnection($intConfigID);
             if (($intReturn == 0) && ($intDirection == 0)) {
                 // Copy file
                 $intErrorReporting = error_reporting();
@@ -771,9 +863,61 @@ class NagConfigClass
                         $strFileLocal . "::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
-
             }
         }
         return($intReturn);
+    }
+
+    /**
+     * Add files of a given directory to an array
+     * @param string $strSourceDir              Source directory
+     * @param string $strIncPattern             Include file pattern
+     * @param string $strExcPattern             Exclude file pattern
+     * @param array $arrOutput                  Output array (by reference)
+     * @param string $strErrorMessage           Error messages (by reference)
+     */
+    public function storeDirToArray($strSourceDir, $strIncPattern, $strExcPattern, &$arrOutput, &$strErrorMessage)
+    {
+        while (substr($strSourceDir, -1) == "/" or substr($strSourceDir, -1) == "\\") {
+            $strSourceDir = substr($strSourceDir, 0, -1);
+        }
+        $resHandle = opendir($strSourceDir);
+        if ($resHandle === false) {
+            if ($this->intDomainId != 0) {
+                $strErrorMessage .= translate('Could not open directory').": ".$strSourceDir;
+            }
+        } else {
+            $booBreak = true;
+            while ($booBreak) {
+                if (!$arrDir[] = readdir($resHandle)) {
+                    $booBreak = false;
+                }
+            }
+            closedir($resHandle);
+            sort($arrDir);
+            foreach ($arrDir as $file) {
+                if (!preg_match("/^\.{1,2}/", $file) && strlen($file)) {
+                    if (is_dir($strSourceDir."/".$file)) {
+                        $this->storeDirToArray(
+                            $strSourceDir."/".$file,
+                            $strIncPattern,
+                            $strExcPattern,
+                            $arrOutput,
+                            $strErrorMessage
+                        );
+                    } else {
+                        if (preg_match("/".$strIncPattern."/", $file) && (($strExcPattern == "") ||
+                                !preg_match("/".$strExcPattern."/", $file))) {
+                            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                                $strSourceDir=str_replace("/", "\\", $strSourceDir);
+                                $arrOutput [] = $strSourceDir."\\".$file;
+                            } else {
+                                $arrOutput [] = $strSourceDir."/".$file;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

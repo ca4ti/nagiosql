@@ -1,26 +1,14 @@
-<!-- (c) 2005-2017 by Martin Willisegger -->
+<!-- (c) 2005-2018 by Martin Willisegger -->
 <!-- -->
-<!-- Project    : NagiosQL -->
-<!-- Component  : Verification template -->
-<!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $ -->
-<!-- Author     : $LastChangedBy: martin $ -->
-<!-- Version    : 3.3.0 -->
-<!-- Revision   : $LastChangedRevision: 2 $ -->
-<!-- BEGIN header -->
+<!-- Project   : NagiosQL -->
+<!-- Component : Verification template -->
+<!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
+<!-- Version   : 3.4.0 -->
+<!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
+<!-- BEGIN main -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-<!-- END header -->
-<!-- BEGIN main -->
-	<script language="JavaScript" type="text/JavaScript">
-		<!--
-		// Abort form
-    	function abort() {
-      		this.location.href = "{ACTION_INSERT}";
-    	}
-    	//-->
-  	</script>
-  	<form name="frmImport" method="post" action="{ACTION_INSERT}">
+    <form name="frmImport" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td style="width:250px;">{WRITE_MONITORING_DATA}</td>
@@ -28,34 +16,34 @@
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>	
+            </tr>
             <tr>
                 <td>{WRITE_ADDITIONAL_DATA}</td>
                 <td><input name="butValue2" type="submit" id="butValue2" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>	
+            </tr>
             <tr>
                 <td>{CHECK_CONFIG}</td>
                 <td><input name="butValue3" type="submit" id="butValue3" value="{MAKE}"></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>	
+            </tr>
             <tr>
                 <td>{RESTART_NAGIOS}</td>
                 <td><input name="butValue4" type="submit" id="butValue4" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>	
+            </tr>
         </table>
-	</form>
+    </form>
     <br>
-	<p><span class="redmessage">{ERRORMESSAGE}</span><span class="greenmessage">{INFOMESSAGE}</span></p>
-	<p>
-<!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}</span><br><!-- END verifyline -->
-	{DATA}</p>
+    <p><span class="redmessage">{ERRORMESSAGE}</span><span class="greenmessage">{INFOMESSAGE}</span></p>
+    <p>
+        <!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}</span><br><!-- END verifyline -->
+        {DATA}</p>
 </div>
 <!-- END main -->

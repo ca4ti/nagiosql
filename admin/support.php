@@ -488,7 +488,7 @@ if ($intConfigId != 0) {
     $conttp->setVariable("CONFIGURATION_NAME", translate('Configuration name'));
     $conttp->setVariable("USED", translate('Used in data domain'));
     $conttp->setVariable("DEMON_CONFIG", translate('Included in demon configuration')." (".basename($strConffile).")");
-    $arrConfig = array();
+    $arrConfig      = array();
     $arrConfigFiles = array(
         'Hosts'               =>    array( 'table' => 'tbl_host',              'file' => 'directory'),
         'Services'            =>    array( 'table' => 'tbl_service',           'file' => 'directory'),
@@ -526,7 +526,7 @@ if ($intConfigId != 0) {
         // Write file to temporary
         $strFileName = tempnam($SETS['path']['tempdir'], 'nagiosql_conf');
         // Copy configuration from remote system
-        //$intReturn = $myConfigClass->remoteFileCopy($strConffile, $intConfigId, $strFileName, 0);
+        $intReturn = $myConfigClass->remoteFileCopy($strConffile, $intConfigId, $strFileName, 0);
         if ($intReturn == 0) {
             $intCheck = 0;
             if (file_exists($strFileName) && is_readable($strFileName)) {
@@ -580,35 +580,42 @@ if ($intConfigId != 0) {
             foreach ($arrConfig as $line) {
                 if ($elem['file'] != 'directory') {
                     if ((substr_count($line, "cfg_dir=".$strBasedir) != 0) && (substr_count($line, "cfg_dir=".
-                                substr($strHostdir, 0, -1)) == 0) &&
-                        (substr_count($line, "cfg_dir=".substr($strServicedir, 0, -1)) == 0)) {
+                                substr($strHostdir, 0, -1)) == 0) && (substr_count($line, "cfg_dir=".
+                                substr($strServicedir, 0, -1)) == 0)) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
                             "</span> (".$line.")");
+                        break;
                     } elseif (substr_count($line, $strBasedir.$elem['file']) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
                             "</span> (".$line.")");
+                        break;
                     } elseif ($intDataCount == 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkorange\">".translate("ok").
                             "</span> (".translate("cfg definition missed, but actually not used").")");
                     } elseif (substr_count($line, $elem['file']) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkred\">".translate("failed").
                             "</span> (".translate("wrong base path:")." ".$line.")");
+                        break;
                     }
                 } elseif ($elem['table'] == 'tbl_host') {
                     if (substr_count($line, "cfg_dir=".substr($strHostdir, 0, -1)) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
                             "</span> (".$line.")");
+                        break;
                     } elseif ($intDataCount == 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkorange\">".translate("ok").
                             "</span> (".translate("cfg definition missed, but actually not used").")");
+                        break;
                     }
                 } elseif ($elem['table'] == 'tbl_service') {
                     if (substr_count($line, "cfg_dir=".substr($strServicedir, 0, -1)) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
                             "</span> (".$line.")");
+                        break;
                     } elseif ($intDataCount == 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkorange\">".translate("ok").
                             "</span> (".translate("cfg definition missed, but actually not used").")");
+                        break;
                     }
                 }
             }

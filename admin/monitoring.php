@@ -20,7 +20,7 @@
 // Define common variables
 // =======================
 $prePageId		= 2;
-$preContent 	= "admin/mainpages.tpl.htm";
+$preContent 	= "admin/mainpages.htm.tpl";
 //
 // Include preprocessing file
 // ==========================
