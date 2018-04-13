@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-12 00:34:22 +0200 (Thu, 12 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-12 22:53:39 +0200 (Thu, 12 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 23 $
+// Revision  : $LastChangedRevision: 24 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -919,5 +919,147 @@ class NagConfigClass
                 }
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  Function: Get last change date of table and config files
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Determines the dates of the last data table change and the last modification to the configuration files
+    //
+    //  Parameter:      $strTableName           Name of the data table
+    //
+    //  Return values:  0 = successful
+    //                  1 = error
+    //                  Status message is stored in message class variables
+    //
+    //                  $arrTimeData            Array with time data of table and all config files
+    //                  $strCheckConfig         Information string (text message)
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Determines the dates of the last data table change and the last modification to the configuration files
+     * @param string $strTableName              Name of the data table
+     * @param array $arrTimeData                Array with time data of table and all config files
+     * @param string $strCheckConfig            Information string (text message)
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function lastModifiedFile($strTableName, &$arrTimeData, &$strCheckConfig) : int
+    {
+        // Variable definitions
+        $intEnableCommon = 0;
+        $arrDataset      = array();
+        $strFileName     = '';
+        $strCheckConfig  = '';
+        $intReturn       = 0;
+        // Get configuration filename based on table name
+        $arrConfigData = $this->getConfData();
+        if (isset($arrConfigData[$strTableName])) {
+            $strFileName   = $arrConfigData[$strTableName]['filename'];
+        } else {
+            $intReturn = 1;
+        }
+        // Get table times
+        $arrTimeData          = array();
+        $arrTimeData['table'] = "unknown";
+        // Clear status cache
+        clearstatcache();
+        $intRetVal1 = $this->getDomainData("enable_common", $intEnableCommon);
+        // Get last change of date table
+        if ($intRetVal1 == 0) {
+            $strSQLAdd = '';
+            if ($intEnableCommon == 1) {
+                $strSQLAdd = "OR `domainId`=0";
+            }
+            $strSQL = "SELECT `updateTime` FROM `tbl_tablestatus` "
+                . "WHERE (`domainId`=".$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
+                . "ORDER BY `updateTime` DESC LIMIT 1";
+            $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
+            if ($booReturn && isset($arrDataset['updateTime'])) {
+                $arrTimeData['table'] = $arrDataset['updateTime'];
+            } else {
+                $strSQL = "SELECT `last_modified` FROM `".$strTableName."` "
+                    . "WHERE `config_id`=".$this->intDomainId." ORDER BY `last_modified` DESC LIMIT 1";
+                $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
+                if (($booReturn == true) && isset($arrDataset['last_modified'])) {
+                    $arrTimeData['table'] = $arrDataset['last_modified'];
+                }
+            }
+        }
+        // Get config sets
+        $arrConfigId      = array();
+        $strTarget        = '';
+        $strBaseDir       = '';
+        $intFileStampTemp = 0;
+        $intRetVal2  = $this->getConfigSets($arrConfigId);
+        if ($intRetVal2 == 0) {
+            foreach ($arrConfigId as $intConfigId) {
+                // Get configuration file data
+                $this->getConfigData($intConfigId, "target", $strTarget);
+                $this->getConfigData($intConfigId, "basedir", $strBaseDir);
+                // Get time data
+                $intReturn = $this->getFileDate(
+                    $intConfigId,
+                    $strFileName,
+                    $strBaseDir,
+                    $intFileStampTemp,
+                    $arrTimeData[$strTarget]
+                );
+                if ($intFileStampTemp != 0) {
+                    if (strtotime($arrTimeData['table']) > $intFileStampTemp) {
+                        $strCheckConfig = translate('Warning: configuration file is out of date!');
+                    }
+                }
+                if ($arrTimeData[$strTarget] == 'unknown') {
+                    $strCheckConfig = translate('Warning: configuration file is out of date!');
+                }
+            }
+        } else {
+            $strCheckConfig = translate('Warning: no configuration target defined!');
+        }
+        return($intReturn);
+    }
+
+    // PRIVATE functions
+
+    /**
+     * Determines the configuration data for each database table
+     * @return array                            filename (configuration file name)
+     *                                          order_field (database order field)
+     */
+    private function getConfData()
+    {
+        $arrConfData['tbl_timeperiod']        = array('filename' => 'timeperiods.cfg',
+            'order_field' => 'timeperiod_name');
+        $arrConfData['tbl_command']           = array('filename' => 'commands.cfg',
+            'order_field' => 'command_name');
+        $arrConfData['tbl_contact']           = array('filename' => 'contacts.cfg',
+            'order_field' => 'contact_name');
+        $arrConfData['tbl_contacttemplate']   = array('filename' => 'contacttemplates.cfg',
+            'order_field' => 'template_name');
+        $arrConfData['tbl_contactgroup']      = array('filename' => 'contactgroups.cfg',
+            'order_field' => 'contactgroup_name');
+        $arrConfData['tbl_hosttemplate']      = array('filename' => 'hosttemplates.cfg',
+            'order_field' => 'template_name');
+        $arrConfData['tbl_servicetemplate']   = array('filename' => 'servicetemplates.cfg',
+            'order_field' => 'template_name');
+        $arrConfData['tbl_hostgroup']         = array('filename' => 'hostgroups.cfg',
+            'order_field' => 'hostgroup_name');
+        $arrConfData['tbl_servicegroup']      = array('filename' => 'servicegroups.cfg',
+            'order_field' => 'servicegroup_name');
+        $arrConfData['tbl_hostdependency']    = array('filename' => 'hostdependencies.cfg',
+            'order_field' => 'dependent_host_name');
+        $arrConfData['tbl_servicedependency'] = array('filename' => 'servicedependencies.cfg',
+            'order_field' => 'config_name');
+        $arrConfData['tbl_hostescalation']    = array('filename' => 'hostescalations.cfg',
+            'order_field' => 'host_name`,`hostgroup_name');
+        $arrConfData['tbl_serviceescalation'] = array('filename' => 'serviceescalations.cfg',
+            'order_field' => 'config_name');
+        $arrConfData['tbl_hostextinfo']       = array('filename' => 'hostextinfo.cfg',
+            'order_field' => 'host_name');
+        $arrConfData['tbl_serviceextinfo']    = array('filename' => 'serviceextinfo.cfg',
+            'order_field' => 'host_name');
+        return($arrConfData);
     }
 }

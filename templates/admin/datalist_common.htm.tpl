@@ -8,6 +8,7 @@
 <!-- BEGIN datatablecommon -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
+    <!--suppress JSUnusedLocalSymbols -->
     <script>
         // Action icons
         function actionPic(modus,id,name) {
@@ -35,6 +36,16 @@
             if (document.frmDatalist.selModify.value === "delete") {
                 confirminit("{LANG_DELETEOK}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
             } else {
+                document.frmDatalist.submit();
+                document.frmDatalist.subDo.disabled = true;
+            }
+        }
+        //Submit form
+        function confOpenerYes(key) {
+            if (key === 1) {
+                document.frmDatalist.submit();
+            }
+            if (key === 2) {
                 document.frmDatalist.submit();
                 document.frmDatalist.subDo.disabled = true;
             }

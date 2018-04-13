@@ -5,65 +5,79 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2017 by Martin Willisegger
+// (c) 2005-2018 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Alarming overview
-// Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
-// Author    : $LastChangedBy: martin $
-// Version   : 3.3.0
-// Revision  : $LastChangedRevision: 2 $
+// Website   : https://sourceforge.net/projects/nagiosql/
+// Version   : 3.4.0
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// Path settings
+// ===================
+$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
+//
 // Define common variables
 // =======================
-$prePageId		= 3;
-$preContent 	= "admin/mainpages.htm.tpl";
+$prePageId  = 3;
+$preContent = "admin/mainpages.htm.tpl";
 //
 // Include preprocessing file
 // ==========================
-require("../functions/prepend_adm.php");
+require($preBasePath.'functions/prepend_adm.php');
 //
 // Include content
 // ===============
-$conttp->setVariable("TITLE",translate('Alarming'));
-$conttp->parse("header");
-$conttp->show("header");
-$conttp->setVariable("DESC",translate('To define contact data, contact templates and contact groups and time periods.'));
-$conttp->setVariable("STATISTICS",translate('Statistical datas'));
-$conttp->setVariable("TYPE",translate('Group'));
-$conttp->setVariable("ACTIVE",translate('Active'));
-$conttp->setVariable("INACTIVE",translate('Inactive'));
+$conttp->setVariable("TITLE", translate('Alarming'));
+$conttp->setVariable("DESC", translate('To define contact data, contact templates and contact groups and time '
+    . 'periods.'));
+$conttp->setVariable("STATISTICS", translate('Statistical datas'));
+$conttp->setVariable("TYPE", translate('Group'));
+$conttp->setVariable("ACTIVE", translate('Active'));
+$conttp->setVariable("INACTIVE", translate('Inactive'));
 //
 // Include statistical data
 // ========================
 // Get read access groups
-$strAccess = $myVisClass->getAccGroups('read');
-if ($myVisClass->checkAccGroup($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=14")+0,'read') == 0) {
-	$conttp->setVariable("NAME",translate('Contact data'));
-	$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_contact WHERE active='1' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_contact WHERE active='0' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->parse("statisticrow");
+$strAccess    = $myVisClass->getAccessGroups('read');
+$intGroupId14 = intval($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=14"));
+$intGroupId15 = intval($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=15"));
+$intGroupId16 = intval($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=16"));
+$intGroupId17 = intval($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=17"));
+if ($myVisClass->checkAccountGroup($intGroupId14, 'read') == 0) {
+    $conttp->setVariable("NAME", translate('Contact data'));
+    $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_contact` "
+        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_contact` "
+        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->parse("statisticrow");
 }
-if ($myVisClass->checkAccGroup($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=15")+0,'read') == 0) {
-	$conttp->setVariable("NAME",translate('Contact groups'));
-	$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_contactgroup WHERE active='1' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_contactgroup WHERE active='0' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->parse("statisticrow");
+if ($myVisClass->checkAccountGroup($intGroupId15, 'read') == 0) {
+    $conttp->setVariable("NAME", translate('Contact groups'));
+    $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_contactgroup` "
+        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_contactgroup` "
+        . "WHERE active='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->parse("statisticrow");
 }
-if ($myVisClass->checkAccGroup($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=16")+0,'read') == 0) {
-	$conttp->setVariable("NAME",translate('Time periods'));
-	$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_timeperiod WHERE active='1' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_timeperiod WHERE active='0' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->parse("statisticrow");
+if ($myVisClass->checkAccountGroup($intGroupId16, 'read') == 0) {
+    $conttp->setVariable("NAME", translate('Time periods'));
+    $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_timeperiod` "
+        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_timeperiod` "
+        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->parse("statisticrow");
 }
-if ($myVisClass->checkAccGroup($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=17")+0,'read') == 0) {
-	$conttp->setVariable("NAME",translate('Contact templates'));
-	$conttp->setVariable("ACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_contacttemplate WHERE active='1' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->setVariable("INACT_COUNT",$myDBClass->getFieldData("SELECT count(*) FROM tbl_contacttemplate WHERE active='0' AND config_id=$chkDomainId AND `access_group` IN ($strAccess)"));
-	$conttp->parse("statisticrow");
+if ($myVisClass->checkAccountGroup($intGroupId17, 'read') == 0) {
+    $conttp->setVariable("NAME", translate('Contact templates'));
+    $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_contacttemplate` "
+        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_contacttemplate` "
+        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+    $conttp->parse("statisticrow");
 }
 $conttp->parse("statistics");
 $conttp->parse("main");
@@ -71,7 +85,7 @@ $conttp->show("main");
 //
 // Include Footer
 // ==============
-$maintp->setVariable("VERSION_INFO","<a href='http://www.nagiosql.org' target='_blank'>NagiosQL</a> $setFileVersion");
+$maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
+    . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
-?>

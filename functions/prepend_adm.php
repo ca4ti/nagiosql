@@ -271,7 +271,7 @@ if (version_compare($setFileVersion, $setDBVersion, '>') && (file_exists($preBas
 //
 // Browser Check
 // =============
-$preBrowser = $myVisClass->browserCheck($_SERVER);
+$preBrowser = $myVisClass->browserCheck();
 //
 // Login process
 // ==============
@@ -583,29 +583,6 @@ if (isset($preContent) && ($preContent != "")) {
     } else {
         $conttp->setVariable("BASE_PATH", $strRootPath);
         $conttp->setVariable("IMAGE_PATH", $strRootPath."images/");
-    }
-    $mastertp = new HTML_Template_IT($preBasePath ."templates/");
-    if (isset($preListTpl) && ($preListTpl != '')) {
-        $mastertp->loadTemplatefile($preListTpl, true, true);
-    } else {
-        $mastertp->loadTemplatefile("admin/admin_master.htm.tpl", true, true);
-    }
-    $mastertp->setOptions($arrTplOptions);
-} elseif (isset($pluginTemplate) && ($pluginTemplate != "")) {
-    //
-    // Insert Plugin Template
-    // ======================
-    $arrTplOptions = array('use_preg' => false);
-    $conttp = new HTML_Template_IT($preBasePath ."plugins/".$pluginType."/".$pluginName."/templates/default/");
-    $conttp->loadTemplatefile($pluginTemplate, true, true);
-    $conttp->setOptions($arrTplOptions);
-    $strRootPath = $_SESSION['SETS']['path']['base_url'];
-    if (substr($strRootPath, -1) != "/") {
-        $conttp->setVariable("BASE_PATH", $strRootPath."/plugins/".$pluginType."/".$pluginName."/");
-        $conttp->setVariable("IMAGE_PATH", $strRootPath."/plugins/".$pluginType."/".$pluginName."/images/");
-    } else {
-        $conttp->setVariable("BASE_PATH", $strRootPath."/plugins/".$pluginType."/".$pluginName."/");
-        $conttp->setVariable("IMAGE_PATH", $strRootPath."/plugins/".$pluginType."/".$pluginName."/images/");
     }
     $mastertp = new HTML_Template_IT($preBasePath ."templates/");
     if (isset($preListTpl) && ($preListTpl != '')) {
