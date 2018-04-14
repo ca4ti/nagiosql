@@ -9,7 +9,7 @@
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <div class="redmessage">{ERRMESSAGE}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // Interrupt input
         function abort() {

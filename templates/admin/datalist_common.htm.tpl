@@ -9,7 +9,7 @@
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <!--suppress JSUnusedLocalSymbols -->
-    <script>
+    <script type="text/javascript">
         // Action icons
         function actionPic(modus,id,name) {
             if(id !== '') {

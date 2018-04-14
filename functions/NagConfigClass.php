@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-12 22:53:39 +0200 (Thu, 12 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 24 $
+// Revision  : $LastChangedRevision: 25 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -36,6 +36,7 @@ class NagConfigClass
     private $arrSettings         = array();     // Array includes all global settings
     private $resConnectServer    = '';          // Connection server name for FTP and SSH connections
     private $resConnectType      = 'none';      // Connection type for FTP and SSH connections
+    private $arrRelData          = "";          // Relation data
     public $resConnectId;                       // Connection id for FTP and SSH connections
     public $resSFTP;                            // SFTP ressource id
 
@@ -921,22 +922,6 @@ class NagConfigClass
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  Function: Get last change date of table and config files
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Determines the dates of the last data table change and the last modification to the configuration files
-    //
-    //  Parameter:      $strTableName           Name of the data table
-    //
-    //  Return values:  0 = successful
-    //                  1 = error
-    //                  Status message is stored in message class variables
-    //
-    //                  $arrTimeData            Array with time data of table and all config files
-    //                  $strCheckConfig         Information string (text message)
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Determines the dates of the last data table change and the last modification to the configuration files
      * @param string $strTableName              Name of the data table
@@ -1021,6 +1006,44 @@ class NagConfigClass
         return($intReturn);
     }
 
+    /**
+     * Writes a configuration file including all datasets of a configuration table or returns the output as a text
+     * file for download. (Public master function)
+     * @param string $strTableName              Table name
+     * @param int $intMode                      0 = Write file to filesystem
+     *                                          1 = Return Textfile for download test
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function createConfig($strTableName, $intMode = 0)
+    {
+        // Define Variables
+        $intReturn     = 0;
+        // Do not create configs in common domain
+        if ($this->intDomainId == 0) {
+            $this->processClassMessage(translate('It is not possible to write config files directly from the common '
+                    . 'domain!')."::", $this->strErrorMessage);
+            $intReturn = 1;
+        }
+        if ($intReturn == 0) {
+            // Get configuration targets
+            $this->getConfigSets($arrConfigID);
+            if (($arrConfigID != 1) && is_array($arrConfigID)) {
+                foreach ($arrConfigID as $intConfigID) {
+                    $intReturn = $this->writeConfTemplate($intConfigID, $strTableName, $intMode);
+                }
+            } else {
+                $this->processClassMessage(translate('Warning: no configuration target defined!').
+                    "::", $this->strErrorMessage);
+                $intReturn = 1;
+            }
+        }
+        return($intReturn);
+    }
+
+
+
+
     // PRIVATE functions
 
     /**
@@ -1061,5 +1084,1241 @@ class NagConfigClass
         $arrConfData['tbl_serviceextinfo']    = array('filename' => 'serviceextinfo.cfg',
             'order_field' => 'host_name');
         return($arrConfData);
+    }
+
+    /**
+     * Writes a configuration file including all datasets of a configuration table or returns the output as a text
+     * file for download. (Private worker function)
+     * @param int $intConfigID                  Configuration target ID
+     * @param string $strTableName              Table name
+     * @param int $intMode                      0 = Write file to filesystem
+     *                                          1 = Return Textfile for download test
+     * @param array $arrTableData               Dataset array for host and services only
+     * @param int $intID                        Key for dataset array
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    private function writeConfTemplate($intConfigID, $strTableName, $intMode, $arrTableData = array(), $intID = 0)
+    {
+        // Variable definitions
+        $strSQL         = '';
+        $arrTplOptions  = array('use_preg' => false);
+        $strDomainWhere = " (`config_id`=" . $this->intDomainId . ") ";
+        $intType        = 0;
+        $intReturn      = 0;
+        // Read some settings and informations
+        $this->getConfigData($intConfigID, "utf8_decode", $setUTF8Decode);
+        $this->getDomainData("enable_common", $setEnableCommon);
+        $this->getConfigData($intConfigID, "version", $intNagiosVersion);
+        $arrConfigData = $this->getConfData();
+        $strFileString = str_replace('.cfg', '', $arrConfigData[$strTableName]['filename']);
+        $strOrderField = $arrConfigData[$strTableName]['order_field'];
+        // Variable rewritting
+        if ($setEnableCommon != 0) {
+            $strDomainWhere = str_replace(')', ' OR `config_id`=0)', $strDomainWhere);
+        }
+        // Special processing for table host and service
+        $setTemplate = $strFileString.".tpl.dat";
+        if (($strTableName == 'tbl_host') || ($strTableName == 'tbl_service')) {
+            // Define variable names based on table name
+            switch ($strTableName) {
+                case "tbl_host":
+                    $strFileString = $arrTableData[$intID]['host_name'];
+                    $intDomainId   = $arrTableData[$intID]['config_id'];
+                    $setTemplate   = "hosts.tpl.dat";
+                    $intType       = 1;
+                    $strSQL        = "SELECT * FROM `" . $strTableName . "` WHERE `host_name`='$strFileString' "
+                        . "AND `active`='1' AND `config_id`=$intDomainId";
+                    break;
+                case "tbl_service":
+                    $strFileString = $arrTableData[$intID]['config_name'];
+                    $intDomainId   = $arrTableData[$intID]['config_id'];
+                    $setTemplate   = "services.tpl.dat";
+                    $intType       = 2;
+                    $strSQL        = "SELECT * FROM `" . $strTableName . "` WHERE `config_name`='$strFileString' "
+                        . "AND `active`='1' AND `config_id`=$intDomainId ORDER BY `service_description`";
+                    break;
+            }
+        } else {
+            $strSQL  = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' ".
+                "ORDER BY `".$strOrderField."`";
+        }
+        $strFile     = $strFileString.".cfg";
+        // Load configuration template file
+        $tplConf = new \HTML_Template_IT($this->arrSettings['path']['base_path']."/templates/files/");
+        $tplConf->loadTemplatefile($setTemplate, true, true);
+        $tplConf->setOptions($arrTplOptions);
+        $tplConf->setVariable("CREATE_DATE", date("Y-m-d H:i:s", time()));
+        $tplConf->setVariable("NAGIOS_QL_VERSION", $this->arrSettings['db']['version']);
+        $tplConf->setVariable("VERSION", $this->getVersionString($intConfigID));
+        // Write data from configuration table
+        $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
+        if (($booReturn) && ($intDataCount != 0) && ($strFileString != '')) {
+            // Process every data set
+            for ($i = 0; $i < $intDataCount; $i++) {
+                $intDataId = 0;
+                foreach ($arrData[$i] as $key => $value) {
+                    if ($key == "id") {
+                        $intDataId = $value;
+                    }
+                    if ($key == "config_name") {
+                        $key = "#NAGIOSQL_CONFIG_NAME";
+                    }
+                    // UTF8 decoded vaules
+                    if ($setUTF8Decode == 1) {
+                        $value = utf8_decode($value);
+                    }
+                    // Pass special fields (NagiosQL data fields not used by Nagios itselves)
+                    if ($this->skipEntries($strTableName, $intNagiosVersion, $key, $value) == 1) {
+                        continue;
+                    }
+                    // Get relation data
+                    $intSkip = $this->getRelationData($strTableName, $tplConf, $arrData[$i], $key, $value);
+                    // Rename field names
+                    $this->renameFields($strTableName, $intConfigID, $intDataId, $key, $value, $intSkip);
+                    // Inset data field
+                    if ($intSkip != 1) {
+                        // Insert fill spaces
+                        $strFillLen = (30-strlen($key));
+                        $strSpace = " ";
+                        for ($f = 0; $f < $strFillLen; $f++) {
+                            $strSpace .= " ";
+                        }
+                        // Write key and value to template
+                        $tplConf->setVariable("ITEM_TITLE", $key.$strSpace);
+                        // Short values
+                        if ((strlen($value) < 800) || ($intNagiosVersion != 3)) {
+                            $tplConf->setVariable("ITEM_VALUE", $value);
+                            $tplConf->parse("configline");
+                        } else { // Long values
+                            $arrValueTemp = explode(",", $value);
+                            $strValueNew  = "";
+                            $intArrCount  = count($arrValueTemp);
+                            $intCounter   = 0;
+                            $strSpace     = " ";
+                            for ($f = 0; $f < 30; $f++) {
+                                $strSpace .= " ";
+                            }
+                            foreach ($arrValueTemp as $elem) {
+                                if (strlen($strValueNew) < 800) {
+                                    $strValueNew .= $elem.",";
+                                } else {
+                                    if (substr($strValueNew, -1) == ",") {
+                                        $strValueNew = substr($strValueNew, 0, -1);
+                                    }
+                                    if ($intCounter < $intArrCount) {
+                                        $strValueNew = $strValueNew.",\\";
+                                        $tplConf->setVariable("ITEM_VALUE", $strValueNew);
+                                        $tplConf->parse("configline");
+                                        $tplConf->setVariable("ITEM_TITLE", $strSpace);
+                                    } else {
+                                        $tplConf->setVariable("ITEM_VALUE", $strValueNew);
+                                        $tplConf->parse("configline");
+                                        $tplConf->setVariable("ITEM_TITLE", $strSpace);
+                                    }
+                                    $strValueNew = $elem.",";
+                                }
+                                $intCounter++;
+                            }
+                            if ($strValueNew != "") {
+                                if (substr($strValueNew, -1) == ",") {
+                                    $strValueNew = substr($strValueNew, 0, -1);
+                                }
+                                $tplConf->setVariable("ITEM_VALUE", $strValueNew);
+                                $tplConf->parse("configline");
+                            }
+                        }
+                    }
+                }
+                // Special processing for time periods
+                if ($strTableName == "tbl_timeperiod") {
+                    $strSQLTime = "SELECT `definition`, `range` "
+                        . "FROM `tbl_timedefinition` WHERE `tipId` = ".$arrData[$i]['id'];
+                    $booReturn  = $this->myDBClass->hasDataArray($strSQLTime, $arrDataTime, $intDataCountTime);
+                    if ($booReturn && $intDataCountTime != 0) {
+                        foreach ($arrDataTime as $data) {
+                            // Skip other values than weekdays in nagios version below 3
+                            if ($intNagiosVersion < 3) {
+                                $arrWeekdays = array('monday','tuesday','wednesday','thursday','friday','saturday',
+                                    'sunday');
+                                if (!in_array($data['definition'], $arrWeekdays)) {
+                                    continue;
+                                }
+                            }
+                            // Insert fill spaces
+                            $strFillLen = (30-strlen($data['definition']));
+                            $strSpace = " ";
+                            for ($f = 0; $f < $strFillLen; $f++) {
+                                $strSpace .= " ";
+                            }
+                            // Write key and value
+                            $tplConf->setVariable("ITEM_TITLE", $data['definition'].$strSpace);
+                            $tplConf->setVariable("ITEM_VALUE", $data['range']);
+                            $tplConf->parse("configline");
+                        }
+                    }
+                }
+                // Write configuration set
+                $tplConf->parse("configset");
+            }
+        } elseif (($booReturn) && ($intDataCount == 0) && ($strFileString != '')) {
+            $this->processClassMessage(translate('Error while selecting data from database:')
+                ."::", $this->strErrorMessage);
+            $this->processClassMessage($this->myDBClass->strErrorMessage, $this->strErrorMessage);
+            $intReturn = 1;
+        } else {
+            $this->myDataClass->writeLog(translate('Writing of the configuration failed - no dataset '
+                . 'or not activated dataset found'));
+            $this->processClassMessage(translate('Writing of the configuration failed - no dataset '
+                    . 'or not activated dataset found')."::", $this->strErrorMessage);
+            $intReturn = 1;
+        }
+        if ($intMode == 0) {
+            $intReturn = $this->getConfigFile($strFile, $intConfigID, $intType, $resCfgFile, $strCfgFile);
+            if ($intReturn == 0) {
+                $tplConf->parse();
+                $strContent = $tplConf->get();
+                $intReturn  = $this->writeConfigFile(
+                    $strContent,
+                    $strFile,
+                    $intType,
+                    $intConfigID,
+                    $resCfgFile,
+                    $strCfgFile
+                );
+            }
+        } elseif ($intMode == 1) {
+            $tplConf->show();
+        }
+        return($intReturn);
+    }
+
+    /**
+     * Get Nagios version string
+     * @param int $intConfigID                  Configuration target ID
+     * @return string                           Version string
+     */
+    private function getVersionString($intConfigID)
+    {
+        $arrVersion = array(
+            "Nagios 2.x config file",
+            "Nagios 2.9 config file",
+            "Nagios 3.x config file",
+            "Nagios 4.x config file"
+        );
+        $this->getConfigData($intConfigID, "version", $intVersion);
+        if (($intVersion >= 1) && ($intVersion <= count($arrVersion))) {
+            $strVersion = $arrVersion[$intVersion - 1];
+        } else {
+            $strVersion = '';
+        }
+        return($strVersion);
+    }
+
+    /**
+     * Skip database values based on Nagios version
+     * @param string $strTableName              Table name
+     * @param int $intVersionValue              Nagios version value
+     * @param string $key                       Data key
+     * @param string $value                     Data value
+     * @return int
+     */
+    private function skipEntries($strTableName, $intVersionValue, $key, &$value)
+    {
+        // Define variables
+        $arrOption = array();
+        $intReturn = 0;
+        // Skip common fields
+        $strSpecial  = "id,active,last_modified,access_rights,access_group,config_id,template,nodelete,command_type,";
+        $strSpecial .= "import_hash";
+
+        // Skip fields of special tables
+        if ($strTableName == "tbl_hosttemplate") {
+            $strSpecial .= ",parents_tploptions,hostgroups_tploptions,contacts_tploptions";
+            $strSpecial .= ",contact_groups_tploptions,use_template_tploptions";
+        }
+        if ($strTableName == "tbl_servicetemplate") {
+            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,contacts_tploptions";
+            $strSpecial .= ",servicegroups_tploptions,contact_groups_tploptions,use_template_tploptions";
+        }
+        if ($strTableName == "tbl_contact") {
+            $strSpecial .= ",use_template_tploptions,contactgroups_tploptions";
+            $strSpecial .= ",host_notification_commands_tploptions,service_notification_commands_tploptions";
+        }
+        if ($strTableName == "tbl_contacttemplate") {
+            $strSpecial .= ",use_template_tploptions,contactgroups_tploptions";
+            $strSpecial .= ",host_notification_commands_tploptions,service_notification_commands_tploptions";
+        }
+        if ($strTableName == "tbl_host") {
+            $strSpecial .= ",parents_tploptions,hostgroups_tploptions,contacts_tploptions";
+            $strSpecial .= ",contact_groups_tploptions,use_template_tploptions";
+        }
+        if ($strTableName == "tbl_service") {
+            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,servicegroups_tploptions";
+            $strSpecial .= ",contacts_tploptions,contact_groups_tploptions,use_template_tploptions";
+        }
+
+        // Pass fields based on nagios version lower than 3.x
+        if ($intVersionValue < 3) {
+            if ($strTableName == "tbl_timeperiod") {
+                $strSpecial .= ",use_template,exclude,name";
+            }
+            if (($strTableName == "tbl_contact") || ($strTableName == "tbl_contacttemplate")) {
+                $strSpecial .= ",host_notifications_enabled,service_notifications_enabled,can_submit_commands";
+                $strSpecial .= ",retain_status_information,retain_nonstatus_information";
+                $arrOption['host_notification_options']    = ",s";
+                $arrOption['service_notification_options'] = ",s";
+            }
+            if ($strTableName == "tbl_contactgroup") {
+                $strSpecial .= ",contactgroup_members";
+            }
+            if ($strTableName == "tbl_hostgroup") {
+                $strSpecial .= ",hostgroup_members,notes,notes_url,action_url";
+            }
+            if ($strTableName == "tbl_servicegroup") {
+                $strSpecial .= ",servicegroup_members,notes,notes_url,action_url";
+            }
+            if ($strTableName == "tbl_hostdependency") {
+                $strSpecial .= ",dependent_hostgroup_name,hostgroup_name,dependency_period";
+            }
+            if ($strTableName == "tbl_hostescalation") {
+                $strSpecial .= ",contacts";
+            }
+            if ($strTableName == "tbl_servicedependency") {
+                $strSpecial .= ",dependent_hostgroup_name,hostgroup_name,dependency_period,dependent_servicegroup_name";
+                $strSpecial .= ",servicegroup_name";
+            }
+            if ($strTableName == "tbl_serviceescalation") {
+                $strSpecial .= ",hostgroup_name,contacts,servicegroup_name";
+            }
+            if (($strTableName == "tbl_host") || ($strTableName == "tbl_hosttemplate")) {
+                $strSpecial .= ",initial_state,flap_detection_options,contacts,notes,notes_url,action_url";
+                $strSpecial .= ",icon_image,icon_image_alt,vrml_image,statusmap_image,2d_coords,3d_coords";
+                $arrOption['notification_options'] = ",s";
+            }
+            // Services
+            if (($strTableName == "tbl_service") || ($strTableName == "tbl_servicetemplate")) {
+                $strSpecial .= ",initial_state,flap_detection_options,contacts,notes,notes_url,action_url";
+                $strSpecial .= ",icon_image,icon_image_alt";
+                $arrOption['notification_options'] = ",s";
+            }
+        }
+        // Pass fields based on nagios version higher than 2.x
+        if ($intVersionValue > 2) {
+            if ($strTableName == "tbl_servicetemplate") {
+                $strSpecial .= ",parallelize_check ";
+            }
+            if ($strTableName == "tbl_service") {
+                $strSpecial .= ",parallelize_check";
+            }
+        }
+        // Pass fields based on nagios version lower than 4.x
+        if ($intVersionValue < 4) {
+            if (($strTableName == "tbl_contact") || ($strTableName == "tbl_contacttemplate")) {
+                $strSpecial .= ",minimum_importance";
+            }
+        }
+        if ($intVersionValue == 1) {
+            $strSpecial .= "";
+        }
+        // Reduce option values
+        if ((count($arrOption) != 0) && array_key_exists($key, $arrOption)) {
+            $value = str_replace($arrOption[$key], '', $value);
+            $value = str_replace(str_replace(',', '', $arrOption[$key]), '', $value);
+            if ($value == '') {
+                $intReturn = 1;
+            }
+        }
+        if ($intReturn == 0) {
+            // Skip entries
+            $arrSpecial = explode(",", $strSpecial);
+            if (($value == "") || (in_array($key, $arrSpecial))) {
+                $intReturn = 1;
+            }
+        }
+        if ($intReturn == 0) {
+            // Do not write config data (based on 'skip' option)
+            $strNoTwo  = "active_checks_enabled,passive_checks_enabled,obsess_over_host,check_freshness,";
+            $strNoTwo .= "event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,";
+            $strNoTwo .= "retain_nonstatus_information,notifications_enabled,parallelize_check,is_volatile,";
+            $strNoTwo .= "host_notifications_enabled,service_notifications_enabled,can_submit_commands,";
+            $strNoTwo .= "obsess_over_service";
+            foreach (explode(",", $strNoTwo) as $elem) {
+                if (($key == $elem) && ($value == "2")) {
+                    $intReturn = 1;
+                }
+                if (($intVersionValue < 3) && ($key == $elem) && ($value == "3")) {
+                    $intReturn = 1;
+                }
+            }
+        }
+        return($intReturn);
+    }
+
+    /**
+     * Get related data
+     * @param string $strTableName              Table name
+     * @param \HTML_Template_IT $resTemplate    Template ressource
+     * @param array $arrData                    Dataset array
+     * @param string $strDataKey                Data key
+     * @param string $strDataValue              Data value
+     * @return int                              0 = use data / 1 = skip data
+     *                                          Status message is stored in message class variables
+     */
+    private function getRelationData($strTableName, $resTemplate, $arrData, $strDataKey, &$strDataValue)
+    {
+        // Define Variables
+        $intReturn    = 0;
+        $intSkipProc  = 0;
+        $arrRelations = array();
+        // Pass function for tbl_command
+        if ($strTableName == 'tbl_command') {
+            $intSkipProc = 1;
+        }
+        // Get relation info and store the value in a class variable (speedup export)
+        if (($intSkipProc == 0) && ($this->strRelTable != $strTableName)) {
+            $intReturn = $this->myDataClass->tableRelations($strTableName, $arrRelations);
+            $this->strRelTable = $strTableName;
+            $this->arrRelData  = $arrRelations;
+        } elseif ($intSkipProc == 0) {
+            $arrRelations = $this->arrRelData;
+            $intReturn   = 0;
+        }
+        if (($intSkipProc == 0) && (!is_array($arrRelations)) && (count($arrRelations) == 0)) {
+            $intSkipProc = 1;
+            $intReturn   = 1;
+        }
+        if ($intSkipProc == 0) {
+            // Common domain is enabled?
+            $this->getDomainData("enable_common", $intCommonEnable);
+            if ($intCommonEnable == 1) {
+                $strDomainWhere1 = " (`config_id`=" . $this->intDomainId . " OR `config_id`=0) ";
+            } else {
+                $strDomainWhere1 = " `config_id`=" . $this->intDomainId . " ";
+            }
+            // Process relations
+            foreach ($arrRelations as $elem) {
+                if ($elem['fieldName'] == $strDataKey) {
+                    // Process normal 1:n relations (1 = only data / 2 = including a * value)
+                    if (($elem['type'] == 2) && (($strDataValue == 1) || ($strDataValue == 2))) {
+                        $intReturn = $this->processRelation1($arrData, $strDataValue, $elem, $strDomainWhere1);
+                        // Process normal 1:1 relations
+                    } elseif ($elem['type'] == 1) {
+                        $intReturn = $this->processRelation2($arrData, $strDataValue, $elem, $strDomainWhere1);
+                        // Process normal 1:n relations with special table and idSort (template tables)
+                    } elseif (($elem['type'] == 3) && ($strDataValue == 1)) {
+                        $intReturn = $this->processRelation3($arrData, $strDataValue, $elem, $strDomainWhere1);
+                        // Process special 1:n:str relations with string values (servicedependencies)
+                    } elseif (($elem['type'] == 6) && (($strDataValue == 1) || ($strDataValue == 2))) {
+                        $intReturn = $this->processRelation4($arrData, $strDataValue, $elem, $strDomainWhere1);
+                        // Process special relations for free variables
+                    } elseif (($elem['type'] == 4) && ($strDataValue == 1) && ($this->intNagVersion >= 3)) {
+                        $intReturn = $this->processRelation5($resTemplate, $arrData, $elem);
+                        // Process special relations for service groups
+                    } elseif (($elem['type'] == 5) && ($strDataValue == 1)) {
+                        $intReturn = $this->processRelation6($arrData, $strDataValue, $elem, $strDomainWhere1);
+                        // Process "*"
+                    } elseif ($strDataValue == 2) {
+                        $strDataValue = "*";
+                    } else {
+                        $intReturn = 1;
+                    }
+                }
+            }
+        }
+        return($intReturn);
+    }
+
+    /**
+     * Rename field names
+     * @param string $strTableName              Table name
+     * @param int $intConfigID                  Configuration target ID
+     * @param int $intDataId                    Data ID
+     * @param string $key                       Data key (by reference)
+     * @param string $value                     Data value (by reference)
+     * @param int $intSkip                      Skip value (by reference) 1 = skip / 0 = pass
+     */
+    private function renameFields($strTableName, $intConfigID, $intDataId, &$key, &$value, &$intSkip)
+    {
+        if ($this->intNagVersion == 0) {
+            $this->getConfigData($intConfigID, "version", $this->intNagVersion);
+        }
+        // Picture path
+        if ($this->strPicPath == "none") {
+            $this->getConfigData($intConfigID, "picturedir", $this->strPicPath);
+        }
+        if ($key == "icon_image") {
+            $value = $this->strPicPath.$value;
+        }
+        if ($key == "vrml_image") {
+            $value = $this->strPicPath.$value;
+        }
+        if ($key == "statusmap_image") {
+            $value = $this->strPicPath.$value;
+        }
+        // Tables
+        if ($strTableName == "tbl_host") {
+            if ($key == "use_template") {
+                $key = "use";
+            }
+            $strVIValues  = "active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,";
+            $strVIValues .= "event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,";
+            $strVIValues .= "retain_nonstatus_information,notifications_enabled";
+            if (in_array($key, explode(",", $strVIValues))) {
+                if ($value == -1) {
+                    $value = "null";
+                }
+                if ($value == 3) {
+                    $value = "null";
+                }
+            }
+            if ($key == "parents") {
+                $value = $this->checkTpl($value, "parents_tploptions", "tbl_host", $intDataId, $intSkip);
+            }
+            if ($key == "hostgroups") {
+                $value = $this->checkTpl($value, "hostgroups_tploptions", "tbl_host", $intDataId, $intSkip);
+            }
+            if ($key == "contacts") {
+                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_host", $intDataId, $intSkip);
+            }
+            if ($key == "contact_groups") {
+                $value = $this->checkTpl($value, "contact_groups_tploptions", "tbl_host", $intDataId, $intSkip);
+            }
+            if ($key == "use") {
+                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_host", $intDataId, $intSkip);
+            }
+            if ($key == "check_command") {
+                $value = str_replace("\::bang::", "\!", $value);
+            }
+            if ($key == "check_command") {
+                $value = str_replace("::bang::", "\!", $value);
+            }
+        }
+        if ($strTableName == "tbl_service") {
+            if ($key == "use_template") {
+                $key = "use";
+            }
+            if (($this->intNagVersion != 3) && ($this->intNagVersion != 2)) {
+                if ($key == "check_interval") {
+                    $key = "normal_check_interval";
+                }
+                if ($key == "retry_interval") {
+                    $key = "retry_check_interval";
+                }
+            }
+            $strVIValues  = "is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,";
+            $strVIValues .= "obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,";
+            $strVIValues .= "process_perf_data,retain_status_information,retain_nonstatus_information,";
+            $strVIValues .= "notifications_enabled";
+            if (in_array($key, explode(",", $strVIValues))) {
+                if ($value == -1) {
+                    $value = "null";
+                }
+                if ($value == 3) {
+                    $value = "null";
+                }
+            }
+            if ($key == "host_name") {
+                $value = $this->checkTpl($value, "host_name_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "hostgroup_name") {
+                $value = $this->checkTpl($value, "hostgroup_name_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "servicegroups") {
+                $value = $this->checkTpl($value, "servicegroups_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "contacts") {
+                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "contact_groups") {
+                $value = $this->checkTpl($value, "contact_groups_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "use") {
+                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "check_command") {
+                $value = str_replace("\::bang::", "\!", $value);
+            }
+            if ($key == "check_command") {
+                $value = str_replace("::bang::", "\!", $value);
+            }
+        }
+        if ($strTableName == "tbl_hosttemplate") {
+            if ($key == "template_name") {
+                $key = "name";
+            }
+            if ($key == "use_template") {
+                $key = "use";
+            }
+            $strVIValues  = "active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,";
+            $strVIValues .= "event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,";
+            $strVIValues .= "retain_nonstatus_information,notifications_enabled";
+            if (in_array($key, explode(",", $strVIValues))) {
+                if ($value == -1) {
+                    $value = "null";
+                }
+                if ($value == 3) {
+                    $value = "null";
+                }
+            }
+            if ($key == "parents") {
+                $value = $this->checkTpl($value, "parents_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            }
+            if ($key == "hostgroups") {
+                $value = $this->checkTpl($value, "hostgroups_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            }
+            if ($key == "contacts") {
+                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            }
+            if ($key == "contact_groups") {
+                $value = $this->checkTpl($value, "contact_groups_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            }
+            if ($key == "use") {
+                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            }
+        }
+        if ($strTableName == "tbl_servicetemplate") {
+            if ($key == "template_name") {
+                $key = "name";
+            }
+            if ($key == "use_template") {
+                $key = "use";
+            }
+            if (($this->intNagVersion != 3) && ($this->intNagVersion != 2)) {
+                if ($key == "check_interval") {
+                    $key = "normal_check_interval";
+                }
+                if ($key == "retry_interval") {
+                    $key = "retry_check_interval";
+                }
+            }
+            $strVIValues  = "is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,";
+            $strVIValues .= "obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,";
+            $strVIValues .= "process_perf_data,retain_status_information,retain_nonstatus_information,";
+            $strVIValues .= "notifications_enabled";
+            if (in_array($key, explode(",", $strVIValues))) {
+                if ($value == -1) {
+                    $value = "null";
+                }
+                if ($value == 3) {
+                    $value = "null";
+                }
+            }
+            if ($key == "host_name") {
+                $value = $this->checkTpl($value, "host_name_tploptions", "tbl_servicetemplate", $intDataId, $intSkip);
+            }
+            if ($key == "hostgroup_name") {
+                $value = $this->checkTpl(
+                    $value,
+                    "hostgroup_name_tploptions",
+                    "tbl_servicetemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "servicegroups") {
+                $value = $this->checkTpl(
+                    $value,
+                    "servicegroups_tploptions",
+                    "tbl_servicetemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "contacts") {
+                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_servicetemplate", $intDataId, $intSkip);
+            }
+            if ($key == "contact_groups") {
+                $value = $this->checkTpl(
+                    $value,
+                    "contact_groups_tploptions",
+                    "tbl_servicetemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "use") {
+                $value = $this->checkTpl(
+                    $value,
+                    "use_template_tploptions",
+                    "tbl_servicetemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+        }
+        if ($strTableName == "tbl_contact") {
+            if ($key == "use_template") {
+                $key = "use";
+            }
+            $strVIValues  = "host_notifications_enabled,service_notifications_enabled,can_submit_commands,";
+            $strVIValues .= "retain_status_information,retain_nonstatus_information";
+            if (in_array($key, explode(",", $strVIValues))) {
+                if ($value == -1) {
+                    $value = "null";
+                }
+                if ($value == 3) {
+                    $value = "null";
+                }
+            }
+            if ($key == "contactgroups") {
+                $value = $this->checkTpl($value, "contactgroups_tploptions", "tbl_contact", $intDataId, $intSkip);
+            }
+            if ($key == "host_notification_commands") {
+                $value = $this->checkTpl(
+                    $value,
+                    "host_notification_commands_tploptions",
+                    "tbl_contact",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "service_notification_commands") {
+                $value = $this->checkTpl(
+                    $value,
+                    "service_notification_commands_tploptions",
+                    "tbl_contact",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "use") {
+                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_contact", $intDataId, $intSkip);
+            }
+        }
+        if ($strTableName == "tbl_contacttemplate") {
+            if ($key == "template_name") {
+                $key = "name";
+            }
+            if ($key == "use_template") {
+                $key = "use";
+            }
+            $strVIValues  = "host_notifications_enabled,service_notifications_enabled,can_submit_commands,";
+            $strVIValues .= "retain_status_information,retain_nonstatus_information";
+            if (in_array($key, explode(",", $strVIValues))) {
+                if ($value == -1) {
+                    $value = "null";
+                }
+                if ($value == 3) {
+                    $value = "null";
+                }
+            }
+            if ($key == "contactgroups") {
+                $value = $this->checkTpl(
+                    $value,
+                    "contactgroups_tploptions",
+                    "tbl_contacttemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "host_notification_commands") {
+                $value = $this->checkTpl(
+                    $value,
+                    "host_notification_commands_tploptions",
+                    "tbl_contacttemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "service_notification_commands") {
+                $value = $this->checkTpl(
+                    $value,
+                    "service_notification_commands_tploptions",
+                    "tbl_contacttemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+            if ($key == "use") {
+                $value = $this->checkTpl(
+                    $value,
+                    "use_template_tploptions",
+                    "tbl_contacttemplate",
+                    $intDataId,
+                    $intSkip
+                );
+            }
+        }
+        if (($strTableName == "tbl_hosttemplate") || ($strTableName == "tbl_servicetemplate") ||
+            ($strTableName == "tbl_contacttemplate")) {
+            if ($key == "register") {
+                $value = "0";
+            }
+        }
+        if ($strTableName == "tbl_timeperiod") {
+            if ($key == "use_template") {
+                $key = "use";
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  Help function: Open configuration file
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  $strFile            -> File name
+    //  $intConfigID        -> Configuration ID
+    //  $intType            -> Type ID
+    //  $resConfigFile      -> Temporary or configuration file ressource (return value)
+    //  $strConfigFile      -> Configuration file name  (return value)
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    private function getConfigFile($strFile, $intConfigID, $intType, &$resConfigFile, &$strConfigFile)
+    {
+        // Variable definitions
+        $strBaseDir   = '';
+        $intMethod    = 1;
+        $intReturn    = 0;
+        // Get config data
+        if ($intType == 1) {
+            $this->getConfigData($intConfigID, "hostconfig", $strBaseDir);
+            $strType = 'host';
+        } elseif ($intType == 2) {
+            $this->getConfigData($intConfigID, "serviceconfig", $strBaseDir);
+            $strType = 'service';
+        } else {
+            $this->getConfigData($intConfigID, "basedir", $strBaseDir);
+            $strType = 'basic';
+        }
+        $this->getConfigData($intConfigID, "method", $intMethod);
+        // Backup config file
+        $intRetVal = $this->moveFile($strType, $strFile, $intConfigID);
+        if ($intRetVal == 0) {
+            // Variable definition
+            $strConfigFile = $strBaseDir."/".$strFile;
+            // Local file system
+            if ($intMethod == 1) {
+                // Save configuration file
+                if (is_writable($strConfigFile) || ((!file_exists($strConfigFile) && (is_writable($strBaseDir))))) {
+                    $resConfigFile = fopen($strConfigFile, "w");
+                    chmod($strConfigFile, 0644);
+                } else {
+                    $this->myDataClass->writeLog(translate('Configuration write failed:')." ".$strFile);
+                    $this->processClassMessage(translate('Cannot open/overwrite the configuration file (check the 
+                    permissions)!')."::", $this->strErrorMessage);
+                    $intReturn = 1;
+                }
+            } elseif ($intMethod == 2) { // Remote file (FTP)
+                // Check connection
+                if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
+                    ($this->resConnectType != "FTP")) {
+                    $intReturn = $this->getFTPConnection($intConfigID);
+                }
+                if ($intReturn == 0) {
+                    // Open the config file
+                    if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
+                        $strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql');
+                    } else {
+                        $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
+                    }
+                    $resConfigFile = fopen($strConfigFile, "w");
+                }
+            } elseif ($intMethod == 3) { // Remote file (SFTP)
+                // Check connection
+                if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
+                    ($this->resConnectType != "SSH")) {
+                    $intReturn = $this->getSSHConnection($intConfigID);
+                }
+                if ($intReturn == 0) {
+                    if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
+                        $strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql');
+                    } else {
+                        $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
+                    }
+                    $resConfigFile = fopen($strConfigFile, "w");
+                }
+            }
+        }
+        return($intReturn);
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  Help function: Write configuration file
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  $strData                        -> Data string
+    //  $strFile                        -> File name
+    //  $intType                        -> Type ID
+    //  $intConfigID                -> Configuration target ID
+    //  $resConfigFile                -> Temporary or configuration file ressource
+    //  $strConfigFile                -> Configuration file name
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    private function writeConfigFile($strData, $strFile, $intType, $intConfigID, $resConfigFile, $strConfigFile)
+    {
+        // Variable definitions
+        $intReturn = 0;
+        // Get config data
+        if ($intType == 1) {
+            $this->getConfigData($intConfigID, "hostconfig", $strBaseDir);
+        } elseif ($intType == 2) {
+            $this->getConfigData($intConfigID, "serviceconfig", $strBaseDir);
+        } else {
+            $this->getConfigData($intConfigID, "basedir", $strBaseDir);
+        }
+        $this->getConfigData($intConfigID, "method", $intMethod);
+        $strData  = str_replace("\r\n", "\n", $strData);
+        fwrite($resConfigFile, $strData);
+        // Local filesystem
+        if ($intMethod == 1) {
+            fclose($resConfigFile);
+        } elseif ($intMethod == 2) { // FTP access
+            // SSH Possible
+            if (!function_exists('ftp_put')) {
+                $this->processClassMessage(translate('FTP module not loaded!')."::", $this->strErrorMessage);
+                $intReturn = 1;
+            } else {
+                $intErrorReporting = error_reporting();
+                error_reporting(0);
+                if (!ftp_put($this->resConnectId, $strBaseDir . "/" . $strFile, $strConfigFile, FTP_ASCII)) {
+                    $arrError = error_get_last();
+                    error_reporting($intErrorReporting);
+                    $this->processClassMessage(translate('Cannot open/overwrite the configuration file (FTP connection 
+                                                         failed)!') . "::", $this->strErrorMessage);
+                    if ($arrError['message'] != "") {
+                        $this->processClassMessage($arrError['message'] . "::", $this->strErrorMessage);
+                    }
+                    $intReturn = 1;
+                }
+                error_reporting($intErrorReporting);
+                ftp_close($this->resConnectId);
+                fclose($resConfigFile);
+            }
+        } elseif ($intMethod == 3) { // SSH access
+            // SSH Possible
+            if (!function_exists('ssh2_scp_send')) {
+                $this->processClassMessage(translate('SSH module not loaded!')."::", $this->strErrorMessage);
+                $intReturn = 1;
+            } else {
+                $intErrorReporting = error_reporting();
+                error_reporting(0);
+                if (!ssh2_scp_send($this->resConnectId, $strConfigFile, $strBaseDir . "/" . $strFile, 0644)) {
+                    $arrError = error_get_last();
+                    error_reporting($intErrorReporting);
+                    $this->processClassMessage(translate('Cannot open/overwrite the configuration file (remote SFTP)!').
+                        "::", $this->strErrorMessage);
+                    if ($arrError['message'] != "") {
+                        $this->processClassMessage($arrError['message'] . "::", $this->strErrorMessage);
+                    }
+                    $this->resConnectId = null;
+                    $intReturn = 1;
+                }
+                error_reporting($intErrorReporting);
+                fclose($resConfigFile);
+                unlink($strConfigFile);
+                $this->resConnectId = null;
+            }
+        }
+        if ($intReturn == 0) {
+            $this->myDataClass->writeLog(translate('Configuration successfully written:') . " " . $strFile);
+            $this->processClassMessage(translate('Configuration file successfully written!').
+                "::", $this->strInfoMessage);
+        }
+        return($intReturn);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  Help function: Process special settings based on template option
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  $strValue                        -> Original data value
+    //  $strKeyField                -> Template option field name
+    //  $strTable                        -> Table name
+    //  $intId                                -> Dataset ID
+    //  $intSkip                        -> Skip value         (return value)
+    //  This function returns the manipulated data value
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    public function checkTpl($strValue, $strKeyField, $strTable, $intId, &$intSkip)
+    {
+        if ($this->intNagVersion < 3) {
+            return($strValue);
+        }
+        $strSQL   = "SELECT `".$strKeyField."` FROM `".$strTable."` WHERE `id` = $intId";
+        $intValue = $this->myDBClass->getFieldData($strSQL);
+        if ($intValue == 0) {
+            return("+".$strValue);
+        }
+        if ($intValue == 1) {
+            $intSkip = 0;
+            return("null");
+        }
+        return($strValue);
+    }
+
+    /**
+     * @param array $arrData                    Dataset array
+     * @param string $strDataValue              Data value
+     * @param array $elem                       Relation data array
+     * @param string $strDomainWhere1           SQL WHERE add-in
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation1($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    {
+        // Define variables
+        $arrDataRel      = array();
+        $intDataCountRel = 0;
+        $intReturn       = 0;
+        // Get relation data
+        $strSQLRel = "SELECT `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`, `" . $elem['linkTable'] .
+            "`.`exclude` FROM `" . $elem['linkTable'] . "` LEFT JOIN `" . $elem['tableName1'] .
+            "` ON `" . $elem['linkTable'] . "`.`idSlave` = `" . $elem['tableName1'] . "`.`id`" .
+            "WHERE `idMaster`=" . $arrData['id'] . " AND `active`='1' AND $strDomainWhere1" .
+            "ORDER BY `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`";
+        $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            // Rewrite $strDataValue with returned relation data
+            if ($strDataValue == 2) {
+                $strDataValue = "*,";
+            } else {
+                $strDataValue = "";
+            }
+            foreach ($arrDataRel as $data) {
+                if ($data['exclude'] == 0) {
+                    $strDataValue .= $data[$elem['target1']] . ",";
+                } elseif ($this->intNagVersion >= 3) {
+                    $strDataValue .= "!" . $data[$elem['target1']] . ",";
+                }
+            }
+            $strDataValue = substr($strDataValue, 0, -1);
+            if ($strDataValue == "") {
+                $intReturn = 1;
+            }
+        } else {
+            if ($strDataValue == 2) {
+                $strDataValue = "*";
+            } else {
+                $intReturn = 1;
+            }
+        }
+        return($intReturn);
+    }
+
+    /**
+     * @param array $arrData                    Dataset array
+     * @param string $strDataValue              Data value
+     * @param array $elem                       Relation data array
+     * @param string $strDomainWhere1           SQL WHERE add-in
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation2($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    {
+        // Define variables
+        $arrDataRel      = array();
+        $arrField        = array();
+        $intDataCountRel = 0;
+        $intReturn       = 0;
+        $strCommand      = '';
+        // Get relation data
+        if (($elem['tableName1'] == "tbl_command") &&
+            (substr_count($arrData[$elem['fieldName']], "!") != 0)) {
+            $arrField = explode("!", $arrData[$elem['fieldName']]);
+            $strCommand = strchr($arrData[$elem['fieldName']], "!");
+            $strSQLRel = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "`".
+                "WHERE `id`=" . $arrField[0] . "  AND `active`='1' AND $strDomainWhere1";
+        } else {
+            $strSQLRel = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "`".
+                "WHERE `id`=" . $arrData[$elem['fieldName']] . "  AND `active`='1' AND $strDomainWhere1";
+        }
+        $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            // Rewrite $strDataValue with returned relation data
+            if (($elem['tableName1'] == "tbl_command") && (substr_count($strDataValue, "!") != 0)) {
+                $strDataValue = $arrDataRel[0][$elem['target1']] . $strCommand;
+            } else {
+                $strDataValue = $arrDataRel[0][$elem['target1']];
+            }
+        } else {
+            if (($elem['tableName1'] == "tbl_command") && (substr_count($strDataValue, "!") != 0) &&
+                ($arrField[0] == -1)) {
+                $strDataValue = "null";
+            } else {
+                $intReturn = 1;
+            }
+        }
+        return($intReturn);
+    }
+
+    /**
+     * @param array $arrData                    Dataset array
+     * @param string $strDataValue              Data value
+     * @param array $elem                       Relation data array
+     * @param string $strDomainWhere1           SQL WHERE add-in
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation3($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    {
+        // Define variables
+        $arrDataRel      = array();
+        $intDataCountRel = 0;
+        $intReturn       = 0;
+        // Get relation data
+        $strSQLRel = "SELECT * FROM `".$elem['linkTable']."` WHERE `idMaster`=".$arrData['id']." ORDER BY idSort";
+        $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            // Rewrite $strDataValue with returned relation data
+            $strDataValue = "";
+            foreach ($arrDataRel as $data) {
+                if ($data['idTable'] == 1) {
+                    $strSQLName = "SELECT `".$elem['target1']."` FROM `".$elem['tableName1']."`".
+                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                } else {
+                    $strSQLName = "SELECT `".$elem['target2']."` FROM `".$elem['tableName2']."`".
+                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                }
+                $strDataValue .= $this->myDBClass->getFieldData($strSQLName) . ",";
+            }
+            $strDataValue = substr($strDataValue, 0, -1);
+        } else {
+            $intReturn = 1;
+        }
+        return($intReturn);
+    }
+
+    /**
+     * @param array $arrData                    Dataset array
+     * @param string $strDataValue              Data value
+     * @param array $elem                       Relation data array
+     * @param string $strDomainWhere1           SQL WHERE add-in
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation4($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    {
+        // Define variables
+        $arrDataRel      = array();
+        $intDataCountRel = 0;
+        $intReturn       = 0;
+        // Get relation data
+        $strSQLRel = "SELECT `".$elem['linkTable']."`.`strSlave`, `".$elem['linkTable']."`.`exclude` ".
+            "FROM `".$elem['linkTable']."` ".
+            "LEFT JOIN `tbl_service` ON `".$elem['linkTable']."`.`idSlave`=`tbl_service`.`id` ".
+            "WHERE `".$elem['linkTable']."`.`idMaster`=".$arrData['id']." AND `active`='1' AND ".
+            $strDomainWhere1." ".
+            "ORDER BY `".$elem['linkTable']."`.`strSlave`";
+        $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            // Rewrite $strDataValue with returned relation data
+            if ($strDataValue == 2) {
+                $strDataValue = "*,";
+            } else {
+                $strDataValue = "";
+            }
+            foreach ($arrDataRel as $data) {
+                if ($data['exclude'] == 0) {
+                    $strDataValue .= $data['strSlave'] . ",";
+                } elseif ($this->intNagVersion >= 3) {
+                    $strDataValue .= "!" . $data['strSlave'] . ",";
+                }
+            }
+            $strDataValue = substr($strDataValue, 0, -1);
+            if ($strDataValue == "") {
+                $intReturn = 1;
+            }
+        } else {
+            if ($strDataValue == 2) {
+                $strDataValue = "*";
+            } else {
+                $intReturn = 1;
+            }
+        }
+        return($intReturn);
+    }
+
+    /**
+     * @param \HTML_Template_IT $resTemplate    Template object
+     * @param array $arrData                    Dataset array
+     * @param array $elem                       Relation data array
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation5($resTemplate, $arrData, $elem): int
+    {
+        // Define variables
+        $arrDataRel      = array();
+        $intDataCountRel = 0;
+        $strSQLRel = "SELECT * FROM `tbl_variabledefinition` LEFT JOIN `".$elem['linkTable']."` ".
+            "ON `id`=`idSlave` WHERE `idMaster`=".$arrData['id']." ORDER BY `name`";
+        $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            foreach ($arrDataRel as $vardata) {
+                // Insert fill spaces
+                $strFillLen = (30 - strlen($vardata['name']));
+                $strSpace = " ";
+                for ($f = 0; $f < $strFillLen; $f++) {
+                    $strSpace .= " ";
+                }
+                $resTemplate->setVariable("ITEM_TITLE", $vardata['name'] . $strSpace);
+                $resTemplate->setVariable("ITEM_VALUE", $vardata['value']);
+                $resTemplate->parse("configline");
+            }
+        }
+        return(1);
+    }
+
+    /**
+     * @param array $arrData                    Dataset array
+     * @param string $strDataValue              Data value
+     * @param array $elem                       Relation data array
+     * @param string $strDomainWhere1           SQL WHERE add-in
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation6($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    {
+        // Define variables
+        $arrDataRel = array();
+        $arrHG1 = array();
+        $arrHG2 = array();
+        $intDataCountRel = 0;
+        $intHG1 = 0;
+        $intHG2 = 0;
+        $intReturn = 0;
+        // Get relation data
+        $strSQLMaster = "SELECT * FROM `" . $elem['linkTable'] . "` WHERE `idMaster`=" . $arrData['id'];
+        $booReturn = $this->myDBClass->hasDataArray($strSQLMaster, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            // Rewrite $strDataValue with returned relation data
+            $strDataValue = "";
+            foreach ($arrDataRel as $data) {
+                if ($data['idSlaveHG'] != 0) {
+                    $strSQLSrv = "SELECT `" . $elem['target2'] . "` FROM `" . $elem['tableName2'] .
+                        "` WHERE `id`=" . $data['idSlaveS'];
+                    $strService = $this->myDBClass->getFieldData($strSQLSrv);
+                    $strSQLHG1 = "SELECT `host_name` FROM `tbl_host` " .
+                        "LEFT JOIN `tbl_lnkHostgroupToHost` ON `id`=`idSlave` " .
+                        "WHERE `idMaster`=" . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $booReturn = $this->myDBClass->hasDataArray($strSQLHG1, $arrHG1, $intHG1);
+                    if ($booReturn && ($intHG1 != 0)) {
+                        foreach ($arrHG1 as $elemHG1) {
+                            if (substr_count($strDataValue, $elemHG1['host_name'] . "," . $strService) == 0) {
+                                $strDataValue .= $elemHG1['host_name'] . "," . $strService . ",";
+                            }
+                        }
+                    }
+                    $strSQLHG2 = "SELECT `host_name` FROM `tbl_host` " .
+                        "LEFT JOIN `tbl_lnkHostToHostgroup` ON `id`=`idMaster` " .
+                        "WHERE `idSlave`=" . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $booReturn = $this->myDBClass->hasDataArray($strSQLHG2, $arrHG2, $intHG2);
+                    if ($booReturn && ($intHG2 != 0)) {
+                        foreach ($arrHG2 as $elemHG2) {
+                            if (substr_count($strDataValue, $elemHG2['host_name'] . "," . $strService) == 0) {
+                                $strDataValue .= $elemHG2['host_name'] . "," . $strService . ",";
+                            }
+                        }
+                    }
+                } else {
+                    $strSQLHost = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "` " .
+                        "WHERE `id`=" . $data['idSlaveH'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $strHost = $this->myDBClass->getFieldData($strSQLHost);
+                    $strSQLSrv = "SELECT `" . $elem['target2'] . "` FROM `" . $elem['tableName2'] . "` " .
+                        "WHERE `id`=" . $data['idSlaveS'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $strService = $this->myDBClass->getFieldData($strSQLSrv);
+                    if (($strHost != "") && ($strService != "")) {
+                        if (substr_count($strDataValue, $strHost . "," . $strService) == 0) {
+                            $strDataValue .= $strHost . "," . $strService . ",";
+                        }
+                    }
+                }
+            }
+            $strDataValue = substr($strDataValue, 0, -1);
+            if ($strDataValue == "") {
+                $intReturn = 1;
+            }
+        } else {
+            $intReturn = 1;
+        }
+        return ($intReturn);
     }
 }

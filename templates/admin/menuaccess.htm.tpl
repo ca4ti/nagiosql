@@ -8,7 +8,7 @@
 <!-- BEGIN menuaccesssite -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // Update form
         function update() {

@@ -8,7 +8,7 @@
 <!-- BEGIN logbooksite -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // build calendar
         calendarinit("{LOCALE}",1,"tfValue1","showfrom","cal-cont","cal");

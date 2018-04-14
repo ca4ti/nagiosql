@@ -8,7 +8,7 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // Initialize change dialog
         openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_CONTACT_GROUP}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}");
@@ -60,12 +60,17 @@
             // Check for illegal chars
             if (form.tfValue1.value.match(/[^a-zA-Z0-9.@_-]/)) {
                 msginit(msg2+" {LANG_CONTACT_NAME}",header,1);
-                form.tfDomain.focus();
+                form.tfValue1.focus();
                 return false;
             }
             if (form.tfValue11.value.match(/[^a-zA-Z0-9.@_-]/)) {
                 msginit(msg2+" {LANG_GENERIC_NAME}",header,1);
-                form.tfDomain.focus();
+                form.tfValue11.focus();
+                return false;
+            }
+            if (form.tfValue12.value.match(/[^0-9]/)) {
+                msginit(msg2+" {LANG_MINIMUM_IMPORTANCE}",header,1);
+                form.tfValue12.focus();
                 return false;
             }
             if (bypass === '0') {
@@ -145,7 +150,9 @@
                             <td rowspan="2"><small>{LANG_CTRLINFO}</small></td>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
+                            <td class="{VERSION_40_VISIBLE}">{LANG_MINIMUM_IMPORTANCE}</td>
+                            <td class="{VERSION_40_VISIBLE}"><input title="{LANG_MINIMUM_IMPORTANCE}" name="tfValue12" type="text" id="tfValue12" value="{DAT_MINIMUM_IMPORTANCE}"></td>
+                            <td class="{VERSION_40_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('contact','minimum_importance','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="4">&nbsp;</td>
@@ -531,7 +538,7 @@
         </div>
     </form>
     <!--suppress JSUnusedLocalSymbols -->
-    <script>
+    <script type="text/javascript">
         <!--
         (function() {
             let tabView = new YAHOO.widget.TabView('contacts');

@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-10 12:08:12 +0200 (Tue, 10 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 20 $
+// Revision  : $LastChangedRevision: 25 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -319,7 +319,7 @@ class NagDataClass
         $arrRelations = array();
         $arrData      = array();
         $intDC        = 0;
-        $intReturn    = 0;
+        $intReturn    = 1;
         // Get relation data
         $strSQL    = "SELECT * FROM `tbl_relationinformation` WHERE `master`='$strTable' AND `fullRelation`=0";
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
@@ -330,7 +330,7 @@ class NagDataClass
                     'target1'    => $elem['target1'],    'target2'    => $elem['target2'],
                     'type'       => $elem['type']);
             }
-            $intReturn = 1;
+            $intReturn = 0;
         }
         return($intReturn);
     }

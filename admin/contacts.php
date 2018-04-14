@@ -51,6 +51,7 @@ if ($intVersion == 3) {
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', "
         . "`contactgroups`=$intMselValue1, `contactgroups_tploptions`=$chkRadValue1, "
+        . "`minimum_importance`='$chkTfValue12', "
         . "`host_notifications_enabled`='$chkRadValue2', `service_notifications_enabled`='$chkRadValue3', "
         . "`host_notification_period`='$chkSelValue1', `service_notification_period`='$chkSelValue2', "
         . "`host_notification_options`='$strHO', `host_notification_commands_tploptions`=$chkRadValue4, "

@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Content Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-10 12:08:12 +0200 (Tue, 10 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 20 $
+// Revision  : $LastChangedRevision: 25 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -423,20 +423,30 @@ class NagContentClass
             $objTemplate->setVariable("CHECK_BYPASS_NEW", "0");
         }
         // Some replacements based on nagios version
-        if ($this->intVersion == 3) {
-            $objTemplate->setVariable("VERSION_20_VISIBLE", "elementHide");
-            $objTemplate->setVariable("VERSION_30_VISIBLE", "elementShow");
-            $objTemplate->setVariable("VERSION_20_MUST", "");
-            $objTemplate->setVariable("VERSION_30_MUST", "inpmust");
-            $objTemplate->setVariable("VERSION_20_STAR", "");
-            $objTemplate->setVariable("NAGIOS_VERSION", "3");
-        } else {
+        if ($this->intVersion < 3) {
             $objTemplate->setVariable("VERSION_20_VISIBLE", "elementShow");
             $objTemplate->setVariable("VERSION_30_VISIBLE", "elementHide");
+            $objTemplate->setVariable("VERSION_40_VISIBLE", "elementHide");
             $objTemplate->setVariable("VERSION_20_MUST", "inpmust");
             $objTemplate->setVariable("VERSION_30_MUST", "");
+            $objTemplate->setVariable("VERSION_40_MUST", "");
             $objTemplate->setVariable("VERSION_20_STAR", "*");
             $objTemplate->setVariable("NAGIOS_VERSION", "2");
+        }
+        if ($this->intVersion >= 3) {
+            $objTemplate->setVariable("VERSION_20_VISIBLE", "elementHide");
+            $objTemplate->setVariable("VERSION_30_VISIBLE", "elementShow");
+            $objTemplate->setVariable("VERSION_40_VISIBLE", "elementHide");
+            $objTemplate->setVariable("VERSION_20_MUST", "");
+            $objTemplate->setVariable("VERSION_30_MUST", "inpmust");
+            $objTemplate->setVariable("VERSION_40_MUST", "");
+            $objTemplate->setVariable("VERSION_20_STAR", "");
+            $objTemplate->setVariable("NAGIOS_VERSION", "3");
+        }
+        if ($this->intVersion >= 4) {
+            $objTemplate->setVariable("VERSION_40_VISIBLE", "elementShow");
+            $objTemplate->setVariable("VERSION_40_MUST", "inpmust");
+            $objTemplate->setVariable("NAGIOS_VERSION", "4");
         }
         // Checkbox and radio field value replacements
         if ($strChbFields != '') {

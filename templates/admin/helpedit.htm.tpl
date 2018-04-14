@@ -9,7 +9,7 @@
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <script src="{BASE_PATH}functions/tinyMCE/jscripts/tiny_mce/tiny_mce.js"></script>
-    <script >
+    <script type="text/javascript">
         tinyMCE.init({
             // General options
             mode : "textareas",
@@ -28,7 +28,7 @@
             theme_advanced_resizing : true
         });
     </script>
-    <script>
+    <script type="text/javascript">
         <!--
         // Interrupt input
         function abort() {
@@ -91,7 +91,7 @@
                 <td colspan="2">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="2"><textarea title="" name="taValue1" cols="80" rows="20" id="taValue1">{DAT_HELPTEXT}</textarea></td>
+                <td colspan="2"><textarea title="" name="taFileText" cols="80" rows="20" id="taFileText">{DAT_HELPTEXT}</textarea></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>

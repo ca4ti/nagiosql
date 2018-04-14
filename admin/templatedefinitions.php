@@ -159,8 +159,9 @@ if ($chkMode == "del") {
 // Sort mode
 // =========
 if ($chkMode == "sortup") {
+    $chkKey  = intval($chkKey);
     if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) &&
-        (count($_SESSION['templatedefinition']) > 1)) {
+        (count($_SESSION['templatedefinition']) > 1) && ($chkKey != 0)) {
         $arrTemp = array();
         $arrWait = array();
         $intNow  = 0;
@@ -180,8 +181,9 @@ if ($chkMode == "sortup") {
     }
 }
 if ($chkMode == "sortdown") {
+    $chkKey  = intval($chkKey);
     if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) &&
-        (count($_SESSION['templatedefinition']) > 1)) {
+        (count($_SESSION['templatedefinition']) > 1) && ($chkKey < (count($_SESSION['templatedefinition'])-1))) {
         $arrTemp = array();
         $arrWait = array();
         $intNow  = 0;

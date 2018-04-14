@@ -117,14 +117,14 @@
     </table>
     <!-- END configdomain -->
     <p><span class="redmessage">{ERRORMESSAGE}</span><span class="greenmessage">{INFOMESSAGE}</span></p>
-    <script>
+    <script type="text/javascript">
         <!--
         document.getElementById('jsfield').className = 'checkgreen';
         document.getElementById('jsfield').firstChild.data = '{OK}';
         //-->
     </script>
     <!-- BEGIN versioncheck_js -->
-    <script>
+    <script type="text/javascript">
         <!--
         document.getElementById('versioncheck').src = '{VERSION_IF_SRC_RELOAD}';
         //-->

@@ -8,7 +8,7 @@
 <!-- BEGIN naginsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // Interrupt input
         function abort() {

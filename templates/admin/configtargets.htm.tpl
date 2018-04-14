@@ -9,7 +9,7 @@
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <div class="redmessage">{PATHMESSAGE}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // Interrupt input
         function abort() {
@@ -306,7 +306,7 @@
 <div id="infodialog">
     <div id="dialogcontent" class="bd"></div>
 </div>
-<script>
+<script type="text/javascript">
     <!--
     checkMust();
     //-->

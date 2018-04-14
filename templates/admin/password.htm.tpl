@@ -8,7 +8,7 @@
 <!-- BEGIN passwordsite -->
 <div id="content_main">
     <div id="content_title">{LANG_CHANGE_PASSWORD}</div>
-    <script>
+    <script type="text/javascript">
         <!--
         // Abort form
         function abort() {
