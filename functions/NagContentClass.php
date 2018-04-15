@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Content Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-14 23:28:30 +0200 (Sat, 14 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 25 $
+// Revision  : $LastChangedRevision: 26 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -416,7 +416,7 @@ class NagContentClass
         if ($this->arrSettings['common']['seldisable'] == 0) {
             $objTemplate->setVariable("MSIE_DISABLED", "");
         }
-        if ($this->arrSettings['common']['tplcheck']   == 0) {
+        if ($this->arrSettings['common']['tplcheck'] == 0) {
             $objTemplate->setVariable("CHECK_BYPASS", "return true;");
             $objTemplate->setVariable("CHECK_BYPASS_NEW", "1");
         } else {

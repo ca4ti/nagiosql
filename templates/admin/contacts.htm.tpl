@@ -8,6 +8,7 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
+    <!--suppress JSUnusedLocalSymbols -->
     <script type="text/javascript">
         <!--
         // Initialize change dialog
@@ -73,7 +74,7 @@
                 form.tfValue12.focus();
                 return false;
             }
-            if (bypass === '0') {
+            if (bypass == "0") {
                 if ((version === '3') && ((form.radValue2[2].checked === true) || (form.radValue3[2].checked === true))) {
                     confirminit("{LANG_MUST_BUT_TEMPLATE}", "{LANG_SECURE_QUESTION}", 2, "{LANG_YES}", "{LANG_NO}", 2);
                     return false
@@ -111,6 +112,22 @@
         function insertDefintion() {
             const txtDef = document.frmDetail.selTemplate.value;
             document.getElementById("templframe").src = "{BASE_PATH}admin/templatedefinitions.php?dataId={DAT_ID}&type=contact&mode=add&def="+txtDef;
+        }
+        // Process security question answers
+        function confOpenerYes(key) {
+            if (key === 2) {
+                // Enable select fields
+                const selfields = "mselValue1,mselValue2,mselValue3";
+                const ar_sel = selfields.split(",");
+                for (let i=0;i<ar_sel.length;i++){
+                    document.getElementById(ar_sel[i]).disabled = false;
+                    for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+                        document.getElementById(ar_sel[i]).options[y].disabled = false;
+                    }
+                }
+                document.frmDetail.submit();
+                document.frmDetail.subForm.disabled = true;
+            }
         }
         //-->
     </script>

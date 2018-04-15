@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-14 23:28:30 +0200 (Sat, 14 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 25 $
+// Revision  : $LastChangedRevision: 26 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -277,10 +277,12 @@ class NagConfigClass
             $strCommand  = 'ls '.$strFilePath;
             $arrResult   =  array();
             if (($intReturn == 0) && ($this->sendSSHCommand($strCommand, $arrResult) == 0)) {
-                $arrInfo      = ssh2_sftp_stat($this->resSFTP, $strFilePath);
-                $intFileStamp = $arrInfo['mtime'];
-                if ($intFileStamp != -1) {
-                    $strTimeData = date("Y-m-d H:i:s", $intFileStamp);
+                if (isset($arrResult[0]) && ($arrResult[0] == $strFilePath)) {
+                    $arrInfo      = ssh2_sftp_stat($this->resSFTP, $strFilePath);
+                    $intFileStamp = $arrInfo['mtime'];
+                    if ($intFileStamp != -1) {
+                        $strTimeData = date("Y-m-d H:i:s", $intFileStamp);
+                    }
                 }
             }
         }
@@ -1881,51 +1883,49 @@ class NagConfigClass
         }
         $this->getConfigData($intConfigID, "method", $intMethod);
         // Backup config file
-        $intRetVal = $this->moveFile($strType, $strFile, $intConfigID);
-        if ($intRetVal == 0) {
-            // Variable definition
-            $strConfigFile = $strBaseDir."/".$strFile;
-            // Local file system
-            if ($intMethod == 1) {
-                // Save configuration file
-                if (is_writable($strConfigFile) || ((!file_exists($strConfigFile) && (is_writable($strBaseDir))))) {
-                    $resConfigFile = fopen($strConfigFile, "w");
-                    chmod($strConfigFile, 0644);
+        $this->moveFile($strType, $strFile, $intConfigID);
+        // Variable definition
+        $strConfigFile = $strBaseDir."/".$strFile;
+        // Local file system
+        if ($intMethod == 1) {
+            // Save configuration file
+            if (is_writable($strConfigFile) || ((!file_exists($strConfigFile) && (is_writable($strBaseDir))))) {
+                $resConfigFile = fopen($strConfigFile, "w");
+                chmod($strConfigFile, 0644);
+            } else {
+                $this->myDataClass->writeLog(translate('Configuration write failed:')." ".$strFile);
+                $this->processClassMessage(translate('Cannot open/overwrite the configuration file (check the 
+                permissions)!')."::", $this->strErrorMessage);
+                $intReturn = 1;
+            }
+        } elseif ($intMethod == 2) { // Remote file (FTP)
+            // Check connection
+            if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
+                ($this->resConnectType != "FTP")) {
+                $intReturn = $this->getFTPConnection($intConfigID);
+            }
+            if ($intReturn == 0) {
+                // Open the config file
+                if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
+                    $strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql');
                 } else {
-                    $this->myDataClass->writeLog(translate('Configuration write failed:')." ".$strFile);
-                    $this->processClassMessage(translate('Cannot open/overwrite the configuration file (check the 
-                    permissions)!')."::", $this->strErrorMessage);
-                    $intReturn = 1;
+                    $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
                 }
-            } elseif ($intMethod == 2) { // Remote file (FTP)
-                // Check connection
-                if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
-                    ($this->resConnectType != "FTP")) {
-                    $intReturn = $this->getFTPConnection($intConfigID);
+                $resConfigFile = fopen($strConfigFile, "w");
+            }
+        } elseif ($intMethod == 3) { // Remote file (SFTP)
+            // Check connection
+            if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
+                ($this->resConnectType != "SSH")) {
+                $intReturn = $this->getSSHConnection($intConfigID);
+            }
+            if ($intReturn == 0) {
+                if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
+                    $strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql');
+                } else {
+                    $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
                 }
-                if ($intReturn == 0) {
-                    // Open the config file
-                    if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
-                        $strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql');
-                    } else {
-                        $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
-                    }
-                    $resConfigFile = fopen($strConfigFile, "w");
-                }
-            } elseif ($intMethod == 3) { // Remote file (SFTP)
-                // Check connection
-                if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
-                    ($this->resConnectType != "SSH")) {
-                    $intReturn = $this->getSSHConnection($intConfigID);
-                }
-                if ($intReturn == 0) {
-                    if (isset($this->arrSettings['path']) && isset($this->arrSettings['path']['tempdir'])) {
-                        $strConfigFile = tempnam($this->arrSettings['path']['tempdir'], 'nagiosql');
-                    } else {
-                        $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
-                    }
-                    $resConfigFile = fopen($strConfigFile, "w");
-                }
+                $resConfigFile = fopen($strConfigFile, "w");
             }
         }
         return($intReturn);

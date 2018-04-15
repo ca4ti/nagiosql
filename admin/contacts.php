@@ -393,10 +393,15 @@ if ($chkModus == "add") {
     if ($intDataWarning == 1) {
         $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
     }
+    if ($intVersion == 4) {
+        $conttp->setVariable("HOST_OPTION_FIELDS", "chbGr1a,chbGr1b,chbGr1c,chbGr1d,chbGr1e,chbGr1f");
+        $conttp->setVariable("SERVICE_OPTION_FIELDS", "chbGr2a,chbGr2b,chbGr2c,chbGr2d,chbGr2e,chbGr2f,chbGr2g");
+    }
     if ($intVersion == 3) {
         $conttp->setVariable("HOST_OPTION_FIELDS", "chbGr1a,chbGr1b,chbGr1c,chbGr1d,chbGr1e,chbGr1f");
         $conttp->setVariable("SERVICE_OPTION_FIELDS", "chbGr2a,chbGr2b,chbGr2c,chbGr2d,chbGr2e,chbGr2f,chbGr2g");
-    } else {
+    }
+    if ($intVersion < 3) {
         $conttp->setVariable("HOST_OPTION_FIELDS", "chbGr1a,chbGr1b,chbGr1c,chbGr1d,chbGr1f");
         $conttp->setVariable("SERVICE_OPTION_FIELDS", "chbGr2a,chbGr2b,chbGr2c,chbGr2d,chbGr2e,chbGr2g");
         $conttp->setVariable("VERSION_20_VALUE_MUST", ",tfValue2");

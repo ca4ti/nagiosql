@@ -1,17 +1,21 @@
+
+
 popup = false;
 function info(key1,key2,ver) {
     if(popup&&popup.closed==false) popup.close();
-    var top  = (screen.availHeight - 240) / 2;
-    var left = (screen.availWidth - 320) / 2;
+    const top = (screen.availHeight - 240) / 2;
+    const left = (screen.availWidth - 320) / 2;
     popup = window.open("info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver,
         "Information",
         "width=320, height=240, top=" + top + ", left=" + left + ", SCROLLBARS=YES, MERNUBAR=NO, DEPENDENT=YES");
     popup.focus();
 }
-var myFocusObject = new Object();
+
+const myFocusObject = new Object();
+
 function checkfields(fields,frm,object) {
-    var error    = false;
-    var ar_field = fields.split(",");
+    const error = false;
+    const ar_field = fields.split(",");
     for (i=0;i<ar_field.length;i++){
         if (frm[ar_field[i]].value == "") {
             //frm[ar_field[i]].focus();
@@ -23,8 +27,8 @@ function checkfields(fields,frm,object) {
     return true;
 }
 function checkfields2(fields,frm,object) {
-    var error    = false;
-    var ar_field = fields.split(",");
+    const error = false;
+    const ar_field = fields.split(",");
     for (i=0;i<ar_field.length;i++){
         if ((frm[ar_field[i]].value == "") || (frm[ar_field[i]].value == "0")) {
             //frm[ar_field[i]].focus();
@@ -36,11 +40,10 @@ function checkfields2(fields,frm,object) {
     return true;
 }
 function checkboxes(fields,frm) {
-    var retval   = false;
-    var ar_field = fields.split(",");
-
-    for (i=0;i<ar_field.length;i++){
-        if (frm[ar_field[i]].checked == true) {
+    let retval = false;
+    const ar_field = fields.split(",");
+    for (let i=0;i<ar_field.length;i++){
+        if (frm[ar_field[i]].checked === true) {
             retval = true;
         }
     }
@@ -50,7 +53,7 @@ function checkboxes(fields,frm) {
 <!-- YUI message box -->
 function msginit(msg,header,type) {
     YAHOO.namespace("msg.container");
-    var handleOK = function() {
+    const handleOK = function () {
         this.hide();
         //myFocusObject.myValue.focus();
     };
@@ -80,11 +83,11 @@ function msginit(msg,header,type) {
 <!-- YUI confirm box -->
 function confirminit(msg,header,type,yes,no,key) {
     YAHOO.namespace("question.container");
-    var handleYes = function() {
+    const handleYes = function () {
         confOpenerYes(key);
         this.hide();
     };
-    var handleNo = function() {
+    const handleNo = function () {
         this.hide();
     };
     if (type == 1) {
@@ -113,21 +116,21 @@ function confirminit(msg,header,type,yes,no,key) {
 function dialoginit(key1,key2,ver,header) {
     YAHOO.namespace("dialog.container");
 
-    var handleCancel = function() {
+    const handleCancel = function () {
         this.cancel();
     };
-    var handleSuccess = function(o){
-        if(o.responseText !== undefined){
+    const handleSuccess = function (o) {
+        if (o.responseText !== undefined) {
             document.getElementById('dialogcontent').innerHTML = o.responseText;
         }
-    }
-    var handleFailure = function(o){
-        if(o.responseText !== undefined){
+    };
+    const handleFailure = function (o) {
+        if (o.responseText !== undefined) {
             document.getElementById('dialogcontent').innerHTML = "No information found";
         }
-    }
-    var callback = 	{
-        success:handleSuccess,
+    };
+    const callback = {
+        success: handleSuccess,
         failure: handleFailure
     };
     if (key2 == "updInfo") {
@@ -135,7 +138,7 @@ function dialoginit(key1,key2,ver,header) {
     } else {
         sUrl = "info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver;
     }
-    var request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+    const request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 
     if (typeof YAHOO.dialog.container.infodialog == "undefined") {
         YAHOO.dialog.container.infodialog = new YAHOO.widget.Dialog("infodialog",
@@ -158,7 +161,7 @@ function dialoginit(key1,key2,ver,header) {
 function calendarinit(lang,start,field,key,cont,obj) {
     YAHOO.util.Event.onDOMReady(function(){
 
-        var dialog, calendar;
+        let dialog, calendar;
 
         calendar = new YAHOO.widget.Calendar(obj, {
             iframe:false,
@@ -175,11 +178,12 @@ function calendarinit(lang,start,field,key,cont,obj) {
         }
 
         function handleSelect(type,args,obj) {
-            var dates = args[0];
-            var date = dates[0];
-            var year = date[0], month = date[1], day = date[2];
+            const dates = args[0];
+            const date = dates[0];
+            const year = date[0];
+            let month = date[1], day = date[2];
 
-            var txtDate1 = document.getElementById(field);
+            const txtDate1 = document.getElementById(field);
             if (month < 10) { month = "0" + month;}
             if (day < 10)   { day = "0" + day;}
             txtDate1.value = year + "-" + month + "-" + day;
@@ -210,45 +214,45 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
 
     YAHOO.util.Event.onDOMReady(function(){
 
-        var mutdialog;
+        let mutdialog;
 
-        var handleSuccess = function(o){
-            if(o.responseText !== undefined){
-                document.getElementById(divbox+'content').innerHTML = o.responseText;
+        const handleSuccess = function (o) {
+            if (o.responseText !== undefined) {
+                document.getElementById(divbox + 'content').innerHTML = o.responseText;
             }
-        }
-        var handleFailure = function(o){
-            if(o.responseText !== undefined){
-                document.getElementById(divbox+'content').innerHTML = "No information found";
+        };
+        const handleFailure = function (o) {
+            if (o.responseText !== undefined) {
+                document.getElementById(divbox + 'content').innerHTML = "No information found";
             }
-        }
-        var callback = 	{
-            success:handleSuccess,
+        };
+        const callback = {
+            success: handleSuccess,
             failure: handleFailure
         };
         sUrl = "mutdialog.php?object=" + field + "&exclude=" + exclude;
-        var request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+        const request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 
-        var handleSave = function() {
-            var source 			= document.getElementById(field);
-            var targetSelect 	= document.getElementById(field+'Selected');
-            var targetAvail 	= document.getElementById(field+'Avail');
+        const handleSave = function () {
+            const source = document.getElementById(field);
+            const targetSelect = document.getElementById(field + 'Selected');
+            const targetAvail = document.getElementById(field + 'Avail');
             for (i = 0; i < targetSelect.length; ++i) {
                 targetSelect.options[i].selected = true;
             }
             for (i = 0; i < source.length; ++i) {
                 source.options[i].selected = false;
-                source.options[i].className = source.options[i].className.replace(/ ieselected/g , '');
+                source.options[i].className = source.options[i].className.replace(/ ieselected/g, '');
             }
             for (i = 0; i < targetSelect.length; ++i) {
                 for (y = 0; y < source.length; ++y) {
-                    var value1 = targetSelect.options[i].value.replace(/^e/g , '');
-                    var value2 = "e"+value1;
+                    const value1 = targetSelect.options[i].value.replace(/^e/g, '');
+                    const value2 = "e" + value1;
                     if ((source.options[y].value == value1) || (source.options[y].value == value2)) {
                         source.options[y].selected = true;
                         source.options[y].value = targetSelect.options[i].value;
-                        source.options[y].text  = targetSelect.options[i].text;
-                        source.options[y].className = source.options[y].className+" ieselected";
+                        source.options[y].text = targetSelect.options[i].text;
+                        source.options[y].className = source.options[y].className + " ieselected";
                     }
                 }
             }
@@ -257,7 +261,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
                 updateForm(field);
             }
         };
-        var handleCancel = function() {
+        const handleCancel = function () {
             this.cancel();
         };
         mutdialog = new YAHOO.widget.Dialog(divbox,
@@ -284,9 +288,9 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
 
 // Additional functions for edit dialog
 function getData(field) {
-    var source 		= document.getElementById(field);
-    var targetSelect 	= document.getElementById(field+'Selected');
-    var targetAvail 	= document.getElementById(field+'Avail');
+    const source = document.getElementById(field);
+    const targetSelect = document.getElementById(field + 'Selected');
+    const targetAvail = document.getElementById(field + 'Avail');
     for (i=0; i < targetSelect.length; i++) {
         targetSelect.options[i] = null;
     }
@@ -314,10 +318,10 @@ function getData(field) {
 }
 // Insert selection
 function selValue(field) {
-    var targetSelect 	= document.getElementById(field+'Selected');
-    var targetAvail 	= document.getElementById(field+'Avail');
+    const targetSelect = document.getElementById(field + 'Selected');
+    const targetAvail = document.getElementById(field + 'Avail');
     if (targetAvail.selectedIndex != -1) {
-        var DelOptions = new Array();
+        const DelOptions = new Array();
         for (i = 0; i < targetAvail.length; ++i) {
             if (targetAvail.options[i].selected == true) {
                 NeuerEintrag = new Option(targetAvail.options[i].text, targetAvail.options[i].value, false, false);
@@ -335,10 +339,10 @@ function selValue(field) {
 }
 // Insert selection (exclude variant)
 function selValueEx(field) {
-    var targetSelect 	= document.getElementById(field+'Selected');
-    var targetAvail 	= document.getElementById(field+'Avail');
+    const targetSelect = document.getElementById(field + 'Selected');
+    const targetAvail = document.getElementById(field + 'Avail');
     if (targetAvail.selectedIndex != -1) {
-        var DelOptions = new Array();
+        const DelOptions = new Array();
         for (i = 0; i < targetAvail.length; ++i) {
             if (targetAvail.options[i].selected == true) {
                 if ((targetAvail.options[i].text != '*') && (targetAvail.options[i].value != '0')) {
@@ -360,14 +364,14 @@ function selValueEx(field) {
 }
 // Remove selection
 function desValue(field) {
-    var targetSelect 	= document.getElementById(field+'Selected');
-    var targetAvail 	= document.getElementById(field+'Avail');
+    const targetSelect = document.getElementById(field + 'Selected');
+    const targetAvail = document.getElementById(field + 'Avail');
     if (targetSelect.selectedIndex != -1) {
-        var DelOptions = new Array();
+        const DelOptions = new Array();
         for (i = 0; i < targetSelect.length; ++i) {
             if (targetSelect.options[i].selected == true) {
-                var text  = targetSelect.options[i].text.replace(/^!/g , '');
-                var value = targetSelect.options[i].value.replace(/^e/g , '');
+                const text = targetSelect.options[i].text.replace(/^!/g, '');
+                const value = targetSelect.options[i].value.replace(/^e/g, '');
                 NeuerEintrag = new Option(text, value, false, false);
                 NeuerEintrag.className = targetSelect.options[i].className;
                 targetAvail.options[targetAvail.length] = NeuerEintrag;
@@ -383,9 +387,9 @@ function desValue(field) {
 }
 // Sort entries
 function sort(obj){
-    var sortieren = new Array();
-    var list = new Array();
-    var i;
+    const sortieren = new Array();
+    const list = new Array();
+    let i;
 
     // Insert list to array
     for (i=0; i < obj.options.length; i++) {
@@ -405,7 +409,7 @@ function sort(obj){
 
     // Make array to list
     for (i=0; i < sortieren.length; i++) {
-        var felder = sortieren[i].split(";");
+        const felder = sortieren[i].split(";");
         list[i]["text"] = felder[0];
         list[i]["value"] = felder[1];
         list[i]["className"] = felder[2];

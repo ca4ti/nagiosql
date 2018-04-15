@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-10 22:30:58 +0200 (Tue, 10 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 22 $
+// Revision  : $LastChangedRevision: 25 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -271,8 +271,8 @@ class NagVisualClass
         $strSiteHTML .= "style=\"padding-left:7px;padding-right:7px;\">".translate('Page').": </td>\n";
         for ($i=0; $i<$intDataCount; $i=$i+$intMaxLines) {
             $strLink1 = "<a href=\"$strSite?limit=$i&amp;orderby=$strOrderBy&amp;orderdir=$strOrderDir\">";
-            $strLink2 = "onclick=\"location.href=\"$strSite?limit=$i&amp;orderby=$strOrderBy&amp;orderdir=".
-                "$strOrderDir\"";
+            $strLink2 = "onclick=\"location.href='$strSite?limit=$i&amp;orderby=$strOrderBy&amp;orderdir=".
+                "$strOrderDir'\"";
             if ((!(($chkLimit >= ($i+($intMaxLines*5))) || ($chkLimit <= ($i-($intMaxLines*5))))) || ($i==0) ||
                 ($i>=($intDataCount-$intMaxLines))) {
                 if ($chkLimit == $i) {
