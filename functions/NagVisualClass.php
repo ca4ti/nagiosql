@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-15 19:35:30 +0200 (Sun, 15 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 25 $
+// Revision  : $LastChangedRevision: 27 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -900,7 +900,7 @@ class NagVisualClass
         $strSQL = "SELECT `id` AS `key`, `timeperiod_name` AS `value`, `config_id`, `active` ".
             "FROM `tbl_timeperiod` WHERE $strDomainWhere1 AND `timeperiod_name` <> '' AND `timeperiod_name` ".
             "IS NOT NULL AND `access_group` IN ($strAccess) ".
-            "UNION".
+            "UNION ".
             "SELECT `id` AS `key`, `name` AS `value`, `config_id`, `active` ".
             "FROM `tbl_timeperiod` WHERE $strDomainWhere1 AND `name` <> '' AND `name` IS NOT NULL ".
             "AND `name` <> `timeperiod_name` AND `access_group` IN ($strAccess) ORDER BY value";

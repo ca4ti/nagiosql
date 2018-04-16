@@ -20,7 +20,7 @@
 // Define common variables
 // =======================
 $prePageId			= 12;
-$preContent   		= "admin/hosttemplates.tpl.htm";
+$preContent   		= "admin/hosttemplates.htm.tpl";
 $preSearchSession	= 'hosttemplate';
 $preTableName		= 'tbl_hosttemplate';
 $preKeyField		= 'template_name';

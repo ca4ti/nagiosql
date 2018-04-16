@@ -1,18 +1,18 @@
-<!-- (c) 2005-2017 by Martin Willisegger -->
+<!-- (c) 2005-2018 by Martin Willisegger -->
 <!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : hosttemplate template -->
-<!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $ -->
+<!-- Website    : https://sourceforge.net/projects/nagiosql/ -->
+<!-- Date       : $LastChangedDate: 2018-04-01 11:15:21 +0200 (So, 01 Apr 2018) $ -->
 <!-- Author     : $LastChangedBy: martin $ -->
-<!-- Version    : 3.3.0 -->
-<!-- Revision   : $LastChangedRevision: 2 $ -->
+<!-- Version    : 3.4.0 -->
+<!-- Revision   : $LastChangedRevision: 7 $ -->
 <!-- BEGIN header -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-<!-- END header -->
-<!-- BEGIN datainsert -->
-	<script language="JavaScript" type="text/JavaScript">
+    <!-- END header -->
+    <!-- BEGIN datainsert -->
+    <script language="JavaScript" type="text/JavaScript">
         <!--
         // Initialize change dialog
         openMutDlgInit("mselValue1","mutdialogparents","{LANG_MODIFY_SELECTION}: {LANG_PARENTS}","mutparents","{LANG_SAVE}","{LANG_ABORT}","1");
@@ -35,14 +35,14 @@
                 return false;
             } else {
                 // Enable select fields
-				var selfields = "mselValue1,mselValue2,mselValue3,mselValue4";
-				var ar_sel    = selfields.split(",");
-				for (i=0;i<ar_sel.length;i++){
-					document.getElementById(ar_sel[i]).disabled = false;
-					for (y=0;y<document.getElementById(ar_sel[i]).length;++y) {
-						document.getElementById(ar_sel[i]).options[y].disabled = false;
-					}
-				}
+                var selfields = "mselValue1,mselValue2,mselValue3,mselValue4";
+                var ar_sel    = selfields.split(",");
+                for (i=0;i<ar_sel.length;i++){
+                    document.getElementById(ar_sel[i]).disabled = false;
+                    for (y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+                        document.getElementById(ar_sel[i]).options[y].disabled = false;
+                    }
+                }
                 document.frmDetail.submit();
                 document.frmDetail.subForm.disabled = true;
             }
@@ -53,7 +53,7 @@
             var fields1 = "tfValue1";
             var msg1    = "{FILL_ALLFIELDS}";
             var msg2    = "{FILL_ILLEGALCHARS}";
-            var msg3	  = "{FILL_ARGUMENTS}"
+            var msg3	  = "{FILL_ARGUMENTS}";
             var header  = "{LANG_FORMCHECK}";
             var form    = document.frmDetail;
             var check   = false;
@@ -61,7 +61,7 @@
             if (check == false) {
                 msginit(msg1,header,1);
                 return false;
-            }	
+            }
             // Check for illegal chars
             if (form.tfValue1.value.match(/[^a-zA-Z0-9.@_-]/)) {
                 msginit(msg2+" {LANG_TEMPLATE_NAME}",header,1);
@@ -103,15 +103,15 @@
         }
         //-->
     </script>
-	<form name="frmDetail" method="post" action="{ACTION_INSERT}">  
+    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
         <div id="hosttemplate" style="width:909px;" class="yui-navset">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{LANG_COMMON_SETTINGS}</em></a></li>
                 <li><a href="#tab2"><em>{LANG_CHECK_SETTINGS}</em></a></li>
                 <li><a href="#tab3"><em>{LANG_ALARM_SETTINGS}</em></a></li>
                 <li><a href="#tab4"><em>{LANG_ADDON_SETTINGS}</em></a></li>
-            </ul>            
-			<div class="yui-content">
+            </ul>
+            <div class="yui-content">
                 <div id="tab1">
                     <table border="0" cellpadding="0" class="content_formtable">
                         <tr>
@@ -120,10 +120,10 @@
                         <tr>
                             <td class="content_tbl_row1">{LANG_TEMPLATE_NAME} *</td>
                             <td class="content_tbl_row2"><input name="tfValue1" type="text" id="tfValue1" value="{DAT_TEMPLATE_NAME}" class="inpmust" tabindex="1"></td>
-                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('hosttemplate','template_name','all','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('hosttemplate','template_name','all','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_DESCRIPTION}</td>
                             <td class="content_tbl_row2"><input name="tfValue2" type="text" id="tfValue2" value="{DAT_ALIAS}" tabindex="2"></td>
-                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','alias','all','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','alias','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td valign="top">{LANG_PARENTS}<br><br><small>{LANG_CTRLINFO}</small></td>
@@ -132,30 +132,30 @@
                                     <tr>
                                         <td>
                                             <select name="mselValue1[]" size="4" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN host_parents -->
+                                                <!-- BEGIN host_parents -->
                                                 <option value="{DAT_HOST_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_PARENTS_SEL}" {DAT_HOST_PARENTS_SEL} {OPTION_DISABLED}>{DAT_HOST_PARENTS}</option>
-<!-- END host_parents -->
+                                                <!-- END host_parents -->
                                             </select>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                            <td valign="top"><img id="mutparents" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','parents','all','Info')" class="infobutton_2"></td>
+                            <td valign="top"><img id="mutparents" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','parents','all','Info');" class="infobutton_2"></td>
                             <td valign="top">{LANG_HOST_GROUPS}<br><br><small>{LANG_CTRLINFO}</small></td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td>
                                             <select name="mselValue2[]" size="4" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN hostgroup -->
+                                                <!-- BEGIN hostgroup -->
                                                 <option value="{DAT_HOSTGROUP_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
-<!-- END hostgroup -->
+                                                <!-- END hostgroup -->
                                             </select>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                            <td valign="top"><img id="muthostgroups" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','hostgroups','all','Info')" class="infobutton_2"></td>
+                            <td valign="top"><img id="muthostgroups" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','hostgroups','all','Info');" class="infobutton_2"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>&nbsp;</td>
@@ -171,7 +171,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                             <td>&nbsp;</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -185,17 +185,17 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_CHECK_COMMAND}</td>
                             <td>
                                 <select name="selValue1" id="selValue1" class="selectborder" onChange="setIframe(this.value);" tabindex="5">
-<!-- BEGIN hostcommand -->
+                                    <!-- BEGIN hostcommand -->
                                     <option value="{DAT_HOSTCOMMAND_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_HOSTCOMMAND_SEL}>{DAT_HOSTCOMMAND}</option>
-<!-- END hostcommand -->
+                                    <!-- END hostcommand -->
                                 </select></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_command','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_command','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_ACTIVE}</td>
                             <td colspan="2"><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED} tabindex="6">
                                 <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}"></td>
@@ -207,7 +207,7 @@
                         <tr>
                             <td>$ARG1$</td>
                             <td><input name="tfArg1" type="text" id="tfArg1" value="{DAT_ARG1}" tabindex="7"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','arguments','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','arguments','all','Info');" class="infobutton_1"></td>
                             <td>$ARG5$</td>
                             <td colspan="2"><input name="tfArg5" type="text" id="tfArg5" value="{DAT_ARG5}" tabindex="11"></td>
                         </tr>
@@ -246,18 +246,18 @@
                             <td>{LANG_TEMPLATE_NAME}</td>
                             <td>
                                 <select name="selTemplate" class="selectborder" tabindex="15">
-<!-- BEGIN template -->
+                                    <!-- BEGIN template -->
                                     <option value="{DAT_TEMPLATE_ID}" class="empty_class {SPECIAL_STYLE}">{DAT_TEMPLATE}</option>
-<!-- END template -->
+                                    <!-- END template -->
                                 </select></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','templateadd','all','Info')" class="infobutton_1"></td>
-                            <td colspan="3"><input type="button" name="butTemplDefinition"  value="{LANG_INSERT}" onClick="insertDefintion()"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','templateadd','all','Info');" class="infobutton_1"></td>
+                            <td colspan="3"><input type="button" name="butTemplDefinition"  value="{LANG_INSERT}" onClick="insertDefintion();"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><input name="subForm" type="button" id="subForm1" value="{LANG_SAVE}" onClick="LockButton()" {DISABLE_SAVE} tabindex="16">&nbsp;<input name="subAbort" type="button" id="subAbort1" onClick="abort()" value="{LANG_ABORT}" tabindex="17"><span class="required_info">* {LANG_REQUIRED}</span></td>
+                            <td colspan="3"><input name="subForm" type="button" id="subForm1" value="{LANG_SAVE}" onClick="LockButton();" {DISABLE_SAVE} tabindex="16">&nbsp;<input name="subAbort" type="button" id="subAbort1" onClick="abort();" value="{LANG_ABORT}" tabindex="17"><span class="required_info">* {LANG_REQUIRED}</span></td>
                             <td colspan="3"><span class="redmessage">{WARNING}</span></td>
                         </tr>
                         <tr>
@@ -266,8 +266,8 @@
                                 <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>
                         </tr>
                     </table>
-			</div>
-			<div id="tab2">
+                </div>
+                <div id="tab2">
                     <table border="0" cellpadding="0" class="content_formtable">
                         <tr>
                             <td colspan="6"><strong>{LANG_CHECK_SETTINGS}</strong></td>
@@ -278,27 +278,27 @@
                             <td class="{VERSION_30_VISIBLE}">
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="chbGr2a" type="checkbox" class="checkbox" id="chbGr2a" value="o" {DAT_ISO_CHECKED} onClick="checkInitial(this.value)"></td>
+                                        <td class="radio_cell_1"><input name="chbGr2a" type="checkbox" class="checkbox" id="chbGr2a" value="o" {DAT_ISO_CHECKED} onClick="checkInitial(this.value);"></td>
                                         <td class="radio_cell_1">o</td>
-                                        <td class="radio_cell_1"><input name="chbGr2b" type="checkbox" class="checkbox" id="chbGr2b" value="d" {DAT_ISD_CHECKED} onClick="checkInitial(this.value)"></td>
+                                        <td class="radio_cell_1"><input name="chbGr2b" type="checkbox" class="checkbox" id="chbGr2b" value="d" {DAT_ISD_CHECKED} onClick="checkInitial(this.value);"></td>
                                         <td class="radio_cell_1">d</td>
-                                        <td class="radio_cell_1"><input name="chbGr2c" type="checkbox" class="checkbox" id="chbGr2c" value="u" {DAT_ISU_CHECKED} onClick="checkInitial(this.value)"></td>
+                                        <td class="radio_cell_1"><input name="chbGr2c" type="checkbox" class="checkbox" id="chbGr2c" value="u" {DAT_ISU_CHECKED} onClick="checkInitial(this.value);"></td>
                                         <td class="radio_cell_1">u</td>
                                     </tr>
                                 </table>
                             </td>
-                            <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','initial_state','3','Info')" class="infobutton_1"></td>
+                            <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','initial_state','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_RETRY_INTERVAL}</td>
                             <td><input name="tfNullVal1" type="text" id="tfNullVal1" value="{DAT_RETRY_INTERVAL}" class="short"><span class="shorttext">min</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','retry_interval','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','retry_interval','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td class="content_tbl_row1">{LANG_MAX_CHECK_ATTEMPTS}</td>
                             <td class="content_tbl_row2"><input name="tfNullVal2" type="text" id="tfNullVal2" value="{DAT_MAX_CHECK_ATTEMPTS}"></td>
-                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','max_check_attempts','all','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','max_check_attempts','all','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_CHECK_INTERVAL}</td>
                             <td class="content_tbl_row2"><input name="tfNullVal3" type="text" id="tfNullVal3" value="{DAT_CHECK_INTERVAL}" class="short"><span class="shorttext">min</span></td>
-                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_interval','all','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_interval','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_ACTIVE_CHECKS_ENABLED}</td>
@@ -316,7 +316,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','active_checks_enabled','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','active_checks_enabled','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_PASSIVE_CHECKS_ENABLED}</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -332,8 +332,8 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','passive_checks_enabled','all','Info')" class="infobutton_1"></td>
-                        </tr>    
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','passive_checks_enabled','all','Info');" class="infobutton_1"></td>
+                        </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
@@ -341,15 +341,15 @@
                             <td>{LANG_CHECK_PERIOD}</td>
                             <td>
                                 <select name="selValue2" id="selValue2" class="selectborder">
-<!-- BEGIN checkperiod -->
+                                    <!-- BEGIN checkperiod -->
                                     <option value="{DAT_CHECKPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_CHECKPERIOD_SEL}>{DAT_CHECKPERIOD}</option>
-<!-- END checkperiod -->
+                                    <!-- END checkperiod -->
                                 </select>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_period','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_period','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_FRESHNESS_TRESHOLD}</td>
                             <td><input name="tfNullVal4" type="text" id="tfNullVal4" value="{DAT_FRESHNESS_THRESHOLD}" class="short"><span class="shorttext">sec</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','freshness_threshold','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','freshness_threshold','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_CHECK_FRESHNESS}</td>
@@ -367,7 +367,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_freshness','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','check_freshness','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_OBSESS_OVER_HOST}</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -381,9 +381,9 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue8" type="radio" class="checkbox" id="radValue83" value="3" {DAT_OBS3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>      
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','obsess_over_host','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','obsess_over_host','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
@@ -392,12 +392,12 @@
                             <td>{LANG_EVENT_HANDLER}</td>
                             <td>
                                 <select name="selValue3" id="selValue3" class="selectborder">
-<!-- BEGIN eventhandler -->
+                                    <!-- BEGIN eventhandler -->
                                     <option value="{DAT_EVENTHANDLER_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_EVENTHANDLER_SEL}>{DAT_EVENTHANDLER}</option>
-<!-- END eventhandler -->
+                                    <!-- END eventhandler -->
                                 </select>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','event_handler','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','event_handler','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_EVENT_HANDLER_ENABLED}</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -411,9 +411,9 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue9" type="radio" class="checkbox" id="radValue93" value="3" {DAT_EVH3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table> 
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','event_handler_enabled','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','event_handler_enabled','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
@@ -421,10 +421,10 @@
                         <tr>
                             <td>{LANG_LOW_FLAP_THRESHOLD}</td>
                             <td><input name="tfNullVal5" type="text" id="tfNullVal5" value="{DAT_LOW_FLAP_THRESHOLD}" class="short"><span class="shorttext">%</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','low_flap_threshold','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','low_flap_threshold','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_HIGH_FLAP_THRESHOLD}</td>
                             <td><input name="tfNullVal6" type="text" id="tfNullVal6" value="{DAT_HIGH_FLAP_THRESHOLD}" class="short"><span class="shorttext">%</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','high_flap_threshold','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','high_flap_threshold','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_FLAP_DETECTION_ENABLED}</td>
@@ -440,9 +440,9 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue10" type="radio" class="checkbox" id="radValue103" value="3" {DAT_FLE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>       
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','flap_detection_enabled','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','flap_detection_enabled','all','Info');" class="infobutton_1"></td>
                             <td class="{VERSION_30_VISIBLE}">{LANG_FLAP_DETECTION_OPTIONS}</td>
                             <td class="{VERSION_30_VISIBLE}">
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -456,7 +456,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','flap_detection_options','3','Info')" class="infobutton_1"></td>
+                            <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','flap_detection_options','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
@@ -475,9 +475,9 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue11" type="radio" class="checkbox" id="radValue113" value="3" {DAT_STI3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table> 
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','retain_status_information','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','retain_status_information','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_RETAIN_NOSTATUS_INFORMATION}</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -491,9 +491,9 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue12" type="radio" class="checkbox" id="radValue123" value="3" {DAT_NSI3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table> 
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','retain_nonstatus_information','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','retain_nonstatus_information','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_PROCESS_PERF_DATA}</td>
@@ -509,23 +509,23 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue13" type="radio" class="checkbox" id="radValue133" value="3" {DAT_PED3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table> 
+                                </table>
                             </td>
-                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','process_perf_data','all','Info')" class="infobutton_1"></td>
+                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','process_perf_data','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><input name="subForm" type="button" id="subForm2" value="{LANG_SAVE}" onClick="LockButton()" {DISABLE_SAVE}>&nbsp;<input name="subAbort" type="button" id="subAbort2" onClick="abort()" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
+                            <td colspan="3"><input name="subForm" type="button" id="subForm2" value="{LANG_SAVE}" onClick="LockButton();" {DISABLE_SAVE}>&nbsp;<input name="subAbort" type="button" id="subAbort2" onClick="abort();" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
                             <td colspan="3"><span class="redmessage">{WARNING}</span></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
                     </table>
-			</div>
-			<div id="tab3">
+                </div>
+                <div id="tab3">
                     <table border="0" cellpadding="0" class="content_formtable">
                         <tr>
                             <td colspan="6"><strong>{LANG_ALARM_SETTINGS}</strong></td>
@@ -537,30 +537,30 @@
                                     <tr>
                                         <td>
                                             <select name="mselValue4[]" size="4" multiple id="mselValue4" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN host_contactgroups -->
+                                                <!-- BEGIN host_contactgroups -->
                                                 <option value="{DAT_HOST_CONTACTGROUPS_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_CONTACTGROUPS_SEL}" {DAT_HOST_CONTACTGROUPS_SEL} {OPTION_DISABLED}>{DAT_HOST_CONTACTGROUPS}</option>
-<!-- END host_contactgroups -->
+                                                <!-- END host_contactgroups -->
                                             </select>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                            <td valign="top"><img id="mutcontactgroups" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','contactgroups','all','Info')" class="infobutton_2"></td>
+                            <td valign="top"><img id="mutcontactgroups" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','contactgroups','all','Info');" class="infobutton_2"></td>
                             <td valign="top"><span class="{VERSION_30_VISIBLE}">{LANG_CONTACTS}</span><br><br><small>{LANG_CTRLINFO}</small></td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr class="{VERSION_30_VISIBLE}">
                                         <td>
                                             <select name="mselValue3[]" size="4" multiple id="mselValue3" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN host_contacts -->
+                                                <!-- BEGIN host_contacts -->
                                                 <option value="{DAT_HOST_CONTACTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_CONTACTS_SEL}" {DAT_HOST_CONTACTS_SEL} {OPTION_DISABLED}>{DAT_HOST_CONTACTS}</option>
-<!-- END host_contacts -->
+                                                <!-- END host_contacts -->
                                             </select>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                            <td valign="top"><span class="{VERSION_30_VISIBLE}"><img id="mutcontacts" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','contacts','3','Info')" class="infobutton_2"></span></td>
+                            <td valign="top"><span class="{VERSION_30_VISIBLE}"><img id="mutcontacts" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','contacts','3','Info');" class="infobutton_2"></span></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>&nbsp;</td>
@@ -574,9 +574,9 @@
                                         <td class="radio_cell_1"><input name="radValue4" type="radio" class="checkbox" id="radValue42" value="2" {DAT_COG2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>            
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                             <td>&nbsp;</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -588,9 +588,9 @@
                                         <td class="radio_cell_1"><input name="radValue3" type="radio" class="checkbox" id="radValue32" value="2" {DAT_COT2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>      
+                                </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
@@ -599,12 +599,12 @@
                             <td class="content_tbl_row1">{LANG_NOTIFICATION_PERIOD}*</td>
                             <td class="content_tbl_row2">
                                 <select name="selValue4" id="selValue4" class="selectborder">
-<!-- BEGIN notifyperiod -->
+                                    <!-- BEGIN notifyperiod -->
                                     <option value="{DAT_NOTIFYPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_NOTIFYPERIOD_SEL}>{DAT_NOTIFYPERIOD}</option>
-<!-- END notifyperiod -->
+                                    <!-- END notifyperiod -->
                                 </select>
                             </td>
-                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_period','all','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_period','all','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_NOTIFICATION_OPTIONS}</td>
                             <td class="content_tbl_row2">
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -622,15 +622,15 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_options','all','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_options','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_NOTIFICATION_INTERVAL}</td>
                             <td><input name="tfNullVal7" type="text" id="tfNullVal7" value="{DAT_NOTIFICATION_INTERVAL}" class="short"><span class="shorttext">min</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_intervall','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_intervall','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_FIRST_NOTIFICATION_DELAY}</td>
                             <td><input name="tfNullVal8" type="text" id="tfNullVal8" value="{DAT_FIRST_NOTIFICATION_DELAY}" class="short"><span class="shorttext">min</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','first_notification_delay','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','first_notification_delay','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_NOTIFICATION_ENABLED}</td>
@@ -648,7 +648,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_enabled','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notification_enabled','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_STALKING_OPTIONS}</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -662,13 +662,13 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','stalking_options','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','stalking_options','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><input name="subForm" type="button" id="subForm3" value="{LANG_SAVE}" onClick="LockButton()" {DISABLE_SAVE}>&nbsp;<input name="subAbort" type="button" id="subAbort3" onClick="abort()" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
+                            <td colspan="3"><input name="subForm" type="button" id="subForm3" value="{LANG_SAVE}" onClick="LockButton();" {DISABLE_SAVE}>&nbsp;<input name="subAbort" type="button" id="subAbort3" onClick="abort();" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
                             <td colspan="3"><span class="redmessage">{WARNING}</span></td>
                         </tr>
                         <tr>
@@ -676,7 +676,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="tab4"> 
+                <div id="tab4">
                     <table border="0" cellpadding="0" class="content_formtable">
                         <tr>
                             <td colspan="6"><strong>{LANG_ADDON_SETTINGS}</strong></td>
@@ -684,39 +684,39 @@
                         <tr class="{VERSION_30_VISIBLE}">
                             <td class="content_tbl_row1">{LANG_NOTES}</td>
                             <td class="content_tbl_row2"><input name="tfValue3" type="text" id="tfValue3" value="{DAT_NOTES}" tabindex="1"></td>
-                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notes','3','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notes','3','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_VRML_IMAGE}</td>
                             <td class="content_tbl_row2"><input name="tfValue4" type="text" id="tfValue4" value="{DAT_VRML_IMAGE}" tabindex="6"></td>
-                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','vrml_image','3','Info')" class="infobutton_1"></td>
+                            <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','vrml_image','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_NOTES_URL}</td>
                             <td><input name="tfValue5" type="text" id="tfValue5" value="{DAT_NOTES_URL}" tabindex="2"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notes_url','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','notes_url','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_STATUS_IMAGE}</td>
                             <td><input name="tfValue6" type="text" id="tfValue6" value="{DAT_STATUSMAP_IMAGE}" tabindex="7"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','status_image','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','status_image','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_ACTION_URL}</td>
                             <td><input name="tfValue7" type="text" id="tfValue7" value="{DAT_ACTION_URL}" tabindex="3"></td>
-                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','action_url','3','Info')" class="infobutton_1"></td>
+                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','action_url','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_ICON_IMAGE}</td>
                             <td><input name="tfValue8" type="text" id="tfValue8" value="{DAT_ICON_IMAGE}" tabindex="4"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','icon_image','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','icon_image','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_2D_COORDS}</td>
                             <td><input name="tfValue9" type="text" id="tfValue9" value="{DAT_2D_COORDS}" class="short" tabindex="8"><span class="shorttext">(x,y)</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','2d_coords','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','2d_coords','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_ICON_IMAGE_ALT_TEXT}</td>
                             <td><input name="tfValue10" type="text" id="tfValue10" value="{DAT_ICON_IMAGE_ALT}" tabindex="5"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','icon_image_alt_text','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','icon_image_alt_text','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_3D_COORDS}</td>
                             <td><input name="tfValue11" type="text" id="tfValue11" value="{DAT_3D_COORDS}" class="short" tabindex="9"><span class="shorttext">(x,y,z)</span></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','3d_coords','3','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('host','3d_coords','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td colspan="6">&nbsp;</td>
@@ -725,12 +725,12 @@
                             <td class="content_tbl_row1">{LANG_ACCESS_GROUP}</td>
                             <td class="content_tbl_row2">
                                 <select name="selAccGr" class="selectborder" tabindex="10">
-<!-- BEGIN acc_group -->
+                                    <!-- BEGIN acc_group -->
                                     <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-<!-- END acc_group -->
+                                    <!-- END acc_group -->
                                 </select>
                             </td>
-                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info')" class="infobutton_1"></td>
+                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
@@ -754,39 +754,39 @@
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_VARIABLE_NAME}</td>
                             <td><input type="text" name="txtVariablename" id="txtVariablename" tabindex="11"></td>
-                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','free_variables_name','all','Info')" class="infobutton_1"></td>
+                            <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','free_variables_name','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_VARIABLE_VALUE}</td>
                             <td><input type="text" name="txtVariablevalue" id="txtVariablevalue" tabindex="12"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','free_variables_value','all','Info')" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18"  onclick="dialoginit('common','free_variables_value','all','Info');" class="infobutton_1"></td>
                             <td colspan="3"><input type="button" name="butVariableDefinition" value="{LANG_INSERT}" onClick="insertDefintionVar()" tabindex="13"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td colspan="6">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><input name="subForm" type="button" id="subForm4" value="{LANG_SAVE}" onClick="LockButton()" {DISABLE_SAVE} tabindex="14">&nbsp;<input name="subAbort" type="button" id="subAbort4" onClick="abort()" value="{LANG_ABORT}" tabindex="15"><span class="required_info">* {LANG_REQUIRED}</span></td>
+                            <td colspan="3"><input name="subForm" type="button" id="subForm4" value="{LANG_SAVE}" onClick="LockButton();" {DISABLE_SAVE} tabindex="14">&nbsp;<input name="subAbort" type="button" id="subAbort4" onClick="abort();" value="{LANG_ABORT}" tabindex="15"><span class="required_info">* {LANG_REQUIRED}</span></td>
                             <td colspan="3"><span class="redmessage">{WARNING}</span></td>
                         </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
                     </table>
-				</div>
+                </div>
             </div>
         </div>
         <script type="text/javascript" language="javascript">
-        	<!--
+            <!--
             (function() {
                 var tabView = new YAHOO.widget.TabView('hosttemplate');
             })();
             //-->
-        </script>  
-	</form>
+        </script>
+    </form>
     {CHECK_MUST_DATA}
     <br>
-</div>   
+</div>
 <div id="mutdialogparents">
     <div id="mutdialogparentscontent" class="bd"></div>
 </div>

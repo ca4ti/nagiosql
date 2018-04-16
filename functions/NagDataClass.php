@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-13 19:55:45 +0200 (Fri, 13 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-14 23:28:30 +0200 (Sat, 14 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 25 $
+// Revision  : $LastChangedRevision: 26 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -156,7 +156,11 @@ class NagDataClass
     public function processClassMessage($strNewMessage, &$strOldMessage)
     {
         $strNewMessage = str_replace("::::", "::", $strNewMessage);
-        if (($strOldMessage != "") && ($strNewMessage != "") && (substr_count($strOldMessage, $strNewMessage) == 0)) {
+        if (($strOldMessage != "") && ($strNewMessage != "")) {
+            if (substr_count($strOldMessage, $strNewMessage) == 0) {
+                $strOldMessage .= $strNewMessage;
+            }
+        } else {
             $strOldMessage .= $strNewMessage;
         }
     }
@@ -234,7 +238,7 @@ class NagDataClass
                         $intCheck++;
                     }
                     // Copy relations
-                    if (($this->tableRelations($strTableName, $arrRelations) != 0) && ($intCheck == 0)) {
+                    if (($this->tableRelations($strTableName, $arrRelations) == 0) && ($intCheck == 0)) {
                         foreach ($arrRelations as $elem) {
                             // Normal 1:n relation
                             if ($elem['type'] == "2") {
@@ -893,6 +897,123 @@ class NagDataClass
         // Define the SQL statement
         $strSQL    = "DELETE FROM `".$strTable."` WHERE `idMaster`=$intMasterId";
         $intReturn = $this->dataInsert($strSQL, $intDataId);
+        return($intReturn);
+    }
+
+    /**
+     * Deactivates one or many datasets in the table be setting 'active' to '0'. Alternatively, a single record
+     * ID can be specified or evaluated by the values of $_POST['chbId_n'] passed parameters, where n is the
+     * record ID must match.
+     * @param string $strTableName              Table name
+     * @param int $intDataId                    Individual record ID, which is to be activate
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function dataDeactivate($strTableName, $intDataId = 0)
+    {
+        // Define variables
+        $intReturn = 1;
+        // Get write access groups
+        $strAccess = $this->myVisClass->getAccessGroups('write');
+        // Activate datasets
+        $strSQL    = "SELECT `id` FROM `".$strTableName."` ".
+            "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
+        $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
+        if ($booReturn && ($intDataCount != 0)) {
+            $intActivateCount = 0;
+            foreach ($arrData as $elem) {
+                $strChbName = "chbId_".$elem['id'];
+                // was the current record is marked for activate?
+                if (($intDataId == $elem['id']) || ((filter_input(INPUT_POST, $strChbName) != null) &&
+                        (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == "on"))) {
+                    // Verify that the dataset can be deactivated
+                    if ($this->infoRelation($strTableName, $elem['id'], "id", 1) == 0) {
+                        // Update dataset
+                        if (($strTableName == "tbl_service") || ($strTableName == "tbl_host")) {
+                            $strSQL = "UPDATE `".$strTableName."` SET `active`='0', `last_modified`=now() ".
+                                "WHERE `id`=".$elem['id'];
+                        } else {
+                            $strSQL = "UPDATE `".$strTableName."` SET `active`='0' WHERE `id`=".$elem['id'];
+                        }
+                        $this->myDBClass->insertData($strSQL);
+                        $intActivateCount++;
+                    }
+                }
+            }
+            // Process informations
+            if ($intActivateCount == 0) {
+                $this->processClassMessage(translate('No dataset deactivated. Maybe the dataset does not exist, it '.
+                        'is protected from deactivation, no dataset was selected or you do not have write permission. '.
+                        'Use the "info" function for detailed informations about relations!').
+                    "::", $this->strErrorMessage);
+            } else {
+                $this->updateStatusTable($strTableName);
+                $this->processClassMessage(translate('Dataset successfully deactivated. Affected rows:')." ".
+                    $intActivateCount."::", $this->strInfoMessage);
+                $this->writeLog(translate('Deactivate dataset from table:')." $strTableName ".
+                    translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
+                $intReturn = 0;
+            }
+        } else {
+            $this->processClassMessage(translate('No dataset deactivated. Maybe the dataset does not exist or you '.
+                    'do not have write permission.')."::", $this->strErrorMessage);
+        }
+        return($intReturn);
+    }
+
+    /**
+     * Activates one or many datasets in the table be setting 'active' to '1'. Alternatively, a single record ID can
+     * be specified or evaluated by the values of $_POST['chbId_n'] passed parameters, where n is the record ID must
+     * match.
+     * @param string $strTableName              Table name
+     * @param int $intDataId                    Individual record ID, which is to be activate
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function dataActivate($strTableName, $intDataId = 0)
+    {
+        // Define variables
+        $intReturn = 1;
+        // Get write access groups
+        $strAccess = $this->myVisClass->getAccessGroups('write');
+        // Activate datasets
+        $strSQL    = "SELECT `id` FROM `".$strTableName."` ".
+            "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
+        $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
+        if ($booReturn && ($intDataCount != 0)) {
+            $intActivateCount = 0;
+            foreach ($arrData as $elem) {
+                $strChbName = "chbId_".$elem['id'];
+                // was the current record is marked for activate?
+                if (($intDataId == $elem['id']) || ((filter_input(INPUT_POST, $strChbName) != null) &&
+                        (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == "on"))) {
+                    // Update dataset
+                    if (($strTableName == "tbl_service") || ($strTableName == "tbl_host")) {
+                        $strSQL = "UPDATE `".$strTableName."` SET `active`='1', `last_modified`=now() ".
+                            "WHERE `id`=".$elem['id'];
+                    } else {
+                        $strSQL = "UPDATE `".$strTableName."` SET `active`='1' WHERE `id`=".$elem['id'];
+                    }
+                    $this->myDBClass->insertData($strSQL);
+                    $intActivateCount++;
+                }
+            }
+            // Process informations
+            if ($intActivateCount == 0) {
+                $this->processClassMessage(translate('No dataset activated. Maybe the dataset does not exist, no '.
+                        'dataset was selected or you do not have write permission.')."::", $this->strErrorMessage);
+            } else {
+                $this->updateStatusTable($strTableName);
+                $this->processClassMessage(translate('Dataset successfully activated. Affected rows:')." ".
+                    $intActivateCount."::", $this->strInfoMessage);
+                $this->writeLog(translate('Activate dataset from table:')." $strTableName ".
+                    translate('- with affected rows:')." ".$this->myDBClass->intAffectedRows);
+                $intReturn = 0;
+            }
+        } else {
+            $this->processClassMessage(translate('No dataset activated. Maybe the dataset does not exist or you do '.
+                    'not have write permission.')."::", $this->strErrorMessage);
+        }
         return($intReturn);
     }
 

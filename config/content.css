@@ -5,39 +5,33 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2017 by Martin Willisegger
+// (c) 2005-2018 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : CSS content definition
-// Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
-// Author    : $LastChangedBy: martin $
-// Version   : 3.3.0
-// Revision  : $LastChangedRevision: 2 $
+// Website   : https://sourceforge.net/projects/nagiosql/
+// Version   : 3.4.0
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 /////////////////////////////////////////////////////////////////////////////*/
 /* Content main div */
 #content_main {
 	top:-3px;
-	left:0px;
+	left:0;
 	width:890px;
-	padding: 0px;
-	margin: 0px;
-	padding-left: 10px;
+	margin: 0;
+	padding: 0 0 0 10px;
 	position:relative;
 	font-size: 12px;
 }
 /* Content title (list and single view) */
 #content_title {
 	color: #0c4271;
-	margin:0px;
-	padding:0px;
-	margin-top:0px;
-	margin-left:2px;
+	margin: 0 0 0 2px;
 	font-size:20px;
 	font-weight:bold;
 	font-family:Arial, Helvetica, sans-serif;
-	padding-bottom:5px;
+	padding: 0 0 5px;
 }
 /* Content special definitions */
 .elementHide {
@@ -49,13 +43,13 @@
 }
 .greenmessage {
 	color: #009900;
-}	
+}
 .blackmessage {
 	color:#000000;
-}	
+}
 .bluemessage {
 	color:#0000FF;
-}	
+}
 .checkred {
 	color: #FF0000;
 	font-weight:bold;
@@ -94,7 +88,7 @@
 /* Content tags */
 #content_main h2 {
 	font-size: 14px;
-	margin-bottom:0px;
+	margin-bottom:0;
 }
 /* Version string */
 .version {
@@ -112,8 +106,8 @@
 }
 /* Content forms */
 #content_main form {
-	margin:0px;
-	padding:0px;
+	margin:0;
+	padding:0;
 }
 /* Content form table (single view and top/bottom line of list view) */
 .content_formtable {
@@ -123,8 +117,8 @@
 	font-size:12px;
 }
 .content_formtable td {
-	padding:0px;
-	margin:0px;
+	padding:0;
+	margin:0;
 	height:18px;
 	text-align:left;
 }
@@ -143,8 +137,8 @@
 /* Form field definitions */
 .content_formtable input[type=text] {
 	width:200px;
-	padding:0px;
-	margin:0px;
+	padding:0;
+	margin:0;
 	border: 1px solid #6CF;
 	background: #d1e2fd url(../images/input.png);
 	font-family:Verdana, Helvetica, sans-serif;
@@ -153,8 +147,8 @@
 }
 .content_formtable input[type=password] {
 	width:200px;
-	padding:0px;
-	margin:0px;
+	padding:0;
+	margin:0;
 	border: 1px solid #6CF;
 	background: #d1e2fd url(../images/input.png);
 	font-family:Verdana, Helvetica, sans-serif;
@@ -201,8 +195,8 @@
 .content_formtable input[type=text].short {
 	width:150px;
 	height:18px;
-	padding:0px;
-	margin:0px;
+	padding:0;
+	margin:0;
 	border: 1px solid #6CF;
 	background: #d1e2fd url(../images/input.png);
 	font-family:Verdana, Helvetica, sans-serif;
@@ -231,7 +225,7 @@
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 .content_formtable input[type=button][disabled] {
@@ -243,7 +237,7 @@
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 .content_formtable input[type=submit] {
@@ -255,7 +249,7 @@
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 .content_formtable input[type=submit][disabled] {
@@ -267,7 +261,7 @@
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 .content_formtable input[type=reset] {
@@ -279,20 +273,20 @@
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 .content_formtable input[type=checkbox] {
 	border:none;
-	margin-left:0px;
-	margin-right:0px;
+	margin-left:0;
+	margin-right:0;
 	background:none;
 	float:left;
 }
 .content_formtable input[type=radio] {
 	border:none;
-	margin-left:0px;
-	margin-right:0px;
+	margin-left:0;
+	margin-right:0;
 	background:none;
 	float:left;
 }
@@ -307,10 +301,10 @@
 	height: 15px;
 }
 .content_formtable iframe {
-    border: none;
+	border: none;
 }
 #versioncheck {
-    border: none;
+	border: none;
 }
 /* Additional form table definitions */
 .content_formtable .inpmust {
@@ -361,8 +355,8 @@
 	height:18px;
 }
 .content_formtable .radio_cell_2 {
-	 width:29px;
-	 padding-bottom:2px;
+	width:29px;
+	padding-bottom:2px;
 }
 /* Content list view */
 .content_listtable {
@@ -383,8 +377,7 @@
 .content_listtable td {
 	text-align: left;
 	vertical-align: middle;
-	padding:0px;
-	padding-bottom:2px;
+	padding: 0 0 2px;
 	height:25px;
 }
 .content_listtable .tdlb {
@@ -422,8 +415,8 @@
 	text-align:center;
 }
 .content_logtable .loglegend {
-	border: 0px;
-	padding: 0px;
+	border: 0;
+	padding: 0;
 	width:445px;
 }
 /* Custom */

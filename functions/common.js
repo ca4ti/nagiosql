@@ -1,8 +1,14 @@
-
-
-popup = false;
+/*
+(c) 2005-2018 by Martin Willisegger
+Project   : NagiosQL
+Component : common JavaScript functions
+Website   : https://sourceforge.net/projects/nagiosql/
+Version   : 3.4.0
+GIT Repo  : https://gitlab.com/wizonet/NagiosQL
+ */
+let popup = false;
 function info(key1,key2,ver) {
-    if(popup&&popup.closed==false) popup.close();
+    if(popup && popup.closed === false) popup.close();
     const top = (screen.availHeight - 240) / 2;
     const left = (screen.availWidth - 320) / 2;
     popup = window.open("info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver,
@@ -11,30 +17,26 @@ function info(key1,key2,ver) {
     popup.focus();
 }
 
-const myFocusObject = new Object();
+const myFocusObject = {};
 
 function checkfields(fields,frm,object) {
-    const error = false;
     const ar_field = fields.split(",");
-    for (i=0;i<ar_field.length;i++){
-        if (frm[ar_field[i]].value == "") {
+    for (let i=0;i<ar_field.length;i++){
+        if (frm[ar_field[i]].value === "") {
             //frm[ar_field[i]].focus();
             object.myValue = frm[ar_field[i]];
             return false;
-            break;
         }
     }
     return true;
 }
 function checkfields2(fields,frm,object) {
-    const error = false;
     const ar_field = fields.split(",");
-    for (i=0;i<ar_field.length;i++){
-        if ((frm[ar_field[i]].value == "") || (frm[ar_field[i]].value == "0")) {
+    for (let i=0;i<ar_field.length;i++){
+        if ((frm[ar_field[i]].value === "") || (frm[ar_field[i]].value === "0")) {
             //frm[ar_field[i]].focus();
             object.myValue = frm[ar_field[i]];
             return false;
-            break;
         }
     }
     return true;
@@ -52,16 +54,17 @@ function checkboxes(fields,frm) {
 
 <!-- YUI message box -->
 function msginit(msg,header,type) {
+    let iconobj;
     YAHOO.namespace("msg.container");
     const handleOK = function () {
         this.hide();
         //myFocusObject.myValue.focus();
     };
-    if (type == 1) {
-        var iconobj = YAHOO.widget.SimpleDialog.ICON_WARN;
+    if (type === 1) {
+        iconobj = YAHOO.widget.SimpleDialog.ICON_WARN;
     }
-    if (type == 2) {
-        var iconobj = YAHOO.widget.SimpleDialog.ICON_HELP;
+    if (type === 2) {
+        iconobj = YAHOO.widget.SimpleDialog.ICON_HELP;
     }
     YAHOO.msg.container.domainmsg = new YAHOO.widget.SimpleDialog("domainmsg",
         { width: "300px",
@@ -82,16 +85,18 @@ function msginit(msg,header,type) {
 
 <!-- YUI confirm box -->
 function confirminit(msg,header,type,yes,no,key) {
+    let iconobj;
     YAHOO.namespace("question.container");
     const handleYes = function () {
+        // noinspection JSUnresolvedFunction
         confOpenerYes(key);
         this.hide();
     };
     const handleNo = function () {
         this.hide();
     };
-    if (type == 1) {
-        var iconobj = YAHOO.widget.SimpleDialog.ICON_WARN;
+    if (type === 1) {
+        iconobj = YAHOO.widget.SimpleDialog.ICON_WARN;
     }
     YAHOO.question.container.domainmsg = new YAHOO.widget.SimpleDialog("confirm1",
         { width: "400px",
@@ -133,14 +138,16 @@ function dialoginit(key1,key2,ver,header) {
         success: handleSuccess,
         failure: handleFailure
     };
-    if (key2 == "updInfo") {
+    let sUrl;
+    if (key2 === "updInfo") {
         sUrl = "admin/info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver;
     } else {
         sUrl = "info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver;
     }
-    const request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 
-    if (typeof YAHOO.dialog.container.infodialog == "undefined") {
+    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+
+    if (typeof YAHOO.dialog.container.infodialog === "undefined") {
         YAHOO.dialog.container.infodialog = new YAHOO.widget.Dialog("infodialog",
             { width : "50em",
                 visible : false,
@@ -168,16 +175,17 @@ function calendarinit(lang,start,field,key,cont,obj) {
             hide_blank_weeks:true,
             START_WEEKDAY:start
         });
-        if (lang == "de_DE") {
+        if (lang === "de_DE") {
             calendar.cfg.setProperty("MONTHS_LONG",    ["Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]);
             calendar.cfg.setProperty("WEEKDAYS_SHORT", ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]);
         }
 
-        function cancelHandler() {
-            this.hide();
-        }
+        //function cancelHandler() {
+        //   this.hide();
+        //}
 
-        function handleSelect(type,args,obj) {
+        //function handleSelect(type,args,obj) {
+        function handleSelect(type,args) {
             const dates = args[0];
             const date = dates[0];
             const year = date[0];
@@ -230,25 +238,26 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
             success: handleSuccess,
             failure: handleFailure
         };
+        let sUrl;
         sUrl = "mutdialog.php?object=" + field + "&exclude=" + exclude;
-        const request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+        YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 
         const handleSave = function () {
             const source = document.getElementById(field);
             const targetSelect = document.getElementById(field + 'Selected');
-            const targetAvail = document.getElementById(field + 'Avail');
-            for (i = 0; i < targetSelect.length; ++i) {
+            //const targetAvail = document.getElementById(field + 'Avail');
+            for (let i = 0; i < targetSelect.length; ++i) {
                 targetSelect.options[i].selected = true;
             }
-            for (i = 0; i < source.length; ++i) {
+            for (let i = 0; i < source.length; ++i) {
                 source.options[i].selected = false;
                 source.options[i].className = source.options[i].className.replace(/ ieselected/g, '');
             }
-            for (i = 0; i < targetSelect.length; ++i) {
-                for (y = 0; y < source.length; ++y) {
+            for (let i = 0; i < targetSelect.length; ++i) {
+                for (let y = 0; y < source.length; ++y) {
                     const value1 = targetSelect.options[i].value.replace(/^e/g, '');
                     const value2 = "e" + value1;
-                    if ((source.options[y].value == value1) || (source.options[y].value == value2)) {
+                    if ((source.options[y].value === value1) || (source.options[y].value === value2)) {
                         source.options[y].selected = true;
                         source.options[y].value = targetSelect.options[i].value;
                         source.options[y].text = targetSelect.options[i].text;
@@ -257,7 +266,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
                 }
             }
             this.cancel();
-            if ((typeof(update) == 'number') && (update == 1)) {
+            if ((typeof(update) === 'number') && (update === 1)) {
                 updateForm(field);
             }
         };
@@ -291,26 +300,28 @@ function getData(field) {
     const source = document.getElementById(field);
     const targetSelect = document.getElementById(field + 'Selected');
     const targetAvail = document.getElementById(field + 'Avail');
-    for (i=0; i < targetSelect.length; i++) {
+    for (let i=0; i < targetSelect.length; i++) {
         targetSelect.options[i] = null;
     }
     targetSelect.length = 0;
-    for (i=0; i < targetAvail.length; i++) {
+    for (let i=0; i < targetAvail.length; i++) {
         targetAvail.options[i] = null;
     }
     targetAvail.length = 0;
-    for (i = 0; i < source.length; ++i) {
-        if (source.options[i].selected == true) {
+    let NeuerEintrag1;
+    let NeuerEintrag2;
+    for (let i = 0; i < source.length; ++i) {
+        if (source.options[i].selected === true) {
             NeuerEintrag1 = new Option(source.options[i].text, source.options[i].value, false, false);
-            NeuerEintrag1.className = source.options[i].className.replace(/ ieselected/g , '');
-            NeuerEintrag1.className = NeuerEintrag1.className.replace(/ inpmust/g , '');
+            NeuerEintrag1.className = source.options[i].className.replace(/ ieselected/g, '');
+            NeuerEintrag1.className = NeuerEintrag1.className.replace(/ inpmust/g, '');
             targetSelect.options[targetSelect.length] = NeuerEintrag1;
         }
-        if (source.options[i].selected == false) {
-            if (source.options[i].text != "") {
+        if (source.options[i].selected === false) {
+            if (source.options[i].text !== "") {
                 NeuerEintrag2 = new Option(source.options[i].text, source.options[i].value, false, false);
-                NeuerEintrag2.className = source.options[i].className.replace(/ ieselected/g , '');
-                NeuerEintrag2.className = NeuerEintrag2.className.replace(/ inpmust/g , '');
+                NeuerEintrag2.className = source.options[i].className.replace(/ ieselected/g, '');
+                NeuerEintrag2.className = NeuerEintrag2.className.replace(/ inpmust/g, '');
                 targetAvail.options[targetAvail.length] = NeuerEintrag2;
             }
         }
@@ -320,10 +331,11 @@ function getData(field) {
 function selValue(field) {
     const targetSelect = document.getElementById(field + 'Selected');
     const targetAvail = document.getElementById(field + 'Avail');
-    if (targetAvail.selectedIndex != -1) {
-        const DelOptions = new Array();
-        for (i = 0; i < targetAvail.length; ++i) {
-            if (targetAvail.options[i].selected == true) {
+    let NeuerEintrag;
+    if (targetAvail.selectedIndex !== -1) {
+        const DelOptions = [];
+        for (let i = 0; i < targetAvail.length; ++i) {
+            if (targetAvail.options[i].selected === true) {
                 NeuerEintrag = new Option(targetAvail.options[i].text, targetAvail.options[i].value, false, false);
                 NeuerEintrag.className = targetAvail.options[i].className;
                 targetSelect.options[targetSelect.length] = NeuerEintrag;
@@ -332,7 +344,7 @@ function selValue(field) {
         }
         sort(targetSelect);
         DelOptions.reverse();
-        for (var i = 0; i < DelOptions.length; ++i) {
+        for (let i=0; i<DelOptions.length; ++i) {
             targetAvail.options[DelOptions[i]] = null;
         }
     }
@@ -341,12 +353,13 @@ function selValue(field) {
 function selValueEx(field) {
     const targetSelect = document.getElementById(field + 'Selected');
     const targetAvail = document.getElementById(field + 'Avail');
-    if (targetAvail.selectedIndex != -1) {
-        const DelOptions = new Array();
-        for (i = 0; i < targetAvail.length; ++i) {
-            if (targetAvail.options[i].selected == true) {
-                if ((targetAvail.options[i].text != '*') && (targetAvail.options[i].value != '0')) {
-                    NeuerEintrag = new Option("!"+targetAvail.options[i].text, "e"+targetAvail.options[i].value, false, false);
+    let NeuerEintrag;
+    if (targetAvail.selectedIndex !== -1) {
+        const DelOptions = [];
+        for (let i = 0; i < targetAvail.length; ++i) {
+            if (targetAvail.options[i].selected === true) {
+                if ((targetAvail.options[i].text !== '*') && (targetAvail.options[i].value !== '0')) {
+                    NeuerEintrag = new Option("!" + targetAvail.options[i].text, "e" + targetAvail.options[i].value, false, false);
                 } else {
                     NeuerEintrag = new Option(targetAvail.options[i].text, targetAvail.options[i].value, false, false);
                 }
@@ -357,7 +370,7 @@ function selValueEx(field) {
         }
         sort(targetSelect);
         DelOptions.reverse();
-        for (var i = 0; i < DelOptions.length; ++i) {
+        for (let i = 0; i < DelOptions.length; ++i) {
             targetAvail.options[DelOptions[i]] = null;
         }
     }
@@ -366,10 +379,11 @@ function selValueEx(field) {
 function desValue(field) {
     const targetSelect = document.getElementById(field + 'Selected');
     const targetAvail = document.getElementById(field + 'Avail');
-    if (targetSelect.selectedIndex != -1) {
-        const DelOptions = new Array();
-        for (i = 0; i < targetSelect.length; ++i) {
-            if (targetSelect.options[i].selected == true) {
+    let NeuerEintrag;
+    if (targetSelect.selectedIndex !== -1) {
+        const DelOptions = [];
+        for (let i = 0; i < targetSelect.length; ++i) {
+            if (targetSelect.options[i].selected === true) {
                 const text = targetSelect.options[i].text.replace(/^!/g, '');
                 const value = targetSelect.options[i].value.replace(/^e/g, '');
                 NeuerEintrag = new Option(text, value, false, false);
@@ -380,20 +394,20 @@ function desValue(field) {
         }
         sort(targetAvail);
         DelOptions.reverse();
-        for (var i = 0; i < DelOptions.length; ++i) {
+        for (let i = 0; i < DelOptions.length; ++i) {
             targetSelect.options[DelOptions[i]] = null;
         }
     }
 }
 // Sort entries
 function sort(obj){
-    const sortieren = new Array();
-    const list = new Array();
+    const sortieren = [];
+    const list = [];
     let i;
 
     // Insert list to array
     for (i=0; i < obj.options.length; i++) {
-        list[i] = new Array();
+        list[i] = [];
         list[i]["text"] = obj.options[i].text;
         list[i]["value"] = obj.options[i].value;
         list[i]["className"] = obj.options[i].className;
@@ -421,7 +435,8 @@ function sort(obj){
     }
 
     // insert list to dialog
-    for (i=0; i < list.length; i++){
+    let NeuerEintrag;
+    for (i = 0; i < list.length; i++) {
         NeuerEintrag = new Option(list[i]["text"], list[i]["value"], false, false);
         NeuerEintrag.className = list[i]["className"];
         obj.options[i] = NeuerEintrag;
@@ -429,7 +444,7 @@ function sort(obj){
 }
 // Show relation data
 function showRelationData(option) {
-    if (option == 1) {
+    if (option === 1) {
         document.getElementById("rel_text").className = "elementHide";
         document.getElementById("rel_info").className = "elementShow";
     } else {

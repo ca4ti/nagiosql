@@ -38,7 +38,7 @@ require($preBasePath.'functions/prepend_content.php');
 //
 // Checkbox data processing
 // ========================
-if ($intVersion == 3) {
+if (($intVersion == 3) || ($intVersion == 4)) {
     $strHO = substr($chkChbGr1a.$chkChbGr1b.$chkChbGr1c.$chkChbGr1d.$chkChbGr1e.$chkChbGr1f, 0, -1);
     $strSO = substr($chkChbGr2a.$chkChbGr2b.$chkChbGr2c.$chkChbGr2d.$chkChbGr2e.$chkChbGr2f.$chkChbGr2g, 0, -1);
 } else {
@@ -157,15 +157,15 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
-                if (($intRet1 + $intRet2 + $intRet3) != 0) {
-                    $strInfoMessage = "";
-                }
+                //if (($intRet1 + $intRet2 + $intRet3) != 0) {
+                //$strInfoMessage = "";
+                //}
                 //
                 // Insert/update templates from session data
                 // =========================================
                 if ($chkModus == "modify") {
-                    $strSQL     = "DELETE FROM `tbl_lnkContactToContacttemplate` WHERE `idMaster`=$chkDataId";
-                    $booReturn  = $myDataClass->dataInsert($strSQL, $intInsertId);
+                    $strSQL    = "DELETE FROM `tbl_lnkContactToContacttemplate` WHERE `idMaster`=$chkDataId";
+                    $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                     if ($booReturn == false) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
@@ -190,23 +190,23 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                 // Insert/update variables from session data
                 // =========================================
                 if ($chkModus == "modify") {
-                    $strSQL1     = "SELECT * FROM `tbl_lnkContactToVariabledefinition` WHERE `idMaster`=$chkDataId";
-                    $booReturn1  = $myDBClass->hasDataArray($strSQL1, $arrData, $intDataCount);
-                    if ($booReturn1 == false) {
+                    $strSQL1   = "SELECT * FROM `tbl_lnkContactToVariabledefinition` WHERE `idMaster`=$chkDataId";
+                    $booReturn = $myDBClass->hasDataArray($strSQL1, $arrData, $intDataCount);
+                    if ($booReturn == false) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intDataCount != 0) {
                         foreach ($arrData as $elem) {
-                            $strSQL     = "DELETE FROM `tbl_variabledefinition` WHERE `id`=".$elem['idSlave'];
-                            $booReturn  = $myDataClass->dataInsert($strSQL, $intInsertId);
+                            $strSQL    = "DELETE FROM `tbl_variabledefinition` WHERE `id`=".$elem['idSlave'];
+                            $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($booReturn == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
                         }
                     }
-                    $strSQL2    = "DELETE FROM `tbl_lnkContactToVariabledefinition` WHERE `idMaster`=$chkDataId";
-                    $booReturn2 = $myDataClass->dataInsert($strSQL2, $intInsertId);
-                    if ($booReturn2 == false) {
+                    $strSQL    = "DELETE FROM `tbl_lnkContactToVariabledefinition` WHERE `idMaster`=$chkDataId";
+                    $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
+                    if ($booReturn == false) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
@@ -214,15 +214,15 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     (count($_SESSION['variabledefinition']) != 0)) {
                     foreach ($_SESSION['variabledefinition'] as $elem) {
                         if ($elem['status'] == 0) {
-                            $strSQL3    = "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`) "
+                            $strSQL    = "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`) "
                                 . "VALUES ('".$elem['definition']."','".$elem['range']."',now())";
-                            $booReturn3 = $myDataClass->dataInsert($strSQL3, $intInsertId);
-                            if ($booReturn3 == false) {
+                            $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
+                            if ($booReturn == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
-                            $strSQL4    = "INSERT INTO `tbl_lnkContactToVariabledefinition` (`idMaster`,`idSlave`) "
+                            $strSQL    = "INSERT INTO `tbl_lnkContactToVariabledefinition` (`idMaster`,`idSlave`) "
                                 . "VALUES ($chkDataId,$intInsertId)";
-                            $booReturn4 = $myDataClass->dataInsert($strSQL4, $intInsertId);
+                            $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($booReturn4 == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
