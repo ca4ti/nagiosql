@@ -960,7 +960,7 @@ class nagvisual {
 			$strSQL  = "SELECT `tbl_service`.`id` AS `key`, CONCAT(`tbl_service`.`config_name`, ' - ', `tbl_service`.`service_description`) AS `value`, `active` 
 						FROM `tbl_service` WHERE $strDomainWhere1 AND `tbl_service`.`config_name` <> '' 
 						AND `tbl_service`.`config_name` IS NOT NULL AND `tbl_service`.`service_description` <> '' AND `tbl_service`.`service_description` IS NOT NULL 
-						AND `access_group` IN ($strAccess) ORDER BY `value";
+						AND `access_group` IN ($strAccess) ORDER BY `value`";
 		} else {
 	   		// Common statement
 			$strSQL  = "SELECT `id` AS `key`, `".$strTabField."` AS `value`, `config_id`, `active` FROM `".$strTable."` WHERE $strDomainWhere1
