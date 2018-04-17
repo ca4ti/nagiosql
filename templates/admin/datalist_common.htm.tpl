@@ -1,7 +1,7 @@
 <!-- (c) 2005-2018 by Martin Willisegger -->
 <!-- -->
 <!-- Project   : NagiosQL -->
-<!-- Component : Common ist view template -->
+<!-- Component : Common list view template -->
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
 <!-- Version   : 3.4.0 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->

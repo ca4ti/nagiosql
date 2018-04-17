@@ -1,18 +1,15 @@
 <!-- (c) 2005-2018 by Martin Willisegger -->
 <!-- -->
-<!-- Project    : NagiosQL -->
-<!-- Component  : hosttemplate template -->
-<!-- Website    : https://sourceforge.net/projects/nagiosql/ -->
-<!-- Date       : $LastChangedDate: 2018-04-01 11:15:21 +0200 (So, 01 Apr 2018) $ -->
-<!-- Author     : $LastChangedBy: martin $ -->
-<!-- Version    : 3.4.0 -->
-<!-- Revision   : $LastChangedRevision: 7 $ -->
-<!-- BEGIN header -->
+<!-- Project   : NagiosQL -->
+<!-- Component : hosttemplate template -->
+<!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
+<!-- Version   : 3.4.0 -->
+<!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
+<!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <!-- END header -->
-    <!-- BEGIN datainsert -->
-    <script language="JavaScript" type="text/JavaScript">
+    <!--suppress JSUnresolvedVariable, JSUnusedLocalSymbols -->
+    <script type="text/JavaScript">
         <!--
         // Initialize change dialog
         openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_PARENTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}","1");
@@ -20,8 +17,9 @@
         openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_CONTACTS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}");
         openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_CONTACT_GROUPS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}");
         openMutDlgInit("mselValue5","mutdialogvalue5","{LANG_MODIFY_SELECTION}: {LANG_SERVICES}","mutvalue5","{LANG_SAVE}","{LANG_ABORT}");
-        var version  = "{VERSION}";
-        var argcount = 0;
+        const version = "{VERSION}";
+        const argcount = 0;
+
         // Interrupt input
         function abort() {
             this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
@@ -31,16 +29,19 @@
             document.getElementById("fullcommand").src = "{BASE_PATH}admin/commandline.php?cname="+cname;
         }
         // Send form
+        /**
+         * @return {boolean}
+         */
         function LockButton() {
-            if (checkForm() == false) {
+            if (checkForm() === false) {
                 return false;
             } else {
                 // Enable select fields
-                var selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5";
-                var ar_sel    = selfields.split(",");
-                for (i=0;i<ar_sel.length;i++){
+                const selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5";
+                const ar_sel = selfields.split(",");
+                for (let i=0;i<ar_sel.length;i++){
                     document.getElementById(ar_sel[i]).disabled = false;
-                    for (y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+                    for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
                         document.getElementById(ar_sel[i]).options[y].disabled = false;
                     }
                 }
@@ -51,24 +52,24 @@
         // Check form entries
         function checkForm() {
             // Are all required fields filled in?
-            var fields1 = "tfValue1";
-            var fields2 = "tfValue3,tfValue5,tfNullVal2,selValue2,selValue4";
-            var fields3 = "chbGr1a,chbGr1b,chbGr1c,chbGr1d,chbGr1e";
-            var fields4 = "tfNullVal7";
-            var msg1    = "{FILL_ALLFIELDS}";
-            var msg2    = "{FILL_ILLEGALCHARS}";
-            var msg3	  = "{FILL_ARGUMENTS}";
-            var header  = "{LANG_FORMCHECK}";
-            var form    = document.frmDetail;
-            var check   = false;
+            const fields1 = "tfValue1";
+            const fields2 = "tfValue3,tfValue5,tfNullVal2,selValue2,selValue4";
+            const fields3 = "chbGr1a,chbGr1b,chbGr1c,chbGr1d,chbGr1e";
+            const fields4 = "tfNullVal7";
+            const bypass  = "{CHECK_BYPASS_NEW}";
+            const msg1 = "{FILL_ALLFIELDS}";
+            const msg2 = "{FILL_ILLEGALCHARS}";
+            const header = "{LANG_FORMCHECK}";
+            const form = document.frmDetail;
+            let check;
             check = checkfields(fields1,form,myFocusObject);
-            if (check == false) {
+            if (check === false) {
                 msginit(msg1,header,1);
                 return false;
             }
             // Check sum of required arguments
-            for (i=1;i<=argcount;i++) {
-                if (document.getElementById("tfArg"+i).value == "") {
+            for (let i=1;i<=argcount;i++) {
+                if (document.getElementById("tfArg"+i).value === "") {
                     confirminit("{FILL_ARGUMENTS}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
                     return false;
                 }
@@ -84,40 +85,41 @@
                 form.tfValue1.focus();
                 return false;
             }
-            {CHECK_BYPASS}
-            check = checkfields(fields4,form,myFocusObject);
-            if (check == false) {
-                confirminit("{LANG_MUST_BUT_TEMPLATE}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
-                return false
-            }
-            check = checkfields2(fields2,form,myFocusObject);
-            if (check == false) {
-                confirminit("{LANG_MUST_BUT_TEMPLATE}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
-                return false
-            }
-            if ((form.mselValue3.value == "") && (form.mselValue4.value == "")) {
-                confirminit("{LANG_MUST_BUT_TEMPLATE}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
-                return false
-            }
-            if (version != "3") {
-                check = checkboxes(fields3,form);
-                if (check == false) {
-                    confirminit("{LANG_MUST_BUT_TEMPLATE}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
+            if (bypass === '0') {
+                check = checkfields(fields4, form, myFocusObject);
+                if (check === false) {
+                    confirminit("{LANG_MUST_BUT_TEMPLATE}", "{LANG_SECURE_QUESTION}", 2, "{LANG_YES}", "{LANG_NO}", 2);
                     return false
+                }
+                check = checkfields2(fields2, form, myFocusObject);
+                if (check === false) {
+                    confirminit("{LANG_MUST_BUT_TEMPLATE}", "{LANG_SECURE_QUESTION}", 2, "{LANG_YES}", "{LANG_NO}", 2);
+                    return false
+                }
+                if ((form.mselValue3.value === "") && (form.mselValue4.value === "")) {
+                    confirminit("{LANG_MUST_BUT_TEMPLATE}", "{LANG_SECURE_QUESTION}", 2, "{LANG_YES}", "{LANG_NO}", 2);
+                    return false
+                }
+                if (version !== "3") {
+                    check = checkboxes(fields3, form);
+                    if (check === false) {
+                        confirminit("{LANG_MUST_BUT_TEMPLATE}", "{LANG_SECURE_QUESTION}", 2, "{LANG_YES}", "{LANG_NO}", 2);
+                        return false
+                    }
                 }
             }
         }
         // Insert template definition
         function insertDefintion() {
-            var txtDef = document.frmDetail.selTemplate.value;
+            const txtDef = document.frmDetail.selTemplate.value;
             document.getElementById("templframe").src = "{BASE_PATH}admin/templatedefinitions.php?dataId={DAT_ID}&type=host&mode=add&def="+txtDef;
         }
         // Insert free variable definition
         function insertDefintionVar() {
-            var txtDef 	 = document.frmDetail.txtVariablename.value;
-            var txtRange = document.frmDetail.txtVariablevalue.value;
-            if ((txtDef == "") || (txtRange == "")) {
-                var header  = "{LANG_FORMCHECK}";
+            const txtDef = document.frmDetail.txtVariablename.value;
+            const txtRange = document.frmDetail.txtVariablevalue.value;
+            if ((txtDef === "") || (txtRange === "")) {
+                const header = "{LANG_FORMCHECK}";
                 msginit("{LANG_INSERT_ALL_VARIABLE}",header,1);
                 return false;
             }
@@ -125,13 +127,13 @@
         }
         // Process security questions
         function confOpenerYes(key) {
-            if (key == 2) {
+            if (key === 2) {
                 // Enable select fields
-                var selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5";
-                var ar_sel    = selfields.split(",");
-                for (i=0;i<ar_sel.length;i++){
+                const selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5";
+                const ar_sel = selfields.split(",");
+                for (let i=0;i<ar_sel.length;i++){
                     document.getElementById(ar_sel[i]).disabled = false;
-                    for (y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+                    for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
                         document.getElementById(ar_sel[i]).options[y].disabled = false;
                     }
                 }
@@ -141,16 +143,16 @@
         }
         // Check initial state
         function checkInitial(key) {
-            form = document.frmDetail;
-            if (key == "o") {
+            const form = document.frmDetail;
+            if (key === "o") {
                 form.chbGr2b.checked = false;
                 form.chbGr2c.checked = false;
             }
-            if (key == "d") {
+            if (key === "d") {
                 form.chbGr2a.checked = false;
                 form.chbGr2c.checked = false;
             }
-            if (key == "u") {
+            if (key === "u") {
                 form.chbGr2a.checked = false;
                 form.chbGr2b.checked = false;
             }
@@ -174,18 +176,18 @@
                         </tr>
                         <tr>
                             <td class="content_tbl_row1">{LANG_HOST_NAME} *</td>
-                            <td class="content_tbl_row2"><input name="tfValue1" type="text" id="tfValue1" value="{DAT_HOST_NAME}" class="inpmust" tabindex="1"><input type="hidden" name="tfValue2" id="tfValue2" value="{DAT_HOST_NAME}"></td>
+                            <td class="content_tbl_row2"><input title="{LANG_HOST_NAME}" name="tfValue1" type="text" id="tfValue1" value="{DAT_HOST_NAME}" class="inpmust" tabindex="1"><input type="hidden" name="tfValue2" id="tfValue2" value="{DAT_HOST_NAME}"></td>
                             <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','hostname','all','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_DESCRIPTION} *</td>
-                            <td class="content_tbl_row2"><input name="tfValue3" type="text" id="tfValue3" value="{DAT_ALIAS}" class="inpmust" tabindex="2"></td>
+                            <td class="content_tbl_row2"><input title="{LANG_DESCRIPTION}" name="tfValue3" type="text" id="tfValue3" value="{DAT_ALIAS}" class="inpmust" tabindex="2"></td>
                             <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','alias','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_ADDRESS} *</td>
-                            <td><input name="tfValue5" type="text" id="tfValue5" value="{DAT_ADDRESS}" class="inpmust" tabindex="3"></td>
+                            <td><input title="{LANG_ADDRESS}" name="tfValue5" type="text" id="tfValue5" value="{DAT_ADDRESS}" class="inpmust" tabindex="3"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','address','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_DISPLAY_NAME}</td>
-                            <td><input name="tfValue4" type="text" id="tfValue4" value="{DAT_DISPLAY_NAME}" tabindex="4"></td>
+                            <td><input title="{LANG_DISPLAY_NAME}" name="tfValue4" type="text" id="tfValue4" value="{DAT_DISPLAY_NAME}" tabindex="4"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','display_name','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
@@ -194,7 +196,7 @@
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td>
-                                            <select name="mselValue1[]" size="4" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
+                                            <select title="{LANG_PARENTS}" name="mselValue1[]" size="4" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
                                                 <!-- BEGIN host_parents -->
                                                 <option value="{DAT_HOST_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_PARENTS_SEL}" {DAT_HOST_PARENTS_SEL} {OPTION_DISABLED}>{DAT_HOST_PARENTS}</option>
                                                 <!-- END host_parents -->
@@ -209,7 +211,7 @@
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td>
-                                            <select name="mselValue2[]" size="4" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
+                                            <select title="{LANG_HOST_GROUPS}" name="mselValue2[]" size="4" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
                                                 <!-- BEGIN hostgroup -->
                                                 <option value="{DAT_HOSTGROUP_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
                                                 <!-- END hostgroup -->
@@ -225,11 +227,11 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue1" type="radio" class="checkbox" id="radValue10" value="0" {DAT_PAR0_CHECKED} tabindex="5"></td>
+                                        <td class="radio_cell_1"><input title="+" name="radValue1" type="radio" class="checkbox" id="radValue10" value="0" {DAT_PAR0_CHECKED} tabindex="5"></td>
                                         <td class="radio_cell_2">+</td>
-                                        <td class="radio_cell_1"><input name="radValue1" type="radio" class="checkbox" id="radValue11" value="1" {DAT_PAR1_CHECKED} tabindex="5"></td>
+                                        <td class="radio_cell_1"><input title="null" name="radValue1" type="radio" class="checkbox" id="radValue11" value="1" {DAT_PAR1_CHECKED} tabindex="5"></td>
                                         <td class="radio_cell_2">null</td>
-                                        <td class="radio_cell_1"><input name="radValue1" type="radio" class="checkbox" id="radValue12" value="2" {DAT_PAR2_CHECKED} tabindex="5"></td>
+                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue1" type="radio" class="checkbox" id="radValue12" value="2" {DAT_PAR2_CHECKED} tabindex="5"></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
                                 </table>
@@ -239,11 +241,11 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0" class="template_tab">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue2" type="radio" class="checkbox" id="radValue20" value="0" {DAT_HOG0_CHECKED} tabindex="6"></td>
+                                        <td class="radio_cell_1"><input title="+" name="radValue2" type="radio" class="checkbox" id="radValue20" value="0" {DAT_HOG0_CHECKED} tabindex="6"></td>
                                         <td class="radio_cell_2">+</td>
-                                        <td class="radio_cell_1"><input name="radValue2" type="radio" class="checkbox" id="radValue21" value="1" {DAT_HOG1_CHECKED} tabindex="6"></td>
+                                        <td class="radio_cell_1"><input title="null" name="radValue2" type="radio" class="checkbox" id="radValue21" value="1" {DAT_HOG1_CHECKED} tabindex="6"></td>
                                         <td class="radio_cell_2">null</td>
-                                        <td class="radio_cell_1"><input name="radValue2" type="radio" class="checkbox" id="radValue22" value="2" {DAT_HOG2_CHECKED} tabindex="6"></td>
+                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue2" type="radio" class="checkbox" id="radValue22" value="2" {DAT_HOG2_CHECKED} tabindex="6"></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
                                 </table>
@@ -253,7 +255,7 @@
                         <tr>
                             <td>{LANG_CHECK_COMMAND}</td>
                             <td>
-                                <select name="selValue1" id="selValue1" class="selectborder" onChange="setIframe(this.value);" tabindex="7">
+                                <select title="{LANG_CHECK_COMMAND}" name="selValue1" id="selValue1" class="selectborder" onChange="setIframe(this.value);" tabindex="7">
                                     <!-- BEGIN hostcommand -->
                                     <option value="{DAT_HOSTCOMMAND_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_HOSTCOMMAND_SEL}>{DAT_HOSTCOMMAND}</option>
                                     <!-- END hostcommand -->
@@ -267,39 +269,39 @@
                         </tr>
                         <tr>
                             <td>$ARG1$</td>
-                            <td><input name="tfArg1" type="text" id="tfArg1" value="{DAT_ARG1}" tabindex="8"></td>
+                            <td><input title="$ARG1$" name="tfArg1" type="text" id="tfArg1" value="{DAT_ARG1}" tabindex="8"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','arguments','all','Info');" class="infobutton_1"></td>
                             <td>$ARG5$</td>
-                            <td colspan="2"><input name="tfArg5" type="text" id="tfArg5" value="{DAT_ARG5}" tabindex="12"></td>
+                            <td colspan="2"><input title="$ARG5$" name="tfArg5" type="text" id="tfArg5" value="{DAT_ARG5}" tabindex="12"></td>
                         </tr>
                         <tr>
                             <td>$ARG2$</td>
-                            <td colspan="2"><input name="tfArg2" type="text" id="tfArg2" value="{DAT_ARG2}" tabindex="9"></td>
+                            <td colspan="2"><input title="$ARG2$" name="tfArg2" type="text" id="tfArg2" value="{DAT_ARG2}" tabindex="9"></td>
                             <td>$ARG6$</td>
-                            <td colspan="2"><input name="tfArg6" type="text" id="tfArg6" value="{DAT_ARG6}" tabindex="13"></td>
+                            <td colspan="2"><input title="$ARG6$" name="tfArg6" type="text" id="tfArg6" value="{DAT_ARG6}" tabindex="13"></td>
                         </tr>
                         <tr>
                             <td>$ARG3$</td>
-                            <td colspan="2"><input name="tfArg3" type="text" id="tfArg3" value="{DAT_ARG3}" tabindex="10"></td>
+                            <td colspan="2"><input title="$ARG3$" name="tfArg3" type="text" id="tfArg3" value="{DAT_ARG3}" tabindex="10"></td>
                             <td>$ARG7$</td>
-                            <td colspan="2"><input name="tfArg7" type="text" id="tfArg7" value="{DAT_ARG7}" tabindex="14"></td>
+                            <td colspan="2"><input title="$ARG7$" name="tfArg7" type="text" id="tfArg7" value="{DAT_ARG7}" tabindex="14"></td>
                         </tr>
                         <tr>
                             <td>$ARG4$</td>
-                            <td colspan="2"><input name="tfArg4" type="text" id="tfArg4" value="{DAT_ARG4}" tabindex="11"></td>
+                            <td colspan="2"><input title="$ARG4$" name="tfArg4" type="text" id="tfArg4" value="{DAT_ARG4}" tabindex="11"></td>
                             <td>$ARG8$</td>
-                            <td colspan="2"><input name="tfArg8" type="text" id="tfArg8" value="{DAT_ARG8}" tabindex="15"></td>
+                            <td colspan="2"><input title="$ARG8$" name="tfArg8" type="text" id="tfArg8" value="{DAT_ARG8}" tabindex="15"></td>
                         </tr>
                         <tr>
                             <td colspan="3">&nbsp;</td>
                             <td>{LANG_REGISTERED}</td>
-                            <td><input name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED} tabindex="16"></td>
+                            <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED} tabindex="16"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
-                            <td colspan="3"style="padding-bottom:5px;"><strong>{LANG_ADDITIONAL_TEMPLATES}</strong></td>
+                            <td colspan="3" style="padding-bottom:5px;"><strong>{LANG_ADDITIONAL_TEMPLATES}</strong></td>
                             <td>{LANG_ACTIVE}</td>
-                            <td colspan="2"><input name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED} tabindex="17">
+                            <td colspan="2"><input title="{LANG_ACTIVE}" name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED} tabindex="17">
                                 <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}"></td>
                         </tr>
                         <tr>
@@ -312,7 +314,7 @@
                         <tr>
                             <td>{LANG_TEMPLATE_NAME}</td>
                             <td>
-                                <select name="selTemplate" class="selectborder" tabindex="18">
+                                <select title="{LANG_TEMPLATE_NAME}" name="selTemplate" class="selectborder" tabindex="18">
                                     <!-- BEGIN template -->
                                     <option value="{DAT_TEMPLATE_ID}" class="empty_class {SPECIAL_STYLE}">{DAT_TEMPLATE}</option>
                                     <!-- END template -->
@@ -346,26 +348,26 @@
                             <td class="{VERSION_30_VISIBLE}">
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="chbGr2a" type="checkbox" class="checkbox" id="chbGr2a" value="o" {DAT_ISO_CHECKED} onClick="checkInitial(this.value);"></td>
+                                        <td class="radio_cell_1"><input title="o" name="chbGr2a" type="checkbox" class="checkbox" id="chbGr2a" value="o" {DAT_ISO_CHECKED} onClick="checkInitial(this.value);"></td>
                                         <td class="radio_cell_1">o</td>
-                                        <td class="radio_cell_1"><input name="chbGr2b" type="checkbox" class="checkbox" id="chbGr2b" value="d" {DAT_ISD_CHECKED} onClick="checkInitial(this.value);"></td>
+                                        <td class="radio_cell_1"><input title="d" name="chbGr2b" type="checkbox" class="checkbox" id="chbGr2b" value="d" {DAT_ISD_CHECKED} onClick="checkInitial(this.value);"></td>
                                         <td class="radio_cell_1">d</td>
-                                        <td class="radio_cell_1"><input name="chbGr2c" type="checkbox" class="checkbox" id="chbGr2c" value="u" {DAT_ISU_CHECKED} onClick="checkInitial(this.value);"></td>
+                                        <td class="radio_cell_1"><input title="u" name="chbGr2c" type="checkbox" class="checkbox" id="chbGr2c" value="u" {DAT_ISU_CHECKED} onClick="checkInitial(this.value);"></td>
                                         <td class="radio_cell_1">u</td>
                                     </tr>
                                 </table>
                             </td>
                             <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','initial_state','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_RETRY_INTERVAL}</td>
-                            <td><input name="tfNullVal1" type="text" id="tfNullVal1" value="{DAT_RETRY_INTERVAL}" class="short"><span class="shorttext">min</span></td>
+                            <td><input title="{LANG_RETRY_INTERVAL}" name="tfNullVal1" type="text" id="tfNullVal1" value="{DAT_RETRY_INTERVAL}" class="short"><span class="shorttext">min</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','retry_interval','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td class="content_tbl_row1">{LANG_MAX_CHECK_ATTEMPTS} *</td>
-                            <td class="content_tbl_row2"><input name="tfNullVal2" type="text" id="tfNullVal2" value="{DAT_MAX_CHECK_ATTEMPTS}" class="inpmust"></td>
+                            <td class="content_tbl_row2"><input title="{LANG_MAX_CHECK_ATTEMPTS}" name="tfNullVal2" type="text" id="tfNullVal2" value="{DAT_MAX_CHECK_ATTEMPTS}" class="inpmust"></td>
                             <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','max_check_attempts','all','Info');"  class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_CHECK_INTERVAL}</td>
-                            <td class="content_tbl_row2"><input name="tfNullVal3" type="text" id="tfNullVal3" value="{DAT_CHECK_INTERVAL}" class="short"><span class="shorttext">min</span></td>
+                            <td class="content_tbl_row2"><input title="{LANG_CHECK_INTERVAL}" name="tfNullVal3" type="text" id="tfNullVal3" value="{DAT_CHECK_INTERVAL}" class="short"><span class="shorttext">min</span></td>
                             <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','check_interval','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
@@ -373,13 +375,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue5" type="radio" class="checkbox" id="radValue50" value="1" {DAT_ACE1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue5" type="radio" class="checkbox" id="radValue50" value="1" {DAT_ACE1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue5" type="radio" class="checkbox" id="radValue51" value="0" {DAT_ACE0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue5" type="radio" class="checkbox" id="radValue51" value="0" {DAT_ACE0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue5" type="radio" class="checkbox" id="radValue52" value="2" {DAT_ACE2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue5" type="radio" class="checkbox" id="radValue52" value="2" {DAT_ACE2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue5" type="radio" class="checkbox" id="radValue53" value="3" {DAT_ACE3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue5" type="radio" class="checkbox" id="radValue53" value="3" {DAT_ACE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -389,13 +391,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue6" type="radio" class="checkbox" id="radValue60" value="1" {DAT_PCE1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue6" type="radio" class="checkbox" id="radValue60" value="1" {DAT_PCE1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue6" type="radio" class="checkbox" id="radValue61" value="0" {DAT_PCE0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue6" type="radio" class="checkbox" id="radValue61" value="0" {DAT_PCE0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue6" type="radio" class="checkbox" id="radValue62" value="2" {DAT_PCE2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue6" type="radio" class="checkbox" id="radValue62" value="2" {DAT_PCE2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue6" type="radio" class="checkbox" id="radValue63" value="3" {DAT_PCE3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue6" type="radio" class="checkbox" id="radValue63" value="3" {DAT_PCE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -408,7 +410,7 @@
                         <tr>
                             <td>{LANG_CHECK_PERIOD} *</td>
                             <td>
-                                <select name="selValue2" id="selValue2" class="selectbordermust inpmust">
+                                <select title="{LANG_CHECK_PERIOD}" name="selValue2" id="selValue2" class="selectbordermust inpmust">
                                     <!-- BEGIN checkperiod -->
                                     <option value="{DAT_CHECKPERIOD_ID}" class="empty_class inpmust {SPECIAL_STYLE}" {DAT_CHECKPERIOD_SEL}>{DAT_CHECKPERIOD}</option>
                                     <!-- END checkperiod -->
@@ -416,7 +418,7 @@
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','check_period','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_FRESHNESS_TRESHOLD}</td>
-                            <td><input name="tfNullVal4" type="text" id="tfNullVal4" value="{DAT_FRESHNESS_THRESHOLD}" class="short"><span class="shorttext">sec</span></td>
+                            <td><input title="{LANG_FRESHNESS_TRESHOLD}" name="tfNullVal4" type="text" id="tfNullVal4" value="{DAT_FRESHNESS_THRESHOLD}" class="short"><span class="shorttext">sec</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','freshness_threshold','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
@@ -424,13 +426,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue7" type="radio" class="checkbox" id="radValue71" value="1" {DAT_FRE1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue7" type="radio" class="checkbox" id="radValue71" value="1" {DAT_FRE1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue7" type="radio" class="checkbox" id="radValue70" value="0" {DAT_FRE0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue7" type="radio" class="checkbox" id="radValue70" value="0" {DAT_FRE0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue7" type="radio" class="checkbox" id="radValue72" value="2" {DAT_FRE2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue7" type="radio" class="checkbox" id="radValue72" value="2" {DAT_FRE2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue7" type="radio" class="checkbox" id="radValue73" value="3" {DAT_FRE3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue7" type="radio" class="checkbox" id="radValue73" value="3" {DAT_FRE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -440,13 +442,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue8" type="radio" class="checkbox" id="radValue81" value="1" {DAT_OBS1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue8" type="radio" class="checkbox" id="radValue81" value="1" {DAT_OBS1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue8" type="radio" class="checkbox" id="radValue80" value="0" {DAT_OBS0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue8" type="radio" class="checkbox" id="radValue80" value="0" {DAT_OBS0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue8" type="radio" class="checkbox" id="radValue82" value="2" {DAT_OBS2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue8" type="radio" class="checkbox" id="radValue82" value="2" {DAT_OBS2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue8" type="radio" class="checkbox" id="radValue83" value="3" {DAT_OBS3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue8" type="radio" class="checkbox" id="radValue83" value="3" {DAT_OBS3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -459,7 +461,7 @@
                         <tr>
                             <td>{LANG_EVENT_HANDLER}</td>
                             <td>
-                                <select name="selValue3" id="selValue3" class="selectborder">
+                                <select title="{LANG_EVENT_HANDLER}" name="selValue3" id="selValue3" class="selectborder">
                                     <!-- BEGIN eventhandler -->
                                     <option value="{DAT_EVENTHANDLER_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_EVENTHANDLER_SEL}>{DAT_EVENTHANDLER}</option>
                                     <!-- END eventhandler -->
@@ -470,13 +472,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue9" type="radio" class="checkbox" id="radValue91" value="1" {DAT_EVH1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue9" type="radio" class="checkbox" id="radValue91" value="1" {DAT_EVH1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue9" type="radio" class="checkbox" id="radValue90" value="0" {DAT_EVH0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue9" type="radio" class="checkbox" id="radValue90" value="0" {DAT_EVH0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue9" type="radio" class="checkbox" id="radValue92" value="2" {DAT_EVH2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue9" type="radio" class="checkbox" id="radValue92" value="2" {DAT_EVH2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue9" type="radio" class="checkbox" id="radValue93" value="3" {DAT_EVH3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue9" type="radio" class="checkbox" id="radValue93" value="3" {DAT_EVH3_CHECKED}></td>
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -488,10 +490,10 @@
                         </tr>
                         <tr>
                             <td>{LANG_LOW_FLAP_THRESHOLD}</td>
-                            <td><input name="tfNullVal5" type="text" id="tfNullVal5" value="{DAT_LOW_FLAP_THRESHOLD}" class="short"><span class="shorttext">%</span></td>
+                            <td><input title="{LANG_LOW_FLAP_THRESHOLD}" name="tfNullVal5" type="text" id="tfNullVal5" value="{DAT_LOW_FLAP_THRESHOLD}" class="short"><span class="shorttext">%</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','low_flap_threshold','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_HIGH_FLAP_THRESHOLD}</td>
-                            <td><input name="tfNullVal6" type="text" id="tfNullVal6" value="{DAT_HIGH_FLAP_THRESHOLD}" class="short"><span class="shorttext">%</span></td>
+                            <td><input title="{LANG_HIGH_FLAP_THRESHOLD}" name="tfNullVal6" type="text" id="tfNullVal6" value="{DAT_HIGH_FLAP_THRESHOLD}" class="short"><span class="shorttext">%</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','high_flap_threshold','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
@@ -499,13 +501,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue10" type="radio" class="checkbox" id="radValue101" value="1" {DAT_FLE1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue10" type="radio" class="checkbox" id="radValue101" value="1" {DAT_FLE1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue10" type="radio" class="checkbox" id="radValue100" value="0" {DAT_FLE0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue10" type="radio" class="checkbox" id="radValue100" value="0" {DAT_FLE0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue10" type="radio" class="checkbox" id="radValue102" value="2" {DAT_FLE2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue10" type="radio" class="checkbox" id="radValue102" value="2" {DAT_FLE2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue10" type="radio" class="checkbox" id="radValue103" value="3" {DAT_FLE3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue10" type="radio" class="checkbox" id="radValue103" value="3" {DAT_FLE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -515,11 +517,11 @@
                             <td class="{VERSION_30_VISIBLE}">
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="chbGr3a" type="checkbox" class="checkbox" id="chbGr3a" value="o" {DAT_FLO_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="o" name="chbGr3a" type="checkbox" class="checkbox" id="chbGr3a" value="o" {DAT_FLO_CHECKED}></td>
                                         <td class="radio_cell_1">o</td>
-                                        <td class="radio_cell_1"><input name="chbGr3b" type="checkbox" class="checkbox" id="chbGr3b" value="d" {DAT_FLD_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="d" name="chbGr3b" type="checkbox" class="checkbox" id="chbGr3b" value="d" {DAT_FLD_CHECKED}></td>
                                         <td class="radio_cell_1">d</td>
-                                        <td class="radio_cell_1"><input name="chbGr3c" type="checkbox" class="checkbox" id="chbGr3c" value="u" {DAT_FLU_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="u" name="chbGr3c" type="checkbox" class="checkbox" id="chbGr3c" value="u" {DAT_FLU_CHECKED}></td>
                                         <td class="radio_cell_1">u</td>
                                     </tr>
                                 </table>
@@ -534,13 +536,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue11" type="radio" class="checkbox" id="radValue111" value="1" {DAT_STI1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue11" type="radio" class="checkbox" id="radValue111" value="1" {DAT_STI1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue11" type="radio" class="checkbox" id="radValue110" value="0" {DAT_STI0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue11" type="radio" class="checkbox" id="radValue110" value="0" {DAT_STI0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue11" type="radio" class="checkbox" id="radValue112" value="2" {DAT_STI2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue11" type="radio" class="checkbox" id="radValue112" value="2" {DAT_STI2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue11" type="radio" class="checkbox" id="radValue113" value="3" {DAT_STI3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue11" type="radio" class="checkbox" id="radValue113" value="3" {DAT_STI3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -550,13 +552,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue12" type="radio" class="checkbox" id="radValue121" value="1" {DAT_NSI1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue12" type="radio" class="checkbox" id="radValue121" value="1" {DAT_NSI1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue12" type="radio" class="checkbox" id="radValue120" value="0" {DAT_NSI0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue12" type="radio" class="checkbox" id="radValue120" value="0" {DAT_NSI0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue12" type="radio" class="checkbox" id="radValue122" value="2" {DAT_NSI2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue12" type="radio" class="checkbox" id="radValue122" value="2" {DAT_NSI2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue12" type="radio" class="checkbox" id="radValue123" value="3" {DAT_NSI3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue12" type="radio" class="checkbox" id="radValue123" value="3" {DAT_NSI3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -568,13 +570,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue13" type="radio" class="checkbox" id="radValue131" value="1" {DAT_PED1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue13" type="radio" class="checkbox" id="radValue131" value="1" {DAT_PED1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue13" type="radio" class="checkbox" id="radValue130" value="0" {DAT_PED0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue13" type="radio" class="checkbox" id="radValue130" value="0" {DAT_PED0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue13" type="radio" class="checkbox" id="radValue132" value="2" {DAT_PED2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue13" type="radio" class="checkbox" id="radValue132" value="2" {DAT_PED2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue13" type="radio" class="checkbox" id="radValue133" value="3" {DAT_PED3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue13" type="radio" class="checkbox" id="radValue133" value="3" {DAT_PED3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -605,7 +607,7 @@
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td>
-                                            <select name="mselValue4[]" size="4" multiple id="mselValue4" class="selectbordermust inpmust" {MSIE_DISABLED}>
+                                            <select title="{LANG_CONTACT_GROUPS}" name="mselValue4[]" size="4" multiple id="mselValue4" class="selectbordermust inpmust" {MSIE_DISABLED}>
                                                 <!-- BEGIN host_contactgroups -->
                                                 <option value="{DAT_HOST_CONTACTGROUPS_ID}"  class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_CONTACTGROUPS_SEL}" {DAT_HOST_CONTACTGROUPS_SEL} {OPTION_DISABLED}>{DAT_HOST_CONTACTGROUPS}</option>
                                                 <!-- END host_contactgroups -->
@@ -620,7 +622,7 @@
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr class="{VERSION_30_VISIBLE}">
                                         <td>
-                                            <select name="mselValue3[]" size="4" multiple id="mselValue3" class="selectbordermust inpmust" {MSIE_DISABLED}>
+                                            <select title="{LANG_CONTACTS}" name="mselValue3[]" size="4" multiple id="mselValue3" class="selectbordermust inpmust" {MSIE_DISABLED}>
                                                 <!-- BEGIN host_contacts -->
                                                 <option value="{DAT_HOST_CONTACTS_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_CONTACTS_SEL}" {DAT_HOST_CONTACTS_SEL} {OPTION_DISABLED}>{DAT_HOST_CONTACTS}</option>
                                                 <!-- END host_contacts -->
@@ -636,11 +638,11 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue4" type="radio" class="checkbox" id="radValue40" value="0" {DAT_COG0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="+" name="radValue4" type="radio" class="checkbox" id="radValue40" value="0" {DAT_COG0_CHECKED}></td>
                                         <td class="radio_cell_2">+</td>
-                                        <td class="radio_cell_1"><input name="radValue4" type="radio" class="checkbox" id="radValue41" value="1" {DAT_COG1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="null" name="radValue4" type="radio" class="checkbox" id="radValue41" value="1" {DAT_COG1_CHECKED}></td>
                                         <td class="radio_cell_2">null</td>
-                                        <td class="radio_cell_1"><input name="radValue4" type="radio" class="checkbox" id="radValue42" value="2" {DAT_COG2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue4" type="radio" class="checkbox" id="radValue42" value="2" {DAT_COG2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
                                 </table>
@@ -650,11 +652,11 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue3" type="radio" class="checkbox" id="radValue30" value="0" {DAT_COT0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="+" name="radValue3" type="radio" class="checkbox" id="radValue30" value="0" {DAT_COT0_CHECKED}></td>
                                         <td class="radio_cell_2">+</td>
-                                        <td class="radio_cell_1"><input name="radValue3" type="radio" class="checkbox" id="radValue31" value="1" {DAT_COT1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="null" name="radValue3" type="radio" class="checkbox" id="radValue31" value="1" {DAT_COT1_CHECKED}></td>
                                         <td class="radio_cell_2">null</td>
-                                        <td class="radio_cell_1"><input name="radValue3" type="radio" class="checkbox" id="radValue32" value="2" {DAT_COT2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue3" type="radio" class="checkbox" id="radValue32" value="2" {DAT_COT2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
                                 </table>
@@ -667,7 +669,7 @@
                         <tr>
                             <td class="content_tbl_row1">{LANG_NOTIFICATION_PERIOD} *</td>
                             <td class="content_tbl_row2">
-                                <select name="selValue4" id="selValue4"  class="selectbordermust inpmust">
+                                <select title="{LANG_NOTIFICATION_PERIOD}" name="selValue4" id="selValue4"  class="selectbordermust inpmust">
                                     <!-- BEGIN notifyperiod -->
                                     <option value="{DAT_NOTIFYPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_NOTIFYPERIOD_SEL}>{DAT_NOTIFYPERIOD}</option>
                                     <!-- END notifyperiod -->
@@ -678,15 +680,15 @@
                             <td class="content_tbl_row2">
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="chbGr1a" type="checkbox" class=" checkbox" id="chbGr1a" value="d" {DAT_NOD_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="d" name="chbGr1a" type="checkbox" class=" checkbox" id="chbGr1a" value="d" {DAT_NOD_CHECKED}></td>
                                         <td class="radio_cell_1">d</td>
-                                        <td class="radio_cell_1"><input name="chbGr1b" type="checkbox" class=" checkbox" id="chbGr1b" value="u" {DAT_NOU_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="u" name="chbGr1b" type="checkbox" class=" checkbox" id="chbGr1b" value="u" {DAT_NOU_CHECKED}></td>
                                         <td class="radio_cell_1">u</td>
-                                        <td class="radio_cell_1"><input name="chbGr1c" type="checkbox" class=" checkbox" id="chbGr1c" value="r" {DAT_NOR_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="r" name="chbGr1c" type="checkbox" class=" checkbox" id="chbGr1c" value="r" {DAT_NOR_CHECKED}></td>
                                         <td class="radio_cell_1">r</td>
-                                        <td class="radio_cell_1"><input name="chbGr1d" type="checkbox" class=" checkbox" id="chbGr1d" value="f" {DAT_NOF_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="f" name="chbGr1d" type="checkbox" class=" checkbox" id="chbGr1d" value="f" {DAT_NOF_CHECKED}></td>
                                         <td class="radio_cell_1">f</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="chbGr1e" type="checkbox" class=" checkbox" id="chbGr1e" value="s" {DAT_NOS_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="s" name="chbGr1e" type="checkbox" class=" checkbox" id="chbGr1e" value="s" {DAT_NOS_CHECKED}></td>
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}">s</td>
                                     </tr>
                                 </table>
@@ -695,10 +697,10 @@
                         </tr>
                         <tr>
                             <td>{LANG_NOTIFICATION_INTERVAL} *</td>
-                            <td><input name="tfNullVal7" type="text" id="tfNullVal7" value="{DAT_NOTIFICATION_INTERVAL}" class="shortmust"><span class="shorttext">min</span></td>
+                            <td><input title="{LANG_NOTIFICATION_INTERVAL}" name="tfNullVal7" type="text" id="tfNullVal7" value="{DAT_NOTIFICATION_INTERVAL}" class="shortmust"><span class="shorttext">min</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','notification_intervall','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_FIRST_NOTIFICATION_DELAY}</td>
-                            <td><input name="tfNullVal8" type="text" id="tfNullVal8" value="{DAT_FIRST_NOTIFICATION_DELAY}" class="short"><span class="shorttext">min</span></td>
+                            <td><input title="{LANG_FIRST_NOTIFICATION_DELAY}" name="tfNullVal8" type="text" id="tfNullVal8" value="{DAT_FIRST_NOTIFICATION_DELAY}" class="short"><span class="shorttext">min</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','first_notification_delay','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
@@ -706,13 +708,13 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="radValue14" type="radio" class="checkbox" id="radValue141" value="1" {DAT_NOE1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue14" type="radio" class="checkbox" id="radValue141" value="1" {DAT_NOE1_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_ON}</td>
-                                        <td class="radio_cell_1"><input name="radValue14" type="radio" class="checkbox" id="radValue140" value="0" {DAT_NOE0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_OFF}" name="radValue14" type="radio" class="checkbox" id="radValue140" value="0" {DAT_NOE0_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_OFF}</td>
-                                        <td class="radio_cell_1"><input name="radValue14" type="radio" class="checkbox" id="radValue142" value="2" {DAT_NOE2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_SKIP}" name="radValue14" type="radio" class="checkbox" id="radValue142" value="2" {DAT_NOE2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_SKIP}</td>
-                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input name="radValue14" type="radio" class="checkbox" id="radValue143" value="3" {DAT_NOE3_CHECKED}></td>
+                                        <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue14" type="radio" class="checkbox" id="radValue143" value="3" {DAT_NOE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
                                 </table>
@@ -722,11 +724,11 @@
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
-                                        <td class="radio_cell_1"><input name="chbGr4a" type="checkbox" class=" checkbox" id="chbGr4a" value="o" {DAT_STO_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="o" name="chbGr4a" type="checkbox" class=" checkbox" id="chbGr4a" value="o" {DAT_STO_CHECKED}></td>
                                         <td class="radio_cell_1">o</td>
-                                        <td class="radio_cell_1"><input name="chbGr4b" type="checkbox" class=" checkbox" id="chbGr4b" value="d" {DAT_STD_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="d" name="chbGr4b" type="checkbox" class=" checkbox" id="chbGr4b" value="d" {DAT_STD_CHECKED}></td>
                                         <td class="radio_cell_1">d</td>
-                                        <td class="radio_cell_1"><input name="chbGr4c" type="checkbox" class=" checkbox" id="chbGr4c" value="u" {DAT_STU_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="u" name="chbGr4c" type="checkbox" class=" checkbox" id="chbGr4c" value="u" {DAT_STU_CHECKED}></td>
                                         <td class="radio_cell_1">u</td>
                                     </tr>
                                 </table>
@@ -752,39 +754,39 @@
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_NOTES}</td>
-                            <td><input name="tfValue7" type="text" id="tfValue7" value="{DAT_NOTES}"></td>
+                            <td><input title="{LANG_NOTES}" name="tfValue7" type="text" id="tfValue7" value="{DAT_NOTES}"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','notes','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_VRML_IMAGE}</td>
-                            <td><input name="tfValue8" type="text" id="tfValue8" value="{DAT_VRML_IMAGE}"></td>
+                            <td><input title="{LANG_VRML_IMAGE}" name="tfValue8" type="text" id="tfValue8" value="{DAT_VRML_IMAGE}"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','vrml_image','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_NOTES_URL}</td>
-                            <td><input name="tfValue9" type="text" id="tfValue9" value="{DAT_NOTES_URL}"></td>
+                            <td><input title="{LANG_NOTES_URL}" name="tfValue9" type="text" id="tfValue9" value="{DAT_NOTES_URL}"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','notes_url','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_STATUS_IMAGE}</td>
-                            <td><input name="tfValue10" type="text" id="tfValue10" value="{DAT_STATUSMAP_IMAGE}"></td>
+                            <td><input title="{LANG_STATUS_IMAGE}" name="tfValue10" type="text" id="tfValue10" value="{DAT_STATUSMAP_IMAGE}"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','status_image','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_ACTION_URL}</td>
-                            <td><input name="tfValue11" type="text" id="tfValue11" value="{DAT_ACTION_URL}"></td>
+                            <td><input title="{LANG_ACTION_URL}" name="tfValue11" type="text" id="tfValue11" value="{DAT_ACTION_URL}"></td>
                             <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','action_url','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_ICON_IMAGE}</td>
-                            <td><input name="tfValue12" type="text" id="tfValue12" value="{DAT_ICON_IMAGE}"></td>
+                            <td><input title="{LANG_ICON_IMAGE}" name="tfValue12" type="text" id="tfValue12" value="{DAT_ICON_IMAGE}"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','icon_image','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_2D_COORDS}</td>
-                            <td><input name="tfValue14" type="text" id="tfValue14" value="{DAT_2D_COORDS}" class="short"><span class="shorttext">(x,y)</span></td>
+                            <td><input title="{LANG_2D_COORDS}" name="tfValue14" type="text" id="tfValue14" value="{DAT_2D_COORDS}" class="short"><span class="shorttext">(x,y)</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','2d_coords','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_ICON_IMAGE_ALT_TEXT}</td>
-                            <td><input name="tfValue13" type="text" id="tfValue13" value="{DAT_ICON_IMAGE_ALT}"></td>
+                            <td><input title="{LANG_ICON_IMAGE_ALT_TEXT}" name="tfValue13" type="text" id="tfValue13" value="{DAT_ICON_IMAGE_ALT}"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','icon_image_alt_text','3','Info');" class="infobutton_1"></td>
                             <td>{LANG_3D_COORDS}</td>
-                            <td><input name="tfValue15" type="text" id="tfValue15" value="{DAT_3D_COORDS}" class="short"><span class="shorttext">(x,y,z)</span></td>
+                            <td><input title="{LANG_3D_COORDS}" name="tfValue15" type="text" id="tfValue15" value="{DAT_3D_COORDS}" class="short"><span class="shorttext">(x,y,z)</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','3d_coords','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
@@ -793,7 +795,7 @@
                         <tr {RESTRICT_GROUP_ADMIN}>
                             <td>{LANG_ACCESS_GROUP}</td>
                             <td>
-                                <select name="selAccGr" class="selectborder">
+                                <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
                                     <!-- BEGIN acc_group -->
                                     <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
                                     <!-- END acc_group -->
@@ -822,12 +824,12 @@
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_VARIABLE_NAME}</td>
-                            <td><input type="text" name="txtVariablename" id="txtVariablename" class="selectborder"></td>
+                            <td><input title="{LANG_VARIABLE_NAME}" type="text" name="txtVariablename" id="txtVariablename" class="selectborder"></td>
                             <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','free_variables_name','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>{LANG_VARIABLE_VALUE}</td>
-                            <td><input type="text" name="txtVariablevalue" id="txtVariablevalue" class="selectborder"></td>
+                            <td><input title="{LANG_VARIABLE_VALUE}" type="text" name="txtVariablevalue" id="txtVariablevalue" class="selectborder"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','free_variables_value','all','Info');" class="infobutton_1"></td>
                             <td colspan="3"><input type="button" name="butVariableDefinition" value="{LANG_INSERT}" onClick="insertDefintionVar()"></td>
                         </tr>
@@ -839,7 +841,7 @@
                         </tr>
                         <tr>
                             <td class="content_tbl_row1">{LANG_GENERIC_NAME}</td>
-                            <td class="content_tbl_row2"><input type="text" name="tfValue6" id="tfValue6" value="{DAT_NAME}"></td>
+                            <td class="content_tbl_row2"><input title="{LANG_GENERIC_NAME}" type="text" name="tfValue6" id="tfValue6" value="{DAT_NAME}"></td>
                             <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','genericname','all','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">&nbsp;</td>
                             <td class="content_tbl_row2">&nbsp;</td>
@@ -874,7 +876,7 @@
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td>
-                                            <select name="mselValue5[]" size="8" multiple id="mselValue5" class="selectborder" style="width:450px" {MSIE_DISABLED}>
+                                            <select title="{LANG_SERVICES}" name="mselValue5[]" size="8" multiple id="mselValue5" class="selectborder" style="width:450px" {MSIE_DISABLED}>
                                                 <!-- BEGIN host_services -->
                                                 <option value="{DAT_HOST_SERVICES_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_SERVICES_SEL}" {DAT_HOST_SERVICES_SEL} {OPTION_DISABLED}>{DAT_HOST_SERVICES}</option>
                                                 <!-- END host_services -->
@@ -911,10 +913,11 @@
             </div>
         </div>
     </form>
+    <!--suppress JSUnusedLocalSymbols -->
     <script type="text/javascript" language="javascript">
         <!--
         (function() {
-            var tabView = new YAHOO.widget.TabView('host');
+            const tabView = new YAHOO.widget.TabView('host');
         })();
         //-->
     </script>

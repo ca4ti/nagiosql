@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-14 23:28:30 +0200 (Sat, 14 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-15 19:35:30 +0200 (Sun, 15 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 26 $
+// Revision  : $LastChangedRevision: 27 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1043,7 +1043,79 @@ class NagConfigClass
         return($intReturn);
     }
 
-
+    /**
+     * Writes a configuration file including one single datasets of a configuration table or returns the output as
+     * a text file for download.
+     * @param string $strTableName              Table name
+     * @param int $intDbId                      Data ID
+     * @param int $intMode                      0 = Write file to filesystem
+     *                                          1 = Return Textfile for download test
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function createConfigSingle($strTableName, $intDbId = 0, $intMode = 0)
+    {
+        // Define Variables
+        $arrData            = array();
+        $intDataCount       = 0;
+        $setEnableCommon    = 0;
+        $intReturn          = 0;
+        $strDomainWhere     = " (`config_id`=".$this->intDomainId.") ";
+        // Read some settings and informations
+        $this->getDomainData("enable_common", $setEnableCommon);
+        // Variable rewritting
+        if ($setEnableCommon != 0) {
+            $strDomainWhere = str_replace(')', ' OR `config_id`=0)', $strDomainWhere);
+        }
+        // Do not create configs in common domain
+        if ($this->intDomainId == 0) {
+            $this->processClassMessage(translate('It is not possible to write config files directly from the common '
+                    . 'domain!')."::", $this->strErrorMessage);
+            $intReturn = 1;
+        }
+        if ($intReturn == 0) {
+            if ($intDbId == 0) {
+                $strSQL = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' ORDER BY `id`";
+            } else {
+                $strSQL = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' AND `id`=$intDbId";
+            }
+            $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
+            if (($booReturn != false) && ($intDataCount != 0)) {
+                for ($i = 0; $i < $intDataCount; $i++) {
+                    // Process form POST variable
+                    $strChbName = "chbId_".$arrData[$i]['id'];
+                    // Check if this POST variable exists or the data ID parameter matches
+                    if ((filter_input(INPUT_POST, $strChbName) !== null) || (($intDbId != 0) &&
+                            ($intDbId == $arrData[$i]['id']))) {
+                        // Get configuration targets
+                        $this->getConfigSets($arrConfigID);
+                        if (($arrConfigID != 1) && is_array($arrConfigID)) {
+                            foreach ($arrConfigID as $intConfigID) {
+                                $intReturn = $this->writeConfTemplate(
+                                    $intConfigID,
+                                    $strTableName,
+                                    $intMode,
+                                    $arrData,
+                                    $i
+                                );
+                            }
+                        } else {
+                            $this->processClassMessage(translate('Warning: no configuration target defined!').
+                                "::", $this->strErrorMessage);
+                            $intReturn = 1;
+                        }
+                    }
+                }
+            } else {
+                $this->myDataClass->writeLog(translate('Writing of the configuration failed - no dataset or not '
+                    . 'activated dataset found'));
+                $this->processClassMessage(translate('Writing of the configuration failed - no dataset or not '
+                        . 'activated dataset found')."::", $this->strErrorMessage);
+                $intReturn = 1;
+            }
+        }
+        return($intReturn);
+    }
 
 
     // PRIVATE functions
@@ -1104,6 +1176,8 @@ class NagConfigClass
     {
         // Variable definitions
         $strSQL         = '';
+        $strOrderField  = '';
+        $strFileString  = '';
         $arrTplOptions  = array('use_preg' => false);
         $strDomainWhere = " (`config_id`=" . $this->intDomainId . ") ";
         $intType        = 0;
@@ -1113,8 +1187,10 @@ class NagConfigClass
         $this->getDomainData("enable_common", $setEnableCommon);
         $this->getConfigData($intConfigID, "version", $intNagiosVersion);
         $arrConfigData = $this->getConfData();
-        $strFileString = str_replace('.cfg', '', $arrConfigData[$strTableName]['filename']);
-        $strOrderField = $arrConfigData[$strTableName]['order_field'];
+        if (isset($arrConfigData[$strTableName])) {
+            $strFileString = str_replace('.cfg', '', $arrConfigData[$strTableName]['filename']);
+            $strOrderField = $arrConfigData[$strTableName]['order_field'];
+        }
         // Variable rewritting
         if ($setEnableCommon != 0) {
             $strDomainWhere = str_replace(')', ' OR `config_id`=0)', $strDomainWhere);

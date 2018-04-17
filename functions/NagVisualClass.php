@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-15 19:35:30 +0200 (Sun, 15 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-16 20:30:47 +0200 (Mon, 16 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 27 $
+// Revision  : $LastChangedRevision: 28 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -842,6 +842,31 @@ class NagVisualClass
         return ($strPath);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //  Function: Process "null" values
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Replaces "NULL" with -1
+    //
+    //  Parameters:                      $strKey                    Process string
+    //
+    //  Return value:                    Modified process string
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Replaces "NULL" with -1
+     * @param string $strKey                    Process string
+     * @return string                           Modified process string
+     */
+    public function checkNull($strKey)
+    {
+        $strReturn = $strKey;
+        if (strtoupper($strKey) == "NULL") {
+            $strReturn = -1;
+        }
+        return($strReturn);
+    }
+
 
     // PRIVATE functions
 
@@ -1062,7 +1087,7 @@ class NagVisualClass
             "FROM `tbl_service` WHERE $strDomainWhere1 AND `tbl_service`.`config_name` <> '' ".
             "AND `tbl_service`.`config_name` IS NOT NULL AND `tbl_service`.`service_description` <> '' ".
             "AND `tbl_service`.`service_description` IS NOT NULL AND `access_group` IN ($strAccess) ".
-            "ORDER BY `value";
+            "ORDER BY `value`";
         return $strSQL;
     }
 

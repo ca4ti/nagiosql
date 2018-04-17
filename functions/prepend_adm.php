@@ -251,6 +251,7 @@ $myConfigClass->myDataClass    =& $myDataClass;
 //
 $myContentClass->myDBClass     =& $myDBClass;
 $myContentClass->myVisClass    =& $myVisClass;
+$myContentClass->myConfigClass =& $myConfigClass;
 if (isset($arrDescription)) {
     $myContentClass->arrDescription = $arrDescription;
 }
