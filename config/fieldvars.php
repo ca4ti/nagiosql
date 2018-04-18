@@ -156,6 +156,7 @@ $arrDescription[] = array("name" => "LANG_NOTIFICATION_INTERVAL",      "string" 
 $arrDescription[] = array("name" => "LANG_FIRST_NOTIFICATION_DELAY",
     "string" => translate("First notification delay"));
 $arrDescription[] = array("name" => "LANG_NOTIFICATION_ENABLED",       "string" => translate("Notification enabled"));
+$arrDescription[] = array("name" => "LANG_IMPORTANCE",                 "string" => translate("Importance"));
 $arrDescription[] = array("name" => "LANG_STALKING_OPTIONS",           "string" => translate("Stalking options"));
 $arrDescription[] = array("name" => "LANG_ADDON_SETTINGS",             "string" => translate("Addon settings"));
 $arrDescription[] = array("name" => "LANG_NOTES",                      "string" => translate("Notes"));

@@ -588,8 +588,6 @@ if (isset($preContent) && ($preContent != "")) {
     $mastertp = new HTML_Template_IT($preBasePath ."templates/");
     if (isset($preListTpl) && ($preListTpl != '')) {
         $mastertp->loadTemplatefile($preListTpl, true, true);
-    } else {
-        $mastertp->loadTemplatefile("admin/admin_master.htm.tpl", true, true);
     }
     $mastertp->setOptions($arrTplOptions);
 }
