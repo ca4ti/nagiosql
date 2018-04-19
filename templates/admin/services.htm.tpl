@@ -17,6 +17,7 @@
         openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_SERVICEGROUPS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}","1");
         openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_CONTACTS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}");
         openMutDlgInit("mselValue5","mutdialogvalue5","{LANG_MODIFY_SELECTION}: {LANG_CONTACT_GROUPS}","mutvalue5","{LANG_SAVE}","{LANG_ABORT}");
+        openMutDlgInit("mselValue6","mutdialogvalue6","{LANG_MODIFY_SELECTION}: {LANG_PARENT_SERVICES}","mutvalue6","{LANG_SAVE}","{LANG_ABORT}");
         const version = "{VERSION}";
         const argcount = 0;
 
@@ -271,11 +272,23 @@
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
-                            <td>{LANG_SERVICE_DESCRIPTION} *</td>
-                            <td><input title="{LANG_SERVICE_DESCRIPTION}" name="tfValue3" type="text" id="tfValue3" value="{DAT_SERVICE_DESCRIPTION}" class="inpmust" tabindex="4"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','service_description','all','Info');" class="infobutton_1"></td>
-                            <td rowspan="3" valign="top">{LANG_SERVICEGROUPS}<br><br><small>{LANG_CTRLINFO}</small></td>
-                            <td rowspan="3" valign="top">
+                            <td valign="top">{LANG_PARENT_SERVICES}<br><br><small>{LANG_CTRLINFO}</small></td>
+                            <td valign="top">
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                        <td>
+                                            <select title="{LANG_PARENT_SERVICES}" name="mselValue6[]" size="4" multiple id="mselValue6" class="selectborder" {MSIE_DISABLED}>
+                                                <!-- BEGIN parents -->
+                                                <option value="{DAT_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_PARENTS_SEL}" {DAT_PARENTS_SEL} {OPTION_DISABLED}>{DAT_PARENTS}</option>
+                                                <!-- END parents -->
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td valign="top"><img id="mutvalue6" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('service','parents','all','Info');" class="infobutton_1"></td>
+                            <td valign="top">{LANG_SERVICEGROUPS}<br><br><small>{LANG_CTRLINFO}</small></td>
+                            <td valign="top">
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td>
@@ -288,23 +301,24 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td rowspan="3" valign="top"><img id="mutvalue3" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('service','service_groups','all','Info');" class="infobutton_1"></td>
+                            <td valign="top"><img id="mutvalue3" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('service','service_groups','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
-                            <td>{LANG_DISPLAY_NAME}</td>
-                            <td><input title="{LANG_DISPLAY_NAME}" name="tfValue4" type="text" id="tfValue4" value="{DAT_DISPLAY_NAME}" tabindex="5"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','display_name','all','Info');" class="infobutton_1"></td>
-
-                        </tr>
-                        <tr>
-                            <td>{LANG_REGISTERED}</td>
-                            <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED} tabindex="6"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
-                        </tr>
-                        <tr>
-                            <td>{LANG_ACTIVE}</td>
-                            <td colspan="3"><input title="{LANG_ACTIVE}" name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED} tabindex="7">
-                                <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}"></td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_30_VISIBLE}">
+                                    <tr>
+                                        <td class="radio_cell_1"><input title="+" name="radValue18" type="radio" class="checkbox" id="radValue180" value="0" tabindex="8" {DAT_SEG0_CHECKED}></td>
+                                        <td class="radio_cell_2">+</td>
+                                        <td class="radio_cell_1"><input title="null" name="radValue18" type="radio" class="checkbox" id="radValue181" value="1" tabindex="8" {DAT_SEG1_CHECKED}></td>
+                                        <td class="radio_cell_2">null</td>
+                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue18" type="radio" class="checkbox" id="radValue182" value="2" tabindex="8" {DAT_SEG2_CHECKED}></td>
+                                        <td class="radio_cell_2">{LANG_STANDARD}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><span  class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></span></td>
+                            <td>&nbsp;</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_30_VISIBLE}">
                                     <tr>
@@ -320,7 +334,12 @@
                             <td><span  class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></span></td>
                         </tr>
                         <tr>
-                            <td colspan="6">&nbsp;</td>
+                            <td>{LANG_SERVICE_DESCRIPTION} *</td>
+                            <td><input title="{LANG_SERVICE_DESCRIPTION}" name="tfValue3" type="text" id="tfValue3" value="{DAT_SERVICE_DESCRIPTION}" class="inpmust" tabindex="4"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','service_description','all','Info');" class="infobutton_1"></td>
+                            <td>{LANG_DISPLAY_NAME}</td>
+                            <td><input title="{LANG_DISPLAY_NAME}" name="tfValue4" type="text" id="tfValue4" value="{DAT_DISPLAY_NAME}" tabindex="5"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','display_name','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td>{LANG_CHECK_COMMAND} *</td>
@@ -363,10 +382,16 @@
                             <td colspan="2"><input title="$ARG8$" name="tfArg8" type="text" id="tfArg8" value="{DAT_ARG8}" tabindex="17"></td>
                         </tr>
                         <tr>
-                            <td colspan="6">&nbsp;</td>
+                            <td colspan="3">&nbsp;</td>
+                            <td>{LANG_REGISTERED}</td>
+                            <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED} tabindex="6"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
-                            <td colspan="6" style="padding-bottom:5px;"><strong>{LANG_ADDITIONAL_TEMPLATES}</strong></td>
+                            <td colspan="3" style="padding-bottom:5px;"><strong>{LANG_ADDITIONAL_TEMPLATES}</strong></td>
+                            <td>{LANG_ACTIVE}</td>
+                            <td colspan="2"><input title="{LANG_ACTIVE}" name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED} tabindex="7">
+                                <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}"></td>
                         </tr>
                         <tr>
                             <td colspan="6" style="padding-bottom:2px;padding-left:5px"><i>{LANG_TEMPLATE_NAME}</i></td>
@@ -839,6 +864,12 @@
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','stalking_options','all','Info');" class="infobutton_1"></td>
                         </tr>
+                        <tr class="{VERSION_40_VISIBLE}">
+                            <td>{LANG_IMPORTANCE}</td>
+                            <td><input title="{LANG_IMPORTANCE}" name="tfNullVal9" type="text" id="tfNullVal9" value="{DAT_IMPORTANCE}"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','importance','all','Info');" class="infobutton_1"></td>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
@@ -975,6 +1006,9 @@
 </div>
 <div id="mutdialogvalue5">
     <div id="mutdialogvalue5content" class="bd"></div>
+</div>
+<div id="mutdialogvalue6">
+    <div id="mutdialogvalue6content" class="bd"></div>
 </div>
 <div id="msgcontainer"></div>
 <div id="confirmcontainer"></div>

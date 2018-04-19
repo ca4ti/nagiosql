@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-14 23:28:30 +0200 (Sat, 14 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-16 20:30:47 +0200 (Mon, 16 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 26 $
+// Revision  : $LastChangedRevision: 28 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -298,13 +298,13 @@ class NagDataClass
                     $intReturn = 1;
                 }
             } else {
-                $this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do ".
-                "not have write permission.')."::", $this->strErrorMessage);
+                $this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do '.
+                        'not have write permission.')."::", $this->strErrorMessage);
                 $intReturn = 1;
             }
         } else {
-            $this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do not ".
-            "have write permission.')."::", $this->strErrorMessage);
+            $this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do not '.
+                    'have write permission.')."::", $this->strErrorMessage);
             $intReturn = 1;
         }
         return($intReturn);
@@ -1016,6 +1016,207 @@ class NagDataClass
         }
         return($intReturn);
     }
+
+    /**
+     * Updates the hash field im some configuration objects
+     * @param string $strTable                  Table name
+     * @param int $intId                        Data ID
+     * @return int                              0 = successful / 1 = error
+     *                                          Status message is stored in message class variables
+     */
+    public function updateHash($strTable, $intId)
+    {
+        // Define variables
+        $strRawString = "";
+        $arrData      = array();
+        $intDC        = 0;
+        $intDataID    = 0;
+        // Service table
+        if ($strTable == "tbl_service") {
+            // Get any hosts and host_groups
+            $strSQL  = "SELECT `host_name` AS `item_name` FROM `tbl_host` ".
+                "LEFT JOIN `tbl_lnkServiceToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                "UNION SELECT `hostgroup_name` AS `item_name` FROM `tbl_hostgroup` ".
+                "LEFT JOIN `tbl_lnkServiceToHostgroup` ON `idSlave`=`id` ".
+                "WHERE `idMaster`=".$intId." ORDER BY `item_name`";
+            $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                foreach ($arrData as $elem) {
+                    $strRawString .= $elem['item_name'].",";
+                }
+            }
+            $strSQL = "SELECT * FROM `tbl_service` WHERE `id`=".$intId;
+            $booRet = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                if ($arrData[0]['service_description'] != "") {
+                    $strRawString .= $arrData[0]['service_description'].",";
+                }
+                if ($arrData[0]['display_name'] != "") {
+                    $strRawString .= $arrData[0]['display_name'].",";
+                }
+                if ($arrData[0]['check_command'] != "") {
+                    $arrField      = explode("!", $arrData[0]['check_command']);
+                    $strCommand    = strchr($arrData[0]['check_command'], "!");
+                    $strSQLRel     = "SELECT `command_name` FROM `tbl_command` WHERE `id`=".$arrField[0];
+                    $strName       = $this->myDBClass->getFieldData($strSQLRel);
+                    $strRawString .= $strName.$strCommand.",";
+                }
+            }
+        }
+        if (($strTable == "tbl_hostdependency") || ($strTable == "tbl_servicedependency")) {
+            // Get * values
+            $strSQL = "SELECT * FROM `".$strTable."` WHERE `id`=".$intId;
+            $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                if (isset($arrData[0]['dependent_host_name'])  && ($arrData[0]['dependent_host_name'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['dependent_hostgroup_name']) && ($arrData[0]['dependent_hostgroup_name'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['host_name']) && ($arrData[0]['host_name'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['hostgroup_name']) && ($arrData[0]['hostgroup_name'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['dependent_service_description']) &&
+                    ($arrData[0]['dependent_service_description'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['service_description']) && ($arrData[0]['service_description'] == 2)) {
+                    $strRawString .= "any,";
+                }
+            }
+            if ($strTable == "tbl_hostdependency") {
+                // Get any hosts and host_groups
+                $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                    "LEFT JOIN `tbl_lnkHostdependencyToHost_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                    "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                    "LEFT JOIN `tbl_lnkHostdependencyToHost_H` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                    "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_H` ON `idSlave`=`id` WHERE `idMaster`=".$intId;
+            }
+            if ($strTable == "tbl_servicedependency") {
+                // Get any hosts and host_groups
+                $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                    "LEFT JOIN `tbl_lnkServicedependencyToHost_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                    "LEFT JOIN `tbl_lnkServicedependencyToHostgroup_DH` ON `idSlave`=`id` ".
+                    "WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                    "LEFT JOIN `tbl_lnkServicedependencyToHost_H` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                    "LEFT JOIN `tbl_lnkServicedependencyToHostgroup_H` ON `idSlave`=`id` ".
+                    "WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
+                    "FROM `tbl_lnkServicedependencyToService_DS` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
+                    "FROM `tbl_lnkServicedependencyToService_S` WHERE `idMaster`=$intId";
+            }
+            $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                foreach ($arrData as $elem) {
+                    if ($elem['exclude'] == 0) {
+                        $strRawString .= $elem['item_name'].",";
+                    } else {
+                        $strRawString .= "not_".$elem['item_name'].",";
+                    }
+                }
+                $strRawString = substr($strRawString, 0, -1);
+            }
+        }
+        if (($strTable == "tbl_hostescalation") || ($strTable == "tbl_serviceescalation")) {
+            // Get * values
+            $strSQL = "SELECT * FROM `".$strTable."` WHERE `id`=".$intId;
+            $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                if (isset($arrData[0]['host_name']) && ($arrData[0]['host_name'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['hostgroup_name']) && ($arrData[0]['hostgroup_name'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['contacts']) && ($arrData[0]['contacts'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['contact_groups']) && ($arrData[0]['contact_groups'] == 2)) {
+                    $strRawString .= "any,";
+                }
+                if (isset($arrData[0]['service_description']) && ($arrData[0]['service_description'] == 2)) {
+                    $strRawString .= "any,";
+                }
+            }
+            // Get any hosts, host_groups, contacts and contact_groups
+            if ($strTable == "tbl_hostescalation") {
+                $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                    "LEFT JOIN `tbl_lnkHostescalationToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude  FROM `tbl_hostgroup` ".
+                    "LEFT JOIN `tbl_lnkHostescalationToHostgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `contact_name` AS `item_name`, exclude  FROM `tbl_contact` ".
+                    "LEFT JOIN `tbl_lnkHostescalationToContact` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `contactgroup_name` AS `item_name`, exclude  FROM `tbl_contactgroup` ".
+                    "LEFT JOIN `tbl_lnkHostescalationToContactgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId";
+            }
+            if ($strTable == "tbl_serviceescalation") {
+                $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                    "LEFT JOIN `tbl_lnkServiceescalationToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude  FROM `tbl_hostgroup` ".
+                    "LEFT JOIN `tbl_lnkServiceescalationToHostgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `contact_name` AS `item_name`, exclude  FROM `tbl_contact` ".
+                    "LEFT JOIN `tbl_lnkServiceescalationToContact` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `contactgroup_name` AS `item_name`, exclude  FROM `tbl_contactgroup` ".
+                    "LEFT JOIN `tbl_lnkServiceescalationToContactgroup` ON `idSlave`=`id` ".
+                    "WHERE `idMaster`=$intId ".
+                    "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
+                    "FROM `tbl_lnkServiceescalationToService` WHERE `idMaster`=$intId";
+            }
+            $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                foreach ($arrData as $elem) {
+                    if ($elem['exclude'] == 0) {
+                        $strRawString .= $elem['item_name'].",";
+                    } else {
+                        $strRawString .= "not_".$elem['item_name'].",";
+                    }
+                }
+                $strRawString = substr($strRawString, 0, -1);
+            }
+        }
+        if ($strTable == "tbl_serviceextinfo") {
+            // Get any hosts and host_groups
+            $strSQL  = "SELECT `tbl_host`.`host_name` AS `item_name` FROM `tbl_host` ".
+                "LEFT JOIN `tbl_serviceextinfo` ON `tbl_host`.`id`=`tbl_serviceextinfo`.`host_name` ".
+                "WHERE `tbl_serviceextinfo`.`id`=$intId ".
+                "UNION SELECT `tbl_service`.`service_description` AS `item_name` FROM `tbl_service` ".
+                "LEFT JOIN `tbl_serviceextinfo` ON ".
+                "`tbl_service`.`id`=`tbl_serviceextinfo`.`service_description` ".
+                "WHERE `tbl_serviceextinfo`.`id`=$intId ORDER BY `item_name`";
+            $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
+            if ($booRet && ($intDC != 0)) {
+                foreach ($arrData as $elem) {
+                    $strRawString .= $elem['item_name'].",";
+                }
+                $strRawString = substr($strRawString, 0, -1);
+            }
+        }
+        // Remove blanks
+        while (substr_count($strRawString, " ") != 0) {
+            $strRawString = str_replace(" ", "", $strRawString);
+        }
+        // Sort hash string
+        $arrTemp = explode(",", $strRawString);
+        sort($arrTemp);
+        $strRawString = implode(",", $arrTemp);
+        // Update has in database
+        $strSQL    = "UPDATE `".$strTable."` SET `import_hash`='".sha1($strRawString)."' WHERE `id`='$intId'";
+        $intReturn = $this->dataInsert($strSQL, $intDataID);
+        //echo "Hash: ".$strRawString." --> ".sha1($strRawString)."<br>";
+        return($intReturn);
+    }
+
 
     // PRIVATE Functions
 

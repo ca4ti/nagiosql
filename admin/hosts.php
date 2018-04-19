@@ -10,7 +10,7 @@
 // Project   : NagiosQL
 // Component : Host definition
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-10 12:08:12 +0200 (Tue, 10 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-18 22:21:57 +0200 (Wed, 18 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
@@ -59,7 +59,8 @@ if ($chkSelValue1 != "") {
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue3', "
         . "`display_name`='$chkTfValue4', `address`='$chkTfValue5', `name`='$chkTfValue6', "
-        . "`parents`=$intMselValue1, `parents_tploptions`=$chkRadValue1, `hostgroups`=$intMselValue2, "
+        . "`parents`=$intMselValue1, `importance`=$chkTfNullVal9,  `parents_tploptions`=$chkRadValue1, "
+        . "`hostgroups`=$intMselValue2, "
         . "`hostgroups_tploptions`=$chkRadValue2, `check_command`='$chkSelValue1', `use_template`=$intTemplates, "
         . "`initial_state`='$strIS', `max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, "
         . "`retry_interval`=$chkTfNullVal1, `active_checks_enabled`=$chkRadValue5, "

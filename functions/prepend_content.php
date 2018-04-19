@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Preprocessing script for content pages
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-10 12:08:12 +0200 (Tue, 10 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-18 22:21:57 +0200 (Wed, 18 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 20 $
+// Revision  : $LastChangedRevision: 30 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -123,7 +123,7 @@ for ($i = 1; $i <= 5; $i++) {
     $$tmpVar = filter_input(INPUT_POST, 'butValue'.$i, FILTER_SANITIZE_STRING);
 }
 // Common text NULL field value
-for ($i = 1; $i <= 8; $i++) {
+for ($i = 1; $i <= 9; $i++) {
     $tmpVar  = 'chkTfNullVal'.$i;
     $$tmpVar = filter_input(INPUT_POST, 'tfNullVal'.$i, FILTER_SANITIZE_STRING);
     if (isset($$tmpVar) && ($$tmpVar != '')) {

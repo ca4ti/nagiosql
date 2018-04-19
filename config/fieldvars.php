@@ -120,6 +120,7 @@ $arrDescription[] = array("name" => "LANG_SERVICE_SETTINGS_DESC",
     "string" => translate("Add this host configuration to existing service definitions"));
 $arrDescription[] = array("name" => "LANG_TEMPLATE_NAME",              "string" => translate("Template name"));
 $arrDescription[] = array("name" => "LANG_PARENTS",                    "string" => translate("Parents"));
+$arrDescription[] = array("name" => "LANG_PARENT_SERVICES",            "string" => translate("Parent services"));
 $arrDescription[] = array("name" => "LANG_HOST_GROUPS",                "string" => translate("Host groups"));
 $arrDescription[] = array("name" => "LANG_CHECK_COMMAND",              "string" => translate("Check command"));
 $arrDescription[] = array("name" => "LANG_COMMAND_VIEW",               "string" => translate("Command view"));

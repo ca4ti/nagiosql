@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Content Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-14 23:28:30 +0200 (Sat, 14 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-15 19:35:30 +0200 (Sun, 15 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 26 $
+// Revision  : $LastChangedRevision: 27 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -352,8 +352,8 @@ class NagContentClass
                         $elem."</b>");
                     $objTemplate->parse('table_time');
                 } else {
-                    $objTemplate->setVariable("LAST_MODIFIED_FILE", translate('Last file change of the configuration 
-                        target ')." <i>".$key."</i>: <b>".$elem."</b>");
+                    $objTemplate->setVariable("LAST_MODIFIED_FILE", translate('Last file change of the configuration '.
+                            'target ')." <i>".$key."</i>: <b>".$elem."</b>");
                     $objTemplate->parse('file_time');
                 }
             }

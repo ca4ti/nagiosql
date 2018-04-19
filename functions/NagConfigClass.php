@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-15 19:35:30 +0200 (Sun, 15 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-17 22:19:38 +0200 (Tue, 17 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 27 $
+// Revision  : $LastChangedRevision: 29 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1494,6 +1494,9 @@ class NagConfigClass
         if ($intVersionValue < 4) {
             if (($strTableName == "tbl_contact") || ($strTableName == "tbl_contacttemplate")) {
                 $strSpecial .= ",minimum_importance";
+            }
+            if ($strTableName == "tbl_host") {
+                $strSpecial .= ",importance";
             }
         }
         if ($intVersionValue == 1) {
