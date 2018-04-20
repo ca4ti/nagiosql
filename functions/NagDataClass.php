@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-16 20:30:47 +0200 (Mon, 16 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-19 22:24:08 +0200 (Thu, 19 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 28 $
+// Revision  : $LastChangedRevision: 31 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -481,8 +481,9 @@ class NagDataClass
         }
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
-            $intDeleteCount = 0;
-            $strFileMessage = "";
+            $intDeleteCount  = 0;
+            $strInfoMessage  = "";
+            $strErrorMessage = "";
             foreach ($arrData as $elem) {
                 $strChbName = "chbId_".$elem['id'];
                 // Single ID
@@ -553,10 +554,10 @@ class NagDataClass
                                 }
                                 if ($intReturn == 0) {
                                     $this->processClassMessage(translate('The assigned, no longer used configuration '.
-                                            'files were deleted successfully!')."::", $strFileMessage);
+                                            'files were deleted successfully!')."::", $strInfoMessage);
                                     $this->writeLog(translate('Host file deleted:')." ".$strHost.".cfg");
                                 } else {
-                                    $strFileMessage .=  translate('Errors while deleting the old configuration file - '.
+                                    $strErrorMessage .= translate('Errors while deleting the old configuration file - '.
                                             'please check!:')."::".$this->myConfigClass->strErrorMessage."::";
                                 }
                             }
@@ -581,10 +582,10 @@ class NagDataClass
                                     if ($intReturn == 0) {
                                         $this->processClassMessage(translate('The assigned, no longer used '.
                                                 'configuration files were deleted successfully!').
-                                            "::", $strFileMessage);
+                                            "::", $strInfoMessage);
                                         $this->writeLog(translate('Host file deleted:')." ".$strService.".cfg");
                                     } else {
-                                        $strFileMessage .=  translate('Errors while deleting the old configuration '.
+                                        $strErrorMessage .=  translate('Errors while deleting the old configuration '.
                                                 'file - please check!:')."::".
                                             $this->myConfigClass->strErrorMessage."::";
                                     }
@@ -611,7 +612,8 @@ class NagDataClass
                     $intDeleteCount."::", $this->strInfoMessage);
                 $this->writeLog(translate('Deleted data from table:')." $strTableName ".
                     translate('- with affected rows:')." ".$intDeleteCount);
-                $this->processClassMessage($strFileMessage, $this->strInfoMessage);
+                $this->processClassMessage($strInfoMessage, $this->strInfoMessage);
+                $this->processClassMessage($strErrorMessage, $this->strErrorMessage);
                 return(0);
             }
         } else {

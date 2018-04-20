@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-17 22:19:38 +0200 (Tue, 17 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-19 22:24:08 +0200 (Thu, 19 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 29 $
+// Revision  : $LastChangedRevision: 31 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1125,7 +1125,7 @@ class NagConfigClass
      * @return array                            filename (configuration file name)
      *                                          order_field (database order field)
      */
-    private function getConfData()
+    public function getConfData()
     {
         $arrConfData['tbl_timeperiod']        = array('filename' => 'timeperiods.cfg',
             'order_field' => 'timeperiod_name');
@@ -1432,8 +1432,9 @@ class NagConfigClass
             $strSpecial .= ",contact_groups_tploptions,use_template_tploptions";
         }
         if ($strTableName == "tbl_service") {
-            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,servicegroups_tploptions";
-            $strSpecial .= ",contacts_tploptions,contact_groups_tploptions,use_template_tploptions";
+            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,parents_tploptions";
+            $strSpecial .= ",servicegroups_tploptions,contacts_tploptions,contact_groups_tploptions";
+            $strSpecial .= ",use_template_tploptions";
         }
 
         // Pass fields based on nagios version lower than 3.x
@@ -1497,6 +1498,9 @@ class NagConfigClass
             }
             if ($strTableName == "tbl_host") {
                 $strSpecial .= ",importance";
+            }
+            if ($strTableName == "tbl_service") {
+                $strSpecial .= ",importance,parents";
             }
         }
         if ($intVersionValue == 1) {
@@ -1704,6 +1708,9 @@ class NagConfigClass
             }
             if ($key == "hostgroup_name") {
                 $value = $this->checkTpl($value, "hostgroup_name_tploptions", "tbl_service", $intDataId, $intSkip);
+            }
+            if ($key == "parents") {
+                $value = $this->checkTpl($value, "parents_tploptions", "tbl_service", $intDataId, $intSkip);
             }
             if ($key == "servicegroups") {
                 $value = $this->checkTpl($value, "servicegroups_tploptions", "tbl_service", $intDataId, $intSkip);
@@ -2092,16 +2099,15 @@ class NagConfigClass
         return($intReturn);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  Help function: Process special settings based on template option
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  $strValue                        -> Original data value
-    //  $strKeyField                -> Template option field name
-    //  $strTable                        -> Table name
-    //  $intId                                -> Dataset ID
-    //  $intSkip                        -> Skip value         (return value)
-    //  This function returns the manipulated data value
-    ///////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Process special settings based on template option
+     * @param string $strValue              Original data value
+     * @param string $strKeyField           Template option field name
+     * @param string $strTable              Table name
+     * @param int $intId                    Dataset ID
+     * @param int $intSkip                  Skip value (by reference)
+     * @return string                       Manipulated data value
+     */
     public function checkTpl($strValue, $strKeyField, $strTable, $intId, &$intSkip)
     {
         if ($this->intNagVersion < 3) {

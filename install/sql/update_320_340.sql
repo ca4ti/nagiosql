@@ -34,12 +34,31 @@ ALTER TABLE `tbl_contacttemplate` ADD `minimum_importance` INT UNSIGNED NOT NULL
 --
 ALTER TABLE `tbl_host` ADD `importance` INT NULL DEFAULT NULL AFTER `parents_tploptions`;
 --
+--  Modify existing tbl_hoststemplates
+--
+ALTER TABLE `tbl_hosttemplate` ADD `importance` INT NULL DEFAULT NULL AFTER `parents_tploptions`;
+--
 --  Modify existing tbl_services
 --
 ALTER TABLE `tbl_service` ADD `parents` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `display_name`;
 ALTER TABLE `tbl_service` ADD `parents_tploptions` TINYINT UNSIGNED NOT NULL DEFAULT '2' AFTER `parents`;
 ALTER TABLE `tbl_service` ADD `importance` INT NULL DEFAULT NULL AFTER `parents_tploptions`;
-
+--
+-- Tabellenstruktur für Tabelle `tbl_lnkServiceToService`
+--
+CREATE TABLE `tbl_lnkServiceToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Indizes für die Tabelle `tbl_lnkHostToHost`
+--
+ALTER TABLE `tbl_lnkServiceToService` ADD PRIMARY KEY (`idMaster`,`idSlave`);
+--
+--  Modify table tbl_relationinformation
+--
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '2');
 --
 --  Modify existing tbl_info
 --

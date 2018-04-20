@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Preprocessing script for content pages
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-18 22:21:57 +0200 (Wed, 18 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-19 22:24:08 +0200 (Thu, 19 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 30 $
+// Revision  : $LastChangedRevision: 31 $
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -102,7 +102,7 @@ for ($i = 1; $i <= 5; $i++) {
     $$tmpVar = filter_input(INPUT_POST, 'selValue'.$i, FILTER_VALIDATE_INT, array('options' => array('default' => 0)));
 }
 //Common radio field value
-for ($i = 1; $i <= 17; $i++) {
+for ($i = 1; $i <= 18; $i++) {
     $tmpVar  = 'chkRadValue'.$i;
     $$tmpVar = filter_input(INPUT_POST, 'radValue'.$i, FILTER_VALIDATE_INT, array('options' => array('default' => 2)));
 }
@@ -330,12 +330,8 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
     } else {
         $intReturn = $myDataClass->dataDeleteFull($preTableName, $chkListId);
     }
-    if ($intReturn == 1) {
-        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
-    }
-    if ($intReturn == 0) {
-        $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
-    }
+    $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+    $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
     $chkModus  = "display";
 } elseif (($chkModus == "checkform") && ($chkSelModify == "copy") && ($intGlobalWriteAccess == 0)) {
     // Copy selected datasets

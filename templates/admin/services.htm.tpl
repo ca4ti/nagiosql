@@ -38,7 +38,7 @@
                 return false;
             } else {
                 // Enable select fields
-                const selfields = "mselValue1,mselValue2,mselValue4,mselValue5,mselValue3";
+                const selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5,mselValue6";
                 const ar_sel = selfields.split(",");
                 for (let i=0;i<ar_sel.length;i++){
                     document.getElementById(ar_sel[i]).disabled = false;
@@ -149,7 +149,7 @@
         // Process security questions
         function confOpenerYes(key) {
             if (key === 2) {
-                const selfields = "mselValue1,mselValue2,mselValue4,mselValue5,mselValue3";
+                const selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5,mselValue6";
                 const ar_sel = selfields.split(",");
                 for (let i=0;i<ar_sel.length;i++){
                     document.getElementById(ar_sel[i]).disabled = false;
@@ -278,9 +278,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_PARENT_SERVICES}" name="mselValue6[]" size="4" multiple id="mselValue6" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN parents -->
-                                                <option value="{DAT_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_PARENTS_SEL}" {DAT_PARENTS_SEL} {OPTION_DISABLED}>{DAT_PARENTS}</option>
-                                                <!-- END parents -->
+                                                <!-- BEGIN service_parents -->
+                                                <option value="{DAT_SERVICE_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_SERVICE_PARENTS_SEL}" {DAT_SERVICE_PARENTS_SEL} {OPTION_DISABLED}>{DAT_SERVICE_PARENTS}</option>
+                                                <!-- END service_parents -->
                                             </select>
                                         </td>
                                     </tr>

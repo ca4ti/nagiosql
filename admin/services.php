@@ -10,8 +10,6 @@
 // Project   : NagiosQL
 // Component : Service definition
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-18 22:21:57 +0200 (Wed, 18 Apr 2018) $
-// Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
@@ -60,7 +58,8 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `host_name`=$intMselValue1, "
         . "`host_name_tploptions`=$chkRadValue1, `hostgroup_name`=$intMselValue2, "
         . "`hostgroup_name_tploptions`=$chkRadValue2, `service_description`='$chkTfValue3', "
-        . "`display_name`='$chkTfValue4', `importance`=$chkTfNullVal9 ,`servicegroups`=$intMselValue3, "
+        . "`display_name`='$chkTfValue4', `parents`=$intMselValue6, `parents_tploptions`=$chkRadValue18, "
+        . "`importance`=$chkTfNullVal9 ,`servicegroups`=$intMselValue3, "
         . "`servicegroups_tploptions`=$chkRadValue3, `check_command`='$chkSelValue1', "
         . "`use_template`=$intTemplates, `is_volatile`=$chkRadValue14, `initial_state`='$strIS', "
         . "`max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, `retry_interval`=$chkTfNullVal1, "
@@ -148,6 +147,16 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet5) && ($intRet5 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
+                    if ($intMselValue6 != 0) {
+                        $intRet1 = $myDataClass->dataInsertRelation(
+                            "tbl_lnkServiceToService",
+                            $chkDataId,
+                            $chkMselValue6
+                        );
+                    }
+                    if (isset($intRet1) && ($intRet1 != 0)) {
+                        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                    }
                 } elseif ($chkModus == "modify") {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation("tbl_lnkServiceToHost", $chkDataId, $chkMselValue1);
@@ -203,6 +212,18 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                         $intRet5 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToContactgroup", $chkDataId);
                     }
                     if (isset($intRet1) && ($intRet1 != 0)) {
+                        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                    }
+                    if ($intMselValue6 != 0) {
+                        $intRet1 = $myDataClass->dataUpdateRelation(
+                            "tbl_lnkServiceToService",
+                            $chkDataId,
+                            $chkMselValue6
+                        );
+                    } else {
+                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToService", $chkDataId);
+                    }
+                    if ($intRet1 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
@@ -461,6 +482,29 @@ if ($chkModus == "add") {
     if (($intReturn3 != 0) && ($intReturn4 != 0)) {
         $myVisClass->processMessage(translate('Attention, no hosts or hostgroups defined!'), $strDBWarning);
         $intDataWarning = 1;
+    }
+    // Process host selection field
+    if (isset($arrModifyData['parents'])) {
+        $intFieldId = $arrModifyData['parents'];
+    } else {
+        $intFieldId = 0;
+    }
+    if (isset($arrModifyData['id'])) {
+        $intKeyId   = $arrModifyData['id'];
+    } else {
+        $intKeyId   = 0;
+    }
+    $intReturn3 = $myVisClass->parseSelectMulti(
+        $preTableName,
+        $preKeyField,
+        'service_parents',
+        'tbl_lnkServiceToService',
+        0,
+        $intFieldId,
+        $intKeyId
+    );
+    if ($intReturn3 != 0) {
+        $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
     }
     // Process service groups selection field
     if (isset($arrModifyData['servicegroups'])) {

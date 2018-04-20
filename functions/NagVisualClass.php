@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-16 20:30:47 +0200 (Mon, 16 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-17 22:19:38 +0200 (Tue, 17 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 28 $
+// Revision  : $LastChangedRevision: 29 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -438,6 +438,9 @@ class NagVisualClass
         if ($strTemplKey  == 'host_services') {
             $intOption = 8;
         }
+        if ($strTemplKey  == 'service_parents') {
+            $intOption = 9;
+        }
         // Get version
         $this->myConfigClass->getDomainData("version", $intVersion);
         // Get raw data
@@ -767,9 +770,9 @@ class NagVisualClass
             } else {
                 $strSQL = "";
             }
-        } elseif (($strTable == 'tbl_service') && ($intOption == 8)) {
+        } elseif (($strTable == 'tbl_service') && (($intOption == 8) || ($intOption == 9))) {
             // Service selection inside Host definition
-            $strSQL = $this->getRawDataSQLService8($strDomainWhere1, $strAccess);
+            $strSQL = $this->getRawDataSQLService89($strDomainWhere1, $strAccess);
         } else {
             // Common statement
             $strSQL = $this->getRawDataSQLCommon($strTable, $strTabField, $strDomainWhere1, $strAccess);
@@ -1080,7 +1083,7 @@ class NagVisualClass
      * @param string $strAccess                 Access groups
      * @return string                           SQL Statement
      */
-    private function getRawDataSQLService8($strDomainWhere1, $strAccess): string
+    private function getRawDataSQLService89($strDomainWhere1, $strAccess): string
     {
         $strSQL = "SELECT `tbl_service`.`id` AS `key`, CONCAT(`tbl_service`.`config_name`, ' - ', ".
             "`tbl_service`.`service_description`) AS `value`, `active` ".

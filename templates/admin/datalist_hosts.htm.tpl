@@ -180,9 +180,13 @@
 <div id="confirmcontainer"></div>
 <div id="msgcontainer"></div>
 <!-- END datatablehost -->
-<!-- BEGIN msgfooterhost -->
+<!-- BEGIN msgfooter -->
 <p style="padding-left:10px; width:890px;">
-    <span class="{MSG_CLASS} {MSG_VISIBLE}">{DBMESSAGE}<br></span>
-    <span class="{CON_MSGCLASS} {CON_VISIBLE}">{CONSISTUSAGE}</span><br>
+    <!-- BEGIN consistency --><span>{CONSIST_USAGE}</span><br><br><!-- END consistency -->
+    <!-- BEGIN infomessage --><span class="greenmessage">{INFOMESSAGE}</span><br><!-- END infomessage -->
+    <!-- BEGIN errormessage --><span class="redmessage">{ERRORMESSAGE}</span><br><!-- END errormessage -->
+    <!-- BEGIN table_time --><span class="timeinfo">{LAST_MODIFIED_TABLE}</span><br><!-- END table_time -->
+    <!-- BEGIN file_time --><span class="timeinfo">{LAST_MODIFIED_FILE}</span><br><!-- END file_time -->
+    <!-- BEGIN modification_status --><span class="redmessage">{MODIFICATION_STATUS}</span><br><!-- END modification_status -->
 </p>
-<!-- END msgfooterhost -->
+<!-- END msgfooter -->
