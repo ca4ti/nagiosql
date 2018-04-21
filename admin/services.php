@@ -59,7 +59,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
         . "`host_name_tploptions`=$chkRadValue1, `hostgroup_name`=$intMselValue2, "
         . "`hostgroup_name_tploptions`=$chkRadValue2, `service_description`='$chkTfValue3', "
         . "`display_name`='$chkTfValue4', `parents`=$intMselValue6, `parents_tploptions`=$chkRadValue18, "
-        . "`importance`=$chkTfNullVal9 ,`servicegroups`=$intMselValue3, "
+        . "`importance`=$chkTfNullVal9, `servicegroups`=$intMselValue3, "
         . "`servicegroups_tploptions`=$chkRadValue3, `check_command`='$chkSelValue1', "
         . "`use_template`=$intTemplates, `is_volatile`=$chkRadValue14, `initial_state`='$strIS', "
         . "`max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, `retry_interval`=$chkTfNullVal1, "
@@ -148,13 +148,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue6 != 0) {
-                        $intRet1 = $myDataClass->dataInsertRelation(
+                        $intRet6 = $myDataClass->dataInsertRelation(
                             "tbl_lnkServiceToService",
                             $chkDataId,
                             $chkMselValue6
                         );
                     }
-                    if (isset($intRet1) && ($intRet1 != 0)) {
+                    if (isset($intRet6) && ($intRet6 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 } elseif ($chkModus == "modify") {
@@ -211,23 +211,23 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     } else {
                         $intRet5 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToContactgroup", $chkDataId);
                     }
-                    if (isset($intRet1) && ($intRet1 != 0)) {
+                    if (isset($intRet5) && ($intRet1 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue6 != 0) {
-                        $intRet1 = $myDataClass->dataUpdateRelation(
+                        $intRet6 = $myDataClass->dataUpdateRelation(
                             "tbl_lnkServiceToService",
                             $chkDataId,
                             $chkMselValue6
                         );
                     } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToService", $chkDataId);
+                        $intRet6 = $myDataClass->dataDeleteRelation("tbl_lnkServiceToService", $chkDataId);
                     }
-                    if ($intRet1 != 0) {
+                    if ($intRet6 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
-                if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5) != 0) {
+                if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5 + $intRet6) != 0) {
                     $strInfoMessage = "";
                 }
                 //
@@ -483,7 +483,7 @@ if ($chkModus == "add") {
         $myVisClass->processMessage(translate('Attention, no hosts or hostgroups defined!'), $strDBWarning);
         $intDataWarning = 1;
     }
-    // Process host selection field
+    // Process service selection field
     if (isset($arrModifyData['parents'])) {
         $intFieldId = $arrModifyData['parents'];
     } else {

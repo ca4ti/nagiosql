@@ -867,7 +867,7 @@
                         <tr class="{VERSION_40_VISIBLE}">
                             <td>{LANG_IMPORTANCE}</td>
                             <td><input title="{LANG_IMPORTANCE}" name="tfNullVal9" type="text" id="tfNullVal9" value="{DAT_IMPORTANCE}"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','importance','all','Info');" class="infobutton_1"></td>
+                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','importance','all','Info');" class="infobutton_1"></td>
                             <td colspan="3">&nbsp;</td>
                         </tr>
                         <tr>

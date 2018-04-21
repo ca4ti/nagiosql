@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-17 22:19:38 +0200 (Tue, 17 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-20 23:01:27 +0200 (Fri, 20 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 29 $
+// Revision  : $LastChangedRevision: 32 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -770,7 +770,8 @@ class NagVisualClass
             } else {
                 $strSQL = "";
             }
-        } elseif (($strTable == 'tbl_service') && (($intOption == 8) || ($intOption == 9))) {
+        } elseif ((($strTable == 'tbl_service') || ($strTable == 'tbl_servicetemplate')) &&
+            (($intOption == 8) || ($intOption == 9))) {
             // Service selection inside Host definition
             $strSQL = $this->getRawDataSQLService89($strDomainWhere1, $strAccess);
         } else {
@@ -1123,172 +1124,211 @@ class NagVisualClass
     {
         // Define variables
         if ($intOption == 6) {
-            $strHostVar = 'se_host';
+            $strHostVar      = 'se_host';
             $strHostGroupVar = 'se_hostgroup';
         } elseif ($intOption == 4) {
-            $strHostVar = 'sd_dependent_host';
+            $strHostVar      = 'sd_dependent_host';
             $strHostGroupVar = 'sd_dependent_hostgroup';
         } else {
-            $strHostVar = 'sd_host';
+            $strHostVar      = 'sd_host';
             $strHostGroupVar = 'sd_hostgroup';
         }
-        $arrHosts = $this->arrSession['refresh'][$strHostVar];
-        $arrHostgroups = $this->arrSession['refresh'][$strHostGroupVar];
-        $arrServices = array();
-        $arrDataHost = array();
-        $arrDataTmp = array();
-        $arrHostTemp = array();
+        if (!isset($this->arrSession['refresh'])) {
+            $this->arrSession['refresh'] = array();
+        }
+        $arrHosts         = array();
+        $arrHostgroups    = array();
+        $arrServices      = array();
+        $arrDataHost      = array();
+        $arrDataTmp       = array();
+        $arrHostTemp      = array();
         $arrHostgroupTemp = array();
-        $arrServicesId = array();
-        $intDCHost = 0;
-        $intDataTmp = 0;
-        if ((count($arrHosts) == 1) && $arrHosts[0] == "") {
+        $arrServicesId    = array();
+        $intDCHost        = 0;
+        $intDataTmp       = 0;
+        // Refresh mode - fill arrays
+        if (is_array($this->arrSession['refresh'][$strHostVar])) {
+            $arrHosts = $this->arrSession['refresh'][$strHostVar];
+        } else {
+            if ($intOption == 4) {
+                $strSQL = "SELECT `idSlave` FROM `tbl_lnkServicedependencyToHost_DH` "
+                    . "WHERE `idMaster`=".$this->intDataId;
+            } else {
+                $strSQL = "SELECT `idSlave` FROM `tbl_lnkServicedependencyToHost_H` "
+                    . "WHERE `idMaster`=".$this->intDataId;
+            }
+            $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
+            if ($booReturn == false) {
+                $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+            } elseif ($intDCHost != 0) {
+                $arrHostTemp = array();
+                foreach ($arrDataHost as $elem) {
+                    $arrHostTemp[] = $elem['idSlave'];
+                }
+                $arrHosts = $arrHostTemp;
+            }
+        }
+        if (is_array($this->arrSession['refresh'][$strHostGroupVar])) {
+            $arrHostgroups = $this->arrSession['refresh'][$strHostGroupVar];
+        } else {
+            if ($intOption == 4) {
+                $strSQL = "SELECT `idSlave` FROM `tbl_lnkServicedependencyToHostgoup_DH` "
+                    . "WHERE `idMaster`=".$this->intDataId;
+            } else {
+                $strSQL = "SELECT `idSlave` FROM `tbl_lnkServicedependencyToHostgroup_H` "
+                    . "WHERE `idMaster`=".$this->intDataId;
+            }
+            $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
+            if ($booReturn == false) {
+                $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+            } elseif ($intDCHost != 0) {
+                $arrHostgroupTemp = array();
+                foreach ($arrDataHost as $elem) {
+                    $arrHostgroupTemp[] = $elem['idSlave'];
+                }
+                $arrHostgroups = $arrHostgroupTemp;
+            }
+        }
+        if (is_array($arrHosts) && (count($arrHosts) == 1) && $arrHosts[0] == "") {
             $arrHosts = array();
         }
-        if ((count($arrHostgroups) == 1) && $arrHostgroups[0] == "") {
+        if (is_array($arrHostgroups) && (count($arrHostgroups) == 1) && $arrHostgroups[0] == "") {
             $arrHostgroups = array();
         }
-        if (isset($this->arrSession['refresh']) &&
-            (isset($this->arrSession['refresh']['sd_dependent_service']) &&
-                is_array($this->arrSession['refresh']['sd_dependent_service'])) ||
-            (isset($this->arrSession['refresh']['sd_service']) &&
-                is_array($this->arrSession['refresh']['sd_service'])) ||
-            (isset($this->arrSession['refresh']['se_service']) &&
-                is_array($this->arrSession['refresh']['se_service']))) {
-            // * Value in hosts -> disabled in NagiosQL 3.2
-            if (in_array('*', $this->arrSession['refresh'][$strHostVar])) {
-                $strSQL = "SELECT id FROM tbl_host WHERE $strDomainWhere1 AND `access_group` IN ($strAccess)";
-                $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
-                if ($booReturn == false) {
-                    $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
-                }
-                if ($booReturn && ($intDCHost != 0)) {
-                    $arrHostTemp = '';
-                    foreach ($arrDataHost as $elem) {
-                        if (in_array("e" . $elem['id'], $this->arrSession['refresh'][$strHostVar])) {
-                            continue;
-                        }
-                        $arrHostTemp[] = $elem['id'];
-                    }
-                }
-                $strHosts = 1;
-                $arrHosts = $arrHostTemp;
-            } else {
-                $strHosts = count($arrHosts) + 0;
+        if (in_array('*', $arrHosts)) {
+            $strSQL = "SELECT id FROM tbl_host WHERE $strDomainWhere1 AND `access_group` IN ($strAccess)";
+            $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
+            if ($booReturn == false) {
+                $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
             }
-            // * Value in host groups -> disabled in NagiosQL 3.2
-            if (in_array('*', $this->arrSession['refresh'][$strHostGroupVar])) {
-                $strSQL = "SELECT id FROM tbl_hostgroup WHERE $strDomainWhere1 AND `access_group` " .
-                    "IN ($strAccess)";
-                $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
-                if ($booReturn == false) {
-                    $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
-                }
-                if ($booReturn && ($intDCHost != 0)) {
-                    $arrHostgroupTemp = '';
-                    foreach ($arrDataHost as $elem) {
-                        if (in_array("e" . $elem['id'], $this->arrSession['refresh'][$strHostGroupVar])) {
-                            continue;
-                        }
-                        $arrHostgroupTemp[] = $elem['id'];
+            if ($booReturn && ($intDCHost != 0)) {
+                $arrHostTemp = array();
+                foreach ($arrDataHost as $elem) {
+                    if (in_array("e" . $elem['id'], $this->arrSession['refresh'][$strHostVar])) {
+                        continue;
                     }
-                }
-                $strHostsGroup = 1;
-                $arrHostgroups = $arrHostgroupTemp;
-            } else {
-                $strHostsGroup = count($arrHostgroups) + 0;
-            }
-            // Special method - only host_name or hostgroup_name selected
-            if (($strHostVar == 'sd_dependent_host') && ($strHosts == 0) && ($strHostsGroup == 0)) {
-                $arrHosts = $this->arrSession['refresh']['sd_host'];
-                $arrHostgroups = $this->arrSession['refresh']['sd_hostgroup'];
-                if ((count($arrHosts) == 1) && $arrHosts[0] == "") {
-                    $arrHosts = array();
-                }
-                if ((count($arrHostgroups) == 1) && $arrHostgroups[0] == "") {
-                    $arrHostgroups = array();
-                }
-                $strHosts = count($arrHosts) + 0;
-                $strHostsGroup = count($arrHostgroups) + 0;
-            }
-            // If no hosts and hostgroups are selected show any service
-            if (($strHosts == 0) && ($strHostsGroup == 0)) {
-                $strSQL = "SELECT `id` AS `key`, `" . $strTabField . "` AS `value`, `active` FROM `tbl_service` " .
-                    "WHERE $strDomainWhere1 AND `" . $strTabField . "` <> '' AND `" . $strTabField . "` " .
-                    "IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ORDER BY `value`";
-            } else {
-                if ($strHosts != 0) {
-                    $intCounter = 0;
-                    foreach ($arrHosts as $elem) {
-                        if (($intCounter != 0) && (count($arrServices) == 0)) {
-                            continue;
-                        }
-                        $arrTempServ = array();
-                        $arrTempServId = array();
-                        $elem = str_replace("e", "", $elem);
-                        $strSQLTmp = $this->getRawDataSQLService4($strDomainWhere1, $elem, $strAccess);
-                        $booReturn = $this->myDBClass->hasDataArray($strSQLTmp, $arrDataTmp, $intDataTmp);
-                        if ($booReturn && ($intDataTmp != 0)) {
-                            foreach ($arrDataTmp as $elem2) {
-                                if ($intCounter == 0) {
-                                    $arrTempServ[] = $elem2['service_description'];
-                                    $arrTempServId[] = $elem2['id'];
-                                } elseif (in_array($elem2['service_description'], $arrServices) &&
-                                    !in_array($elem2['service_description'], $arrTempServ)) {
-                                    $arrTempServ[] = $elem2['service_description'];
-                                    $arrTempServId[] = $elem2['id'];
-                                }
-                            }
-                        }
-                        $arrServices = $arrTempServ;
-                        $arrServicesId = $arrTempServId;
-                        $intCounter++;
-                    }
-                }
-                if ($strHostsGroup != 0) {
-                    $intCounter = 0;
-                    foreach ($arrHostgroups as $elem) {
-                        if (($intCounter != 0) && (count($arrServices) == 0)) {
-                            continue;
-                        }
-                        $arrTempServ = array();
-                        $arrTempServId = array();
-                        $elem = str_replace("e", "", $elem);
-                        $strSQLTmp = $this->getRawDataSQLService5($strDomainWhere1, $elem, $strAccess);
-                        $booReturn = $this->myDBClass->hasDataArray($strSQLTmp, $arrDataTmp, $intDataTmp);
-                        if ($booReturn && ($intDataTmp != 0)) {
-                            foreach ($arrDataTmp as $elem2) {
-                                if ($intCounter == 0) {
-                                    $arrTempServ[] = $elem2['service_description'];
-                                    $arrTempServId[] = $elem2['id'];
-                                } elseif (in_array($elem2['service_description'], $arrServices) &&
-                                    !in_array($elem2['service_description'], $arrTempServ)) {
-                                    $arrTempServ[] = $elem2['service_description'];
-                                    $arrTempServId[] = $elem2['id'];
-                                }
-                            }
-                        }
-                        $arrServices = $arrTempServ;
-                        $arrServicesId = $arrTempServId;
-                        $intCounter++;
-                    }
-                }
-                if (count($arrServices) != 0) {
-                    $strServices   = "'" . implode("','", $arrServices) . "'";
-                    $strServicesId = implode(",", $arrServicesId);
-                    $strSQL = $this->getRawDataSQLService6(
-                        $strTabField,
-                        $strDomainWhere1,
-                        $strServices,
-                        $strServicesId,
-                        $strAccess
-                    );
-                } else {
-                    $strSQL = "";
+                    $arrHostTemp[] = $elem['id'];
                 }
             }
+            $strHosts = 1;
+            $arrHosts = $arrHostTemp;
         } else {
-            $strSQL = "";
+            $strHosts = count($arrHosts) + 0;
+        }
+        // * Value in host groups -> disabled in NagiosQL 3.2
+        if (in_array('*', $arrHostgroups)) {
+            $strSQL = "SELECT id FROM tbl_hostgroup WHERE $strDomainWhere1 AND `access_group` " .
+                "IN ($strAccess)";
+            $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
+            if ($booReturn == false) {
+                $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+            }
+            if ($booReturn && ($intDCHost != 0)) {
+                $arrHostgroupTemp = array();
+                foreach ($arrDataHost as $elem) {
+                    if (in_array("e" . $elem['id'], $this->arrSession['refresh'][$strHostGroupVar])) {
+                        continue;
+                    }
+                    $arrHostgroupTemp[] = $elem['id'];
+                }
+            }
+            $strHostsGroup = 1;
+            $arrHostgroups = $arrHostgroupTemp;
+        } else {
+            $strHostsGroup = count($arrHostgroups) + 0;
+        }
+        // Special method - only host_name or hostgroup_name selected
+        if (($strHostVar == 'sd_dependent_host') && ($strHosts == 0) && ($strHostsGroup == 0)) {
+            if (is_array($this->arrSession['refresh']['sd_host'])) {
+                $arrHosts = $this->arrSession['refresh']['sd_host'];
+            }
+            if (is_array($this->arrSession['refresh']['sd_hostgroup'])) {
+                $arrHostgroups = $this->arrSession['refresh']['sd_hostgroup'];
+            }
+            if ((count($arrHosts) == 1) && $arrHosts[0] == "") {
+                $arrHosts = array();
+            }
+            if ((count($arrHostgroups) == 1) && $arrHostgroups[0] == "") {
+                $arrHostgroups = array();
+            }
+            $strHosts      = count($arrHosts) + 0;
+            $strHostsGroup = count($arrHostgroups) + 0;
+        }
+        // If no hosts and hostgroups are selected show any service
+        if (($strHosts == 0) && ($strHostsGroup == 0)) {
+            $strSQL = "SELECT `id` AS `key`, `" . $strTabField . "` AS `value`, `active` FROM `tbl_service` " .
+                "WHERE $strDomainWhere1 AND `" . $strTabField . "` <> '' AND `" . $strTabField . "` " .
+                "IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ORDER BY `value`";
+        } else {
+            if ($strHosts != 0) {
+                $intCounter = 0;
+                foreach ($arrHosts as $elem) {
+                    if (($intCounter != 0) && (count($arrServices) == 0)) {
+                        continue;
+                    }
+                    $arrTempServ = array();
+                    $arrTempServId = array();
+                    $elem = str_replace("e", "", $elem);
+                    $strSQLTmp = $this->getRawDataSQLService4($strDomainWhere1, $elem, $strAccess);
+                    $booReturn = $this->myDBClass->hasDataArray($strSQLTmp, $arrDataTmp, $intDataTmp);
+                    if ($booReturn && ($intDataTmp != 0)) {
+                        foreach ($arrDataTmp as $elem2) {
+                            if ($intCounter == 0) {
+                                $arrTempServ[] = $elem2['service_description'];
+                                $arrTempServId[] = $elem2['id'];
+                            } elseif (in_array($elem2['service_description'], $arrServices) &&
+                                !in_array($elem2['service_description'], $arrTempServ)) {
+                                $arrTempServ[] = $elem2['service_description'];
+                                $arrTempServId[] = $elem2['id'];
+                            }
+                        }
+                    }
+                    $arrServices = $arrTempServ;
+                    $arrServicesId = $arrTempServId;
+                    $intCounter++;
+                }
+            }
+            if ($strHostsGroup != 0) {
+                $intCounter = 0;
+                foreach ($arrHostgroups as $elem) {
+                    if (($intCounter != 0) && (count($arrServices) == 0)) {
+                        continue;
+                    }
+                    $arrTempServ = array();
+                    $arrTempServId = array();
+                    $elem = str_replace("e", "", $elem);
+                    $strSQLTmp = $this->getRawDataSQLService5($strDomainWhere1, $elem, $strAccess);
+                    $booReturn = $this->myDBClass->hasDataArray($strSQLTmp, $arrDataTmp, $intDataTmp);
+                    if ($booReturn && ($intDataTmp != 0)) {
+                        foreach ($arrDataTmp as $elem2) {
+                            if ($intCounter == 0) {
+                                $arrTempServ[] = $elem2['service_description'];
+                                $arrTempServId[] = $elem2['id'];
+                            } elseif (in_array($elem2['service_description'], $arrServices) &&
+                                !in_array($elem2['service_description'], $arrTempServ)) {
+                                $arrTempServ[] = $elem2['service_description'];
+                                $arrTempServId[] = $elem2['id'];
+                            }
+                        }
+                    }
+                    $arrServices = $arrTempServ;
+                    $arrServicesId = $arrTempServId;
+                    $intCounter++;
+                }
+            }
+            if (count($arrServices) != 0) {
+                $strServices   = "'" . implode("','", $arrServices) . "'";
+                $strServicesId = implode(",", $arrServicesId);
+                $strSQL = $this->getRawDataSQLService6(
+                    $strTabField,
+                    $strDomainWhere1,
+                    $strServices,
+                    $strServicesId,
+                    $strAccess
+                );
+            } else {
+                $strSQL = "";
+            }
         }
         return $strSQL;
     }

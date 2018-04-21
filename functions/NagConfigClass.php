@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-19 22:24:08 +0200 (Thu, 19 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-20 23:01:27 +0200 (Fri, 20 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 31 $
+// Revision  : $LastChangedRevision: 32 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1416,7 +1416,7 @@ class NagConfigClass
             $strSpecial .= ",contact_groups_tploptions,use_template_tploptions";
         }
         if ($strTableName == "tbl_servicetemplate") {
-            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,contacts_tploptions";
+            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,parents_tploptions,contacts_tploptions";
             $strSpecial .= ",servicegroups_tploptions,contact_groups_tploptions,use_template_tploptions";
         }
         if ($strTableName == "tbl_contact") {
@@ -1499,7 +1499,7 @@ class NagConfigClass
             if ($strTableName == "tbl_host") {
                 $strSpecial .= ",importance";
             }
-            if ($strTableName == "tbl_service") {
+            if (($strTableName == "tbl_service") || ($strTableName == "tbl_servicetemplate")) {
                 $strSpecial .= ",importance,parents";
             }
         }
@@ -1803,6 +1803,9 @@ class NagConfigClass
                     $intDataId,
                     $intSkip
                 );
+            }
+            if ($key == "parents") {
+                $value = $this->checkTpl($value, "parents_tploptions", "tbl_servicetemplate", $intDataId, $intSkip);
             }
             if ($key == "servicegroups") {
                 $value = $this->checkTpl(

@@ -10,8 +10,6 @@
 // Project   : NagiosQL
 // Component : Service template definition
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-10 12:08:12 +0200 (Tue, 10 Apr 2018) $
-// Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
@@ -26,6 +24,7 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 // =======================
 $prePageId        = 13;
 $preContent       = "admin/servicetemplates.htm.tpl";
+$preListTpl       = "admin/datalist.htm.tpl";
 $preSearchSession = 'servicetemplate';
 $preTableName     = 'tbl_servicetemplate';
 $preKeyField      = 'template_name';
@@ -58,7 +57,8 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `host_name`=$intMselValue1, "
         . "`host_name_tploptions`=$chkRadValue1, `hostgroup_name`=$intMselValue2, "
         . "`hostgroup_name_tploptions`=$chkRadValue2, `service_description`='$chkTfValue2', "
-        . "`display_name`='$chkTfValue3', `servicegroups`=$intMselValue3, "
+        . "`display_name`='$chkTfValue3', `parents`=$intMselValue6, `parents_tploptions`=$chkRadValue18, "
+        . "`importance`=$chkTfNullVal9, `servicegroups`=$intMselValue3, "
         . "`servicegroups_tploptions`=$chkRadValue3, `check_command`='$chkSelValue1', "
         . "`use_template`=$intTemplates, `is_volatile`=$chkRadValue16, `initial_state`='$strIS', "
         . "`max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, `retry_interval`=$chkTfNullVal1, "
@@ -152,6 +152,16 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet5) && ($intRet5 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
+                    if ($intMselValue6 != 0) {
+                        $intRet6 = $myDataClass->dataInsertRelation(
+                            "tbl_lnkServicetemplateToService",
+                            $chkDataId,
+                            $chkMselValue6
+                        );
+                    }
+                    if (isset($intRet6) && ($intRet6 != 0)) {
+                        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                    }
                 } elseif ($chkModus == "modify") {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation(
@@ -213,8 +223,20 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if ($intRet5 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
+                    if ($intMselValue6 != 0) {
+                        $intRet1 = $myDataClass->dataUpdateRelation(
+                            "tbl_lnkServicetemplateToService",
+                            $chkDataId,
+                            $chkMselValue6
+                        );
+                    } else {
+                        $intRet6 = $myDataClass->dataDeleteRelation("tbl_lnkServicetemplateToService", $chkDataId);
+                    }
+                    if ($intRet6 != 0) {
+                        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                    }
                 }
-                if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5) != 0) {
+                if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5 + $intRet6) != 0) {
                     $strInfoMessage = "";
                 }
                 //
@@ -311,15 +333,10 @@ if ($intReturn != 0) {
     $myVisClass->processMessage($myConfigClass->strErrorMessage, $strErrorMessage);
 }
 //
-// Start content
-// =============
-$conttp->setVariable("TITLE", translate('Define service templates (servicetemplates.cfg)'));
-$conttp->parse("header");
-$conttp->show("header");
-//
 // Singe data form
 // ===============
 if ($chkModus == "add") {
+    $conttp->setVariable("TITLE", translate('Define service templates (servicetemplates.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     // Process template fields
@@ -398,6 +415,29 @@ if ($chkModus == "add") {
         $intFieldId
     );
     if ($intReturn2 != 0) {
+        $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
+    }
+    // Process service selection field
+    if (isset($arrModifyData['parents'])) {
+        $intFieldId = $arrModifyData['parents'];
+    } else {
+        $intFieldId = 0;
+    }
+    if (isset($arrModifyData['id'])) {
+        $intKeyId   = $arrModifyData['id'];
+    } else {
+        $intKeyId   = 0;
+    }
+    $intReturn3 = $myVisClass->parseSelectMulti(
+        $preTableName,
+        $preKeyField,
+        'service_parents',
+        'tbl_lnkServicetemplateToService',
+        0,
+        $intFieldId,
+        $intKeyId
+    );
+    if ($intReturn3 != 0) {
         $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
     }
     // Process service groups selection field
@@ -576,6 +616,7 @@ if ($chkModus == "add") {
 if ($chkModus == "display") {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
+    $mastertp->setVariable("TITLE", translate('Define service templates (servicetemplates.cfg)'));
     $mastertp->setVariable("FIELD_1", translate('Template name'));
     $mastertp->setVariable("FIELD_2", translate('Service description'));
     // Process filter string
