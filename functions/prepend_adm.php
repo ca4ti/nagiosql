@@ -147,8 +147,8 @@ if ($intError == 0) {
         "en_GB.utf8"
     );
     if (!isset($strLocale)) {
-        $strErrorMessage .= translate("Error in setting the correct locale, please report this error with the "
-                                    . "associated output of  'locale -a' to bugs@nagiosql.org")."::";
+        $strErrorMessage .= translate("Error setting the correct locale. Please report this error with the associated "
+                                    . "output of 'locale -a'")."::";
         $intError = 1;
     }
     putenv("LC_ALL=".$SETS['data']['locale'].".utf-8");
@@ -467,7 +467,7 @@ if (isset($preContent) && ($preContent != "") && (!isset($preNoMain) || ($preNoM
     $maintp->setVariable("PAGETITLE", "NagiosQL - Version ".$setDBVersion);
     $maintp->setVariable("IMAGEDIR", $_SESSION['SETS']['path']['base_url'] ."images/");
     if (isset($prePageId) && ($intError == 0)) {
-        $maintp->setVariable("POSITION", $myVisClass->getPosition($prePageId, translate('Admin')));
+        $maintp->setVariable("POSITION", $myVisClass->getPosition($prePageId, translate('Administration')));
     }
     $maintp->parse("header");
     $tplHeaderVar = $maintp->get("header");

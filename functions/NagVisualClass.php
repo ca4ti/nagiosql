@@ -10,10 +10,8 @@
 // Project   : NagiosQL
 // Component : Visualization Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-22 00:00:37 +0200 (Sun, 22 Apr 2018) $
-// Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 33 $
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //

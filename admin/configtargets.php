@@ -177,7 +177,7 @@ if ($chkModus == "add") {
     $conttp->setVariable("CLASS_NAME_2", "elementHide");
     $conttp->setVariable("CLASS_NAME_3", "elementHide");
     $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
-    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
+    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains illegal characters:'));
     // Insert data from database in "modify" mode
     if (isset($arrModifyData) && ($chkSelModify == "modify")) {
         // Process data

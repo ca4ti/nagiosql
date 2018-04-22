@@ -5,13 +5,13 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
+--  (c) 2005-2018 by Martin Willisegger
+--
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 3.1.x to NagiosQL 3.2.0
---  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2012-03-12 22:41:04 +0100 (Mon, 12 Mar 2012) $
---  Author    : $LastChangedBy: martin $
---  Version   : 3.2.0
---  Revision  : $LastChangedRevision: 1291 $
+--  Website   : https://sourceforge.net/projects/nagiosql/
+--  Version   : 3.4.0
+--  GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --

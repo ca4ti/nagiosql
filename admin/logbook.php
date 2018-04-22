@@ -85,7 +85,7 @@ foreach ($arrDescription as $elem) {
 }
 $conttp->setVariable("LANG_ENTRIES_BEFORE", translate('Delete logentries between:'));
 $conttp->setVariable("LOCALE", $SETS['data']['locale']);
-$conttp->setVariable("LANG_SELECT_DATE", translate('Please at least fill in a start or a stop time'));
+$conttp->setVariable("LANG_SELECT_DATE", translate('Please supply a start or a stop time at least'));
 $conttp->setVariable("LANG_DELETELOG", translate('Do you really want to delete all log entries between the '
         . 'selected dates?'));
 $conttp->setVariable("DAT_SEARCH", $chkTfSearch);

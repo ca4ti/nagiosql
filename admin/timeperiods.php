@@ -169,7 +169,7 @@ if ($intReturn != 0) {
 // Singe data form
 // ===============
 if ($chkModus == "add") {
-    $conttp->setVariable("TITLE", translate('Timeperiod definitions'));
+    $conttp->setVariable("TITLE", translate('Time period definitions (timeperiods.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     // Process exclude selection fields
@@ -248,7 +248,7 @@ if ($chkModus == "add") {
 if ($chkModus == "display") {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Timeperiod definitions'));
+    $mastertp->setVariable("TITLE", translate('Time period definitions (timeperiods.cfg)'));
     $mastertp->setVariable("FIELD_1", translate('Time period'));
     $mastertp->setVariable("FIELD_2", translate('Description'));
     // Process filter string

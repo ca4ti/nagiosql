@@ -1,12 +1,10 @@
-<!-- (c) 2005-2017 by Martin Willisegger -->
+<!-- (c) 2005-2018 by Martin Willisegger -->
 <!-- -->
-<!-- Project    : NagiosQL -->
-<!-- Component  : Installer template -->
-<!-- Website    : http://www.nagiosql.org -->
-<!-- Date       : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $ -->
-<!-- Author     : $LastChangedBy: martin $ -->
-<!-- Version    : 3.3.0 -->
-<!-- Revision   : $LastChangedRevision: 2 $ -->
+<!-- Project   : NagiosQL -->
+<!-- Component : Installer template - step 1 -->
+<!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
+<!-- Version   : 3.4.0 -->
+<!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
 <div id="installmenu">
     <div id="installmenu_content">
         <p class="step1_active"><br><br>{STEP1_BOX}</p>
@@ -15,8 +13,8 @@
     </div>
 </div>
 <div id="installmain">
-	<div id="installmain_content">
-    	<h1>{STEP1_TITLE}</h1>
+    <div id="installmain_content">
+        <h1>{STEP1_TITLE}</h1>
         <h3>{STEP1_SUBTITLE1}</h3>
         <img src='images/{CHECK_1_PIC}.png' alt='{CHECK_1_PIC}' title='{CHECK_1_PIC}' class='textmiddle'> Javascript: <span class='{CHECK_1_CLASS}'>{CHECK_1_VALUE}</span>{CHECK_1_INFO}
         <h3>{STEP1_SUBTITLE2}</h3>
@@ -45,16 +43,16 @@
         {MESSAGE}
         <br>
         <div id="{DIV_ID}">
-        	<form name="frmStep1" id="frmStep1" action="install.php" method="post">
-            	<input type="hidden" name="hidJScript" value="">
-            	{FORM_CONTENT}
-			</form>
-		</div>
-	</div>
+            <form name="frmStep1" id="frmStep1" action="install.php" method="post">
+                <input type="hidden" name="hidJScript" value="">
+                {FORM_CONTENT}
+            </form>
+        </div>
+    </div>
 </div>     
-<script language="JavaScript">
-	<!--
-	document.frmStep1.hidJScript.value = 'yes';
-	//-->
+<script type="text/javascript">
+    <!--
+    document.frmStep1.hidJScript.value = 'yes';
+    //-->
 </script>
 <div id="ie_clearing"> </div>          

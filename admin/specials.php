@@ -34,7 +34,7 @@ require($preBasePath.'functions/prepend_adm.php');
 $conttp->setVariable("TITLE", translate('Misc commands'));
 $conttp->parse("header");
 $conttp->show("header");
-$conttp->setVariable("DESC", translate('To define host and service dependencies, host and service escalations as well '.
+$conttp->setVariable("DESC", translate('Define host and service dependencies, host and service escalations as well '.
     'as host and service additional data.'));
 $conttp->setVariable("STATISTICS", translate('Statistical datas'));
 $conttp->setVariable("TYPE", translate('Group'));

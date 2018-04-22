@@ -68,13 +68,13 @@ if (($chkTfValue1 != "") && ($chkTfValue2 != "")) {
         } else {
             // New password wrong
             $myVisClass->processMessage(
-                translate('Password too short or password fields unequally!'),
+                translate('Password too short or password fields do not match!'),
                 $strErrorMessage
             );
         }
     } else {
         // Old password wrong
-        $myVisClass->processMessage(translate('Old password is wrong'), $strErrorMessage);
+        $myVisClass->processMessage(translate('The old password is invalid'), $strErrorMessage);
     }
 } elseif (filter_input(INPUT_POST, 'submit')) {
     // Wrong data
@@ -96,7 +96,7 @@ foreach ($arrDescription as $elem) {
 $conttp->setVariable("LANG_SAVE", translate('Save'));
 $conttp->setVariable("LANG_ABORT", translate('Abort'));
 $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
-$conttp->setVariable("FILL_NEW_PASSWD_NOT_EQUAL", translate('The new passwords are not equal!'));
+$conttp->setVariable("FILL_NEW_PASSWD_NOT_EQUAL", translate('The new passwords don not match!'));
 $conttp->setVariable("FILL_NEW_PWDSHORT", translate('The new password is too short - use at least 6 characters!'));
 if ($strErrorMessage != "") {
     $conttp->setVariable("ERRORMESSAGE", $strErrorMessage);

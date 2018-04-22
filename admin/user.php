@@ -70,7 +70,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                 } else {
                     $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                     if ($chkModus == "insert") {
-                        $myDataClass->writeLog(translate('A new user added:')." ".$chkTfValue1);
+                        $myDataClass->writeLog(translate('New user added:')." ".$chkTfValue1);
                     }
                     if ($chkModus == "modify") {
                         $myDataClass->writeLog(translate('User modified:')." ".$chkTfValue1);
@@ -86,7 +86,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
         }
     } else {
-        $myVisClass->processMessage(translate('Password too short or password fields unequally!'), $strErrorMessage);
+        $myVisClass->processMessage(translate('Password too short or password fields do not match!'), $strErrorMessage);
     }
     $chkModus = "display";
 }
@@ -127,8 +127,8 @@ if ($chkModus == "add") {
     $conttp->setVariable("TITLE", translate('User administration'));
     $conttp->setVariable("WSAUTH_DISABLE", "disabled");
     $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
-    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
-    $conttp->setVariable("FILL_PASSWD_NOT_EQUAL", translate('The passwords are not equal!'));
+    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains illegal characters:'));
+    $conttp->setVariable("FILL_PASSWD_NOT_EQUAL", translate('The passwords do not match!'));
     $conttp->setVariable("FILL_PASSWORD", translate('Please fill in the password'));
     $conttp->setVariable("FILL_PWDSHORT", translate('The password is too short - use at least 6 characters!'));
     $conttp->setVariable("LANG_WEBSERVER_AUTH", translate('Webserver authentification'));

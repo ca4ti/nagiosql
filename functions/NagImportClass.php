@@ -1602,7 +1602,7 @@ class NagImportClass
         }
         // Check the sum of elements
         if (count($arrValues) % 2 != 0) {
-            $this->strErrorMessage .= translate("Error: wrong number of arguments - cannot import service group ".
+            $this->strErrorMessage .= translate("Error: incorrect number of arguments - cannot import service group ".
                     "members")."::";
         } else {
             // Process data values

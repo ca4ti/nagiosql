@@ -10,10 +10,8 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-22 00:00:37 +0200 (Sun, 22 Apr 2018) $
-// Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 33 $
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -707,7 +705,7 @@ class NagConfigClass
                 }
             }
             if ($booRetVal == false) {
-                $this->processClassMessage(translate('Cannot delete file because the permissions are wrong '
+                $this->processClassMessage(translate('Cannot delete file because the permissions are incorrect '
                         . '(remote FTP)!')."::", $this->strErrorMessage);
                 $intReturn = 1;
             }
@@ -720,13 +718,13 @@ class NagConfigClass
                     $booRetVal = ssh2_sftp_unlink($this->resSFTP, $strFileName);
                 } else {
                     $this->processClassMessage(translate('Cannot delete file because it does not exists (remote '
-                            . 'SFTP)!')."::", $this->strErrorMessage);
+                            . 'SSH/SFTP)!')."::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
             if (($intReturn == 0) && ($booRetVal == false)) {
-                $this->processClassMessage(translate('Cannot delete file because the permissions are wrong '
-                        . '(remote SFTP)!')."::", $this->strErrorMessage);
+                $this->processClassMessage(translate('Cannot delete file because the permissions are incorrect '
+                        . '(remote SSH/SFTP)!')."::", $this->strErrorMessage);
                 $intReturn = 1;
             }
         }
@@ -1983,8 +1981,8 @@ class NagConfigClass
                 chmod($strConfigFile, 0644);
             } else {
                 $this->myDataClass->writeLog(translate('Configuration write failed:')." ".$strFile);
-                $this->processClassMessage(translate('Cannot open/overwrite the configuration file (check the 
-                permissions)!')."::", $this->strErrorMessage);
+                $this->processClassMessage(translate('Cannot open/overwrite the configuration file (check the '
+                        .'permissions)!')."::", $this->strErrorMessage);
                 $intReturn = 1;
             }
         } elseif ($intMethod == 2) { // Remote file (FTP)
@@ -2058,8 +2056,8 @@ class NagConfigClass
                 if (!ftp_put($this->resConnectId, $strBaseDir . "/" . $strFile, $strConfigFile, FTP_ASCII)) {
                     $arrError = error_get_last();
                     error_reporting($intErrorReporting);
-                    $this->processClassMessage(translate('Cannot open/overwrite the configuration file (FTP connection 
-                                                         failed)!') . "::", $this->strErrorMessage);
+                    $this->processClassMessage(translate('Cannot open/overwrite the configuration file (FTP connection '
+                            .'failed)!') . "::", $this->strErrorMessage);
                     if ($arrError['message'] != "") {
                         $this->processClassMessage($arrError['message'] . "::", $this->strErrorMessage);
                     }

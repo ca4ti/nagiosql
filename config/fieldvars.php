@@ -58,13 +58,13 @@ $arrDescription[] = array("name" => "LANG_FUNCTION",                   "string" 
 $arrDescription[] = array("name" => "LANG_MARKED",                     "string" => translate("Marked"));
 $arrDescription[] = array("name" => "LANG_DO_IT",                      "string" => translate("Do it"));
 $arrDescription[] = array("name" => "LANG_ADD",                        "string" => translate("Add"));
-$arrDescription[] = array("name" => "LANG_FORMCHECK",                  "string" => translate("Formcheck"));
+$arrDescription[] = array("name" => "LANG_FORMCHECK",                  "string" => translate("Form check"));
 $arrDescription[] = array("name" => "LANG_SECURE_QUESTION",            "string" => translate("Secure question"));
 $arrDescription[] = array("name" => "LANG_YES",                        "string" => translate("Yes"));
 $arrDescription[] = array("name" => "LANG_NO",                         "string" => translate("No"));
 $arrDescription[] = array("name" => "LANG_TIME",                       "string" => translate("Time"));
 $arrDescription[] = array("name" => "LANG_USER",                       "string" => translate("User"));
-$arrDescription[] = array("name" => "LANG_IP",                         "string" => translate("IP"));
+$arrDescription[] = array("name" => "LANG_IP",                         "string" => translate("IP Address"));
 $arrDescription[] = array("name" => "LANG_ENTRY",                      "string" => translate("Entry"));
 $arrDescription[] = array("name" => "LANG_FROM",                       "string" => translate("From"));
 $arrDescription[] = array("name" => "LANG_TO",                         "string" => translate("To"));
@@ -111,7 +111,7 @@ $arrDescription[] = array("name" => "LANG_HOST_NOTIF_ENABLE",          "string" 
 $arrDescription[] = array("name" => "LANG_SERVICE_NOTIF_ENABLE",       "string" => translate("Service notif. enable"));
 $arrDescription[] = array("name" => "LANG_CAN_SUBMIT_COMMANDS",        "string" => translate("Can submit commands"));
 $arrDescription[] = array("name" => "LANG_RETAIN_STATUS_INFO",         "string" => translate("Retain status info"));
-$arrDescription[] = array("name" => "LANG_RETAIN_NONSTATUS_INFO",      "string" => translate("Retain nonstatus info"));
+$arrDescription[] = array("name" => "LANG_RETAIN_NONSTATUS_INFO",      "string" => translate("Retain non-status info"));
 $arrDescription[] = array("name" => "LANG_MEMBERS",                    "string" => translate("Members"));
 $arrDescription[] = array("name" => "LANG_GROUP_MEMBERS",              "string" => translate("Group members"));
 $arrDescription[] = array("name" => "LANG_COMMON_SETTINGS",            "string" => translate("Common settings"));
@@ -146,7 +146,7 @@ $arrDescription[] = array("name" => "LANG_FLAP_DETECTION_OPTIONS",     "string" 
 $arrDescription[] = array("name" => "LANG_RETAIN_STATUS_INFORMATION",
     "string" => translate("Retain status information"));
 $arrDescription[] = array("name" => "LANG_RETAIN_NOSTATUS_INFORMATION",
-    "string" => translate("Retain nostatus information"));
+    "string" => translate("Retain non-status information"));
 $arrDescription[] = array("name" => "LANG_PROCESS_PERF_DATA",          "string" => translate("Process perf data"));
 $arrDescription[] = array("name" => "LANG_ALARM_SETTINGS",             "string" => translate("Alarm settings"));
 $arrDescription[] = array("name" => "LANG_CONTACTS",                   "string" => translate("Contacts"));
@@ -194,13 +194,13 @@ $arrDescription[] = array("name" => "LANG_WRITE_CONF_ALL",             "string" 
 $arrDescription[] = array("name" => "LANG_ADDRESS",                    "string" => translate("Address"));
 $arrDescription[] = array("name" => "LANG_DISPLAY_NAME",               "string" => translate("Display name"));
 $arrDescription[] = array("name" => "LANG_USE_THIS_AS_TEMPLATE",
-    "string" => translate("Use this configuration as template"));
+    "string" => translate("Use this configuration as a template"));
 $arrDescription[] = array("name" => "LANG_GENERIC_NAME",               "string" => translate("Generic name"));
 $arrDescription[] = array("name" => "LANG_HOST_NAME",                  "string" => translate("Host name"));
 $arrDescription[] = array("name" => "FILL_ALLFIELDS",
     "string" => translate("Please fill in all fields marked with an *"));
 $arrDescription[] = array("name" => "FILL_ILLEGALCHARS",
-    "string" => translate("The following field contains not permitted characters:"));
+    "string" => translate("The following field contains illegal characters:"));
 $arrDescription[] = array("name" => "FILL_BOXES",
     "string" => translate("Please check at least one option from:"));
 $arrDescription[] = array("name" => "LANG_HOSTGROUP_NAME",             "string" => translate("Host group name"));

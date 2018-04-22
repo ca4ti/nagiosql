@@ -56,9 +56,9 @@ if ($chkKey1 == "admin" and isset($_SESSION['updInfo'])) {
             "reasons"),
         "selWSAuth"     => translate("Decide between authentication based on your Webserver<br>e.g. Apache ".
             "configuration (config file or htaccess) or NagiosQL"),
-        "txtLines"      => translate("How many entries per side should be visibile (e.g. services or hosts)"),
-        "selSeldisable" => translate("Selection of multiple entries by using the new dialog or by holding CTRL + ".
-            "left click like in NagiosQL2"),
+        "txtLines"      => translate("Number of entries per side that should be visible (e.g. services or hosts)"),
+        "selSeldisable" => translate("Method of selection of multiple entries by using the new dialog or by holding CTRL + ".
+            "left mouse button, as in NagiosQL 2"),
         "templatecheck" => translate("Enable or disable the warning if a required field contains no data in objects ".
             "with templates"),
         "updatecheck"   => translate("Enable or disable the automatic online version check."),

@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `tbl_command` (
 -- Structure for table `tbl_configtarget`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_configtarget` (
+CREATE TABLE `tbl_configtarget` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `target` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `tbl_configtarget` (
   `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ssh_key_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ftp_secure` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `basedir` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hostconfig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `serviceconfig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -69,33 +70,32 @@ CREATE TABLE IF NOT EXISTS `tbl_configtarget` (
   `binaryfile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pidfile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `conffile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `version` tinyint(3) unsigned NOT NULL DEFAULT '3',
-  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `cgifile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `version` tinyint(3) UNSIGNED NOT NULL DEFAULT '3',
+  `access_group` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   `nodelete` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `target` (`target`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 --
 -- Datasets for table `tbl_configtarget`
 --
-
-INSERT INTO `tbl_configtarget` (`id`, `target`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `version`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES(1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagiosql/', '/opt/nagios/etc/objects/', '', '/var/nagios/rw/nagios.cmd', '/opt/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagiosql/nagios.cfg', 3, 0, '1', '1', NOW());
+INSERT INTO `tbl_configtarget` (`id`, `target`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `ftp_secure`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `cgifile`, `version`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES (1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', 0, '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagiosql/', '/opt/nagios/etc/objects/', '', '/var/nagios/rw/nagios.cmd', '/opt/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagiosql/nagios.cfg', '/etc/nagiosql/cgi.cfg', 3, 0, '1', '1', NOW());
 
 -- --------------------------------------------------------
 
 --
 -- Structure for table `tbl_contact`
 --
-
 CREATE TABLE IF NOT EXISTS `tbl_contact` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `contact_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `contactgroups` int(10) unsigned NOT NULL DEFAULT '0',
   `contactgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `minimum_importance` int(10) unsigned NOT NULL DEFAULT '0',
   `host_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `host_notification_period` int(10) unsigned NOT NULL DEFAULT '0',
@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS `tbl_contacttemplate` (
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `contactgroups` int(10) unsigned NOT NULL DEFAULT '0',
   `contactgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `minimum_importance` int(10) unsigned NOT NULL DEFAULT '0',
   `host_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `host_notification_period` int(11) NOT NULL DEFAULT '0',
@@ -280,6 +281,7 @@ CREATE TABLE IF NOT EXISTS `tbl_host` (
   `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `hostgroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `hostgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `check_command` text COLLATE utf8_unicode_ci NOT NULL,
@@ -478,6 +480,7 @@ CREATE TABLE IF NOT EXISTS `tbl_hosttemplate` (
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `hostgroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `hostgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `check_command` text COLLATE utf8_unicode_ci NOT NULL,
@@ -793,6 +796,7 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(238, 'user', 'standarddomain', 'all', 'default', '<p><strong>User - standard domain<br /></strong></p>\r\n<p>Defines a standard domain for the user. After the user has logged in, the defined domain is pre-selected.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(239, 'domain', 'targets', 'all', 'default', '<p>Select a configuration domain which is assigned to this data domain</p>\r\n<p>The settings where to store the configuration files are defined in a configuration domain. Select here the desired target for your configuration files.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(240, 'domain', 'ssh_host_key', 'all', 'default', 'Absolute path to the ssh key directory for the defined ssh user.<br><br>Examples:<br>/etc/nagiosql/ssh/ <br>/usr/local/nagios/etc/.ssh/<br><br>This directory includes the key file (id_rsa) for the user to connect to the remote system. Note, that the file name is set to id_rsa!');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES (NULL, 'contact', 'minimum_importance', 'all', 'default', '<p><strong>Contact - </strong><strong>minimum importance<br /></strong></p>\r\n<p>This directive is used as the value that the host or service importance value must equal before notification is sent to this contact. The importance values are intended to represent the value of a host or service to an organization. For example, you could set this value and the importance value of a host such that a system administrator would be notified when a development server goes down, but the CIO would only be notified when the company\'s production ecommerce database server was down. The minimum_importance value defaults to zero.</p>\r\n<p>In Nagios Core 4.0.0 to 4.0.3 this was known as minimum_value but has been replaced with minimum_importance.</p>\r\n<p>Parameter name: minimum_importance<br /> <em>Required:</em> no</p>');
 
 
 -- --------------------------------------------------------
@@ -1820,6 +1824,23 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToHostgroup` (
 -- Datasets for table `tbl_lnkServicetemplateToHostgroup`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Structure for table `tbl_lnkServicetemplateToService`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Datasets for table `tbl_lnkServicetemplateToService`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1944,6 +1965,24 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToHostgroup` (
 
 --
 -- Datasets for table `tbl_lnkServiceToHostgroup`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure for table `tbl_lnkServiceToService`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Datasets for table `tbl_lnkServiceToService`
 --
 
 
@@ -2390,6 +2429,8 @@ INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(242, 'tbl_servicedependency', 'tbl_lnkServicedependencyToServicegroup_S', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (243,'tbl_serviceescalation', 'tbl_servicegroup', '', 'servicegroup_name', 'tbl_lnkServiceescalationToServicegroup', 'servicegroup_name', '', '', '0', '', '2');
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (244,'tbl_serviceescalation', 'tbl_lnkServiceescalationToServicegroup', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', '1', '0,0,0,1', '0');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '2');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL,  'tbl_servicetemplate', 'tbl_service', '', 'parents', 'tbl_lnkServicetemplateToService', 'service_description', '', '', '0', '', '2');
 
 
 -- --------------------------------------------------------
@@ -2407,6 +2448,9 @@ CREATE TABLE IF NOT EXISTS `tbl_service` (
   `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `servicegroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `servicegroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -2611,6 +2655,9 @@ CREATE TABLE IF NOT EXISTS `tbl_servicetemplate` (
   `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `servicegroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `servicegroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',

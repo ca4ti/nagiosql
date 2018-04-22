@@ -32,8 +32,7 @@ require($preBasePath.'functions/prepend_adm.php');
 // Include content
 // ===============
 $conttp->setVariable("TITLE", translate('Different tools'));
-$conttp->setVariable("DESC", translate('Useful functions for data import, main configuration, daemon control and '
-        . 'so on.'));
+$conttp->setVariable("DESC", translate('Useful functions for data import, main configuration, daemon control, etc.'));
 $conttp->parse("main");
 $conttp->show("main");
 //

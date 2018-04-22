@@ -307,7 +307,7 @@ if ($chkButValue3 != "") {
             $resFile = popen($strBinary." -v ".$strConffile, "r");
         } else {
             $myVisClass->processMessage(
-                translate('Cannot find the Nagios binary or no rights for execution!'),
+                translate('Cannot find the Nagios binary or no execute permissions!'),
                 $strErrorMessage
             );
         }
@@ -385,16 +385,16 @@ if ($chkButValue4 != "") {
                         $strInfoMessage
                     );
                 } else {
-                    $myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no rights '
-                            . 'to execute'));
+                    $myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no execute '
+                            . 'permissions'));
                     $myVisClass->processMessage(
-                        translate('Nagios command file not found or no rights to write!'),
+                        translate('Nagios command file not found or no write permissions!'),
                         $strErrorMessage
                     );
                 }
             } else {
-                $myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no rights to '
-                        . 'execute'));
+                $myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no execute '
+                        . 'permissions'));
                 $myVisClass->processMessage(translate('Restart failed - Nagios command file not found or no rights '
                         . 'to execute'), $strErrorMessage);
             }
@@ -451,7 +451,7 @@ $conttp->setVariable("RESTART_NAGIOS", translate('Restart Nagios:'));
 $conttp->setVariable("WRITE_MONITORING_DATA", translate('Write monitoring data'));
 $conttp->setVariable("WRITE_ADDITIONAL_DATA", translate('Write additional data'));
 if (($chkButValue3 == "") && ($chkButValue4 == "")) {
-    $conttp->setVariable("WARNING", translate('Warning, always check the configuration files before restart Nagios!'));
+    $conttp->setVariable("WARNING", translate('Warning, always check the configuration files before restarting Nagios!'));
 }
 $conttp->setVariable("MAKE", translate('Do it'));
 $conttp->setVariable("IMAGE_PATH", $_SESSION['SETS']['path']['base_url']."images/");
@@ -482,7 +482,7 @@ if (isset($resFile) && ($resFile != false)) {
         }
         $strOutput .= $strLine."<br>";
     }
-    $myDataClass->writeLog(translate('Written Nagios configuration checked - Warnings/Errors:')." ".$intWarning."/".
+    $myDataClass->writeLog(translate('Nagios written configuration files checked - Warnings/Errors:')." ".$intWarning."/".
             $intError);
     pclose($resFile);
     if (($intError == 0) && ($intWarning == 0)) {
@@ -517,7 +517,7 @@ if (isset($resFile) && ($resFile != false)) {
         }
         $strOutput .= $elem."<br>";
     }
-    $myDataClass->writeLog(translate('Written Nagios configuration checked - Warnings/Errors:')." ".$intWarning."/".
+    $myDataClass->writeLog(translate('Nagios written configuration files checked - Warnings/Errors:')." ".$intWarning."/".
             $intError);
     if (($intError == 0) && ($intWarning == 0)) {
         $conttp->setVariable("VERIFY_CLASS", "greenmessage");

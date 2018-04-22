@@ -4,16 +4,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2008-2017 by Martin Willisegger
+// (c) 2005-2018 by Martin Willisegger
 //
-// Project  : NagiosQL
-// Component: Installation HowTo
-// Website  : http://www.nagiosql.org
-// Date     : $LastChangedDate: 2018-03-27 21:44:52 +0200 (Di, 27 Mär 2018) $
-// Author   : $LastChangedBy: martin $
-// Version  : 3.3.0
-// Revision : $LastChangedRevision: 3 $
-// SVN-ID   : $Id: INSTALLATION_enGB.txt 3 2018-03-27 19:44:52Z martin $
+// Project   : NagiosQL
+// Component : Installation HowTo
+// Website   : https://sourceforge.net/projects/nagiosql/
+// Version   : 3.4.0
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +98,7 @@ After installation - go to administration - support and check your installation.
 ================
 === PROBLEMS ===
 ================
-There are currently no known issues. If you having questions, please visit our forum http://www.nagiosql.org/forum.html. If you probably found a bug, please help us and open a new bug report at http://dev.nagigosql.org
+There are currently no known issues. If you having questions, please visit our forum https://sourceforge.net/projects/nagiosql/. If you probably found a bug, please help us and open a new bug report at http://dev.nagigosql.org
 
 ================
 === APPENDIX ===

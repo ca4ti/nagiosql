@@ -10,10 +10,8 @@
 // Project   : NagiosQL
 // Component : Preprocessing script for content pages
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-20 23:01:27 +0200 (Fri, 20 Apr 2018) $
-// Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 32 $
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -318,7 +316,7 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
 } elseif (($chkModus == "checkform") && ($chkSelModify == "delete") && ($intGlobalWriteAccess == 0)) {
     // Delete selected datasets
     if (($preTableName == 'tbl_user') && ($chkTfValue5 == "Admin")) {
-        $myVisClass->processMessage(translate("Admin can't be deleted"), $strErrorMessage);
+        $myVisClass->processMessage(translate("Admin cannot be deleted"), $strErrorMessage);
         $intReturn = 0;
     } elseif ((($preTableName == 'tbl_datadomain') || ($preTableName == 'tbl_configtarget')) &&
               ($chkTfValue3 == "localhost")) {

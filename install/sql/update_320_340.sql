@@ -5,6 +5,8 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
+--  (c) 2005-2018 by Martin Willisegger
+--
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 3.2.0 to NagiosQL 3.4.0
 --  Website   : https://sourceforge.net/projects/nagiosql/

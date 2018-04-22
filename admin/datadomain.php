@@ -114,7 +114,7 @@ if ($chkModus == "add") {
     }
     $conttp->setVariable("TITLE", translate('Data domain administration'));
     $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
-    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
+    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains illegal characters:'));
     $conttp->setVariable("ENABLE", translate('Enable'));
     $conttp->setVariable("DISABLE", translate('Disable'));
     // Insert data from database in "modify" mode

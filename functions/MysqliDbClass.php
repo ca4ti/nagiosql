@@ -75,17 +75,18 @@ class MysqliDbClass
 
     /**
      * Opens a connection to the database server and select a database
+     * @param int $intMode                      1 = connect only / 0 = connect + dbselect
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasDBConnection()
+    public function hasDBConnection($intMode = 0)
     {
         $booReturn = true;
         $this->dbconnect();
         if ($this->error == true) {
             $booReturn = false;
         }
-        if ($booReturn == true) {
+        if (($booReturn == true) && ($intMode == 0)) {
             $this->dbselect();
             if ($this->error == true) {
                 $booReturn = false;

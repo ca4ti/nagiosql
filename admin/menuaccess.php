@@ -40,7 +40,7 @@ if (filter_input(INPUT_POST, 'subSave') && ($chkSelValue1 != 0)) {
     $strSQL = "UPDATE `tbl_menu` SET `mnuGrpId`='$chkSelValue2' WHERE `mnuId`=$chkSelValue1";
     $booReturn  = $myDBClass->insertData($strSQL);
     if ($booReturn == false) {
-        $myVisClass->processMessage(translate('Error while inserting the data to the data base:'), $strErrorMessage);
+        $myVisClass->processMessage(translate('Error while inserting the data into the database:'), $strErrorMessage);
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     } else {
         $myVisClass->processMessage(translate('Data were successfully inserted to the data base!'), $strInfoMessage);
@@ -51,7 +51,7 @@ if (filter_input(INPUT_POST, 'subSave') && ($chkSelValue1 != 0)) {
 //
 // Include content
 // ===============
-$conttp->setVariable("TITLE", translate('Define Menu Accessrights'));
+$conttp->setVariable("TITLE", translate('Define Menu Access Rights'));
 foreach ($arrDescription as $elem) {
     $conttp->setVariable($elem['name'], $elem['string']);
 }

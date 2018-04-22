@@ -5,14 +5,13 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
+--  (c) 2005-2018 by Martin Willisegger
+--
 --  Project   : NagiosQL
 --  Component : Import samples build from Nagios 3.0.5 configuration samples
---  Website   : www.nagiosql.org
---  Date      : $LastChangedDate: 2012-02-24 10:22:28 +0100 (Fri, 24 Feb 2012) $
---  Author    : $LastChangedBy: martin $
---  Version   : 3.2.0
---  Revision  : $LastChangedRevision: 1248 $
---  SVN-ID    : $Id: import_nagios_sample.sql 1248 2012-02-24 09:22:28Z martin $
+--  Website   : https://sourceforge.net/projects/nagiosql/
+--  Version   : 3.4.0
+--  GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 

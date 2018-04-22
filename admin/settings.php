@@ -183,7 +183,7 @@ if (filter_input(INPUT_POST, 'selValue1')) {
                 "en_GB.utf8"
             );
             if (!isset($loc)) {
-                $myVisClass->processMessage(translate("Error in setting the correct locale, please report this error "
+                $myVisClass->processMessage(translate("Error setting the correct locale. Please report this error "
                         . "with the associated output of 'locale -a'"), $strErrorMessage);
             }
             putenv("LC_ALL=".$strLocale.".utf-8");
@@ -193,7 +193,7 @@ if (filter_input(INPUT_POST, 'selValue1')) {
             textdomain($strLocale);
             $myVisClass->processMessage(translate("Settings were changed"), $strInfoMessage);
         } else {
-            $myVisClass->processMessage(translate("An error occured while writing settings.php, please "
+            $myVisClass->processMessage(translate("An error occured while writing settings.php. Please "
                     . "check permissions!"), $strErrorMessage);
         }
     } else {

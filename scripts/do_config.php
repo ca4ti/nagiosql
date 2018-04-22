@@ -77,7 +77,7 @@ if ($argFunction == "check") {
         if (file_exists($strBinary) && is_executable($strBinary)) {
             $resFile = popen($strBinary." -v ".$strConffile, "r");
         } else {
-            echo "Cannot find the Nagios binary or no rights for execution!\n";
+            echo "Cannot find the Nagios binary or no execute permissions!\n";
             exit(1);
         }
     } elseif ($intMethod == 2) {
@@ -145,7 +145,7 @@ if ($argFunction == "restart") {
                     exit(0);
                 }
             }
-            echo "Restart failed - Nagios command file not found or no rights to execute\n";
+            echo "Restart failed - Nagios command file not found or no execute permissions\n";
             exit(1);
         } else {
             echo "Nagios daemon is not running, cannot send restart command!\n";

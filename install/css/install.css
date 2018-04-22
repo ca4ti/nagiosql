@@ -8,13 +8,11 @@
 /*
 /**********************************************
 /*
-/* Project  : NagiosQL
-/* Component: Installer CSS
-/* Website  : http://www.nagiosql.org
-/* Date     : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
-/* Author   : $LastChangedBy: martin $
-/* Version  : 3.3.0
-/* Revision : $LastChangedRevision: 2 $
+/* Project   : NagiosQL
+/* Component : Installer CSS
+/* Website   : https://sourceforge.net/projects/nagiosql/
+/* Version   : 3.4.0
+/* GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 /*
 /**********************************************/
 
@@ -41,7 +39,7 @@ body {
   min-width: 740px;
   max-width: 80em;
   margin: 0 auto;
-  border: 0px #889 solid;
+  border: 0 #889 solid;
   text-align:left;
   }
 
@@ -119,7 +117,7 @@ body {
   color: #FFFFFF;
   text-align: center;
   font-weight: bold;
-  padding: 0px 0 0 0;
+  padding: 0 0 0 0;
   }
   
  .step1_active a,
@@ -131,16 +129,6 @@ body {
 	color: #FFFFFF;
 	}
 
-.step1_deactive {
-  background: url(../images/step1_deactive.png) no-repeat;
-  height: 75px;
-  width: 150px;
-  color: #FFFFFF;
-  text-align: center;
-  font-weight: bold;
-  padding: 0px 0 0 0;
-  }
-
 .step2_active {
   background: url(../images/step2_active.png) no-repeat;
   height: 75px;
@@ -148,17 +136,7 @@ body {
   color: #FFFFFF;
   text-align: center;
   font-weight: bold;
-  padding: 0px 0 0 0;
-  }
-
-.step2_deactive {
-  background: url(../images/step2_deactive.png) no-repeat;
-  height: 75px;
-  width: 150px;
-  color: #FFFFFF;
-  text-align: center;
-  font-weight: bold;
-  padding: 0px 0 0 0;
+  padding: 0 0 0 0;
   }
 
   .step3_active {
@@ -168,17 +146,7 @@ body {
   color: #FFFFFF;
   text-align: center;
   font-weight: bold;
-  padding: 0px 0 0 0;
-  }
-
-.step3_deactive {
-  background: url(../images/step3_deactive.png) no-repeat;
-  height: 75px;
-  width: 150px;
-  color: #FFFFFF;
-  text-align: center;
-  font-weight: bold;
-  padding: 0px 0 0 0;
+  padding: 0 0 0 0;
   }
 	  
 .textmiddle {
@@ -205,46 +173,18 @@ body {
 	float: left;
 	text-align: center;
 	}
-	
+
+/*noinspection CssUnusedSymbol*/
 #install-center {
 	padding-left: 240px;
 	}
-	
-#install-button-index {
-	text-align:center;
-	position:relative;
-	}
-	
-	.button-index {
-		overflow: auto;
-		width: 40%;
-		text-align: center;
-		margin: 0 auto;
-		padding: 0px;
-		}
-			
-	.button-install {
-		float: left;
-		width: 100px;
-		padding: 5px;
-		width: 45%;
-		float: left;
-		}
 
 	.button-update {
-		float: left;
-		width:100px;
-		padding: 5px;
-		width: 45%;
 		float: right;
-		}
-		
-	.button-skip {
 		width:100px;
-		text-align: center;
-		display: block;
 		padding: 5px;
 		}
+
 /* Index */
 
 #indexmain {
@@ -252,7 +192,7 @@ body {
   }
 
   #indexmain_content {
-    padding: 0px 20px 10px 10px;
+    padding: 0 20px 10px 10px;
     z-index: 2;
     }
 
@@ -334,26 +274,21 @@ h3 {
   color:#f2d409;
   }
 
-.steps {
-  text-align: center;
-  }
-
 .clear {
 	overflow: hidden;
 	width: 100%;
 	}
 
-.clearfix {
-  display: block;
-  }
-
 #ie_clearing {
   display:none;
   }
 
+/*noinspection CssUnusedSymbol*/
 .showfield {
 	
 }
+
+/*noinspection CssUnusedSymbol*/
 .hidefield {
 	display:none;	
 }
@@ -398,7 +333,7 @@ input[type=submit] {
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 input[type=submit][disabled] {
@@ -410,7 +345,7 @@ input[type=submit][disabled] {
 	height:25px;
 	padding-left:10px;
 	padding-right:10px;
-	margin:0px;
+	margin:0;
 	padding-bottom:2px;
 }
 select.required {
@@ -423,41 +358,9 @@ select.required {
 	font-size:12px;
 	height:22px;
 }
-.validation-advice {
-  margin: 5px 0;
-  padding: 5px;
-  background-color: #FF3300;
-  color : #FFF;
-  font-weight: bold;
-}
 
 /*  Text Styles */
 .hint {
   color: #666;
   font-size: 0.95em;
-}
-
-/* Tooltip */
-.yh_tt_div {
- width: 200px;
- background-color: #ffffff; 
- padding: 10px; 
- border: 1px solid #ff6600; 
-}
-
-.yh_tooltip {
- font-size: 11px; 
- font-face: arial,helvetica,sans-serif;
-}
-
-.tt_header {
- position: relative;
- width: 150px;
- height: 19px;
- background-image: url(../images/tip_header.gif);
- margin-bottom: 3px;
-}
-
-.tooltip {
- display: none;
 }

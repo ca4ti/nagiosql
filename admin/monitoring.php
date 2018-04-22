@@ -35,7 +35,7 @@ require($preBasePath.'functions/prepend_content.php');
 $conttp->setVariable("TITLE", translate('Monitoring'));
 $conttp->parse("header");
 $conttp->show("header");
-$conttp->setVariable("DESC", translate('To define host and service supervisions as well as host and service groups.'));
+$conttp->setVariable("DESC", translate('Define host and service supervisions as well as host and service groups.'));
 $conttp->setVariable("STATISTICS", translate('Statistical datas'));
 $conttp->setVariable("TYPE", translate('Group'));
 $conttp->setVariable("ACTIVE", translate('Active'));

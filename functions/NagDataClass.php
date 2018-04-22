@@ -10,10 +10,9 @@
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-20 23:01:27 +0200 (Fri, 20 Apr 2018) $
-// Author    : $LastChangedBy: martin $
+// Website   : https://sourceforge.net/projects/nagiosql/
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 32 $
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -141,7 +140,7 @@ class NagDataClass
             $this->processClassMessage(translate('Data were successfully inserted to the data base!').
                 "::", $this->strInfoMessage);
         } else {
-            $this->processClassMessage(translate('Error while inserting the data to the data base:').
+            $this->processClassMessage(translate('Error while inserting the data into the database:').
                 "::".$this->myDBClass->strErrorMessage."::", $this->strErrorMessage);
             $intReturn = 1;
         }
@@ -293,7 +292,7 @@ class NagDataClass
                     $this->updateStatusTable($strTableName);
                 } else {
                     // Error
-                    $this->processClassMessage(translate('Error while inserting the data to the data base:')
+                    $this->processClassMessage(translate('Error while inserting the data into the database:')
                         ."::".$this->myDBClass->strErrorMessage, $this->strInfoMessage);
                     $intReturn = 1;
                 }
@@ -399,8 +398,8 @@ class NagDataClass
                     "::".$this->myDBClass->strErrorMessage."::", $this->strInfoMessage);
                 $intReturn = 1;
             } elseif ($this->myDBClass->intAffectedRows == 0) {
-                $this->processClassMessage(translate('No data deleted. Probably the dataset does not exist or it '.
-                'is protected from delete.')."::", $this->strErrorMessage);
+                $this->processClassMessage(translate('No data deleted. The dataset probably does not exist or '.
+                'is protected from deletion.')."::", $this->strErrorMessage);
                 $intReturn = 1;
             } else {
                 $this->strInfoMessage .= translate('Dataset successfully deleted. Affected rows:')." ".

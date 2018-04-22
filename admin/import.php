@@ -60,7 +60,7 @@ if (isset($_FILES['datValue1']) && ($_FILES['datValue1']['name'] != "") && ($chk
             $myVisClass->processMessage($myImportClass->strErrorMessage, $strErrorMessage);
         } else {
             $myVisClass->processMessage($myImportClass->strInfoMessage, $strInfoMessage);
-            $myDataClass->writeLog(translate('File imported - File [overwite flag]:')." ".
+            $myDataClass->writeLog(translate('File imported - File [overwrite flag]:')." ".
                     $_FILES['datValue1']['name']." [".$chkChbValue1."]");
         }
     }
@@ -75,7 +75,7 @@ if (($chkMselValue1[0] != "") && ($chkStatus == 1)) {
             $myVisClass->processMessage($myImportClass->strErrorMessage, $strErrorMessage);
         } else {
             $myVisClass->processMessage($myImportClass->strInfoMessage, $strInfoMessage);
-            $myDataClass->writeLog(translate('File imported - File [overwite flag]:')." ".$elem." [".$chkChbValue1."]");
+            $myDataClass->writeLog(translate('File imported - File [overwrite flag]:')." ".$elem." [".$chkChbValue1."]");
         }
     }
 }
