@@ -54,49 +54,49 @@ $intAccessGrp13 = intval($myDBClass->getFieldData("SELECT `mnuGrpId` FROM `tbl_m
 if ($myVisClass->checkAccountGroup($intAccessGrp8, 'read') == 0) {
     $conttp->setVariable("NAME", translate('Hosts'));
     $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_host` "
-        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_host` "
-        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->parse("statisticrow");
 }
 if ($myVisClass->checkAccountGroup($intAccessGrp9, 'read') == 0) {
     $conttp->setVariable("NAME", translate('Services'));
     $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_service` "
-        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_service` "
-        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->parse("statisticrow");
 }
 if ($myVisClass->checkAccountGroup($intAccessGrp10, 'read') == 0) {
     $conttp->setVariable("NAME", translate('Host groups'));
     $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_hostgroup` "
-        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_hostgroup` "
-        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->parse("statisticrow");
 }
 if ($myVisClass->checkAccountGroup($intAccessGrp11, 'read') == 0) {
     $conttp->setVariable("NAME", translate('Service groups'));
     $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicegroup` "
-        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicegroup` "
-        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->parse("statisticrow");
 }
 if ($myVisClass->checkAccountGroup($intAccessGrp12, 'read') == 0) {
     $conttp->setVariable("NAME", translate('Host templates'));
     $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_hosttemplate` "
-        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_hosttemplate` "
-        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->parse("statisticrow");
 }
 if ($myVisClass->checkAccountGroup($intAccessGrp13, 'read') == 0) {
     $conttp->setVariable("NAME", translate('Service templates'));
     $conttp->setVariable("ACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicetemplate` "
-        . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='1' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->setVariable("INACT_COUNT", $myDBClass->getFieldData("SELECT count(*) FROM `tbl_servicetemplate` "
-        . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
+            . "WHERE `active`='0' AND `config_id`=$chkDomainId AND `access_group` IN ($strAccess)"));
     $conttp->parse("statisticrow");
 }
 $conttp->parse("statistics");
@@ -106,6 +106,6 @@ $conttp->show("main");
 // Include Footer
 // ==============
 $maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");

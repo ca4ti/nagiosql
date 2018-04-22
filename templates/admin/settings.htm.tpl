@@ -46,7 +46,7 @@
                 if(boxes[i].checked){
                     checkedUpd = i;
                     break; // No need to check the rest since only one can be checked.
-                }
+                }  
             }
             if (checkedUpd === 0) {
                 boxes = document.getElementsByName("radValue3");
@@ -55,14 +55,14 @@
                     if(boxes[i].checked){
                         checkedProxy = i;
                         break; // No need to check the rest since only one can be checked.
-                    }
+                    }  
                 }
                 if (checkedProxy === 0) {
                     check = checkfields(fields2,form,myFocusObject);
                     if (check === false) {
                         msginit(msg,header,1);
                         return false;
-                    }
+                    }					
                 }
             }
         }
@@ -81,11 +81,11 @@
                         if(boxes[i].checked){
                             checkedBox = i;
                             break; // No need to check the rest since only one can be checked.
-                        }
+                        }  
                     }
                     if (checkedBox === 0) {
                         document.getElementById('Proxy').className       = "elementShow";
-                        document.getElementById('ProxyServer').className = "elementShow";
+                        document.getElementById('ProxyServer').className = "elementShow";	
                         document.getElementById('ProxyUser').className   = "elementShow";
                         document.getElementById('ProxyPasswd').className = "elementShow";
                     } else {
@@ -97,17 +97,17 @@
                 }
             } else if (name === "radValue3") {
                 if (key === 0) {
-                    document.getElementById('Proxy').className       = "elementShow";
+                    document.getElementById('Proxy').className       = "elementShow";					
                     document.getElementById('ProxyServer').className = "elementHide";
                     document.getElementById('ProxyUser').className   = "elementHide";
                     document.getElementById('ProxyPasswd').className = "elementHide";
                 } else {
                     document.getElementById('Proxy').className       = "elementShow";
-                    document.getElementById('ProxyServer').className = "elementShow";
+                    document.getElementById('ProxyServer').className = "elementShow";	
                     document.getElementById('ProxyUser').className   = "elementShow";
                     document.getElementById('ProxyPasswd').className = "elementShow";
                 }
-            }
+            }				
         }
         //-->
     </script>
@@ -124,11 +124,11 @@
             <tr>
                 <td>{PROTOCOL_NAME} *</td>
                 <td>
-                    <select title="{PROTOCOL_NAME}" name="selValue1" class="selectbordermust inpmust">
-                        <option class="inpmust" value="1" {HTTP_SELECTED}>http</option>
-                        <option class="inpmust" value="2" {HTTPS_SELECTED}>https</option>
-                    </select>
-                </td>
+                	<select title="{PROTOCOL_NAME}" name="selValue1" class="selectbordermust inpmust">
+                    	<option class="inpmust" value="1" {HTTP_SELECTED}>http</option>
+                    	<option class="inpmust" value="2" {HTTPS_SELECTED}>https</option>
+                	</select>
+		</td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','selProtocol','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
@@ -141,9 +141,9 @@
                 <td>{LOCALE}</td>
                 <td>
                     <select title="{LOCALE}" name="selValue2" class="selectborder">
-                        <!-- BEGIN language -->
+<!-- BEGIN language -->
                         <option value="{LANGUAGE_ID}" {LANGUAGE_SELECTED}>{LANGUAGE_NAME}</option>
-                        <!-- END language -->
+<!-- END language -->
                     </select>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','selLanguage','all','Info');" class="infobutton_1"></td>
@@ -198,10 +198,10 @@
             <tr>
                 <td>{WSAUTH_NAME} *</td>
                 <td>
-                    <select title="{WSAUTH_NAME}" name="selValue3" class="selectbordermust inpmust">
-                        <option class="inpmust" value="0" {WSAUTH_0_SELECTED}>NagiosQL</option>
+                	<select title="{WSAUTH_NAME}" name="selValue3" class="selectbordermust inpmust">
+                		<option class="inpmust" value="0" {WSAUTH_0_SELECTED}>NagiosQL</option>
                         <option class="inpmust" value="1" {WSAUTH_1_SELECTED}>Apache</option>
-                    </select>
+                	</select>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','selWSAuth','all','Info');" class="infobutton_1"></td>
             </tr>
@@ -219,34 +219,34 @@
             <tr>
                 <td>{SELDISABLE_NAME}</td>
                 <td>
-                    <select title="{SELDISABLE_NAME}" name="selValue4" class="selectborder">
-                        <option value="1" {SELDISABLE_1_SELECTED}>NagiosQL 3</option>
+                	<select title="{SELDISABLE_NAME}" name="selValue4" class="selectborder">
+                		<option value="1" {SELDISABLE_1_SELECTED}>NagiosQL 3</option>
                         <option value="0" {SELDISABLE_0_SELECTED}>NagiosQL 2</option>
-                    </select>
-                </td>
+                	</select>
+				</td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','selSeldisable','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td>{TEMPLATE_CHECK}</td>
                 <td>
-                    <input title="{TEMPLATE_CHECK} {LANG_ENABLE}" type="radio" name="radValue1" value="1" {TPL_CHECK_1_CHECKED}><div style="float:left; padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
-                    <input title="{TEMPLATE_CHECK} {LANG_DISABLE}" type="radio" name="radValue1" value="0" {TPL_CHECK_0_CHECKED}><div style="float:left; padding:3px;">{LANG_DISABLE}</div>
+                  <input title="{TEMPLATE_CHECK} {LANG_ENABLE}" type="radio" name="radValue1" value="1" {TPL_CHECK_1_CHECKED}><div style="float:left; padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
+                  <input title="{TEMPLATE_CHECK} {LANG_DISABLE}" type="radio" name="radValue1" value="0" {TPL_CHECK_0_CHECKED}><div style="float:left; padding:3px;">{LANG_DISABLE}</div>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','templatecheck','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td>{UPDATE_CHECK}</td>
                 <td>
-                    <input title="{UPDATE_CHECK} {LANG_ENABLE}" type="radio" name="radValue2" value="1" {UPD_CHECK_1_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left;padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
-                    <input title="{UPDATE_CHECK} {LANG_DISABLE}" type="radio" name="radValue2" value="0" {UPD_CHECK_0_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left;padding:3px;">{LANG_DISABLE}</div>
+                	<input title="{UPDATE_CHECK} {LANG_ENABLE}" type="radio" name="radValue2" value="1" {UPD_CHECK_1_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left;padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
+                  	<input title="{UPDATE_CHECK} {LANG_DISABLE}" type="radio" name="radValue2" value="0" {UPD_CHECK_0_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left;padding:3px;">{LANG_DISABLE}</div>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','updatecheck','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr id="Proxy" class="{CLASS_NAME_1}">
                 <td>{UPD_PROXY_CHECK}</td>
                 <td>
-                    <input title="{UPD_PROXY_CHECK} {LANG_ENABLE}" type="radio" name="radValue3" value="1" {UPD_PROXY_1_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left; padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
-                    <input title="{UPD_PROXY_CHECK} {LANG_DISABLE}" type="radio" name="radValue3" value="0" {UPD_PROXY_0_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left; padding:3px;">{LANG_DISABLE}</div>
+                  <input title="{UPD_PROXY_CHECK} {LANG_ENABLE}" type="radio" name="radValue3" value="1" {UPD_PROXY_1_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left; padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
+                  <input title="{UPD_PROXY_CHECK} {LANG_DISABLE}" type="radio" name="radValue3" value="0" {UPD_PROXY_0_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left; padding:3px;">{LANG_DISABLE}</div>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','chkUpdProxy','all','Info');" class="infobutton_1"></td>
             </tr>
@@ -272,7 +272,7 @@
                 <td colspan="3"><input name="subForm" type="button" id="subForm" value="{LANG_SAVE}" onClick="LockButton();" {ADD_CONTROL}>&nbsp;<input name="subAbort" type="button" id="subAbort" onClick="abort();" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
             </tr>
         </table>
-    </form>
+	</form>
     <br>
     <p><span class="redmessage">{ERRORMESSAGE}</span><span class="greenmessage">{INFOMESSAGE}</span></p>
 </div>

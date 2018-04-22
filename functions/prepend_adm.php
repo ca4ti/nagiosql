@@ -51,15 +51,15 @@ session_start();
 // ===================
 if (substr_count(filter_input(INPUT_SERVER, 'SCRIPT_NAME', FILTER_SANITIZE_STRING), "index.php") != 0) {
     $preBasePath = str_replace("//", "/", dirname(filter_input(
-            INPUT_SERVER,
-            'SCRIPT_FILENAME',
-            FILTER_SANITIZE_STRING
-        ))."/");
+        INPUT_SERVER,
+        'SCRIPT_FILENAME',
+        FILTER_SANITIZE_STRING
+    ))."/");
     $preBaseURL  = str_replace("//", "/", dirname(filter_input(
-            INPUT_SERVER,
-            'SCRIPT_NAME',
-            FILTER_SANITIZE_STRING
-        ))."/");
+        INPUT_SERVER,
+        'SCRIPT_NAME',
+        FILTER_SANITIZE_STRING
+    ))."/");
     $_SESSION['SETS']['path']['base_url']  = $preBaseURL;
     $_SESSION['SETS']['path']['base_path'] = $preBasePath;
 } elseif (!isset($_SESSION['SETS']['path']['base_url']) || !isset($_SESSION['SETS']['path']['base_path'])) {
@@ -148,7 +148,7 @@ if ($intError == 0) {
     );
     if (!isset($strLocale)) {
         $strErrorMessage .= translate("Error in setting the correct locale, please report this error with the "
-                . "associated output of  'locale -a' to bugs@nagiosql.org")."::";
+                                    . "associated output of  'locale -a' to bugs@nagiosql.org")."::";
         $intError = 1;
     }
     putenv("LC_ALL=".$SETS['data']['locale'].".utf-8");
@@ -212,7 +212,7 @@ if (isset($chkLogout) && ($chkLogout == "yes")) {
     );
     if (!isset($strLocale)) {
         $strErrorMessage .= translate("Error in setting the correct locale, please report this error with the "
-                . "associated output of  'locale -a' to bugs@nagiosql.org")."::";
+                                    . "associated output of  'locale -a' to bugs@nagiosql.org")."::";
         $intError = 1;
     }
     putenv("LC_ALL=".$SETS['data']['locale'].".utf-8");
@@ -265,7 +265,7 @@ if ($intError == 0) {
 // Version check
 // =============
 if (version_compare($setFileVersion, $setDBVersion, '>') && (file_exists($preBasePath."install") &&
-        is_readable($preBasePath."install"))) {
+    is_readable($preBasePath."install"))) {
     header('Location: '. $_SESSION['SETS']['path']['base_url'].'install/index.php');
     exit;
 }
@@ -292,7 +292,7 @@ if (isset($strRemoteUser) && ($strRemoteUser != "") && ($_SESSION['logged_in'] =
         $_SESSION['domain']    = $arrDataUser[0]['domain'];
         // Update language settings
         $strSQL        = "SELECT `locale` FROM `tbl_language` "
-            . "WHERE `id`='".$arrDataUser[0]['language']."' AND `active`='1'";
+                       . "WHERE `id`='".$arrDataUser[0]['language']."' AND `active`='1'";
         $strUserLocale = $myDBClass->getFieldData($strSQL);
         if ($strUserLocale != "") {
             $_SESSION['SETS']['data']['locale'] = $strUserLocale;
@@ -300,14 +300,14 @@ if (isset($strRemoteUser) && ($strRemoteUser != "") && ($_SESSION['logged_in'] =
         }
         // Update last login time
         $strSQLUpdate = "UPDATE `tbl_user` SET `last_login`=NOW() "
-            . "WHERE `username`='".$myDBClass->realEscape($chkInsName)."'";
+                      . "WHERE `username`='".$myDBClass->realEscape($chkInsName)."'";
         $booReturn    = $myDBClass->insertData($strSQLUpdate);
         $myDataClass->strUserName = $arrDataUser[0]['username'];
         $myDataClass->writeLog(translate('Webserver login successfull'));
         $_SESSION['strLoginMessage'] = "";
         // Redirect to start page
         header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).$_SESSION['startsite']);
+                filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).$_SESSION['startsite']);
         exit;
     }
 }
@@ -315,7 +315,7 @@ if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") &
     $chkInsName   = $myDBClass->realEscape($chkInsName);
     $chkInsPasswd = $myDBClass->realEscape($chkInsPasswd);
     $strSQL    = "SELECT * FROM `tbl_user` "
-        . "WHERE `username`='".$chkInsName."' AND `password`=MD5('".$chkInsPasswd."') AND `active`='1'";
+               . "WHERE `username`='".$chkInsName."' AND `password`=MD5('".$chkInsPasswd."') AND `active`='1'";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataUser, $intDataCount);
     if ($booReturn == false) {
         $strErrorMessage = str_replace("::", "<br>", $strErrorMessage);
@@ -333,7 +333,7 @@ if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") &
         $_SESSION['domain']    = $arrDataUser[0]['domain'];
         // Update language settings
         $strSQL = "SELECT `locale` FROM `tbl_language` "
-            . "WHERE `id`='".$arrDataUser[0]['language']."' AND `active`='1'";
+                . "WHERE `id`='".$arrDataUser[0]['language']."' AND `active`='1'";
         $strUserLocale = $myDBClass->getFieldData($strSQL);
         if ($strUserLocale != "") {
             $_SESSION['SETS']['data']['locale'] = $strUserLocale;
@@ -341,14 +341,14 @@ if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") &
         }
         // Update last login time
         $strSQLUpdate = "UPDATE `tbl_user` SET `last_login`=NOW() "
-            . "WHERE `username`='".$myDBClass->realEscape($chkInsName)."'";
+                      . "WHERE `username`='".$myDBClass->realEscape($chkInsName)."'";
         $booReturn    = $myDBClass->insertData($strSQLUpdate);
         $myDataClass->strUserName = $arrDataUser[0]['username'];
         $myDataClass->writeLog(translate('Login successfull'));
         $_SESSION['strLoginMessage'] = "";
         // Redirect to start page
         header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).$_SESSION['startsite']);
+                filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).$_SESSION['startsite']);
         exit;
     } else {
         $_SESSION['strLoginMessage'] = translate('Login failed!');
@@ -359,15 +359,15 @@ if (($_SESSION['logged_in'] == 0) && isset($chkInsName) && ($chkInsName != "") &
 if (($_SESSION['logged_in'] == 0) && (!isset($intPageID) || ($intPageID != 0)) &&
     (!isset($chkInsName) || ($chkInsName == ""))) {
     header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-        filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-        $_SESSION['SETS']['path']['base_url']."index.php");
+            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+            $_SESSION['SETS']['path']['base_url']."index.php");
     exit;
 }
 if (!isset($_SESSION['userid']) && ($_SESSION['logged_in'] == 1)) {
     $_SESSION['logged_in'] = 0;
     header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-        filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-        $_SESSION['SETS']['path']['base_url']."index.php");
+            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+            $_SESSION['SETS']['path']['base_url']."index.php");
     exit;
 }
 //
@@ -385,12 +385,12 @@ if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
         if (time() - $_SESSION['timestamp'] > $_SESSION['SETS']['security']['logofftime']) {
             // Force new login
             $myDataClass->writeLog(translate('Session timeout reached - Seconds:')." ".
-                (time() - $_SESSION['timestamp']." - User: ".$_SESSION['username']));
+                                  (time() - $_SESSION['timestamp']." - User: ".$_SESSION['username']));
             $_SESSION['logged_in'] = 0;
-
+            
             header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-                filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-                $_SESSION['SETS']['path']['base_url']."index.php");
+                    filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+                    $_SESSION['SETS']['path']['base_url']."index.php");
             exit;
         } else {
             // Check rights
@@ -400,10 +400,10 @@ if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
                 // If no rights - redirect to index page
                 if ($intResult != 0) {
                     $myDataClass->writeLog(translate('Restricted site accessed:')." ".
-                        filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
+                            filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
                     header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-                        filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-                        $_SESSION['SETS']['path']['base_url']."index.php");
+                            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+                            $_SESSION['SETS']['path']['base_url']."index.php");
                     exit;
                 }
             }
@@ -411,7 +411,7 @@ if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
             $_SESSION['timestamp'] = time();
             if (isset($preContent) && ($preContent == "index.htm.tpl")) {
                 header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-                    filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).$_SESSION['startsite']);
+                        filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).$_SESSION['startsite']);
                 exit;
             }
         }
@@ -420,8 +420,8 @@ if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
         $myDataClass->writeLog(translate('User not found in database'));
         $_SESSION['logged_in'] = 0;
         header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-            $_SESSION['SETS']['path']['base_url']."index.php");
+                filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+                $_SESSION['SETS']['path']['base_url']."index.php");
         exit;
     }
 }
@@ -431,16 +431,16 @@ if (($_SESSION['logged_in'] == 1) && ($intError == 0)) {
 if (isset($prePageId) && ($prePageId != 1)) {
     if (!isset($_SESSION['userid'])) {
         header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-            $_SESSION['SETS']['path']['base_url']."index.php");
+                filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+                $_SESSION['SETS']['path']['base_url']."index.php");
         exit;
     }
     $strSQL     = "SELECT `mnuGrpId` FROM `tbl_menu` WHERE `mnuId`=$prePageId";
     $prePageKey = intval($myDBClass->getFieldData($strSQL));
     if ($myVisClass->checkAccountGroup($prePageKey, 'read') != 0) {
         header("Location: ".$_SESSION['SETS']['path']['protocol']."://".
-            filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-            $_SESSION['startsite']);
+                filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+                $_SESSION['startsite']);
         exit;
     }
 }
@@ -458,7 +458,7 @@ if (isset($preContent) && ($preContent != "") && (!isset($preNoMain) || ($preNoM
     $maintp->setVariable("PUBLISHER", "NagiosQL @ Sourceforge");
     if ($_SESSION['logged_in'] == 1) {
         $maintp->setVariable("ADMIN", "<a href=\"". $_SESSION['SETS']['path']['base_url'] ."admin.php\" "
-            . "class=\"top-link\">".translate('Administration')."</a>");
+                           . "class=\"top-link\">".translate('Administration')."</a>");
         //$maintp->setVariable("PLUGINS","<a href=\"".$_SESSION['SETS']['path']['base_url']."/plugin.php\"
         //class=\"top-link\">".translate('Plugins')."</a>");
     }
@@ -518,8 +518,8 @@ if (isset($preContent) && ($preContent != "") && (!isset($preNoMain) || ($preNoM
                         // Select available an domain
                         $strDomAcc = $myVisClass->getAccessGroups('read');
                         $strSQL    = "SELECT id FROM `tbl_datadomain` "
-                            . "WHERE `active` <> '0' AND `access_group` IN (".$strDomAcc.") "
-                            . "ORDER BY domain LIMIT 1";
+                                   . "WHERE `active` <> '0' AND `access_group` IN (".$strDomAcc.") "
+                                   . "ORDER BY domain LIMIT 1";
                         $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataDomain, $intDataCount);
                         if ($booReturn == false) {
                             $strErrorMessage = str_replace("::", "<br>", $strErrorMessage);
@@ -547,7 +547,7 @@ if (isset($preContent) && ($preContent != "") && (!isset($preNoMain) || ($preNoM
     if ($_SESSION['logged_in'] == 1) {
         $maintp->setVariable("LOGIN_INFO", translate('Logged in:')." ".$_SESSION['username']);
         $maintp->setVariable("LOGOUT_INFO", "<a href=\"".$_SESSION['SETS']['path']['base_url'].
-            "index.php?logout=yes\">".translate('Logout')."</a>");
+                                            "index.php?logout=yes\">".translate('Logout')."</a>");
     } else {
         $maintp->setVariable("LOGOUT_INFO", "&nbsp;");
     }
@@ -570,7 +570,7 @@ if (isset($preContent) && ($preContent != "")) {
     $arrTplOptions = array('use_preg' => false);
     if (!file_exists($preBasePath ."templates/".$preContent) || !is_readable($preBasePath ."templates/".$preContent)) {
         echo "<span style=\"color:#F00\">".translate('Warning - template file not found or not readable, please '
-                . 'check your file permissions! - File: ');
+                                                   . 'check your file permissions! - File: ');
         echo str_replace("//", "/", $preBasePath ."templates/".$preContent)."</span><br>";
         exit;
     }
@@ -681,7 +681,7 @@ if (isset($preContent) && ($preContent != "")) {
     $setSortPicture = $_SESSION['SETS']['path']['base_url']."images/sort_".strtolower($hidSortDir).".png";
     $mastertp->setVariable("SORT_DIR_".$hidSortBy, $setSortDir);
     $mastertp->setVariable("SORT_IMAGE_".$hidSortBy, "<img src=\"$setSortPicture\" alt=\"$hidSortDir\" "
-        . "title=\"$hidSortDir\" width=\"15\" height=\"14\" border=\"0\">");
+                         . "title=\"$hidSortDir\" width=\"15\" height=\"14\" border=\"0\">");
     $mastertp->setVariable("SORT_DIR", $hidSortDir);
     $mastertp->setVariable("SORT_BY", $hidSortBy);
 }

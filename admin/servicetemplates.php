@@ -55,27 +55,27 @@ if ($chkSelValue1 != "") {
 // ==================
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `host_name`=$intMselValue1, "
-        . "`host_name_tploptions`=$chkRadValue1, `hostgroup_name`=$intMselValue2, "
-        . "`hostgroup_name_tploptions`=$chkRadValue2, `service_description`='$chkTfValue2', "
-        . "`display_name`='$chkTfValue3', `parents`=$intMselValue6, `parents_tploptions`=$chkRadValue18, "
-        . "`importance`=$chkTfNullVal9, `servicegroups`=$intMselValue3, "
-        . "`servicegroups_tploptions`=$chkRadValue3, `check_command`='$chkSelValue1', "
-        . "`use_template`=$intTemplates, `is_volatile`=$chkRadValue16, `initial_state`='$strIS', "
-        . "`max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, `retry_interval`=$chkTfNullVal1, "
-        . "`active_checks_enabled`=$chkRadValue6, `passive_checks_enabled`=$chkRadValue7, "
-        . "`check_period`=$chkSelValue2, `parallelize_check`=$chkRadValue8, `obsess_over_service`=$chkRadValue10, "
-        . "`check_freshness`=$chkRadValue9, `freshness_threshold`=$chkTfNullVal4, `event_handler`=$chkSelValue3, "
-        . "`event_handler_enabled`=$chkRadValue11, `low_flap_threshold`=$chkTfNullVal5, "
-        . "`high_flap_threshold`=$chkTfNullVal6, `flap_detection_enabled`=$chkRadValue12, "
-        . "`flap_detection_options`='$strFL', `process_perf_data`=$chkRadValue15, "
-        . "`retain_status_information`=$chkRadValue13, `retain_nonstatus_information`=$chkRadValue14, "
-        . "`contacts`=$intMselValue4, `contacts_tploptions`=$chkRadValue4, `contact_groups`=$intMselValue5, "
-        . "`contact_groups_tploptions`=$chkRadValue5, `notification_interval`=$chkTfNullVal7, "
-        . "`notification_period`=$chkSelValue4, `first_notification_delay`=$chkTfNullVal8, "
-        . "`notification_options`='$strNO', `notifications_enabled`=$chkRadValue17, `stalking_options`='$strST', "
-        . "`notes`='$chkTfValue4', `notes_url`='$chkTfValue5', `action_url`='$chkTfValue6', "
-        . "`icon_image`='$chkTfValue7', `icon_image_alt`='$chkTfValue8', `use_variables`=$intVariables, "
-        . "$preSQLCommon2";
+             . "`host_name_tploptions`=$chkRadValue1, `hostgroup_name`=$intMselValue2, "
+             . "`hostgroup_name_tploptions`=$chkRadValue2, `service_description`='$chkTfValue2', "
+             . "`display_name`='$chkTfValue3', `parents`=$intMselValue6, `parents_tploptions`=$chkRadValue18, "
+             . "`importance`=$chkTfNullVal9, `servicegroups`=$intMselValue3, "
+             . "`servicegroups_tploptions`=$chkRadValue3, `check_command`='$chkSelValue1', "
+             . "`use_template`=$intTemplates, `is_volatile`=$chkRadValue16, `initial_state`='$strIS', "
+             . "`max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, `retry_interval`=$chkTfNullVal1, "
+             . "`active_checks_enabled`=$chkRadValue6, `passive_checks_enabled`=$chkRadValue7, "
+             . "`check_period`=$chkSelValue2, `parallelize_check`=$chkRadValue8, `obsess_over_service`=$chkRadValue10, "
+             . "`check_freshness`=$chkRadValue9, `freshness_threshold`=$chkTfNullVal4, `event_handler`=$chkSelValue3, "
+             . "`event_handler_enabled`=$chkRadValue11, `low_flap_threshold`=$chkTfNullVal5, "
+             . "`high_flap_threshold`=$chkTfNullVal6, `flap_detection_enabled`=$chkRadValue12, "
+             . "`flap_detection_options`='$strFL', `process_perf_data`=$chkRadValue15, "
+             . "`retain_status_information`=$chkRadValue13, `retain_nonstatus_information`=$chkRadValue14, "
+             . "`contacts`=$intMselValue4, `contacts_tploptions`=$chkRadValue4, `contact_groups`=$intMselValue5, "
+             . "`contact_groups_tploptions`=$chkRadValue5, `notification_interval`=$chkTfNullVal7, "
+             . "`notification_period`=$chkSelValue4, `first_notification_delay`=$chkTfNullVal8, "
+             . "`notification_options`='$strNO', `notifications_enabled`=$chkRadValue17, `stalking_options`='$strST', "
+             . "`notes`='$chkTfValue4', `notes_url`='$chkTfValue5', `action_url`='$chkTfValue6', "
+             . "`icon_image`='$chkTfValue7', `icon_image_alt`='$chkTfValue8', `use_variables`=$intVariables, "
+             . "$preSQLCommon2";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -255,8 +255,8 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     foreach ($_SESSION['templatedefinition'] as $elem) {
                         if ($elem['status'] == 0) {
                             $strSQL    = "INSERT INTO `tbl_lnkServicetemplateToServicetemplate` (`idMaster`,`idSlave`,"
-                                . "`idTable`,`idSort`) VALUES ($chkDataId,".$elem['idSlave'].", "
-                                . $elem['idTable'].",".$intSortId.")";
+                                       . "`idTable`,`idSort`) VALUES ($chkDataId,".$elem['idSlave'].", "
+                                       . $elem['idTable'].",".$intSortId.")";
                             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($intReturn != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -270,7 +270,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                 // =============================================
                 if ($chkModus == "modify") {
                     $strSQL    = "SELECT * FROM `tbl_lnkServicetemplateToVariabledefinition` "
-                        . "WHERE `idMaster`=".$chkDataId;
+                               . "WHERE `idMaster`=".$chkDataId;
                     $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
                     if ($booReturn == false) {
                         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -285,7 +285,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                         }
                     }
                     $strSQL    = "DELETE FROM `tbl_lnkServicetemplateToVariabledefinition` "
-                        . "WHERE `idMaster`=".$chkDataId;
+                               . "WHERE `idMaster`=".$chkDataId;
                     $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                     if ($intReturn != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -296,13 +296,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     foreach ($_SESSION['variabledefinition'] as $elem) {
                         if ($elem['status'] == 0) {
                             $strSQL1    = "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`) "
-                                . "VALUES ('".$elem['definition']."','".$elem['range']."',now())";
+                                        . "VALUES ('".$elem['definition']."','".$elem['range']."',now())";
                             $intReturn1 = $myDataClass->dataInsert($strSQL1, $intInsertId);
                             if ($intReturn1 != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
                             $strSQL2    = "INSERT INTO `tbl_lnkServicetemplateToVariabledefinition` (`idMaster`, "
-                                . "`idSlave`) VALUES ($chkDataId,$intInsertId)";
+                                        . "`idSlave`) VALUES ($chkDataId,$intInsertId)";
                             $intReturn2 = $myDataClass->dataInsert($strSQL2, $intInsertId);
                             if ($intReturn2 != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -345,7 +345,7 @@ if ($chkModus == "add") {
         $strWhere = "AND `id` <> ".$arrModifyData['id'];
     }
     $strSQL1    = "SELECT `id`, `$preKeyField`, `active` FROM `$preTableName` "
-        . "WHERE $strDomainWhere $strWhere ORDER BY `$preKeyField`";
+                . "WHERE $strDomainWhere $strWhere ORDER BY `$preKeyField`";
     $booReturn1 = $myDBClass->hasDataArray($strSQL1, $arrDataTpl, $intDataCountTpl);
     if ($booReturn1 == false) {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -365,7 +365,7 @@ if ($chkModus == "add") {
         }
     }
     $strSQL2    = "SELECT `id`, `name`, `active` FROM `tbl_service` "
-        . "WHERE `name` <> '' AND $strDomainWhere2 ORDER BY `name`";
+                . "WHERE `name` <> '' AND $strDomainWhere2 ORDER BY `name`";
     $booReturn2 = $myDBClass->hasDataArray($strSQL2, $arrDataHpl, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -552,7 +552,7 @@ if ($chkModus == "add") {
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
         $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
+                  . 'another configuration').":</span>";
         $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo, $strChbFields);
@@ -587,7 +587,7 @@ if ($chkModus == "add") {
             foreach ($arrArgument as $key => $value) {
                 if ($key == 0) {
                     $conttp->setVariable("IFRAME_SRC", $_SESSION['SETS']['path']['base_url'].
-                        "admin/commandline.php?cname=".$value);
+                            "admin/commandline.php?cname=".$value);
                 } else {
                     $conttp->setVariable("DAT_ARG".$key, htmlentities($value, ENT_QUOTES, 'UTF-8'));
                 }
@@ -623,7 +623,7 @@ if ($chkModus == "display") {
     if ($_SESSION['search'][$preSearchSession] != "") {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `service_description` "
-            . "LIKE '%".$strSearchTxt."%' OR `display_name` LIKE '%".$strSearchTxt."%')";
+                        . "LIKE '%".$strSearchTxt."%' OR `display_name` LIKE '%".$strSearchTxt."%')";
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
@@ -632,7 +632,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL1    = "SELECT count(*) AS `number` FROM `$preTableName` "
-        . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
+                . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
     $booReturn1 = $myDBClass->hasSingleDataset($strSQL1, $arrDataLinesCount);
     if ($booReturn1 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -645,8 +645,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL2    = "SELECT `id`, `$preKeyField`, `service_description`, `register`, `active`, `last_modified`, "
-        . "`config_id`, `access_group` FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
-        . "AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "`config_id`, `access_group` FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
+                . "AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL2, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

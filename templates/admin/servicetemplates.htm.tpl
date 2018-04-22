@@ -5,13 +5,11 @@
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
 <!-- Version   : 3.4.0 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
-<!-- BEGIN header -->
+<!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <!-- END header -->
-    <!-- BEGIN datainsert -->
     <!--suppress JSUnusedLocalSymbols -->
-    <script language="JavaScript" type="text/JavaScript">
+    <script type="text/JavaScript">
         <!--
         // Initialize change dialog
         openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}");
@@ -65,7 +63,7 @@
             if (check === false) {
                 msginit(msg1,header,1);
                 return false;
-            }
+            }	
             // Check command arguments
             for (let i=1;i<=argcount;i++) {
                 if (document.getElementById("tfArg"+i).value === "") {
@@ -78,7 +76,7 @@
                 msginit(msg2+" {LANG_TEMPLATE_NAME}",header,1);
                 form.frmDetail.focus();
                 return false;
-            }
+            }	
         }
         // Insert template definitions
         function insertDefintion() {
@@ -135,14 +133,14 @@
         }
         //-->
     </script>
-    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
+    <form name="frmDetail" method="post" action="{ACTION_INSERT}">   
         <div id="servicetemplate" style="width:909px;" class="yui-navset">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{LANG_COMMON_SETTINGS}</em></a></li>
                 <li><a href="#tab2"><em>{LANG_CHECK_SETTINGS}</em></a></li>
                 <li><a href="#tab3"><em>{LANG_ALARM_SETTINGS}</em></a></li>
                 <li><a href="#tab4"><em>{LANG_ADDON_SETTINGS}</em></a></li>
-            </ul>
+            </ul>            
             <div class="yui-content">
                 <div id="tab1">
                     <table border="0" cellpadding="0" class="content_formtable">
@@ -164,9 +162,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_HOSTS}" name="mselValue1[]" size="4" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN hosts -->
+<!-- BEGIN hosts -->
                                                 <option value="{DAT_HOSTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOSTS_SEL}" {DAT_HOSTS_SEL} {OPTION_DISABLED}>{DAT_HOSTS}</option>
-                                                <!-- END hosts -->
+<!-- END hosts -->
                                             </select>
                                         </td>
                                     </tr>
@@ -179,9 +177,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_HOST_GROUPS}" name="mselValue2[]" size="4" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN hostgroup -->
+<!-- BEGIN hostgroup -->
                                                 <option value="{DAT_HOSTGROUP_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
-                                                <!-- END hostgroup -->
+<!-- END hostgroup -->
                                             </select>
                                         </td>
                                     </tr>
@@ -225,9 +223,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_PARENT_SERVICES}" name="mselValue6[]" size="4" multiple id="mselValue6" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN service_parents -->
+<!-- BEGIN service_parents -->
                                                 <option value="{DAT_SERVICE_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_SERVICE_PARENTS_SEL}" {DAT_SERVICE_PARENTS_SEL} {OPTION_DISABLED}>{DAT_SERVICE_PARENTS}</option>
-                                                <!-- END service_parents -->
+<!-- END service_parents -->
                                             </select>
                                         </td>
                                     </tr>
@@ -240,12 +238,12 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_SERVICEGROUPS}" name="mselValue3[]" size="4" multiple id="mselValue3" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN servicegroup -->
+<!-- BEGIN servicegroup -->
                                                 <option value="{DAT_SERVICEGROUP_ID}" class="empty_class {SPECIAL_STYLE} {IE_SERVICEGROUP_SEL}" {DAT_SERVICEGROUP_SEL} {OPTION_DISABLED}>{DAT_SERVICEGROUP}</option>
-                                                <!-- END servicegroup -->
+<!-- END servicegroup -->
                                             </select>
                                         </td>
-                                    </tr>
+									</tr>
                                 </table>
                             </td>
                             <td valign="top"><img id="mutvalue3" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','service_groups','all','Info');" class="infobutton_2"></td>
@@ -276,7 +274,7 @@
                                         <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue3" type="radio" class="checkbox" id="radValue32" value="2" {DAT_SEG2_CHECKED} tabindex="7"></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>
+                                </table> 
                             </td>
                             <td><span class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></span></td>
                         </tr>
@@ -292,9 +290,9 @@
                             <td>{LANG_CHECK_COMMAND}</td>
                             <td>
                                 <select title="{LANG_CHECK_COMMAND}" name="selValue1" id="selValue1" class="selectborder" onChange="setIframe(this.value);" tabindex="8">
-                                    <!-- BEGIN servicecommand -->
+<!-- BEGIN servicecommand -->
                                     <option value="{DAT_SERVICECOMMAND_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_SERVICECOMMAND_SEL}>{DAT_SERVICECOMMAND}</option>
-                                    <!-- END servicecommand -->
+<!-- END servicecommand -->
                                 </select>
                             </td>
                             <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','check_command','all','Info');" class="infobutton_1"></td>
@@ -348,9 +346,9 @@
                             <td>{LANG_TEMPLATE_NAME}</td>
                             <td>
                                 <select title="{LANG_TEMPLATE_NAME}" name="selTemplate" class="selectborder" tabindex="17">
-                                    <!-- BEGIN template -->
+<!-- BEGIN template -->
                                     <option value="{DAT_TEMPLATE_ID}" class="empty_class {SPECIAL_STYLE}">{DAT_TEMPLATE}</option>
-                                    <!-- END template -->
+<!-- END template -->
                                 </select>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','templateadd','all','Info');" class="infobutton_1"></td>
@@ -370,7 +368,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="tab2">
+                <div id="tab2">  
                     <table border="0" cellpadding="0" class="content_formtable">
                         <tr>
                             <td colspan="6"><strong>{LANG_CHECK_SETTINGS}</strong></td>
@@ -438,13 +436,13 @@
                                 </table>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','passive_checks_enabled','all','Info');" class="infobutton_1"></td>
-                        </tr>
+                        </tr>    
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
                         <tr class="{VERSION_20_VISIBLE}">
                             <td>{LANG_PARALLELIZE_CHECK}</td>
-                            <td>
+                            <td>     	
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <td class="radio_cell_1"><input title="{LANG_ON}" name="radValue8" type="radio" class="checkbox" id="radValue80" value="0" {DAT_PAC0_CHECKED}></td>
@@ -462,9 +460,9 @@
                             <td>{LANG_CHECK_PERIOD}</td>
                             <td>
                                 <select title="{LANG_CHECK_PERIOD}" name="selValue2" id="selValue2" class="selectborder">
-                                    <!-- BEGIN checkperiod -->
+<!-- BEGIN checkperiod -->
                                     <option value="{DAT_CHECKPERIOD_ID}" class="empty_class inpmust {SPECIAL_STYLE}" {DAT_CHECKPERIOD_SEL}>{DAT_CHECKPERIOD}</option>
-                                    <!-- END checkperiod -->
+<!-- END checkperiod -->
                                 </select>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','check_period','all','Info');" class="infobutton_1"></td>
@@ -513,9 +511,9 @@
                             <td>{LANG_EVENT_HANDLER}</td>
                             <td>
                                 <select title="{LANG_EVENT_HANDLER}" name="selValue3" id="selValue3" class="selectborder">
-                                    <!-- BEGIN eventhandler -->
+<!-- BEGIN eventhandler -->
                                     <option value="{DAT_EVENTHANDLER_ID}" class="empty_class inpmust {SPECIAL_STYLE}" {DAT_EVENTHANDLER_SEL}>{DAT_EVENTHANDLER}</option>
-                                    <!-- END eventhandler -->
+<!-- END eventhandler -->
                                 </select>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','event_handler','all','Info');" class="infobutton_1"></td>
@@ -676,9 +674,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_CONTACT_GROUPS}" name="mselValue5[]" size="4" multiple id="mselValue5" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN service_contactgroups -->
+<!-- BEGIN service_contactgroups -->
                                                 <option value="{DAT_SERVICE_CONTACTGROUPS_ID}" class="empty_class {SPECIAL_STYLE} {IE_SERVICE_CONTACTGROUPS_SEL}" {DAT_SERVICE_CONTACTGROUPS_SEL} {OPTION_DISABLED}>{DAT_SERVICE_CONTACTGROUPS}</option>
-                                                <!-- END service_contactgroups -->
+<!-- END service_contactgroups -->
                                             </select>
                                         </td>
                                     </tr>
@@ -691,9 +689,9 @@
                                     <tr class="{VERSION_30_VISIBLE}">
                                         <td>
                                             <select title="{LANG_CONTACTS}" name="mselValue4[]" size="4" multiple id="mselValue4" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN service_contacts -->
+<!-- BEGIN service_contacts -->
                                                 <option value="{DAT_SERVICE_CONTACTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_SERVICE_CONTACTS_SEL}" {DAT_SERVICE_CONTACTS_SEL} {OPTION_DISABLED}>{DAT_SERVICE_CONTACTS}</option>
-                                                <!-- END service_contacts -->
+<!-- END service_contacts -->
                                             </select>
                                         </td>
                                     </tr>
@@ -713,7 +711,7 @@
                                         <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue5" type="radio" class="checkbox" id="radValue52" value="2" {DAT_COG2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>
+                                </table>       
                             </td>
                             <td colspan="2"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                             <td>
@@ -726,7 +724,7 @@
                                         <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue4" type="radio" class="checkbox" id="radValue42" value="2" {DAT_COT2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>
+                                </table>  
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                         </tr>
@@ -737,9 +735,9 @@
                             <td class="content_tbl_row1">{LANG_NOTIFICATION_PERIOD} *</td>
                             <td class="content_tbl_row2">
                                 <select title="{LANG_NOTIFICATION_PERIOD}" name="selValue4" id="selValue4" class="selectborder">
-                                    <!-- BEGIN notifyperiod -->
+<!-- BEGIN notifyperiod -->
                                     <option value="{DAT_NOTIFYPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_NOTIFYPERIOD_SEL}>{DAT_NOTIFYPERIOD}</option>
-                                    <!-- END notifyperiod -->
+<!-- END notifyperiod -->
                                 </select>
                             </td>
                             <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('service','notification_period','all','Info');" class="infobutton_1"></td>
@@ -857,9 +855,9 @@
                             <td class="content_tbl_row1">{LANG_ACCESS_GROUP}</td>
                             <td class="content_tbl_row2">
                                 <select title="{RESTRICT_GROUP_ADMIN}" name="selAccGr" class="selectborder" tabindex="6">
-                                    <!-- BEGIN acc_group -->
+<!-- BEGIN acc_group -->
                                     <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                                    <!-- END acc_group -->
+<!-- END acc_group -->
                                 </select>
                             </td>
                             <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -919,7 +917,7 @@
     </script>
     {CHECK_MUST_DATA}
     <br>
-</div>
+</div>    
 <div id="mutdialogvalue1">
     <div id="mutdialogvalue1content" class="bd"></div>
 </div>

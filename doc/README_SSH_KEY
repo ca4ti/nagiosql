@@ -8,7 +8,7 @@ Local system
 2. Create a path for the ssh keys
 # mkdir /etc/nagiosql/ssh
 2. Create a key pair (only rsa is supported!)
-# ssh-keygen -t rsa
+# ssh-keygen -t rsa -b 4096
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): /etc/nagiosql/ssh/id_rsa
 -> empty passphrase!

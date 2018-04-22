@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : NagiosQL data processing class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-19 22:24:08 +0200 (Thu, 19 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-20 23:01:27 +0200 (Fri, 20 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 31 $
+// Revision  : $LastChangedRevision: 32 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -299,12 +299,12 @@ class NagDataClass
                 }
             } else {
                 $this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do '.
-                        'not have write permission.')."::", $this->strErrorMessage);
+                'not have write permission.')."::", $this->strErrorMessage);
                 $intReturn = 1;
             }
         } else {
             $this->processClassMessage(translate('No dataset copied. Maybe the dataset does not exist or you do not '.
-                    'have write permission.')."::", $this->strErrorMessage);
+            'have write permission.')."::", $this->strErrorMessage);
             $intReturn = 1;
         }
         return($intReturn);
@@ -355,14 +355,14 @@ class NagDataClass
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
         if ($booReturn && ($intDC != 0)) {
             $strSQL    = "UPDATE `tbl_tablestatus` SET `updateTime`=NOW() ".
-                "WHERE `tableName`='$strTable' AND `domainId`=".$this->intDomainId;
+                         "WHERE `tableName`='$strTable' AND `domainId`=".$this->intDomainId;
             $booReturn = $this->dataInsert($strSQL, $intDataID);
             if ($booReturn) {
                 $intReturn = 0;
             }
         } elseif ($booReturn) {
             $strSQL    = "INSERT INTO `tbl_tablestatus` ".
-                "SET `updateTime`=NOW(), `tableName`='$strTable', `domainId`=".$this->intDomainId;
+                         "SET `updateTime`=NOW(), `tableName`='$strTable', `domainId`=".$this->intDomainId;
             $booReturn = $this->dataInsert($strSQL, $intDataID);
             if ($booReturn) {
                 $intReturn = 0;
@@ -400,7 +400,7 @@ class NagDataClass
                 $intReturn = 1;
             } elseif ($this->myDBClass->intAffectedRows == 0) {
                 $this->processClassMessage(translate('No data deleted. Probably the dataset does not exist or it '.
-                        'is protected from delete.')."::", $this->strErrorMessage);
+                'is protected from delete.')."::", $this->strErrorMessage);
                 $intReturn = 1;
             } else {
                 $this->strInfoMessage .= translate('Dataset successfully deleted. Affected rows:')." ".
@@ -477,7 +477,7 @@ class NagDataClass
             $strSQL = "SELECT `id` FROM `".$strTableName."`";
         } else {
             $strSQL = "SELECT `id` FROM `".$strTableName."` ".
-                "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
+                      "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
         }
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
@@ -492,7 +492,7 @@ class NagDataClass
                 }
                 // Should this data id to be deleted?
                 if (($intDataId == $elem['id']) || ((filter_input(INPUT_POST, $strChbName) != null) &&
-                        (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == 'on'))) {
+                    (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == 'on'))) {
                     // Check if deletion is possible (relations)
                     if (($this->infoRelation($strTableName, $elem['id'], "id", 1) == 0) || ($intForce == 1)) {
                         // Delete relations
@@ -506,18 +506,18 @@ class NagDataClass
                             // Simple 1:n relation
                             if ($arrFlags[3] == 1) {
                                 $strSQL = "DELETE FROM `".$rel['tableName1']."` ".
-                                    "WHERE `".$rel['fieldName']."`=".$elem['id'];
+                                          "WHERE `".$rel['fieldName']."`=".$elem['id'];
                             }
                             // Simple 1:1 relation
                             if ($arrFlags[3] == 0) {
                                 // Delete relation
                                 if ($arrFlags[2] == 0) {
                                     $strSQL = "DELETE FROM `".$rel['tableName1']."` ".
-                                        "WHERE `".$rel['fieldName']."`=".$elem['id'];
+                                              "WHERE `".$rel['fieldName']."`=".$elem['id'];
                                     // Set slave to 0
                                 } elseif ($arrFlags[2] == 2) {
                                     $strSQL = "UPDATE `".$rel['tableName1']."` SET `".$rel['fieldName']."`=0 ".
-                                        "WHERE `".$rel['fieldName']."`=".$elem['id'];
+                                              "WHERE `".$rel['fieldName']."`=".$elem['id'];
                                 }
                             }
                             // Special 1:n relation for variables
@@ -527,7 +527,7 @@ class NagDataClass
                                 if ($booReturn && ($intDataCount != 0)) {
                                     foreach ($arrData as $vardata) {
                                         $strSQL   = "DELETE FROM `tbl_variabledefinition` ".
-                                            "WHERE `id`=".$vardata['idSlave'];
+                                                    "WHERE `id`=".$vardata['idSlave'];
                                         $this->myDBClass->insertData($strSQL);
                                     }
                                 }
@@ -581,12 +581,12 @@ class NagDataClass
                                     }
                                     if ($intReturn == 0) {
                                         $this->processClassMessage(translate('The assigned, no longer used '.
-                                                'configuration files were deleted successfully!').
+                                            'configuration files were deleted successfully!').
                                             "::", $strInfoMessage);
                                         $this->writeLog(translate('Host file deleted:')." ".$strService.".cfg");
                                     } else {
                                         $strErrorMessage .=  translate('Errors while deleting the old configuration '.
-                                                'file - please check!:')."::".
+                                            'file - please check!:')."::".
                                             $this->myConfigClass->strErrorMessage."::";
                                     }
                                 }
@@ -618,7 +618,7 @@ class NagDataClass
             }
         } else {
             $this->processClassMessage(translate('No data deleted. Probably the dataset does not exist, it is '.
-                    'protected from deletion or you do not have write permission.')."::".
+                'protected from deletion or you do not have write permission.')."::".
                 $this->myDBClass->strErrorMessage, $this->strErrorMessage);
             return(1);
         }
@@ -697,7 +697,7 @@ class NagDataClass
                 $arrFlags = explode(",", $elem['flags']);
                 if ($elem['fieldName'] == "check_command") {
                     $strSQL = "SELECT * FROM `".$elem['tableName1']."` ".
-                        "WHERE SUBSTRING_INDEX(`".$elem['fieldName']."`,'!',1)= $intMasterId";
+                              "WHERE SUBSTRING_INDEX(`".$elem['fieldName']."`,'!',1)= $intMasterId";
                 } else {
                     $strSQL = "SELECT * FROM `".$elem['tableName1']."` WHERE `".$elem['fieldName']."`= $intMasterId";
                 }
@@ -728,9 +728,9 @@ class NagDataClass
                             }
                             // Get data
                             $strSQL = "SELECT * FROM `".$elem['tableName1']."` ".
-                                "LEFT JOIN `".$elem['target1']."` ON `".$strRef."` = `id` ".
-                                "WHERE `".$elem['fieldName']."` = ".$data[$elem['fieldName']]." ".
-                                "AND `".$strRef."`=".$data[$strRef];
+                                      "LEFT JOIN `".$elem['target1']."` ON `".$strRef."` = `id` ".
+                                      "WHERE `".$elem['fieldName']."` = ".$data[$elem['fieldName']]." ".
+                                          "AND `".$strRef."`=".$data[$strRef];
                             $this->myDBClass->hasSingleDataset($strSQL, $arrDSTarget);
                             if (substr_count($elem['targetKey'], ",") != 0) {
                                 $arrTarget = explode(",", $elem['targetKey']);
@@ -741,7 +741,7 @@ class NagDataClass
                             // If the field is market as "required", check for any other entries
                             if ($arrFlags[0] == 1) {
                                 $strSQL = "SELECT * FROM `".$elem['tableName1']."` ".
-                                    "WHERE `".$strRef."` = ".$arrDSTarget[$strRef];
+                                          "WHERE `".$strRef."` = ".$arrDSTarget[$strRef];
                                 $booReturn  = $this->myDBClass->hasDataArray($strSQL, $arrDSCount, $intDCCount);
                                 if ($booReturn && ($intDCCount > 1)) {
                                     $this->strInfoMessage .= translate("Relation to <b>").$elem['target1'].
@@ -832,7 +832,7 @@ class NagDataClass
             if ($intMulti != 0) {
                 $arrValues = explode("::", $elem);
                 $strSQL    = "INSERT INTO `".$strTable."` SET `idMaster`=$intMasterId, `idSlaveH`=".$arrValues[0].", ".
-                    "`idSlaveHG`=".$arrValues[1].", `idSlaveS`=".$arrValues[2].",  `exclude`=$intExclude";
+                             "`idSlaveHG`=".$arrValues[1].", `idSlaveS`=".$arrValues[2].",  `exclude`=$intExclude";
             } else {
                 if (($strTable == 'tbl_lnkServicedependencyToService_DS') ||
                     ($strTable == 'tbl_lnkServicedependencyToService_S')  ||
@@ -841,11 +841,11 @@ class NagDataClass
                     $strSQLSrv  = "SELECT `service_description` FROM `tbl_service` WHERE id=$elem";
                     $strService = $this->myDBClass->getFieldData($strSQLSrv);
                     $strSQL     = "INSERT INTO `".$strTable."` SET `idMaster`=$intMasterId, `idSlave`=$elem, ".
-                        "`strSlave`='".addslashes($strService)."', `exclude`=$intExclude";
+                                  "`strSlave`='".addslashes($strService)."', `exclude`=$intExclude";
                 } elseif (($strTable != 'tbl_lnkTimeperiodToTimeperiod') &&
-                    ($strTable != 'tbl_lnkDatadomainToConfigtarget')) {
+                          ($strTable != 'tbl_lnkDatadomainToConfigtarget')) {
                     $strSQL = "INSERT INTO `".$strTable."` ".
-                        "SET `idMaster`=$intMasterId, `idSlave`=$elem, `exclude`=$intExclude";
+                              "SET `idMaster`=$intMasterId, `idSlave`=$elem, `exclude`=$intExclude";
                 } else {
                     $strSQL = "INSERT INTO `".$strTable."` SET `idMaster`=$intMasterId, `idSlave`=$elem";
                 }
@@ -919,7 +919,7 @@ class NagDataClass
         $strAccess = $this->myVisClass->getAccessGroups('write');
         // Activate datasets
         $strSQL    = "SELECT `id` FROM `".$strTableName."` ".
-            "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
+                     "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
             $intActivateCount = 0;
@@ -927,13 +927,13 @@ class NagDataClass
                 $strChbName = "chbId_".$elem['id'];
                 // was the current record is marked for activate?
                 if (($intDataId == $elem['id']) || ((filter_input(INPUT_POST, $strChbName) != null) &&
-                        (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == "on"))) {
+                    (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == "on"))) {
                     // Verify that the dataset can be deactivated
                     if ($this->infoRelation($strTableName, $elem['id'], "id", 1) == 0) {
                         // Update dataset
                         if (($strTableName == "tbl_service") || ($strTableName == "tbl_host")) {
                             $strSQL = "UPDATE `".$strTableName."` SET `active`='0', `last_modified`=now() ".
-                                "WHERE `id`=".$elem['id'];
+                                      "WHERE `id`=".$elem['id'];
                         } else {
                             $strSQL = "UPDATE `".$strTableName."` SET `active`='0' WHERE `id`=".$elem['id'];
                         }
@@ -947,7 +947,7 @@ class NagDataClass
                 $this->processClassMessage(translate('No dataset deactivated. Maybe the dataset does not exist, it '.
                         'is protected from deactivation, no dataset was selected or you do not have write permission. '.
                         'Use the "info" function for detailed informations about relations!').
-                    "::", $this->strErrorMessage);
+                        "::", $this->strErrorMessage);
             } else {
                 $this->updateStatusTable($strTableName);
                 $this->processClassMessage(translate('Dataset successfully deactivated. Affected rows:')." ".
@@ -980,7 +980,7 @@ class NagDataClass
         $strAccess = $this->myVisClass->getAccessGroups('write');
         // Activate datasets
         $strSQL    = "SELECT `id` FROM `".$strTableName."` ".
-            "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
+                     "WHERE `config_id`=".$this->intDomainId." AND `access_group` IN ($strAccess)";
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
             $intActivateCount = 0;
@@ -992,7 +992,7 @@ class NagDataClass
                     // Update dataset
                     if (($strTableName == "tbl_service") || ($strTableName == "tbl_host")) {
                         $strSQL = "UPDATE `".$strTableName."` SET `active`='1', `last_modified`=now() ".
-                            "WHERE `id`=".$elem['id'];
+                                  "WHERE `id`=".$elem['id'];
                     } else {
                         $strSQL = "UPDATE `".$strTableName."` SET `active`='1' WHERE `id`=".$elem['id'];
                     }
@@ -1037,10 +1037,10 @@ class NagDataClass
         if ($strTable == "tbl_service") {
             // Get any hosts and host_groups
             $strSQL  = "SELECT `host_name` AS `item_name` FROM `tbl_host` ".
-                "LEFT JOIN `tbl_lnkServiceToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                "UNION SELECT `hostgroup_name` AS `item_name` FROM `tbl_hostgroup` ".
-                "LEFT JOIN `tbl_lnkServiceToHostgroup` ON `idSlave`=`id` ".
-                "WHERE `idMaster`=".$intId." ORDER BY `item_name`";
+                       "LEFT JOIN `tbl_lnkServiceToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                       "UNION SELECT `hostgroup_name` AS `item_name` FROM `tbl_hostgroup` ".
+                       "LEFT JOIN `tbl_lnkServiceToHostgroup` ON `idSlave`=`id` ".
+                       "WHERE `idMaster`=".$intId." ORDER BY `item_name`";
             $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booRet && ($intDC != 0)) {
                 foreach ($arrData as $elem) {
@@ -1093,30 +1093,30 @@ class NagDataClass
             if ($strTable == "tbl_hostdependency") {
                 // Get any hosts and host_groups
                 $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkHostdependencyToHost_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkHostdependencyToHost_H` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_H` ON `idSlave`=`id` WHERE `idMaster`=".$intId;
+                           "LEFT JOIN `tbl_lnkHostdependencyToHost_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                           "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                           "LEFT JOIN `tbl_lnkHostdependencyToHost_H` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                           "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_H` ON `idSlave`=`id` WHERE `idMaster`=".$intId;
             }
             if ($strTable == "tbl_servicedependency") {
                 // Get any hosts and host_groups
                 $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkServicedependencyToHost_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkServicedependencyToHostgroup_DH` ON `idSlave`=`id` ".
-                    "WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkServicedependencyToHost_H` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkServicedependencyToHostgroup_H` ON `idSlave`=`id` ".
-                    "WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
-                    "FROM `tbl_lnkServicedependencyToService_DS` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
-                    "FROM `tbl_lnkServicedependencyToService_S` WHERE `idMaster`=$intId";
+                           "LEFT JOIN `tbl_lnkServicedependencyToHost_DH` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                           "LEFT JOIN `tbl_lnkServicedependencyToHostgroup_DH` ON `idSlave`=`id` ".
+                           "WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
+                           "LEFT JOIN `tbl_lnkServicedependencyToHost_H` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude FROM `tbl_hostgroup` ".
+                           "LEFT JOIN `tbl_lnkServicedependencyToHostgroup_H` ON `idSlave`=`id` ".
+                           "WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
+                           "FROM `tbl_lnkServicedependencyToService_DS` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
+                           "FROM `tbl_lnkServicedependencyToService_S` WHERE `idMaster`=$intId";
             }
             $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booRet && ($intDC != 0)) {
@@ -1154,26 +1154,26 @@ class NagDataClass
             // Get any hosts, host_groups, contacts and contact_groups
             if ($strTable == "tbl_hostescalation") {
                 $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkHostescalationToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude  FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkHostescalationToHostgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `contact_name` AS `item_name`, exclude  FROM `tbl_contact` ".
-                    "LEFT JOIN `tbl_lnkHostescalationToContact` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `contactgroup_name` AS `item_name`, exclude  FROM `tbl_contactgroup` ".
-                    "LEFT JOIN `tbl_lnkHostescalationToContactgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId";
+                           "LEFT JOIN `tbl_lnkHostescalationToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude  FROM `tbl_hostgroup` ".
+                           "LEFT JOIN `tbl_lnkHostescalationToHostgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `contact_name` AS `item_name`, exclude  FROM `tbl_contact` ".
+                           "LEFT JOIN `tbl_lnkHostescalationToContact` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `contactgroup_name` AS `item_name`, exclude  FROM `tbl_contactgroup` ".
+                           "LEFT JOIN `tbl_lnkHostescalationToContactgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId";
             }
             if ($strTable == "tbl_serviceescalation") {
                 $strSQL  = "SELECT `host_name` AS `item_name`, exclude FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkServiceescalationToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude  FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkServiceescalationToHostgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `contact_name` AS `item_name`, exclude  FROM `tbl_contact` ".
-                    "LEFT JOIN `tbl_lnkServiceescalationToContact` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `contactgroup_name` AS `item_name`, exclude  FROM `tbl_contactgroup` ".
-                    "LEFT JOIN `tbl_lnkServiceescalationToContactgroup` ON `idSlave`=`id` ".
-                    "WHERE `idMaster`=$intId ".
-                    "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
-                    "FROM `tbl_lnkServiceescalationToService` WHERE `idMaster`=$intId";
+                           "LEFT JOIN `tbl_lnkServiceescalationToHost` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `hostgroup_name` AS `item_name`, exclude  FROM `tbl_hostgroup` ".
+                           "LEFT JOIN `tbl_lnkServiceescalationToHostgroup` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `contact_name` AS `item_name`, exclude  FROM `tbl_contact` ".
+                           "LEFT JOIN `tbl_lnkServiceescalationToContact` ON `idSlave`=`id` WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `contactgroup_name` AS `item_name`, exclude  FROM `tbl_contactgroup` ".
+                           "LEFT JOIN `tbl_lnkServiceescalationToContactgroup` ON `idSlave`=`id` ".
+                           "WHERE `idMaster`=$intId ".
+                           "UNION ALL SELECT `strSlave` AS `item_name`, exclude ".
+                           "FROM `tbl_lnkServiceescalationToService` WHERE `idMaster`=$intId";
             }
             $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booRet && ($intDC != 0)) {
@@ -1190,12 +1190,12 @@ class NagDataClass
         if ($strTable == "tbl_serviceextinfo") {
             // Get any hosts and host_groups
             $strSQL  = "SELECT `tbl_host`.`host_name` AS `item_name` FROM `tbl_host` ".
-                "LEFT JOIN `tbl_serviceextinfo` ON `tbl_host`.`id`=`tbl_serviceextinfo`.`host_name` ".
-                "WHERE `tbl_serviceextinfo`.`id`=$intId ".
-                "UNION SELECT `tbl_service`.`service_description` AS `item_name` FROM `tbl_service` ".
-                "LEFT JOIN `tbl_serviceextinfo` ON ".
-                "`tbl_service`.`id`=`tbl_serviceextinfo`.`service_description` ".
-                "WHERE `tbl_serviceextinfo`.`id`=$intId ORDER BY `item_name`";
+                       "LEFT JOIN `tbl_serviceextinfo` ON `tbl_host`.`id`=`tbl_serviceextinfo`.`host_name` ".
+                       "WHERE `tbl_serviceextinfo`.`id`=$intId ".
+                       "UNION SELECT `tbl_service`.`service_description` AS `item_name` FROM `tbl_service` ".
+                       "LEFT JOIN `tbl_serviceextinfo` ON ".
+                       "`tbl_service`.`id`=`tbl_serviceextinfo`.`service_description` ".
+                       "WHERE `tbl_serviceextinfo`.`id`=$intId ORDER BY `item_name`";
             $booRet  = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booRet && ($intDC != 0)) {
                 foreach ($arrData as $elem) {
@@ -1270,13 +1270,13 @@ class NagDataClass
         $intRelDataCount = 0;
         if ($arrData[$intID][$elem['fieldName']] != 0) {
             $strSQL = "SELECT `idSlave`, `exclude` FROM `".$elem['linkTable']."` ".
-                "WHERE `idMaster`=".$arrData[$intID]['id'];
+                      "WHERE `idMaster`=".$arrData[$intID]['id'];
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrRelData, $intRelDataCount);
             if ($booReturn && ($intRelDataCount != 0)) {
                 foreach ($arrRelData as $elem2) {
                     $strSQLRel = "INSERT INTO `" . $elem['linkTable'] . "` " .
-                        "SET `idMaster`=$intMasterId, `idSlave`=" . $elem2['idSlave'] . ", " .
-                        "`exclude`=" . $elem2['exclude'];
+                                 "SET `idMaster`=$intMasterId, `idSlave`=" . $elem2['idSlave'] . ", " .
+                                 "`exclude`=" . $elem2['exclude'];
                     $booReturn = $this->myDBClass->insertData($strSQLRel);
                     if ($booReturn == false) {
                         $intCheck++;
@@ -1302,13 +1302,13 @@ class NagDataClass
         $intRelDataCount = 0;
         if ($arrData[$intID][$elem['fieldName']] == 1) {
             $strSQL = "SELECT `idSlave`,`idSort`,`idTable` FROM `" . $elem['linkTable'] . "` " .
-                "WHERE `idMaster`=" . $arrData[$intID]['id'];
+                      "WHERE `idMaster`=" . $arrData[$intID]['id'];
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrRelData, $intRelDataCount);
             if ($booReturn && ($intRelDataCount != 0)) {
                 foreach ($arrRelData as $elem2) {
                     $strSQLRel = "INSERT INTO `" . $elem['linkTable'] . "` " .
-                        "SET `idMaster`=$intMasterId, `idSlave`=" . $elem2['idSlave'] . ", " .
-                        "`idTable`=" . $elem2['idTable'] . ", `idSort`=" . $elem2['idSort'];
+                                 "SET `idMaster`=$intMasterId, `idSlave`=" . $elem2['idSlave'] . ", " .
+                                 "`idTable`=" . $elem2['idTable'] . ", `idSort`=" . $elem2['idSort'];
                     $booReturn = $this->myDBClass->insertData($strSQLRel);
                     if ($booReturn == false) {
                         $intCheck++;
@@ -1336,7 +1336,7 @@ class NagDataClass
         $intDCVar        = 0;
         if ($arrData[$intID][$elem['fieldName']] != 0) {
             $strSQL = "SELECT `idSlave` FROM `" . $elem['linkTable'] . "` " .
-                "WHERE `idMaster` = " . $arrData[$intID]['id'];
+                      "WHERE `idMaster` = " . $arrData[$intID]['id'];
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrRelData, $intRelDataCount);
             if ($booReturn && ($intRelDataCount != 0)) {
                 foreach ($arrRelData as $elem2) {
@@ -1345,9 +1345,9 @@ class NagDataClass
                     $booReturn = $this->myDBClass->hasDataArray($strSQLVar, $arrDataVar, $intDCVar);
                     if ($booReturn && ($intDCVar != 0)) {
                         $strSQLInsVar = "INSERT INTO `tbl_variabledefinition` " .
-                            "SET `name`='" . addslashes($arrDataVar[0]['name']) . "', " .
-                            "`value`='" . addslashes($arrDataVar[0]['value']) . "', " .
-                            "`last_modified`=NOW()";
+                                        "SET `name`='" . addslashes($arrDataVar[0]['name']) . "', " .
+                                        "`value`='" . addslashes($arrDataVar[0]['value']) . "', " .
+                                        "`last_modified`=NOW()";
                         $booReturn = $this->myDBClass->insertData($strSQLInsVar);
                         if ($booReturn == false) {
                             $intCheck++;
@@ -1413,14 +1413,14 @@ class NagDataClass
         $intRelDataCount = 0;
         if ($arrData[$intID][$elem['fieldName']] != 0) {
             $strSQL = "SELECT `idSlave`, `strSlave`, `exclude` " .
-                "FROM `" . $elem['linkTable'] . "` WHERE `idMaster`=" . $arrData[$intID]['id'];
+                      "FROM `" . $elem['linkTable'] . "` WHERE `idMaster`=" . $arrData[$intID]['id'];
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrRelData, $intRelDataCount);
             if ($booReturn && ($intRelDataCount != 0)) {
                 foreach ($arrRelData as $elem2) {
                     $strSQLRel = "INSERT INTO `" . $elem['linkTable'] . "` " .
-                        "SET `idMaster`=$intMasterId, `idSlave`=" . $elem2['idSlave'] . ", " .
-                        "`strSlave`='" . addslashes($elem2['strSlave']) . "', " .
-                        "`exclude`=" . $elem2['exclude'];
+                                 "SET `idMaster`=$intMasterId, `idSlave`=" . $elem2['idSlave'] . ", " .
+                                 "`strSlave`='" . addslashes($elem2['strSlave']) . "', " .
+                                 "`exclude`=" . $elem2['exclude'];
                     $booReturn = $this->myDBClass->insertData($strSQLRel);
                     if ($booReturn == false) {
                         $intCheck++;
@@ -1448,8 +1448,8 @@ class NagDataClass
         if ($intRelDataCountTP != 0) {
             foreach ($arrRelDataTP as $elem) {
                 $strSQLRel = "INSERT INTO `tbl_timedefinition` (`tipId`,`definition`,`range`," .
-                    "`last_modified`) VALUES ($intMasterId,'" . addslashes($elem['definition']) . "'," .
-                    "'" . addslashes($elem['range']) . "',now())";
+                             "`last_modified`) VALUES ($intMasterId,'" . addslashes($elem['definition']) . "'," .
+                             "'" . addslashes($elem['range']) . "',now())";
                 $booReturn = $this->myDBClass->insertData($strSQLRel);
                 if ($booReturn == false) {
                     $intCheck++;
@@ -1476,8 +1476,8 @@ class NagDataClass
         if ($intRelDataCountTP != 0) {
             foreach ($arrRelDataTP as $elem2) {
                 $strSQLRel = "INSERT INTO `tbl_lnkGroupToUser` (`idMaster`,`idSlave`,`read`,`write`,`link`) ".
-                    "VALUES ($intMasterId,'" . $elem2['idSlave'] . "','" . $elem2['read'] . "',".
-                    "'" . $elem2['write'] . "','" . $elem2['link'] . "')";
+                             "VALUES ($intMasterId,'" . $elem2['idSlave'] . "','" . $elem2['read'] . "',".
+                                 "'" . $elem2['write'] . "','" . $elem2['link'] . "')";
                 $booReturn = $this->myDBClass->insertData($strSQLRel);
                 if ($booReturn == false) {
                     $intCheck++;
@@ -1504,7 +1504,7 @@ class NagDataClass
         if ($intRelDataCountSH != 0) {
             foreach ($arrRelDataSH as $elem2) {
                 $strSQLRel = "INSERT INTO `tbl_lnkServiceToHost` (`idMaster`,`idSlave`,`exclude`) " .
-                    "VALUES ('" . $elem2['idMaster'] . "',$intMasterId,'" . $elem2['exclude'] . "')";
+                             "VALUES ('" . $elem2['idMaster'] . "',$intMasterId,'" . $elem2['exclude'] . "')";
                 $booReturn = $this->myDBClass->insertData($strSQLRel);
                 if ($booReturn == false) {
                     $intCheck++;
@@ -1571,7 +1571,7 @@ class NagDataClass
                 $booReturn = $this->myDBClass->getFieldData($strSQL);
             } else {
                 $strSQL = "SELECT `id` FROM `" . $strTableName . "` " .
-                    "WHERE `" . $strKeyField . "`='$strNewName' AND `config_id`=$intDomainId";
+                          "WHERE `" . $strKeyField . "`='$strNewName' AND `config_id`=$intDomainId";
                 $booReturn = $this->myDBClass->getFieldData($strSQL);
             }
             // If the name is unused -> break the loop

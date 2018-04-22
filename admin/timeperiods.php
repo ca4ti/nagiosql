@@ -40,7 +40,7 @@ require($preBasePath.'functions/prepend_content.php');
 // ==================
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `exclude`=$intMselValue1, "
-        . "`use_template`=$intMselValue2, `name`='$chkTfValue3', $preSQLCommon1";
+             . "`use_template`=$intMselValue2, `name`='$chkTfValue3', $preSQLCommon1";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -134,8 +134,8 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                                 $elem['range'] = str_replace(" ", "", $elem['range']);
                             }
                             $strSQL    = "INSERT INTO `tbl_timedefinition` (`tipId`,`definition`,`range`, "
-                                . "`last_modified`) VALUES ($chkDataId,'".$elem['definition']."',"
-                                . "'".$elem['range']."',now())";
+                                       . "`last_modified`) VALUES ($chkDataId,'".$elem['definition']."',"
+                                       . "'".$elem['range']."',now())";
                             $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($booReturn == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -255,7 +255,7 @@ if ($chkModus == "display") {
     if ($_SESSION['search'][$preSearchSession] != "") {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%' "
-            . "OR `name` LIKE '%".$strSearchTxt."%')";
+                        . "OR `name` LIKE '%".$strSearchTxt."%')";
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
@@ -264,7 +264,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL     = "SELECT count(*) AS `number` FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
-        . "AND `access_group` IN ($strAccess)";
+                . "AND `access_group` IN ($strAccess)";
     $booReturn1 = $myDBClass->hasSingleDataset($strSQL, $arrDataLinesCount);
     if ($booReturn1 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -277,8 +277,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL     = "SELECT `id`, `$preKeyField`, `alias`, `register`, `active`, `config_id`, `access_group` "
-        . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess) "
-        . "$strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess) "
+                . "$strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

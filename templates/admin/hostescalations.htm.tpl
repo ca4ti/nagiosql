@@ -8,28 +8,28 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <!--suppress JSUnresolvedVariable -->
+	<!--suppress JSUnresolvedVariable -->
     <script type="text/JavaScript">
-        <!--
-        // Initialize change dialog
-        openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_CONTACTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_CONTACT_GROUPS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_HOSTGROUPS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}");
+		<!--
+    	// Initialize change dialog
+		openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_CONTACTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_CONTACT_GROUPS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}"); 
+		openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_HOSTGROUPS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}");
         const version = "{VERSION}";
 
         // Interrupt input
-        function abort() {
-            this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
-        }
-        // Send form
+    	function abort() {
+      		this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
+    	}
+    	// Send form
         /**
          * @return {boolean}
          */
         function LockButton() {
-            if (checkForm() === false) {
-                return false;
-            } else {
+      		if (checkForm() === false) {
+        		return false;
+      		} else {
                 // Enable select fields
                 const selfields = "mselValue1,mselValue2,mselValue3,mselValue4";
                 const ar_sel = selfields.split(",");
@@ -39,40 +39,40 @@
                         document.getElementById(ar_sel[i]).options[y].disabled = false;
                     }
                 }
-                document.frmDetail.submit();
-                document.frmDetail.subForm.disabled = true;
-            }
-        }
-        // Check form entries
-        function checkForm() {
-            // Are all required fields filled in?
+				document.frmDetail.submit();
+				document.frmDetail.subForm.disabled = true;
+      		}
+   		 }
+    	// Check form entries
+		function checkForm() {
+      		// Are all required fields filled in?
             const fields1 = "tfValue1,tfNullVal1,tfNullVal2,tfNullVal3";
             const msg1 = "{FILL_ALLFIELDS}";
             const header = "{LANG_FORMCHECK}";
             const form = document.frmDetail;
             let check;
             check = checkfields(fields1,form,myFocusObject);
-            if (check === false) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            if ((version >= 3) && (form.mselValue1.value === "") && (form.mselValue2.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            if ((version < 3) && (form.mselValue2.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            if ((form.mselValue3.value === "") && (form.mselValue4.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-        }
-        //-->
-    </script>
-    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
-        <table border="0" cellpadding="0" class="content_formtable">
+			if (check === false) {
+				msginit(msg1,header,1);
+				return false;
+			}	
+			if ((version >= 3) && (form.mselValue1.value === "") && (form.mselValue2.value === "")) {
+				msginit(msg1,header,1);
+				return false;
+			}
+			if ((version < 3) && (form.mselValue2.value === "")) {
+				msginit(msg1,header,1);
+				return false;
+			}
+			if ((form.mselValue3.value === "") && (form.mselValue4.value === "")) {
+				msginit(msg1,header,1);
+				return false;
+			}
+		}	
+		//-->
+	</script>
+	<form name="frmDetail" method="post" action="{ACTION_INSERT}">
+       <table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td class="content_tbl_row1" valign="top">{LANG_HOSTS} (*)</td>
                 <td class="content_tbl_row2" valign="top" rowspan="2">
@@ -80,9 +80,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_HOSTS}" name="mselValue3[]" size="5" multiple id="mselValue3" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN host -->
+<!-- BEGIN host -->
                                     <option value="{DAT_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_SEL}" {DAT_HOST_SEL} {OPTION_DISABLED}>{DAT_HOST}</option>
-                                    <!-- END host -->
+<!-- END host -->
                                 </select>
                             </td>
                         </tr>
@@ -95,9 +95,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_HOSTGROUPS}" name="mselValue4[]" size="5" multiple id="mselValue4" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN hostgroup -->
+<!-- BEGIN hostgroup -->
                                     <option value="{DAT_HOSTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
-                                    <!-- END hostgroup -->
+<!-- END hostgroup -->
                                 </select>
                             </td>
                         </tr>
@@ -116,9 +116,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_CONTACTS}" name="mselValue1[]" size="5" multiple id="mselValue1" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN contact -->
+<!-- BEGIN contact -->
                                     <option value="{DAT_CONTACT_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_CONTACT_SEL}" {DAT_CONTACT_SEL} {OPTION_DISABLED}>{DAT_CONTACT}</option>
-                                    <!-- END contact -->
+<!-- END contact -->
                                 </select>
                             </td>
                         </tr>
@@ -131,13 +131,13 @@
                         <tr>
                             <td>
                                 <select title="{LANG_CONTACT_GROUPS}" name="mselValue2[]" size="5" multiple id="mselValue2" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN contactgroup -->
+<!-- BEGIN contactgroup -->
                                     <option value="{DAT_CONTACTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_CONTACTGROUP_SEL}" {DAT_CONTACTGROUP_SEL} {OPTION_DISABLED}>{DAT_CONTACTGROUP}</option>
-                                    <!-- END contactgroup -->
+<!-- END contactgroup -->
                                 </select>
                             </td>
                         </tr>
-                    </table>
+                    </table>      
                 </td>
                 <td valign="top" rowspan="2"><img id="mutvalue2" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostescalation','contactgroup','all','Info');" class="infobutton_2"></td>
             </tr>
@@ -152,9 +152,9 @@
                 <td>{LANG_ESCALATION_PERIOD}</td>
                 <td>
                     <select title="{LANG_ESCALATION_PERIOD}" name="selValue1" id="selValue1" class="selectborder">
-                        <!-- BEGIN escperiod -->
+<!-- BEGIN escperiod -->
                         <option value="{DAT_ESCPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ESCPERIOD_SEL}>{DAT_ESCPERIOD}</option>
-                        <!-- END escperiod -->
+<!-- END escperiod -->
                     </select>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostescalation','escalation_period','all','Info');" class="infobutton_1"></td>
@@ -185,20 +185,20 @@
                 <td {RESTRICT_GROUP_ADMIN}>{LANG_ACCESS_GROUP}</td>
                 <td {RESTRICT_GROUP_ADMIN}>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
-                        <!-- BEGIN acc_group -->
+<!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                        <!-- END acc_group -->
+<!-- END acc_group -->
                     </select>
                 </td>
                 <td {RESTRICT_GROUP_ADMIN}><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
-                <td>{LANG_NOTIFICATION_INTERVAL} *</td>
-                <td valign="middle"><input title="{LANG_NOTIFICATION_INTERVAL}" name="tfNullVal3" type="text" value="{DAT_NOTIFICATION_INTERVAL}" class="shortmust"><span class="shorttext">min</span></td>
-                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostescalation','notification_intervall','all','Info');" class="infobutton_1"></td>
-                <td>{LANG_REGISTERED}</td>
-                <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
-                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
+              <td>{LANG_NOTIFICATION_INTERVAL} *</td>
+              <td valign="middle"><input title="{LANG_NOTIFICATION_INTERVAL}" name="tfNullVal3" type="text" value="{DAT_NOTIFICATION_INTERVAL}" class="shortmust"><span class="shorttext">min</span></td>
+              <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostescalation','notification_intervall','all','Info');" class="infobutton_1"></td>
+              <td>{LANG_REGISTERED}</td>
+              <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
+              <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
@@ -219,7 +219,7 @@
                 <td colspan="6">&nbsp;</td>
             </tr>
         </table>
-    </form>
+	</form>
 </div>
 <br>
 <div id="mutdialogvalue1">

@@ -86,7 +86,7 @@ if ($chkLinkTab != "") {
             foreach ($arrDataLines as $elem) {
                 if ($elem['idTable'] == 1) {
                     $strSQL2 = "SELECT `template_name` "
-                        . "FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$elem['idSlave'];
+                             . "FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$elem['idSlave'];
                     $strSQL3 = "SELECT `active` FROM `tbl_".$chkPreTab."template` WHERE `id` = ".$elem['idSlave'];
                 } else {
                     $strSQL2 = "SELECT `name` FROM `tbl_".$chkPreTab."` WHERE `id` = ".$elem['idSlave'];
@@ -217,70 +217,70 @@ if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefini
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>None</title>
-    <link href="<?php echo $_SESSION['SETS']['path']['base_url']?>config/main.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript">
-        <!--
-        const base = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/templatedefinitions.php?dataId=";
-        function doDel(key) {
-            let link;
-            link = base+"<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=del&def="+key;
-            document.location.href = link;
-        }
-        function doUp(key,elem) {
-            let link;
-            link = base+"<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortup&key="+key+"def="+elem;
-            document.location.href = link;
-        }
-        function doDown(key,elem) {
-            let link;
-            link = base+"<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortdown&key="+key+"def="+elem;
-            document.location.href = link;
-        }
-        //-->
-    </script>
-</head>
-<body style="margin:0">
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <?php
-    if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) &&
-        (count($_SESSION['templatedefinition']) != 0)) {
-        foreach ($_SESSION['templatedefinition'] as $key => $elem) {
-            if ($elem['status'] == 0) {
-                ?>
-                <tr>
-                    <td class="tablerow" style="padding-bottom:2px;"><?php
-                        echo htmlspecialchars(stripslashes($elem['definition']), ENT_COMPAT, 'UTF-8');
-                        if ($elem['active'] == 0) {
-                            echo " [inactive]";
-                        } ?></td>
-                    <td class="tablerow" align="right"><img src="<?php
-                        echo $_SESSION['SETS']['path']['base_url']; ?>images/up.gif" width="18" height="18" alt="<?php
-                        echo translate('Up'); ?>" title="<?php echo translate('Up'); ?>" onClick="doUp('<?php
-                        echo $key; ?>','<?php
-                        echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php
-                        echo $_SESSION['SETS']['path']['base_url']; ?>images/down.gif" width="18" height="18" alt="<?php
-                        echo translate('Down'); ?>" title="<?php echo translate('Down'); ?>" onClick="doDown('<?php
-                        echo $key; ?>','<?php
-                        echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php
-                        echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
-                        echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
-                        echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer"></td>
-                </tr>
-                <?php
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>None</title>
+        <link href="<?php echo $_SESSION['SETS']['path']['base_url']?>config/main.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript">
+            <!--
+            const base = "<?php echo $_SESSION['SETS']['path']['base_url']; ?>admin/templatedefinitions.php?dataId=";
+            function doDel(key) {
+                let link;
+                link = base+"<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=del&def="+key;
+                document.location.href = link;
             }
+            function doUp(key,elem) {
+                let link;
+                link = base+"<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortup&key="+key+"def="+elem;
+                document.location.href = link;
+            }
+            function doDown(key,elem) {
+                let link;
+                link = base+"<?php echo $chkDataId; ?>&type=<?php echo $chkType; ?>&mode=sortdown&key="+key+"def="+elem;
+                document.location.href = link;
+            }
+            //-->
+        </script>
+    </head>
+    <body style="margin:0">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+<?php
+if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) &&
+    (count($_SESSION['templatedefinition']) != 0)) {
+    foreach ($_SESSION['templatedefinition'] as $key => $elem) {
+        if ($elem['status'] == 0) {
+            ?>
+            <tr>
+                <td class="tablerow" style="padding-bottom:2px;"><?php
+                    echo htmlspecialchars(stripslashes($elem['definition']), ENT_COMPAT, 'UTF-8');
+                if ($elem['active'] == 0) {
+                    echo " [inactive]";
+                } ?></td>
+                <td class="tablerow" align="right"><img src="<?php
+                    echo $_SESSION['SETS']['path']['base_url']; ?>images/up.gif" width="18" height="18" alt="<?php
+                    echo translate('Up'); ?>" title="<?php echo translate('Up'); ?>" onClick="doUp('<?php
+                    echo $key; ?>','<?php
+                    echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php
+                    echo $_SESSION['SETS']['path']['base_url']; ?>images/down.gif" width="18" height="18" alt="<?php
+                    echo translate('Down'); ?>" title="<?php echo translate('Down'); ?>" onClick="doDown('<?php
+                    echo $key; ?>','<?php
+                    echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer">&nbsp;<img src="<?php
+                    echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
+                    echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
+                    echo $elem['idSlave']."::".$elem['idTable']; ?>')" style="cursor:pointer"></td>
+            </tr>
+<?php
         }
-    } else {
-        ?>
-        <tr>
-            <td class="tablerow"><?php echo translate('No data'); ?></td>
-            <td class="tablerow" align="right">&nbsp;</td>
-        </tr>
-        <?php
     }
-    ?>
-</table>
-</body>
+} else {
+?>
+            <tr>
+                <td class="tablerow"><?php echo translate('No data'); ?></td>
+                <td class="tablerow" align="right">&nbsp;</td>
+            </tr>
+<?php
+}
+?>
+        </table>
+    </body>
 </html>

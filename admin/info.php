@@ -63,7 +63,7 @@ if ($chkKey1 == "admin" and isset($_SESSION['updInfo'])) {
             "with templates"),
         "updatecheck"   => translate("Enable or disable the automatic online version check."),
         "chkUpdProxy"   => translate("If you require a Proxyserver to connect to the Internet (Port 80), please ".
-            "define one."),
+             "define one."),
         "txtProxyServer"=> translate("Address of your Proxyserver e.g. proxy.yourdomain.com:3128"),
         "txtProxyUser"    => translate("Username to connect through your proxy (optional)"),
         "txtProxyPasswd"=> translate("Password to connect through your proxy (optional)"),
@@ -72,13 +72,13 @@ if ($chkKey1 == "admin" and isset($_SESSION['updInfo'])) {
 } else {
     // Get information from tbl_info
     $strSQL       = "SELECT `infotext` FROM `tbl_info` ".
-        "WHERE `key1` = '$chkKey1' AND `key2` = '$chkKey2' AND `version` = '$chkVersion' ".
-        "AND `language` = 'private'";
+                    "WHERE `key1` = '$chkKey1' AND `key2` = '$chkKey2' AND `version` = '$chkVersion' ".
+                    "AND `language` = 'private'";
     $strContentDB = $myDBClass->getFieldData($strSQL);
     if ($strContentDB == "") {
         $strSQL       = "SELECT `infotext` FROM `tbl_info` ".
-            "WHERE `key1` = '$chkKey1' AND `key2` = '$chkKey2' AND `version` = '$chkVersion' ".
-            "AND `language` = 'default'";
+                        "WHERE `key1` = '$chkKey1' AND `key2` = '$chkKey2' AND `version` = '$chkVersion' ".
+                        "AND `language` = 'default'";
         $strContentDB = $myDBClass->getFieldData($strSQL);
     }
 }
@@ -86,17 +86,17 @@ if ($chkKey1 == "admin" and isset($_SESSION['updInfo'])) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?php echo translate("Information PopUp");?></title>
-    <style type="text/css">
-        .infobody {
-            font-family:"Courier New", Courier, monospace;
-            font-size:12px;
-        }
-    </style>
-</head>
-<body class="infobody">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><?php echo translate("Information PopUp");?></title>
+        <style type="text/css">
+            .infobody {
+                font-family:"Courier New", Courier, monospace;
+                font-size:12px;
+            }
+        </style>
+    </head>
+    <body class="infobody">
 <?php
 if ($strContentDB != "") {
     echo $strContentDB;
@@ -104,5 +104,5 @@ if ($strContentDB != "") {
     echo translate("No information available");
 }
 ?>
-</body>
+    </body>
 </html>

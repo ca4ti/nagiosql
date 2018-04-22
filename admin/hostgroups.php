@@ -40,8 +40,8 @@ require($preBasePath.'functions/prepend_content.php');
 // ==================
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `members`=$intMselValue1, "
-        . "`hostgroup_members`=$intMselValue2, `notes`='$chkTfValue3', `notes_url`='$chkTfValue4', "
-        . "`action_url`='$chkTfValue5', $preSQLCommon1";
+             . "`hostgroup_members`=$intMselValue2, `notes`='$chkTfValue3', `notes_url`='$chkTfValue4', "
+             . "`action_url`='$chkTfValue5', $preSQLCommon1";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -230,7 +230,7 @@ if ($chkModus == "display") {
     if ($_SESSION['search'][$preSearchSession] != "") {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%' "
-            . "OR `notes` LIKE '%".$strSearchTxt."%')";
+                        . "OR `notes` LIKE '%".$strSearchTxt."%')";
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
@@ -239,7 +239,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL1    = "SELECT count(*) AS `number` FROM `$preTableName` "
-        . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
+                . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
     $booReturn1 = $myDBClass->hasSingleDataset($strSQL1, $arrDataLinesCount);
     if ($booReturn1 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -252,8 +252,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL2    = "SELECT `id`, `$preKeyField`, `alias`, `register`, `active`, `config_id`, `access_group` "
-        . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` "
-        . "IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` "
+                . "IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL2, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

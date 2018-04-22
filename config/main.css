@@ -41,7 +41,7 @@ body {
 .headerleft a {
 	color: #002C52;
 	background-color: #FFFFFF;
-}
+}		
 .headerleft a:hover {
 	color: #002C52;
 	background-color: #E5E9ED ;
@@ -49,7 +49,7 @@ body {
 .headerleft a:active {
 	color: #002C52;
 	background-color: #E5E9ED ;
-}
+}	
 .top-link {
 	color: #002C52;
 	font-size: 10pt;
@@ -60,7 +60,7 @@ body {
 	border-top:1px solid #002C52;
 	border-left:1px solid #002C52;
 	border-right:1px solid #002C52;
-}
+}			
 .headermiddle {
 	vertical-align: bottom;
 	height: 40px;
@@ -88,7 +88,7 @@ body {
 	vertical-align: middle;
 	text-align: right;
 	font-size: 10px;
-}
+}			
 /********************/
 /**  Formatierungen */
 /********************/
@@ -123,13 +123,15 @@ h3 {
 .menutable a:hover {
 	color: #FF00FF;
 }
+
+/*noinspection ALL*/
 .menutable .menu_act {
 	color: #FF0000;
 	font-size: 12px;
 	font-weight: bold;
 	padding-left: 20px;
 	height: 20px;
-	background: url(../images/bg_menu_aktiv.png) repeat-x left top;
+	background: url(../images/bg_menu_aktiv.png) repeat-x left top; 
 	width: 140px;
 }
 .menutable .menu_act a {
@@ -144,7 +146,7 @@ h3 {
 	font-weight: bold;
 	padding-left: 20px;
 	height: 20px;
-	background: url(../images/bg_menu_inaktiv.png) repeat-x left top;
+	background: url(../images/bg_menu_inaktiv.png) repeat-x left top; 
 	width: 140px;
 }
 .menutable .menu a {
@@ -153,6 +155,8 @@ h3 {
 .menutable .menu a:hover {
 	color: #FFFFFF;
 }
+
+/*noinspection ALL*/
 .menutable .menu_sub {
 	font-size: 11px;
 	color: #666666;
@@ -168,6 +172,8 @@ h3 {
 	color: #666666;
 	text-decoration: underline;
 }
+
+/*noinspection ALL*/
 .menutable .menu_sub_act {
 	font-size: 11px;
 	font-weight: bold;

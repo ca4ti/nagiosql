@@ -39,9 +39,9 @@
                 <td valign="top">{BACKUPFILE} *</td>
                 <td rowspan="2" colspan="2">
                     <select title="{BACKUPFILE}" name="mselValue1[]" size="10" multiple id="mselValue1" class="selectborder" style="width:500px;">
-                        <!-- BEGIN filelist -->
+<!-- BEGIN filelist -->
                         <option value="{DAT_BACKUPFILE}">{DAT_BACKUPFILE}</option>
-                        <!-- END filelist -->
+<!-- END filelist -->
                     </select></td>
             </tr>
             <tr>

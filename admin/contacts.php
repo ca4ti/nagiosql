@@ -50,19 +50,19 @@ if (($intVersion == 3) || ($intVersion == 4)) {
 // ==================
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', "
-        . "`contactgroups`=$intMselValue1, `contactgroups_tploptions`=$chkRadValue1, "
-        . "`minimum_importance`='$chkTfValue12', "
-        . "`host_notifications_enabled`='$chkRadValue2', `service_notifications_enabled`='$chkRadValue3', "
-        . "`host_notification_period`='$chkSelValue1', `service_notification_period`='$chkSelValue2', "
-        . "`host_notification_options`='$strHO', `host_notification_commands_tploptions`=$chkRadValue4, "
-        . "`service_notification_options`='$strSO', `host_notification_commands`=$intMselValue2, "
-        . "`service_notification_commands`=$intMselValue3, "
-        . "`service_notification_commands_tploptions`=$chkRadValue5, `can_submit_commands`='$chkRadValue8', "
-        . "`retain_status_information`='$chkRadValue6', `retain_nonstatus_information`='$chkRadValue7', "
-        . "`email`='$chkTfValue3', `pager`='$chkTfValue4', `address1`='$chkTfValue5', `address2`='$chkTfValue6', "
-        . "`address3`='$chkTfValue7', `address4`='$chkTfValue8', `address5`='$chkTfValue9', "
-        . "`address6`='$chkTfValue10', `name`='$chkTfValue11', `use_variables`='$intVariables', "
-        . "`use_template`=$intTemplates, $preSQLCommon1";
+             . "`contactgroups`=$intMselValue1, `contactgroups_tploptions`=$chkRadValue1, "
+             . "`minimum_importance`='$chkTfValue12', "
+             . "`host_notifications_enabled`='$chkRadValue2', `service_notifications_enabled`='$chkRadValue3', "
+             . "`host_notification_period`='$chkSelValue1', `service_notification_period`='$chkSelValue2', "
+             . "`host_notification_options`='$strHO', `host_notification_commands_tploptions`=$chkRadValue4, "
+             . "`service_notification_options`='$strSO', `host_notification_commands`=$intMselValue2, "
+             . "`service_notification_commands`=$intMselValue3, "
+             . "`service_notification_commands_tploptions`=$chkRadValue5, `can_submit_commands`='$chkRadValue8', "
+             . "`retain_status_information`='$chkRadValue6', `retain_nonstatus_information`='$chkRadValue7', "
+             . "`email`='$chkTfValue3', `pager`='$chkTfValue4', `address1`='$chkTfValue5', `address2`='$chkTfValue6', "
+             . "`address3`='$chkTfValue7', `address4`='$chkTfValue8', `address5`='$chkTfValue9', "
+             . "`address6`='$chkTfValue10', `name`='$chkTfValue11', `use_variables`='$intVariables', "
+             . "`use_template`=$intTemplates, $preSQLCommon1";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -158,7 +158,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                 }
                 //if (($intRet1 + $intRet2 + $intRet3) != 0) {
-                //$strInfoMessage = "";
+                    //$strInfoMessage = "";
                 //}
                 //
                 // Insert/update templates from session data
@@ -176,8 +176,8 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     foreach ($_SESSION['templatedefinition'] as $elem) {
                         if ($elem['status'] == 0) {
                             $strSQL    = "INSERT INTO `tbl_lnkContactToContacttemplate` (`idMaster`,`idSlave`,"
-                                . "`idTable`,`idSort`) VALUES ($chkDataId,".$elem['idSlave'].", "
-                                . $elem['idTable'].",".$intSortId.")";
+                                       . "`idTable`,`idSort`) VALUES ($chkDataId,".$elem['idSlave'].", "
+                                       . $elem['idTable'].",".$intSortId.")";
                             $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($booReturn == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -215,13 +215,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     foreach ($_SESSION['variabledefinition'] as $elem) {
                         if ($elem['status'] == 0) {
                             $strSQL    = "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`) "
-                                . "VALUES ('".$elem['definition']."','".$elem['range']."',now())";
+                                       . "VALUES ('".$elem['definition']."','".$elem['range']."',now())";
                             $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($booReturn == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
                             $strSQL    = "INSERT INTO `tbl_lnkContactToVariabledefinition` (`idMaster`,`idSlave`) "
-                                . "VALUES ($chkDataId,$intInsertId)";
+                                       . "VALUES ($chkDataId,$intInsertId)";
                             $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($booReturn4 == false) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -264,7 +264,7 @@ if ($chkModus == "add") {
         $strWhere = "AND `id` <> ".$arrModifyData['id'];
     }
     $strSQL5    = "SELECT `id`,`template_name`, `active` "
-        . "FROM `tbl_contacttemplate` WHERE $strDomainWhere2 ORDER BY `template_name`";
+                . "FROM `tbl_contacttemplate` WHERE $strDomainWhere2 ORDER BY `template_name`";
     $booReturn5 = $myDBClass->hasDataArray($strSQL5, $arrDataTpl, $intDataCountTpl);
     if ($booReturn5 == false) {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -279,13 +279,13 @@ if ($chkModus == "add") {
                 $conttp->setVariable("SPECIAL_STYLE", "");
             }
             $conttp->setVariable("DAT_TEMPLATE", htmlspecialchars($elem['template_name'], ENT_QUOTES, 'UTF-8').
-                $strActive);
+                    $strActive);
             $conttp->setVariable("DAT_TEMPLATE_ID", $elem['id']."::1");
             $conttp->parse("template");
         }
     }
     $strSQL6    = "SELECT `id`, `name`, `active` "
-        . "FROM `$preTableName` WHERE `name` <> '' $strWhere AND $strDomainWhere ORDER BY `name`";
+                . "FROM `$preTableName` WHERE `name` <> '' $strWhere AND $strDomainWhere ORDER BY `name`";
     $booReturn6 = $myDBClass->hasDataArray($strSQL6, $arrDataHpl, $intDataCount);
     if ($booReturn6 == false) {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -412,7 +412,7 @@ if ($chkModus == "add") {
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
         $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
+                  . 'another configuration').":</span>";
         $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo, $strChbFields);
@@ -453,11 +453,11 @@ if ($chkModus == "display") {
     if ($_SESSION['search'][$preSearchSession] != "") {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%' OR "
-            . "`email` LIKE '%".$strSearchTxt."%' OR `pager` LIKE '%".$strSearchTxt."%' OR "
-            . "`address1` LIKE '%".$strSearchTxt."%' OR `address2` LIKE '%".$strSearchTxt."%' OR "
-            . "`address3` LIKE '%".$strSearchTxt."%' OR `address4` LIKE '%".$strSearchTxt."%' OR "
-            . "`address5` LIKE '%".$strSearchTxt."%' OR `address6` LIKE '%".$strSearchTxt."%' OR "
-            . "`name` LIKE '%".$strSearchTxt."%')";
+                        . "`email` LIKE '%".$strSearchTxt."%' OR `pager` LIKE '%".$strSearchTxt."%' OR "
+                        . "`address1` LIKE '%".$strSearchTxt."%' OR `address2` LIKE '%".$strSearchTxt."%' OR "
+                        . "`address3` LIKE '%".$strSearchTxt."%' OR `address4` LIKE '%".$strSearchTxt."%' OR "
+                        . "`address5` LIKE '%".$strSearchTxt."%' OR `address6` LIKE '%".$strSearchTxt."%' OR "
+                        . "`name` LIKE '%".$strSearchTxt."%')";
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
@@ -466,7 +466,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL7    = "SELECT count(*) AS `number` "
-        . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
+                . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
     $booReturn7 = $myDBClass->hasSingleDataset($strSQL7, $arrDataLinesCount);
     if ($booReturn7 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -479,8 +479,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL8    = "SELECT `id`, `$preKeyField`, `alias`, `active`, `register`, `config_id`, `access_group` "
-        . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` "
-        . "IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere AND `access_group` "
+                . "IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn8 = $myDBClass->hasDataArray($strSQL8, $arrDataLines, $intDataCount);
     if ($booReturn8 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

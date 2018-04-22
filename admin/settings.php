@@ -8,7 +8,7 @@
 // (c) 2005-2018 by Martin Willisegger
 //
 // Project   : NagiosQL
-// Component : Admin configuration target administration
+// Component : Settings configuration
 // Website   : https://sourceforge.net/projects/nagiosql/
 // Version   : 3.4.0
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
@@ -22,315 +22,307 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 //
 // Define common variables
 // =======================
-$prePageId      = 36;
-$preContent     = "admin/configtargets.htm.tpl";
-$preListTpl     = "admin/datalist_common.htm.tpl";
-$preTableName   = 'tbl_configtarget';
-$preKeyField    = 'target';
-$preAccess      = 1;
-$preFieldvars   = 1;
-$intIsError     = 0;
-$strPathMessage = "";
+$prePageId    = 38;
+$preContent   = "admin/settings.htm.tpl";
+$preAccess    = 1;
+$preFieldvars = 1;
+$arrSQL       = array();
 //
 // Include preprocessing files
 // ===========================
 require($preBasePath.'functions/prepend_adm.php');
 require($preBasePath.'functions/prepend_content.php');
 //
-// Process path values (add slashes)
-// =================================
-$chkTfValue8  = $myVisClass->addSlash($chkTfValue8);
-$chkTfValue9  = $myVisClass->addSlash($chkTfValue9);
-$chkTfValue10 = $myVisClass->addSlash($chkTfValue10);
-$chkTfValue11 = $myVisClass->addSlash($chkTfValue11);
-$chkTfValue12 = $myVisClass->addSlash($chkTfValue12);
-$chkTfValue13 = $myVisClass->addSlash($chkTfValue13);
-$chkTfValue14 = $myVisClass->addSlash($chkTfValue14);
-$chkTfValue15 = $myVisClass->addSlash($chkTfValue15);
-$chkTfValue16 = $myVisClass->addSlash($chkTfValue16);
-//
-// Check if the permissions and other parameters
-// =============================================
-if (($chkModus == "modify" || $chkModus == "insert")) {
-    if ($chkDataId != 0) {
-        if ($chkSelValue1  == 1) {
-            $arrPaths = array($chkTfValue8,$chkTfValue9,$chkTfValue10,$chkTfValue11,$chkTfValue12,$chkTfValue13);
-            foreach ($arrPaths as $elem) {
-                if ($myConfigClass->isDirWriteable($elem) == 1) {
-                    $myVisClass->processMessage($elem." ".translate("is not writeable"), $strPathMessage);
-                    $intIsError = 1;
-                }
-            }
-            // Nagios base configuration files
-            if (!is_writable($chkTfValue20)) {
-                $myVisClass->processMessage(str_replace("  ", " ", translate("Nagios config file")." ".$chkTfValue20
-                    ." ".translate("is not writeable")), $strPathMessage);
-                $intIsError = 1;
-            } else {
-                $intCheck = 0;
-                if (file_exists($chkTfValue20) && is_readable($chkTfValue20)) {
-                    $resFile = fopen($chkTfValue20, 'r');
-                    while (!feof($resFile)) {
-                        $strLine = trim(fgets($resFile));
-                        if ((substr_count($strLine, 'cfg_dir') != 0) || (substr_count($strLine, 'cfg_file') != 0)) {
-                            $intCheck = 1;
-                        }
-                    }
-                    fclose($resFile);
-                }
-                if ($intCheck == 0) {
-                    $myVisClass->processMessage(str_replace("  ", " ", translate("Nagios config file")." ".
-                        $chkTfValue20." ".translate("is not a valid configuration file!")), $strPathMessage);
-                    $intIsError = 1;
-                }
-            }
-            if (!is_writable($chkTfValue21)) {
-                $myVisClass->processMessage(str_replace("  ", " ", translate("Cgi config file")." ".
-                    $chkTfValue21." ".translate("is not writeable")), $strPathMessage);
-                $intIsError = 1;
-            }
-        }
-        // Check SSH Method
-        if (($chkSelValue1  == 3) && !function_exists('ssh2_connect')) {
-            $myVisClass->processMessage(translate('SSH module not loaded!'), $strPathMessage);
-            $intIsError = 1;
-        }
-        // Check FTP Method
-        if (($chkSelValue1  == 2) && !function_exists('ftp_connect')) {
-            $myVisClass->processMessage(translate('FTP module not loaded!'), $strPathMessage);
-            $intIsError = 1;
-        }
-        if ($intIsError == 1) {
-            $chkModus     = "add";
-            $chkSelModify = "errormodify";
-        }
-    }
+// Process initial values
+// ======================
+if (filter_input(INPUT_POST, 'tfValue1') == null) {
+    $chkTfValue1  = $SETS['path']['tempdir'];
 }
+if (filter_input(INPUT_POST, 'tfValue2') == null) {
+    $chkTfValue2  = $SETS['data']['encoding'];
+}
+if (filter_input(INPUT_POST, 'tfValue3') == null) {
+    $chkTfValue3  = $SETS['db']['server'];
+}
+if (filter_input(INPUT_POST, 'tfValue4') == null) {
+    $chkTfValue4  = $SETS['db']['port'];
+}
+if (filter_input(INPUT_POST, 'tfValue5') == null) {
+    $chkTfValue5  = $SETS['db']['database'];
+}
+if (filter_input(INPUT_POST, 'tfValue6') == null) {
+    $chkTfValue6  = $SETS['db']['username'];
+}
+if (filter_input(INPUT_POST, 'tfValue7') == null) {
+    $chkTfValue7  = $SETS['db']['password'];
+}
+if (filter_input(INPUT_POST, 'tfValue8') == null) {
+    $chkTfValue8  = $SETS['security']['logofftime'];
+}
+if (filter_input(INPUT_POST, 'tfValue9') == null) {
+    $chkTfValue9  = $SETS['common']['pagelines'];
+}
+if (filter_input(INPUT_POST, 'tfValue10') == null) {
+    $chkTfValue10 = $SETS['network']['proxyserver'];
+}
+if (filter_input(INPUT_POST, 'tfValue11') == null) {
+    $chkTfValue11 = $SETS['network']['proxyuser'];
+}
+if (filter_input(INPUT_POST, 'tfValue12') == null) {
+    $chkTfValue12 = $SETS['network']['proxypasswd'];
+}
+if (filter_input(INPUT_POST, 'selValue3') == null) {
+    $chkSelValue3 = $SETS['security']['wsauth'];
+}
+if (filter_input(INPUT_POST, 'selValue4') == null) {
+    $chkSelValue4 = $SETS['common']['seldisable'];
+}
+if (filter_input(INPUT_POST, 'radValue1') == null) {
+    $chkRadValue1 = $SETS['common']['tplcheck'];
+}
+if (filter_input(INPUT_POST, 'radValue2') == null) {
+    $chkRadValue2 = $SETS['common']['updcheck'];
+}
+if (filter_input(INPUT_POST, 'radValue3') == null) {
+    $chkRadValue3 = $SETS['network']['proxy'];
+}
+
 //
-// Add or modify data
-// ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
-    $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `server`='$chkTfValue4', "
-        . "`method`='$chkSelValue1', `user`='$chkTfValue5', `password`='$chkTfValue6', "
-        . "`ssh_key_path`='$chkTfValue7', `ftp_secure`=$chkChbValue1, `basedir`='$chkTfValue8', "
-        . "`hostconfig`='$chkTfValue9', `serviceconfig`='$chkTfValue10', `backupdir`='$chkTfValue11', "
-        . "`hostbackup`='$chkTfValue12', `servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', "
-        . "`importdir`='$chkTfValue15', `picturedir`='$chkTfValue16', `commandfile`='$chkTfValue17', "
-        . "`binaryfile`='$chkTfValue18', `pidfile`='$chkTfValue19', `conffile`='$chkTfValue20', "
-        . "`cgifile`='$chkTfValue21', `version`=$chkSelValue2, `access_group`=$chkSelAccGr, `active`='$chkActive',"
-        . "`last_modified`=NOW()";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+// Save changes
+// ============
+if (filter_input(INPUT_POST, 'selValue1')) {
+    //
+    // Write settings to database
+    // ==========================
+    if ($chkSelValue1 == 2) {
+        $strProtocol = "https";
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strProtocol = "http";
     }
-    if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != "") && ($chkTfValue2 != "") && (($chkTfValue4 != "") || ($chkDataId == 0))) {
-            $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($intReturn == 1) {
-                $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
-            } else {
-                $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
-                if ($chkModus == "insert") {
-                    $myDataClass->writeLog(translate('New Domain inserted:')." ".$chkTfValue1);
-                }
-                if ($chkModus == "modify") {
-                    $myDataClass->writeLog(translate('Domain modified:')." ".$chkTfValue1);
-                }
-            }
-        } else {
+    $strLocale = $myDBClass->getFieldData("SELECT `locale` FROM `tbl_language` WHERE `id`='".$chkSelValue2."'");
+    if ($strLocale == "") {
+        $strLocale = "en_GB";
+    }
+    $SETS['path']['protocol'] = $strProtocol;
+    $SETS['data']['locale']   = $strLocale;
+    // Check Proxy via curl
+    if (!function_exists('curl_init')) {
+        $myVisClass->processMessage(translate('Curl module not loaded, Proxy will be deactivated!'), $strErrorMessage);
+        $chkRadValue3 = 0;
+    }
+    // Check base paths
+    $strSQLBase = "UPDATE `tbl_settings` SET `value`='%s' WHERE `category`='%s' AND `name`='%s'";
+    $arrSQL[]   = sprintf($strSQLBase, $strProtocol, "path", "protocol");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue1, "path", "tempdir");
+    $arrSQL[]   = sprintf($strSQLBase, $preRelPath, "path", "base_url");
+    $arrSQL[]   = sprintf($strSQLBase, $preBasePath, "path", "base_path");
+    $arrSQL[]   = sprintf($strSQLBase, $strLocale, "data", "locale");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue2, "data", "encoding");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue8, "security", "logofftime");
+    $arrSQL[]   = sprintf($strSQLBase, $chkSelValue3, "security", "wsauth");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue9, "common", "pagelines");
+    $arrSQL[]   = sprintf($strSQLBase, $chkSelValue4, "common", "seldisable");
+    $arrSQL[]   = sprintf($strSQLBase, $chkRadValue1, "common", "tplcheck");
+    $arrSQL[]   = sprintf($strSQLBase, $chkRadValue2, "common", "updcheck");
+    $arrSQL[]   = sprintf($strSQLBase, $chkRadValue3, "network", "proxy");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue10, "network", "proxyserver");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue11, "network", "proxyuser");
+    $arrSQL[]   = sprintf($strSQLBase, $chkTfValue12, "network", "proxypasswd");
+    foreach ($arrSQL as $elem) {
+        $booReturn = $myDBClass->insertData($elem);
+        if ($booReturn == false) {
             $myVisClass->processMessage(
-                translate('Database entry failed! Not all necessary data filled in!'),
+                translate('An error occured while writing settings to database:'),
                 $strErrorMessage
             );
-        }
-    } else {
-        $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
-    }
-    $chkModus = "display";
-}
-if ($chkModus != "add") {
-    $chkModus = "display";
-}
-//
-// Single view
-// ===========
-if ($chkModus == "add") {
-    // Process acces group selection field
-    if (isset($arrModifyData['access_group'])) {
-        $intFieldId = $arrModifyData['access_group'];
-    } else {
-        $intFieldId = 0;
-    }
-    $intReturn = $myVisClass->parseSelectSimple('tbl_group', 'groupname', 'acc_group', 0, $intFieldId);
-    if ($intReturn != 0) {
-        $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
-    }
-    // Initial add/modify form definitions
-    $myContentClass->addFormInit($conttp);
-    $conttp->setVariable("TITLE", translate('Configuration domain administration'));
-    if ($intIsError == 1) {
-        $conttp->setVariable("PATHMESSAGE", "<h2 style=\"padding-bottom:5px;\">".translate("Warning, at least one ".
-                "error occured, please check!")."</h2>".$strPathMessage);
-    }
-    $conttp->setVariable("CLASS_NAME_1", "elementHide");
-    $conttp->setVariable("CLASS_NAME_2", "elementHide");
-    $conttp->setVariable("CLASS_NAME_3", "elementHide");
-    $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
-    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains not permitted characters:'));
-    // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-        // Process data
-        $myContentClass->addInsertData($conttp, $arrModifyData, 0, '');
-        // Connection method
-        if ($arrModifyData['method'] == 1) {
-            $conttp->setVariable("FILE_SELECTED", "selected");
-        }
-        if ($arrModifyData['method'] == 2) {
-            $conttp->setVariable("FTP_SELECTED", "selected");
-            $conttp->setVariable("CLASS_NAME_1", "elementShow");
-            $conttp->setVariable("CLASS_NAME_2", "elementHide");
-            $conttp->setVariable("CLASS_NAME_3", "elementShow");
-        }
-        if ($arrModifyData['method'] == 3) {
-            $conttp->setVariable("SFTP_SELECTED", "selected");
-            $conttp->setVariable("CLASS_NAME_1", "elementShow");
-            $conttp->setVariable("CLASS_NAME_2", "elementShow");
-            $conttp->setVariable("CLASS_NAME_3", "elementHide");
-        }
-        if ($arrModifyData['ftp_secure'] == 1) {
-            $conttp->setVariable("FTPS_CHECKED", "checked");
-        }
-        // Nagios version
-        $conttp->setVariable("VER_SELECTED_".$arrModifyData['version'], "selected");
-        // Domain localhost cant' be renamed
-        if ($arrModifyData[$preKeyField] == "localhost") {
-            $conttp->setVariable("DOMAIN_DISABLE", "readonly");
-            $conttp->setVariable("LOCKCLASS", "inputlock");
-        } elseif ($arrModifyData[$preKeyField] == "common") {
-            $conttp->setVariable("DOMAIN_DISABLE", "readonly");
-            $conttp->setVariable("COMMON_INVISIBLE", "class=\"elementHide\"");
-            $conttp->setVariable("LOCKCLASS", "inputlock");
+            $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
         }
     }
-    if ($chkSelModify == "errormodify") {
-        $conttp->setVariable("DAT_TARGET", $chkTfValue1);
-        // Domain localhost cant' be renamed
-        if ($chkTfValue1 == "localhost") {
-            $conttp->setVariable("DOMAIN_DISABLE", "readonly");
-            $conttp->setVariable("LOCKCLASS", "inputlock");
-        } elseif ($chkTfValue1 == "common") {
-            $conttp->setVariable("DOMAIN_DISABLE", "readonly");
-            $conttp->setVariable("COMMON_INVISIBLE", "class=\"elementHide\"");
-            $conttp->setVariable("LOCKCLASS", "inputlock");
+    // Write db settings to file
+    if (is_writable($preBasePath."config/settings.php")) {
+        $filSettings = fopen($preBasePath."config/settings.php", "w");
+        if ($filSettings) {
+            fwrite($filSettings, "<?php\n");
+            fwrite($filSettings, "exit;\n");
+            fwrite($filSettings, "?>\n");
+            fwrite($filSettings, ";///////////////////////////////////////////////////////////////////////////////\n");
+            fwrite($filSettings, ";\n");
+            fwrite($filSettings, "; NagiosQL\n");
+            fwrite($filSettings, ";\n");
+            fwrite($filSettings, ";///////////////////////////////////////////////////////////////////////////////\n");
+            fwrite($filSettings, ";\n");
+            fwrite($filSettings, "; Project  : NagiosQL\n");
+            fwrite($filSettings, "; Component: Database Configuration\n");
+            fwrite($filSettings, "; Website  : https://sourceforge.net/projects/nagiosql/\n");
+            fwrite($filSettings, "; Date     : ".date("F j, Y, g:i a")."\n");
+            fwrite($filSettings, "; Version  : ".$setFileVersion."\n");
+            fwrite($filSettings, ";\n");
+            fwrite($filSettings, ";///////////////////////////////////////////////////////////////////////////////\n");
+            fwrite($filSettings, "[db]\n");
+            fwrite($filSettings, "type         = mysqli\n");
+            fwrite($filSettings, "server       = ".$chkTfValue3."\n");
+            fwrite($filSettings, "port         = ".$chkTfValue4."\n");
+            fwrite($filSettings, "database     = ".$chkTfValue5."\n");
+            fwrite($filSettings, "username     = ".$chkTfValue6."\n");
+            fwrite($filSettings, "password     = ".$chkTfValue7."\n");
+            fwrite($filSettings, "[path]\n");
+            fwrite($filSettings, "base_url     = ".$preRelPath."\n");
+            fwrite($filSettings, "base_path    = ".$preBasePath."\n");
+            fclose($filSettings);
+            // Activate new language settings
+            $arrLocale = explode(".", $strLocale);
+            $strDomain = $arrLocale[0];
+            $loc = setlocale(
+                LC_ALL,
+                $strLocale,
+                $strLocale.".utf-8",
+                $strLocale.".utf-8",
+                $strLocale.".utf8",
+                "en_GB",
+                "en_GB.utf-8",
+                "en_GB.utf8"
+            );
+            if (!isset($loc)) {
+                $myVisClass->processMessage(translate("Error in setting the correct locale, please report this error "
+                        . "with the associated output of 'locale -a'"), $strErrorMessage);
+            }
+            putenv("LC_ALL=".$strLocale.".utf-8");
+            putenv("LANG=".$strLocale.".utf-8");
+            bindtextdomain($strLocale, $preBasePath."config/locale");
+            bind_textdomain_codeset($strLocale, $chkTfValue2);
+            textdomain($strLocale);
+            $myVisClass->processMessage(translate("Settings were changed"), $strInfoMessage);
         } else {
-            $conttp->setVariable("LOCKCLASS", "inpmust");
+            $myVisClass->processMessage(translate("An error occured while writing settings.php, please "
+                    . "check permissions!"), $strErrorMessage);
         }
-        $conttp->setVariable("DAT_ALIAS", $chkTfValue2);
-        $conttp->setVariable("DAT_SERVER", $chkTfValue4);
-        // Connection method
-        if ($chkSelValue1 == 1) {
-            $conttp->setVariable("FILE_SELECTED", "selected");
-            $conttp->setVariable("CLASS_NAME_1", "elementHide");
-            $conttp->setVariable("CLASS_NAME_2", "elementHide");
-            $conttp->setVariable("CLASS_NAME_3", "elementHide");
-        }
-        if ($chkSelValue1 == 2) {
-            $conttp->setVariable("FTP_SELECTED", "selected");
-            $conttp->setVariable("CLASS_NAME_1", "elementShow");
-            $conttp->setVariable("CLASS_NAME_2", "elementHide");
-            $conttp->setVariable("CLASS_NAME_3", "elementShow");
-        }
-        if ($chkSelValue1 == 3) {
-            $conttp->setVariable("SFTP_SELECTED", "selected");
-            $conttp->setVariable("CLASS_NAME_1", "elementShow");
-            $conttp->setVariable("CLASS_NAME_2", "elementShow");
-            $conttp->setVariable("CLASS_NAME_3", "elementHide");
-        }
-        $conttp->setVariable("DAT_USER", $chkTfValue5);
-        $conttp->setVariable("DAT_SSH_KEY_PATH", $chkTfValue7);
-        if ($chkChbValue1== 1) {
-            $conttp->setVariable("FTPS_CHECKED", "checked");
-        }
-        $conttp->setVariable("DAT_BASEDIR", $chkTfValue8);
-        $conttp->setVariable("DAT_HOSTCONFIG", $chkTfValue9);
-        $conttp->setVariable("DAT_SERVICECONFIG", $chkTfValue10);
-        $conttp->setVariable("DAT_BACKUPDIR", $chkTfValue11);
-        $conttp->setVariable("DAT_HOSTBACKUP", $chkTfValue12);
-        $conttp->setVariable("DAT_SERVICEBACKUP", $chkTfValue13);
-        $conttp->setVariable("DAT_NAGIOSBASEDIR", $chkTfValue14);
-        $conttp->setVariable("DAT_IMPORTDIR", $chkTfValue15);
-        $conttp->setVariable("DAT_COMMANDFILE", $chkTfValue17);
-        $conttp->setVariable("DAT_BINARYFILE", $chkTfValue18);
-        $conttp->setVariable("DAT_PIDFILE", $chkTfValue19);
-        $conttp->setVariable("DAT_CONFFILE", $chkTfValue20);
-        $conttp->setVariable("DAT_CGIFILE", $chkTfValue21);
-        $conttp->setVariable("DAT_PICTUREDIR", $chkTfValue16);
-        // NagiosQL version
-        if ($chkSelValue2 == 1) {
-            $conttp->setVariable("VER_SELECTED_1", "selected");
-        }
-        if ($chkSelValue2 == 2) {
-            $conttp->setVariable("VER_SELECTED_2", "selected");
-        }
-        if ($chkSelValue2 == 3) {
-            $conttp->setVariable("VER_SELECTED_3", "selected");
-        }
-        // Hidden variables
-        $conttp->setVariable("MODUS", filter_input(INPUT_POST, 'modus', FILTER_SANITIZE_STRING));
-        $conttp->setVariable("DAT_ID", filter_input(INPUT_POST, 'hidId', FILTER_VALIDATE_INT));
-        $conttp->setVariable("LIMIT", filter_input(INPUT_POST, 'hidLimit', FILTER_VALIDATE_INT));
-        // Active
-        if (filter_input(INPUT_POST, 'chbActive')) {
-            $conttp->setVariable("ACT_CHECKED", "checked");
-        } else {
-            $conttp->setVariable("ACT_CHECKED", "");
-        }
-    }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
-}
-//
-// List view
-// ==========
-if ($chkModus == "display") {
-    // Initial list view definitions
-    $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Configuration domain administration'));
-    $mastertp->setVariable("FIELD_1", translate('Configuration target'));
-    $mastertp->setVariable("FIELD_2", translate('Description'));
-    // Row sorting
-    $strOrderString = "ORDER BY `$preKeyField` $hidSortDir";
-    if ($hidSortBy == 2) {
-        $strOrderString = "ORDER BY `alias` $hidSortDir";
-    }
-    // Count datasets
-    $strSQL     = "SELECT count(*) AS `number` FROM `$preTableName` WHERE `access_group` IN ($strAccess)";
-    $booReturn1 = $myDBClass->hasSingleDataset($strSQL, $arrDataLinesCount);
-    if ($booReturn1 == false) {
-        $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
-        $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     } else {
-        $intLineCount = (int)$arrDataLinesCount['number'];
-        if ($intLineCount < $chkLimit) {
-            $chkLimit = 0;
-        }
+        $myVisClass->processMessage($preBasePath."config/settings.php ".translate("is not writeable, please "
+                . "check permissions!"), $strErrorMessage);
     }
-    // Get datasets
-    $strSQL     = "SELECT `id`, `$preKeyField`, `alias`, `active`, `nodelete`, `access_group` "
-        . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
-        . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
-    $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
-    if ($booReturn2 == false) {
-        $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
-        $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
-    }
-    // Process data
-    $myContentClass->listData($mastertp, $arrDataLines, $intDataCount, $intLineCount, $preKeyField, 'alias');
 }
-// Show messages
-$myContentClass->showMessages($mastertp, $strErrorMessage, $strInfoMessage, $strConsistMessage, array(), '', 1);
 //
-// Process footer
+// Start content
+// =============
+$conttp->setVariable("TITLE", translate('Configure Settings'));
+foreach ($arrDescription as $elem) {
+    $conttp->setVariable($elem['name'], $elem['string']);
+}
+$conttp->setVariable("ACTION_INSERT", filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
+$conttp->setVariable("LANG_DESCRIPTION", translate('Change your current NagiosQL settings (e.g. Database user, '
+        . 'Language).'));
+//
+// Path settings
+// =============
+$conttp->setVariable("PATH", translate('Path'));
+$conttp->setVariable("TEMPDIR_NAME", translate('Temporary Directory'));
+$conttp->setVariable("TEMPDIR_VALUE", htmlspecialchars($chkTfValue1, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("PROTOCOL_NAME", translate('Server protocol'));
+$conttp->setVariable(strtoupper($SETS['path']['protocol'])."_SELECTED", "selected");
+//
+// Data settings
+// =============
+$conttp->setVariable("DATA", translate('Language'));
+$conttp->setVariable("LOCALE", translate('Language'));
+// Process language selection field
+$strSQL    = "SELECT * FROM `tbl_language` WHERE `active`='1' ORDER BY `id`";
+$booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
+if ($booReturn && ($intDataCount != 0)) {
+    foreach ($arrData as $elem) {
+        $conttp->setVariable("LANGUAGE_ID", $elem['id']);
+        $conttp->setVariable("LANGUAGE_NAME", translate($elem['language']));
+        if ($elem['locale'] == $SETS['data']['locale']) {
+            $conttp->setVariable("LANGUAGE_SELECTED", "selected");
+        }
+        $conttp->parse("language");
+    }
+} else {
+    $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
+    $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
+}
+$conttp->setVariable("ENCODING_NAME", translate('Encoding'));
+$conttp->setVariable("ENCODING_VALUE", htmlspecialchars($chkTfValue2, ENT_QUOTES, 'utf-8'));
+//
+// Database settings
+// =================
+$conttp->setVariable("DB", translate('Database'));
+$conttp->setVariable("SERVER_NAME", translate('MySQL Server'));
+$conttp->setVariable("SERVER_VALUE", htmlspecialchars($chkTfValue3, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("SERVER_PORT", translate('MySQL Server Port'));
+$conttp->setVariable("PORT_VALUE", htmlspecialchars($chkTfValue4, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("DATABASE_NAME", translate('Database name'));
+$conttp->setVariable("DATABASE_VALUE", htmlspecialchars($chkTfValue5, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("USERNAME_NAME", translate('Database user'));
+$conttp->setVariable("USERNAME_VALUE", htmlspecialchars($chkTfValue6, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("PASSWORD_NAME", translate('Database password'));
+$conttp->setVariable("PASSWORD_VALUE", htmlspecialchars($chkTfValue7, ENT_QUOTES, 'utf-8'));
+//
+// Security settings
+// =================
+$conttp->setVariable("SECURITY", translate('Security'));
+$conttp->setVariable("LOGOFFTIME_NAME", translate('Session auto logoff time'));
+$conttp->setVariable("LOGOFFTIME_VALUE", htmlspecialchars($chkTfValue8, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("WSAUTH_NAME", translate('Authentication type'));
+$conttp->setVariable("WSAUTH_".$chkSelValue3."_SELECTED", "selected");
+//
+// Common settings
+// ===============
+$conttp->setVariable("COMMON", translate('Common'));
+$conttp->setVariable("PAGELINES_NAME", translate('Data lines per page'));
+$conttp->setVariable("PAGELINES_VALUE", htmlspecialchars($chkTfValue9, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("SELDISABLE_NAME", translate('Selection method'));
+$conttp->setVariable("SELDISABLE_".$chkSelValue4."_SELECTED", "selected");
+//
+// Template Check
 // ==============
-$myContentClass->showFooter($maintp, $setFileVersion);
+$conttp->setVariable("TEMPLATE_CHECK", translate('Template warn message'));
+$conttp->setVariable("LANG_ENABLE", translate('Enable'));
+$conttp->setVariable("LANG_DISABLE", translate('Disable'));
+$conttp->setVariable("TPL_CHECK_".$chkRadValue1."_CHECKED", "checked");
+//
+// Online version check
+// ====================
+$conttp->setVariable("CLASS_NAME_1", "elementHide");
+$conttp->setVariable("CLASS_NAME_2", "elementHide");
+$conttp->setVariable("UPDATE_CHECK", translate('Online version check'));
+$conttp->setVariable("UPD_CHECK_".$chkRadValue2."_CHECKED", "checked");
+if ($chkRadValue2 == 1) {
+    $conttp->setVariable("CLASS_NAME_1", "elementShow");
+}
+//
+// Online update proxy settings
+// ============================
+$conttp->setVariable("UPD_PROXY_CHECK", translate('Proxyserver'));
+$conttp->setVariable("UPD_PROXY_".$chkRadValue3."_CHECKED", "checked");
+if (($chkRadValue3 == 1) && ($chkRadValue2 == 1)) {
+    $conttp->setVariable("CLASS_NAME_2", "elementShow");
+}
+$conttp->setVariable("UPD_PROXY_SERVER", translate('Proxy Address'));
+$conttp->setVariable("UPD_PROXY_SERVER_VALUE", htmlspecialchars($chkTfValue10, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("UPD_PROXY_USERNAME", translate('Proxy Username (optional)'));
+$conttp->setVariable("UPD_PROXY_USERNAME_VALUE", htmlspecialchars($chkTfValue11, ENT_QUOTES, 'utf-8'));
+$conttp->setVariable("UPD_PROXY_PASSWORD", translate('Proxy Password (optional)'));
+$conttp->setVariable("UPD_PROXY_PASSWORD_VALUE", htmlspecialchars($chkTfValue12, ENT_QUOTES, 'utf-8'));
+//
+// Requirements of form
+// ====================
+$conttp->setVariable("LANG_SAVE", translate('Save'));
+$conttp->setVariable("LANG_ABORT", translate('Abort'));
+$conttp->setVariable("LANG_REQUIRED", translate('required'));
+$conttp->setVariable("ERRORMESSAGE", $strErrorMessage);
+$conttp->setVariable("INFOMESSAGE", $strInfoMessage);
+//
+// Check access rights for adding new objects
+// ==========================================
+if ($myVisClass->checkAccountGroup($prePageKey, 'write') != 0) {
+    $conttp->setVariable("ADD_CONTROL", "disabled=\"disabled\"");
+}
+$conttp->parse("settingssite");
+$conttp->show("settingssite");
+//
+// Footer ausgeben
+// ===============
+$maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
+$maintp->parse("footer");
+$maintp->show("footer");

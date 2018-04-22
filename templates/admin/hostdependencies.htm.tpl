@@ -8,26 +8,26 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <!--suppress JSUnresolvedVariable -->
+	<!--suppress JSUnresolvedVariable -->
     <script type="text/JavaScript">
-        <!--
-        // Initialize change dialog
-        openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTGRS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_HOSTGROUPS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}");
-        // Interrupt input
-        function abort() {
-            this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
-        }
-        // Send form
+		<!--
+    	// Initialize change dialog
+		openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTGRS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_HOSTGROUPS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}");
+		// Interrupt input
+		function abort() {
+			this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
+		}
+    	// Send form
         /**
          * @return {boolean}
          */
         function LockButton() {
-            if (checkForm() === false) {
-                return false;
-            } else {
+      		if (checkForm() === false) {
+        		return false;
+      		} else {
                 // Enable select fields
                 const selfields = "mselValue1,mselValue2,mselValue3,mselValue4";
                 const ar_sel = selfields.split(",");
@@ -37,39 +37,39 @@
                         document.getElementById(ar_sel[i]).options[y].disabled = false;
                     }
                 }
-                document.frmDetail.submit();
-                document.frmDetail.subForm.disabled = true;
-            }
-        }
-        // Check form entries
-        function checkForm() {
-            // Are all required fields filled in?
+				document.frmDetail.submit();
+				document.frmDetail.subForm.disabled = true;
+      		}
+    	}
+    	// Check form entries
+    	function checkForm() {
+      		// Are all required fields filled in?
             const fields1 = "tfValue1";
             const msg1 = "{FILL_ALLFIELDS}";
             const header = "{LANG_FORMCHECK}";
             const form = document.frmDetail;
             let check;
             check = checkfields(fields1,form,myFocusObject);
-            if (check === false) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            // Are dependent hosts or dependent hostgroups selected?
-            if ((form.mselValue1.value === "") &&
-                (form.mselValue3.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            // Are hosts or hostgroups selected?
-            if ((form.mselValue2.value === "") &&
-                (form.mselValue4.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-        }
-        //-->
-    </script>
-    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
+			if (check === false) {
+	  			msginit(msg1,header,1);
+				return false;
+	  		}	
+	  		// Are dependent hosts or dependent hostgroups selected?
+      		if ((form.mselValue1.value === "") &&
+		 	   	(form.mselValue3.value === "")) {
+		 		msginit(msg1,header,1);
+		 		return false;
+      		}
+	  		// Are hosts or hostgroups selected?
+      		if ((form.mselValue2.value === "") &&
+		 		(form.mselValue4.value === "")) {
+		 		msginit(msg1,header,1);
+		 		return false;
+      		}
+    	}
+    	//-->
+  	</script>
+  	<form name="frmDetail" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td class="content_tbl_row1" valign="top">{LANG_DEPENDHOSTS} (*)</td>
@@ -78,13 +78,13 @@
                         <tr>
                             <td>
                                 <select title="{LANG_DEPENDHOSTS}" name="mselValue1[]" size="5" multiple id="mselValue1" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN depend_host -->
+<!-- BEGIN depend_host -->
                                     <option value="{DAT_DEPEND_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPEND_HOST_SEL}" {DAT_DEPEND_HOST_SEL} {OPTION_DISABLED}>{DAT_DEPEND_HOST}</option>
-                                    <!-- END depend_host -->
+<!-- END depend_host -->
                                 </select>
                             </td>
                         </tr>
-                    </table>
+                    </table>      
                 </td>
                 <td class="content_tbl_row3" rowspan="2" valign="top"><img id="mutvalue1" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostdependency','dependent_host','all','Info');" class="infobutton_2"></td>
                 <td class="content_tbl_row1" valign="top"><span class="{VERSION_30_VISIBLE}">{LANG_DEPENDHOSTGRS} (*)</span></td>
@@ -93,9 +93,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_DEPENDHOSTGRS}" name="mselValue3[]" size="5" multiple id="mselValue3" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN depend_hostgroup -->
+<!-- BEGIN depend_hostgroup -->
                                     <option value="{DAT_DEPEND_HOSTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPEND_HOSTGROUP_SEL}" {DAT_DEPEND_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_DEPEND_HOSTGROUP}</option>
-                                    <!-- END depend_hostgroup -->
+<!-- END depend_hostgroup -->
                                 </select>
                             </td>
                         </tr>
@@ -114,9 +114,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_HOSTS}" name="mselValue2[]" size="5" multiple id="mselValue2" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN host -->
+<!-- BEGIN host -->
                                     <option value="{DAT_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_SEL}" {DAT_HOST_SEL} {OPTION_DISABLED}>{DAT_HOST}</option>
-                                    <!-- END host -->
+<!-- END host -->
                                 </select>
                             </td>
                         </tr>
@@ -129,9 +129,9 @@
                         <tr>
                             <td width="205">
                                 <select title="{LANG_HOSTGROUPS}" name="mselValue4[]" size="5" multiple id="mselValue4" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN hostgroup -->
+<!-- BEGIN hostgroup -->
                                     <option value="{DAT_HOSTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
-                                    <!-- END hostgroup -->
+<!-- END hostgroup -->
                                 </select>
                             </td>
                         </tr>
@@ -160,7 +160,7 @@
                     <select title="{LANG_DEPENDENCY_PERIOD}" name="selValue1" id="selValue1" class="selectborder">
 <!-- BEGIN timeperiod -->
                         <option value="{DAT_TIMEPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_TIMEPERIOD_SEL}>{DAT_TIMEPERIOD}</option>
-                        <!-- END timeperiod -->
+<!-- END timeperiod -->
                     </select>
                     </span>
                 </td>
@@ -188,9 +188,9 @@
                 <td {RESTRICT_GROUP_ADMIN}>{LANG_ACCESS_GROUP}</td>
                 <td {RESTRICT_GROUP_ADMIN}>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
-                        <!-- BEGIN acc_group -->
+<!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                        <!-- END acc_group -->
+<!-- END acc_group -->
                     </select>
                 </td>
                 <td {RESTRICT_GROUP_ADMIN}><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -214,9 +214,9 @@
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostdependency','notification_failure_criteria','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
-                <td>{LANG_REGISTERED}</td>
-                <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
-                <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
+              <td>{LANG_REGISTERED}</td>
+              <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
+              <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td>{LANG_ACTIVE}</td>
@@ -236,8 +236,8 @@
                 <td colspan="6">&nbsp;</td>
             </tr>
         </table>
-    </form>
-</div>
+  </form>
+</div>  
 <div id="mutdialogvalue1">
     <div id="mutdialogvalue1content" class="bd"></div>
 </div>

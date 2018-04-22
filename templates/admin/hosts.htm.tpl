@@ -66,7 +66,7 @@
             if (check === false) {
                 msginit(msg1,header,1);
                 return false;
-            }
+            }	
             // Check sum of required arguments
             for (let i=1;i<=argcount;i++) {
                 if (document.getElementById("tfArg"+i).value === "") {
@@ -79,7 +79,7 @@
                 msginit(msg2+" {LANG_HOST_NAME}",header,1);
                 form.tfValue1.focus();
                 return false;
-            }
+            }	
             if (form.tfValue6.value.match(/[^a-zA-Z0-9.@_-]/)) {
                 msginit(msg2+" {LANG_GENERIC_NAME}",header,1);
                 form.tfValue1.focus();
@@ -140,7 +140,7 @@
                 document.frmDetail.submit();
                 document.frmDetail.subForm.disabled = true;
             }
-        }
+        }	
         // Check initial state
         function checkInitial(key) {
             const form = document.frmDetail;
@@ -159,7 +159,7 @@
         }
         //-->
     </script>
-    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
+    <form name="frmDetail" method="post" action="{ACTION_INSERT}">  
         <div id="host" style="width:909px;" class="yui-navset">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{LANG_COMMON_SETTINGS}</em></a></li>
@@ -167,7 +167,7 @@
                 <li><a href="#tab3"><em>{LANG_ALARM_SETTINGS}</em></a></li>
                 <li><a href="#tab4"><em>{LANG_ADDON_SETTINGS}</em></a></li>
                 <li><a href="#tab5"><em>{LANG_SERVICE_SETTINGS}</em></a></li>
-            </ul>
+            </ul>            
             <div class="yui-content">
                 <div id="tab1">
                     <table border="0" cellpadding="0" class="content_formtable">
@@ -197,9 +197,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_PARENTS}" name="mselValue1[]" size="4" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN host_parents -->
+<!-- BEGIN host_parents -->
                                                 <option value="{DAT_HOST_PARENTS_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_PARENTS_SEL}" {DAT_HOST_PARENTS_SEL} {OPTION_DISABLED}>{DAT_HOST_PARENTS}</option>
-                                                <!-- END host_parents -->
+<!-- END host_parents -->
                                             </select>
                                         </td>
                                     </tr>
@@ -212,9 +212,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_HOST_GROUPS}" name="mselValue2[]" size="4" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
-                                                <!-- BEGIN hostgroup -->
+<!-- BEGIN hostgroup -->
                                                 <option value="{DAT_HOSTGROUP_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
-                                                <!-- END hostgroup -->
+<!-- END hostgroup -->
                                             </select>
                                         </td>
                                     </tr>
@@ -256,9 +256,9 @@
                             <td>{LANG_CHECK_COMMAND}</td>
                             <td>
                                 <select title="{LANG_CHECK_COMMAND}" name="selValue1" id="selValue1" class="selectborder" onChange="setIframe(this.value);" tabindex="7">
-                                    <!-- BEGIN hostcommand -->
+<!-- BEGIN hostcommand -->
                                     <option value="{DAT_HOSTCOMMAND_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_HOSTCOMMAND_SEL}>{DAT_HOSTCOMMAND}</option>
-                                    <!-- END hostcommand -->
+<!-- END hostcommand -->
                                 </select>
                             </td>
                             <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','check_command','all','Info');" class="infobutton_1"></td>
@@ -293,10 +293,10 @@
                             <td colspan="2"><input title="$ARG8$" name="tfArg8" type="text" id="tfArg8" value="{DAT_ARG8}" tabindex="15"></td>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td>{LANG_REGISTERED}</td>
-                            <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED} tabindex="16"></td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
+                          <td colspan="3">&nbsp;</td>
+                          <td>{LANG_REGISTERED}</td>
+                          <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED} tabindex="16"></td>
+                          <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="padding-bottom:5px;"><strong>{LANG_ADDITIONAL_TEMPLATES}</strong></td>
@@ -315,9 +315,9 @@
                             <td>{LANG_TEMPLATE_NAME}</td>
                             <td>
                                 <select title="{LANG_TEMPLATE_NAME}" name="selTemplate" class="selectborder" tabindex="18">
-                                    <!-- BEGIN template -->
+<!-- BEGIN template -->
                                     <option value="{DAT_TEMPLATE_ID}" class="empty_class {SPECIAL_STYLE}">{DAT_TEMPLATE}</option>
-                                    <!-- END template -->
+<!-- END template -->
                                 </select>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','templateadd','all','Info');" class="content_infobutton_1"></td>
@@ -337,7 +337,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="tab2">
+                <div id="tab2">  
                     <table border="0" cellpadding="0" class="content_formtable">
                         <tr>
                             <td colspan="6"><strong>{LANG_CHECK_SETTINGS}</strong></td>
@@ -357,7 +357,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','initial_state','3','Info');" class="infobutton_1"></td>
+                            <td class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','initial_state','3','Info');" class="infobutton_1"></td>    
                             <td>{LANG_RETRY_INTERVAL}</td>
                             <td><input title="{LANG_RETRY_INTERVAL}" name="tfNullVal1" type="text" id="tfNullVal1" value="{DAT_RETRY_INTERVAL}" class="short"><span class="shorttext">min</span></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','retry_interval','3','Info');" class="infobutton_1"></td>
@@ -403,7 +403,7 @@
                                 </table>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','passive_checks_enabled','all','Info');" class="infobutton_1"></td>
-                        </tr>
+                        </tr> 
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
@@ -411,9 +411,9 @@
                             <td>{LANG_CHECK_PERIOD} *</td>
                             <td>
                                 <select title="{LANG_CHECK_PERIOD}" name="selValue2" id="selValue2" class="selectbordermust inpmust">
-                                    <!-- BEGIN checkperiod -->
+<!-- BEGIN checkperiod -->
                                     <option value="{DAT_CHECKPERIOD_ID}" class="empty_class inpmust {SPECIAL_STYLE}" {DAT_CHECKPERIOD_SEL}>{DAT_CHECKPERIOD}</option>
-                                    <!-- END checkperiod -->
+<!-- END checkperiod -->
                                 </select>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','check_period','all','Info');" class="infobutton_1"></td>
@@ -451,7 +451,7 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue8" type="radio" class="checkbox" id="radValue83" value="3" {DAT_OBS3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>
+                                </table>      
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','obsess_over_host','all','Info');" class="infobutton_1"></td>
                         </tr>
@@ -461,11 +461,11 @@
                         <tr>
                             <td>{LANG_EVENT_HANDLER}</td>
                             <td>
-                                <select title="{LANG_EVENT_HANDLER}" name="selValue3" id="selValue3" class="selectborder">
-                                    <!-- BEGIN eventhandler -->
-                                    <option value="{DAT_EVENTHANDLER_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_EVENTHANDLER_SEL}>{DAT_EVENTHANDLER}</option>
-                                    <!-- END eventhandler -->
-                                </select>
+                            <select title="{LANG_EVENT_HANDLER}" name="selValue3" id="selValue3" class="selectborder">
+<!-- BEGIN eventhandler -->
+                                <option value="{DAT_EVENTHANDLER_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_EVENTHANDLER_SEL}>{DAT_EVENTHANDLER}</option>
+<!-- END eventhandler -->
+                            </select>
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','event_handler','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_EVENT_HANDLER_ENABLED}</td>
@@ -481,7 +481,7 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue9" type="radio" class="checkbox" id="radValue93" value="3" {DAT_EVH3_CHECKED}></td>
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>
+                                </table> 
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','event_handler_enabled','all','Info');" class="infobutton_1"></td>
                         </tr>
@@ -510,7 +510,7 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue10" type="radio" class="checkbox" id="radValue103" value="3" {DAT_FLE3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>
+                                </table>       
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','flap_detection_enabled','all','Info');" class="infobutton_1"></td>
                             <td class="{VERSION_30_VISIBLE}">{LANG_FLAP_DETECTION_OPTIONS}</td>
@@ -545,7 +545,7 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue11" type="radio" class="checkbox" id="radValue113" value="3" {DAT_STI3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>
+                                </table> 
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','retain_status_information','all','Info');" class="infobutton_1"></td>
                             <td>{LANG_RETAIN_NOSTATUS_INFORMATION}</td>
@@ -561,7 +561,7 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue12" type="radio" class="checkbox" id="radValue123" value="3" {DAT_NSI3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>
+                                </table> 
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','retain_nonstatus_information','all','Info');" class="infobutton_1"></td>
                         </tr>
@@ -579,7 +579,7 @@
                                         <td class="radio_cell_1 {VERSION_30_VISIBLE}"><input title="null" name="radValue13" type="radio" class="checkbox" id="radValue133" value="3" {DAT_PED3_CHECKED}></td>
                                         <td class="radio_cell_2 {VERSION_30_VISIBLE}">null</td>
                                     </tr>
-                                </table>
+                                </table> 
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','process_perf_data','all','Info');" class="infobutton_1"></td>
                             <td colspan="3">&nbsp;</td>
@@ -608,24 +608,24 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_CONTACT_GROUPS}" name="mselValue4[]" size="4" multiple id="mselValue4" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                                <!-- BEGIN host_contactgroups -->
+<!-- BEGIN host_contactgroups -->
                                                 <option value="{DAT_HOST_CONTACTGROUPS_ID}"  class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_CONTACTGROUPS_SEL}" {DAT_HOST_CONTACTGROUPS_SEL} {OPTION_DISABLED}>{DAT_HOST_CONTACTGROUPS}</option>
-                                                <!-- END host_contactgroups -->
+<!-- END host_contactgroups -->
                                             </select>
                                         </td>
                                     </tr>
-                                </table>
+                                </table>   	  
                             </td>
-                            <td valign="top"><img id="mutvalue4" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('host','contactgroups','all','Info');" class="infobutton_2"></td>
+                            <td valign="top"><img id="mutvalue4" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('host','contactgroups','all','Info');" class="infobutton_2"></td>                        
                             <td valign="top"><span class="{VERSION_30_VISIBLE}">{LANG_CONTACTS} *<br><br><small>{LANG_CTRLINFO}</small></span></td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <tr class="{VERSION_30_VISIBLE}">
                                         <td>
                                             <select title="{LANG_CONTACTS}" name="mselValue3[]" size="4" multiple id="mselValue3" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                                <!-- BEGIN host_contacts -->
+<!-- BEGIN host_contacts -->
                                                 <option value="{DAT_HOST_CONTACTS_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_CONTACTS_SEL}" {DAT_HOST_CONTACTS_SEL} {OPTION_DISABLED}>{DAT_HOST_CONTACTS}</option>
-                                                <!-- END host_contacts -->
+<!-- END host_contacts -->
                                             </select>
                                         </td>
                                     </tr>
@@ -645,7 +645,7 @@
                                         <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue4" type="radio" class="checkbox" id="radValue42" value="2" {DAT_COG2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>
+                                </table>            
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                             <td>&nbsp;</td>
@@ -659,7 +659,7 @@
                                         <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue3" type="radio" class="checkbox" id="radValue32" value="2" {DAT_COT2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
-                                </table>
+                                </table>      
                             </td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                         </tr>
@@ -670,11 +670,11 @@
                             <td class="content_tbl_row1">{LANG_NOTIFICATION_PERIOD} *</td>
                             <td class="content_tbl_row2">
                                 <select title="{LANG_NOTIFICATION_PERIOD}" name="selValue4" id="selValue4"  class="selectbordermust inpmust">
-                                    <!-- BEGIN notifyperiod -->
+<!-- BEGIN notifyperiod -->
                                     <option value="{DAT_NOTIFYPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_NOTIFYPERIOD_SEL}>{DAT_NOTIFYPERIOD}</option>
-                                    <!-- END notifyperiod -->
+<!-- END notifyperiod -->
                                 </select>
-                            </td>
+                            </td>    
                             <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','notification_period','all','Info');" class="infobutton_1"></td>
                             <td class="content_tbl_row1">{LANG_NOTIFICATION_OPTIONS} {VERSION_20_STAR}</td>
                             <td class="content_tbl_row2">
@@ -754,7 +754,7 @@
                     </table>
                 </div>
                 <div id="tab4">
-                    <table border="0" cellpadding="0" class="content_formtable">
+                    <table border="0" cellpadding="0" class="content_formtable">   
                         <tr>
                             <td colspan="6"><strong>{LANG_ADDON_SETTINGS}</strong></td>
                         </tr>
@@ -802,9 +802,9 @@
                             <td>{LANG_ACCESS_GROUP}</td>
                             <td>
                                 <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
-                                    <!-- BEGIN acc_group -->
+<!-- BEGIN acc_group -->
                                     <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                                    <!-- END acc_group -->
+<!-- END acc_group -->
                                 </select>
                             </td>
                             <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -863,10 +863,10 @@
                         <tr>
                             <td colspan="6">&nbsp;</td>
                         </tr>
-                    </table>
+					</table>
                 </div>
                 <div id="tab5">
-                    <table border="0" cellpadding="0" class="content_formtable {VERSION_30_VISIBLE}">
+                    <table border="0" cellpadding="0" class="content_formtable {VERSION_30_VISIBLE}">   
                         <tr>
                             <td colspan="3"><strong>{LANG_SERVICE_SETTINGS}</strong></td>
                         </tr>
@@ -883,9 +883,9 @@
                                     <tr>
                                         <td>
                                             <select title="{LANG_SERVICES}" name="mselValue5[]" size="8" multiple id="mselValue5" class="selectborder" style="width:450px" {MSIE_DISABLED}>
-                                                <!-- BEGIN host_services -->
+<!-- BEGIN host_services -->
                                                 <option value="{DAT_HOST_SERVICES_ID}" class="empty_class {SPECIAL_STYLE} {IE_HOST_SERVICES_SEL}" {DAT_HOST_SERVICES_SEL} {OPTION_DISABLED}>{DAT_HOST_SERVICES}</option>
-                                                <!-- END host_services -->
+<!-- END host_services -->
                                             </select>
                                         </td>
                                         <td valign="top"><img id="mutvalue5" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('host','services','all','Info');" class="infobutton_2"></td>
@@ -904,8 +904,8 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                    <tr>
+                            	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                	<tr>
                                         <td style="width:450px;"><input name="subForm" type="button" id="subForm5" value="{LANG_SAVE}" onClick="LockButton();" {DISABLE_SAVE}>&nbsp;<input name="subAbort" type="button" id="subAbort5" onClick="abort();" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
                                         <td><span class="redmessage">{WARNING}</span></td>
                                     </tr>
@@ -929,7 +929,7 @@
     </script>
     <br>
     <span id="rel_text" class="{RELATION_CLASS}"><a href="javascript:showRelationData(1)" style="color:#00F">[{LANG_SHOW_RELATION_DATA}]</a></span><span id="rel_info" class="elementHide"><a href="javascript:showRelationData(0)" style="color:#00F">[{LANG_HIDE_RELATION_DATA}]</a>{CHECK_MUST_DATA}</span>
-</div>
+</div>    
 <div id="mutdialogvalue1">
     <div id="mutdialogvalue1content" class="bd"></div>
 </div>

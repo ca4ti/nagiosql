@@ -43,13 +43,13 @@
 }
 .greenmessage {
 	color: #009900;
-}
+}	
 .blackmessage {
 	color:#000000;
-}
+}	
 .bluemessage {
 	color:#0000FF;
-}
+}	
 .checkred {
 	color: #FF0000;
 	font-weight:bold;
@@ -69,6 +69,8 @@
 	font-size: 12px;
 	padding:2px;
 }
+
+/*noinspection CssUnusedSymbol*/
 #content_main .warnmessage {
 	font-size: 12px;
 	color: #FF9900;
@@ -172,6 +174,8 @@
 	font-size:12px;
 	height:18px;
 }
+
+/*noinspection CssUnusedSymbol*/
 .content_formtable input[type=text].inputlock {
 	width:200px;
 	border: 1px solid #053056;
@@ -301,10 +305,10 @@
 	height: 15px;
 }
 .content_formtable iframe {
-	border: none;
+    border: none;
 }
 #versioncheck {
-	border: none;
+    border: none;
 }
 /* Additional form table definitions */
 .content_formtable .inpmust {
@@ -313,12 +317,18 @@
 	color: #FFFFFF;
 	font-weight: bold;
 }
+
+/*noinspection CssUnusedSymbol*/
 .content_formtable .inactive_option {
 	background-color:#FF8000;
 }
+
+/*noinspection ALL*/
 .content_formtable .foreign_option {
 	background-color:#C90;
 }
+
+/*noinspection ALL*/
 .content_formtable .ieselected {
 	background-color:#3399FF;
 	color:#000000;
@@ -355,8 +365,8 @@
 	height:18px;
 }
 .content_formtable .radio_cell_2 {
-	width:29px;
-	padding-bottom:2px;
+	 width:29px;
+	 padding-bottom:2px;
 }
 /* Content list view */
 .content_listtable {
@@ -383,6 +393,8 @@
 .content_listtable .tdlb {
 	padding-left:5px;
 }
+
+/*noinspection ALL*/
 .content_listtable .tdld {
 	padding-left:5px;
 	background-color: #dbe6ff;
@@ -390,6 +402,8 @@
 .content_listtable .tdmb {
 	text-align: center;
 }
+
+/*noinspection ALL*/
 .content_listtable .tdmd {
 	text-align: center;
 	background-color: #dbe6ff;

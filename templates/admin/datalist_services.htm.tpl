@@ -50,13 +50,13 @@
             document.frmDatalist.hidLimit.value = "0";
             document.frmDatalist.submit();
         }
-        // Deletion confirmation
+        // Deletion confirmation          
         function checkMode() {
             if (document.frmDatalist.selModify.value === "delete") {
                 confirminit("{LANG_DELETEOK}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",2);
             } else {
                 document.frmDatalist.submit();
-                document.frmDatalist.subDo.disabled = true;
+                document.frmDatalist.subDo.disabled = true; 
             }
         }
         // Mark all check boxes
@@ -73,7 +73,7 @@
                     if (document.getElementById("chbId_"+i)) {
                         document.getElementById("chbId_"+i).checked = false;
                     }
-                }
+                } 
                 intCheck = 0;
             }
         }
@@ -117,16 +117,16 @@
     </script>
     <form name="frmDatalist" method="post" action="{ACTION_MODIFY}">
         <table border="0" cellpadding="0" class="content_formtable">
-            <tr>
+            <tr>     
                 <td class="content_tbl_row1">{LANG_SEARCH_STRING}:</td>
                 <td class="content_tbl_row2"><input title="{LANG_SEARCH_STRING}" type="text" name="txtSearch" value="{DAT_SEARCH}" class="selectborder"></td>
                 <td style="width:100px;"><img src="{IMAGE_PATH_HEAD}lupe.gif" width="18" height="18" alt="{LANG_SEARCH}" title="{LANG_SEARCH}" style="cursor:pointer;" onClick="document.frmDatalist.submit();">&nbsp;<img src="{IMAGE_PATH_HEAD}del.png" width="18" height="18" alt="{LANG_DELETE_SEARCH}" title="{LANG_DELETE_SEARCH}" onClick="del('search');" style="cursor:pointer;"></td>
                 <td class="content_tbl_row1" style="width:170px;">{LANG_CONFIGFILTER}:</td>
                 <td class="content_tbl_row2">
                     <select title="{LANG_CONFIGFILTER}" name="selCnfName" id="selCnfName" class="selectborder" onChange="reloadFilter();">
-                        <!-- BEGIN configlist -->
+<!-- BEGIN configlist -->
                         <option value="{DAT_CONFIGNAME}" {DAT_CONFIGNAME_SEL}>{DAT_CONFIGNAME}
-                            <!-- END configlist -->
+<!-- END configlist -->
                     </select></td>
             </tr>
         </table>
@@ -140,7 +140,7 @@
                 <th style="width:80px;text-align:center;">{LANG_FILE}</th>
                 <th style="width:125px;text-align:center;"><div style="width:125px">{LANG_FUNCTION}</div></th>
             </tr>
-            <!-- BEGIN datarowservice -->
+<!-- BEGIN datarowservice -->   
             <tr>
                 <td class="{CELLCLASS_M}"><input title="" type="checkbox" name="chbId_{LINE_ID}" id="chbId_{LINE_ID}" {DISABLED}></td>
                 <td class="{CELLCLASS_L}">{DATA_FIELD_1} {DOMAIN_SPECIAL}</td>
@@ -148,14 +148,14 @@
                 <td class="{CELLCLASS_M}">{DATA_REGISTERED}</td>
                 <td class="{CELLCLASS_M}">{DATA_ACTIVE}</td>
                 <td class="{CELLCLASS_M}">{DATA_FILE}</td>
-                <td class="{CELLCLASS_M}" valign="middle"><img src="{IMAGE_PATH}edit.gif" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" width="18" height="18" border="0" onClick="actionPic('modify','{LINE_ID}','');" class="{PICTURE_CLASS}">
-                    <img src="{IMAGE_PATH}copy.gif" alt="{LANG_DUPLICATE}" title="{LANG_DUPLICATE}" width="18" height="18" border="0" onClick="actionPic('copy','{LINE_ID}','');" class="{PICTURE_CLASS} {LINE_CONTROL}">
-                    <img src="{IMAGE_PATH}delete.gif" alt="{LANG_DELETE}" title="{LANG_DELETE}" width="18" height="18" onClick="actionPic('delete','{LINE_ID}','{DATA_FIELD_1S} - {DATA_FIELD_2S}');" class="{PICTURE_CLASS} {LINE_CONTROL}">
-                    <img src="{IMAGE_PATH}write.gif" alt="{LANG_WRITE_CONFIG}" title="{LANG_WRITE_CONFIG}" width="18" height="18" onClick="actionPic('config','{LINE_ID}','');" class="{PICTURE_CLASS} {LINE_CONTROL} {ACTIVE_CONTROL}">
-                    <img src="{IMAGE_PATH}download.gif" alt="{LANG_DOWNLOAD}" title="{LANG_DOWNLOAD}" width="18" height="18" onClick="actionPic('download','{LINE_ID}','{DATA_FIELD_1}');" class="{PICTURE_CLASS} {LINE_CONTROL} {ACTIVE_CONTROL}">
-                    <img src="{IMAGE_PATH}info.gif" alt="{INFO}" title="{INFO}" width="18" height="18" onClick="actionPic('info','{LINE_ID}','');" class="{PICTURE_CLASS}"></td>
+                <td class="{CELLCLASS_M}" valign="middle"><img src="{IMAGE_PATH}edit.gif" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" width="18" height="18" border="0" onClick="actionPic('modify','{LINE_ID}','');" class="{PICTURE_CLASS}"> 
+                <img src="{IMAGE_PATH}copy.gif" alt="{LANG_DUPLICATE}" title="{LANG_DUPLICATE}" width="18" height="18" border="0" onClick="actionPic('copy','{LINE_ID}','');" class="{PICTURE_CLASS} {LINE_CONTROL}"> 
+                <img src="{IMAGE_PATH}delete.gif" alt="{LANG_DELETE}" title="{LANG_DELETE}" width="18" height="18" onClick="actionPic('delete','{LINE_ID}','{DATA_FIELD_1S} - {DATA_FIELD_2S}');" class="{PICTURE_CLASS} {LINE_CONTROL}">
+                <img src="{IMAGE_PATH}write.gif" alt="{LANG_WRITE_CONFIG}" title="{LANG_WRITE_CONFIG}" width="18" height="18" onClick="actionPic('config','{LINE_ID}','');" class="{PICTURE_CLASS} {LINE_CONTROL} {ACTIVE_CONTROL}">
+                <img src="{IMAGE_PATH}download.gif" alt="{LANG_DOWNLOAD}" title="{LANG_DOWNLOAD}" width="18" height="18" onClick="actionPic('download','{LINE_ID}','{DATA_FIELD_1}');" class="{PICTURE_CLASS} {LINE_CONTROL} {ACTIVE_CONTROL}">
+                <img src="{IMAGE_PATH}info.gif" alt="{INFO}" title="{INFO}" width="18" height="18" onClick="actionPic('info','{LINE_ID}','');" class="{PICTURE_CLASS}"></td>
             </tr>
-            <!-- END datarowservice -->
+<!-- END datarowservice -->
         </table>
         <table border="0" cellpadding="0" class="content_formtable" width="100%">
             <tr>
@@ -179,16 +179,16 @@
                     </select>
                     <span id="copytext" style="padding-left:10px" class="elementHide">to Domain:</span>
                     <select title="to Domain" name="selTarDom" id="selTarDom" class="elementHide selectborder" {ADD_CONTROL} style="width:120px;">
-                        <!-- BEGIN domainlist -->
+<!-- BEGIN domainlist -->
                         <option value="{DOMAIN_ID}" {DOMAIN_SEL}>{DOMAIN_NAME}</option>
-                        <!-- END domainlist -->
+<!-- END domainlist -->
                     </select>
-                    <input name="subDo" type="button" id="subDo" value="{LANG_DO_IT}" onClick="checkMode();" {ADD_CONTROL} style="width:95px;"></td>
+                <input name="subDo" type="button" id="subDo" value="{LANG_DO_IT}" onClick="checkMode();" {ADD_CONTROL} style="width:95px;"></td>
             </tr>
         </table>
     </form>
     <br>
-    <div class="pagelinks">{PAGES}</div>
+    <div class="pagelinks">{PAGES}</div>    
 </div>
 <div id="confirmcontainer"></div>
 <div id="msgcontainer"></div>

@@ -211,6 +211,7 @@ function calendarinit(lang,start,field,key,cont,obj) {
         calendar.renderEvent.subscribe(function() {
             dialog.fireEvent("changeContent");
         });
+        // noinspection JSUnresolvedVariable
         calendar.selectEvent.subscribe(handleSelect, calendar.cal1, true);
 
         YAHOO.util.Event.on(key, "click", dialog.show, dialog, true);
@@ -266,7 +267,9 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
                 }
             }
             this.cancel();
+            // noinspection JSUnresolvedVariable
             if ((typeof(update) === 'number') && (update === 1)) {
+                // noinspection JSUnresolvedFunction
                 updateForm(field);
             }
         };

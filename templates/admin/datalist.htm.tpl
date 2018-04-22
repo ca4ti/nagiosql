@@ -103,7 +103,7 @@
                 <th style="width:100px;text-align:center;">{LANG_ACTIVE}</th>
                 <th style="width:100px;text-align:center;">{LANG_FUNCTION}</th>
             </tr>
-            <!-- BEGIN datarow -->
+<!-- BEGIN datarow -->
             <tr>
                 <td class="{CELLCLASS_M}"><input title="" type="checkbox" name="chbId_{LINE_ID}" {DISABLED}></td>
                 <td class="{CELLCLASS_L}">{DATA_FIELD_1} {DOMAIN_SPECIAL}</td>
@@ -115,7 +115,7 @@
                     <img src="{IMAGE_PATH}delete.gif" alt="{LANG_DELETE}" title="{LANG_DELETE}" width="18" height="18" onClick="actionPic('delete','{LINE_ID}','{DATA_FIELD_1}');" class="{PICTURE_CLASS} {LINE_CONTROL}">
                     <img src="{IMAGE_PATH}info.gif" alt="{INFO}" title="{INFO}" width="18" height="18" onClick="actionPic('info','{LINE_ID}','');" class="{PICTURE_CLASS}"></td>
             </tr>
-            <!-- END datarow -->
+<!-- END datarow -->
         </table>
         <table border="0" cellpadding="0" class="content_formtable" width="100%">
             <tr>
@@ -139,9 +139,9 @@
                     </select>
                     <span id="copytext" style="padding-left:10px;" class="elementHide">to Domain:</span>
                     <select title="to Domain" name="selTarDom" id="selTarDom" class="elementHide selectborder" {ADD_CONTROL} style="width:120px; vertical-align:middle; margin-bottom:4px;;">
-                        <!-- BEGIN domainlist -->
+<!-- BEGIN domainlist -->
                         <option value="{DOMAIN_ID}" {DOMAIN_SEL}>{DOMAIN_NAME}</option>
-                        <!-- END domainlist -->
+<!-- END domainlist -->
                     </select>
                     <input name="subDo" type="button" id="subDo" value="{LANG_DO_IT}" {ADD_CONTROL} onClick="checkMode();" style="width:95px;"></td>
             </tr>

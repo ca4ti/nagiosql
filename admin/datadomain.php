@@ -42,8 +42,8 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
         $chkSelValue1 = 0;
     }
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `targets`=$chkSelValue1, "
-        . "`version`=$chkSelValue2, `access_group`=$chkSelAccGr, `enable_common`=$chkSelValue3, "
-        . "`active`='$chkActive', `last_modified`=NOW()";
+             . "`version`=$chkSelValue2, `access_group`=$chkSelAccGr, `enable_common`=$chkSelValue3, "
+             . "`active`='$chkActive', `last_modified`=NOW()";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -85,7 +85,7 @@ if ($chkModus != "add") {
 // ===========
 if ($chkModus == "add") {
     // Process configuration target selection fields
-
+    
     if (isset($arrModifyData['targets'])) {
         $intFieldId = $arrModifyData['targets'];
     } else {
@@ -168,8 +168,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL     = "SELECT `id`, `domain`, `alias`, `active`, `nodelete`, `access_group` "
-        . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
-        . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
+                . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

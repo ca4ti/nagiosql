@@ -61,7 +61,7 @@ if (get_magic_quotes_gpc() == 0) {
 // ============
 if ($chkLinkTab != "") {
     $strSQL    = "SELECT * FROM `tbl_user` LEFT JOIN `".$chkLinkTab."` ON `id`=`idSlave` "
-        . "WHERE `idMaster`=$chkDataId ORDER BY `username`";
+               . "WHERE `idMaster`=$chkDataId ORDER BY `username`";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     //
     // Write data to session
@@ -136,50 +136,50 @@ if ($chkMode == "del") {
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>None</title>
-    <link href="<?php
-    echo $_SESSION['SETS']['path']['base_url']; ?>config/main.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" language="javascript">
-        <!--
-        function doDel(key) {
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>None</title>
+        <link href="<?php
+        echo $_SESSION['SETS']['path']['base_url']; ?>config/main.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" language="javascript">
+            <!--
+            function doDel(key) {
             document.location.href = "<?php
                 echo $_SESSION['SETS']['path']['base_url']; ?>admin/groupusers.php?dataId=<?php
                 echo $chkDataId; ?>&mode=del&user="+key;
-        }
-        //-->
-    </script>
-</head>
-<body style="margin:0">
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <?php
-    if (isset($_SESSION['groupuser']) && is_array($_SESSION['groupuser']) && (count($_SESSION['groupuser']) != 0)) {
-        foreach ($_SESSION['groupuser'] as $elem) {
-            if ($elem['status'] == 0) {
-                $strUser = $myDBClass->getFieldData("SELECT `username` FROM `tbl_user` WHERE `id`=".$elem['user']); ?>
-                <tr>
-                    <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo $strUser; ?></td>
-                    <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
-                        echo htmlspecialchars(stripslashes($elem['rights']), ENT_COMPAT, 'UTF-8'); ?></td>
-                    <td class="tablerow" style="width:50px" align="right"><img src="<?php
-                        echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
-                        echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
-                        echo $elem['user']; ?>')" style="cursor:pointer"></td>
-                </tr>
-                <?php
             }
+            //-->
+        </script>
+    </head>
+    <body style="margin:0">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+<?php
+if (isset($_SESSION['groupuser']) && is_array($_SESSION['groupuser']) && (count($_SESSION['groupuser']) != 0)) {
+    foreach ($_SESSION['groupuser'] as $elem) {
+        if ($elem['status'] == 0) {
+            $strUser = $myDBClass->getFieldData("SELECT `username` FROM `tbl_user` WHERE `id`=".$elem['user']); ?>
+            <tr>
+                <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo $strUser; ?></td>
+                <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
+                    echo htmlspecialchars(stripslashes($elem['rights']), ENT_COMPAT, 'UTF-8'); ?></td>
+                <td class="tablerow" style="width:50px" align="right"><img src="<?php
+                    echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
+                    echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
+                    echo $elem['user']; ?>')" style="cursor:pointer"></td>
+            </tr>
+<?php
         }
-    } else {
-        ?>
-        <tr>
-            <td class="tablerow"><?php echo translate('No data'); ?></td>
-            <td class="tablerow">&nbsp;</td>
-            <td class="tablerow" align="right">&nbsp;</td>
-        </tr>
-        <?php
     }
-    ?>
-</table>
-</body>
+} else {
+?>
+            <tr>
+                <td class="tablerow"><?php echo translate('No data'); ?></td>
+                <td class="tablerow">&nbsp;</td>
+                <td class="tablerow" align="right">&nbsp;</td>
+            </tr>
+<?php
+}
+?>
+        </table>
+    </body>
 </html>

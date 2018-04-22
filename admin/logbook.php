@@ -50,7 +50,7 @@ if (filter_input(INPUT_POST, 'tfValue1') && (($chkTfValue1 != "") || ($chkTfValu
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     } else {
         $myVisClass->processMessage(translate('Dataset successfully deleted. Affected rows:')." ".
-            $myDBClass->intAffectedRows, $strInfoMessage);
+                $myDBClass->intAffectedRows, $strInfoMessage);
     }
 }
 //
@@ -58,7 +58,7 @@ if (filter_input(INPUT_POST, 'tfValue1') && (($chkTfValue1 != "") || ($chkTfValu
 // ===========
 if ($chkTfSearch != "") {
     $strWhere = "WHERE `user` LIKE '%$chkTfSearch%' OR `ipadress` LIKE '%$chkTfSearch%' "
-        . "OR `domain` LIKE '%$chkTfSearch%' OR `entry` LIKE '%$chkTfSearch%'";
+              . "OR `domain` LIKE '%$chkTfSearch%' OR `entry` LIKE '%$chkTfSearch%'";
 } else {
     $strWhere = "";
 }
@@ -70,7 +70,7 @@ if ($intNumRows <= $chkFromLine) {
     $chkFromLine = 0;
 }
 $strSQL     = "SELECT DATE_FORMAT(time,'%Y-%m-%d %H:%i:%s') AS `time`, `user`, `ipadress`, `domain`, `entry` "
-    . "FROM `tbl_logbook` $strWhere ORDER BY `time` DESC LIMIT $chkFromLine,".$SETS['common']['pagelines'];
+            . "FROM `tbl_logbook` $strWhere ORDER BY `time` DESC LIMIT $chkFromLine,".$SETS['common']['pagelines'];
 $booReturn  = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
 if ($booReturn == false) {
     $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -87,20 +87,20 @@ $conttp->setVariable("LANG_ENTRIES_BEFORE", translate('Delete logentries between
 $conttp->setVariable("LOCALE", $SETS['data']['locale']);
 $conttp->setVariable("LANG_SELECT_DATE", translate('Please at least fill in a start or a stop time'));
 $conttp->setVariable("LANG_DELETELOG", translate('Do you really want to delete all log entries between the '
-    . 'selected dates?'));
+        . 'selected dates?'));
 $conttp->setVariable("DAT_SEARCH", $chkTfSearch);
 // Legende einblenden
 if ($chkFromLine > 1) {
     $intPrevNumber = $chkFromLine - 20;
     $conttp->setVariable("LANG_PREVIOUS", "<a href=\"".filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING).
-        "?from_line=".$intPrevNumber."\"><< ".translate('previous 20 entries')."</a>");
+                         "?from_line=".$intPrevNumber."\"><< ".translate('previous 20 entries')."</a>");
 } else {
     $conttp->setVariable("LANG_PREVIOUS", "");
 }
 if ($chkFromLine < $intNumRows-20) {
     $intNextNumber = $chkFromLine + 20;
     $conttp->setVariable("LANG_NEXT", "<a href=\"".filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING).
-        "?from_line=".$intNextNumber."\">".translate('next 20 entries')." >></a>");
+                                      "?from_line=".$intNextNumber."\">".translate('next 20 entries')." >></a>");
 } else {
     $conttp->setVariable("LANG_NEXT", "");
 }
@@ -134,6 +134,6 @@ $conttp->show("logbooksite");
 // Process footer
 // ==============
 $maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+                   . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");

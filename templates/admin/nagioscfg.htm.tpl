@@ -9,12 +9,12 @@
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <script type="text/javascript">
-        <!--
+    	<!--
         // Interrupt input
         function abort() {
             this.location.href = "{MAINSITE}";
         }
-        // Send form
+    	// Send form
         /**
          * @return {boolean}
          */
@@ -25,9 +25,9 @@
                 document.frmNagiosConfig.submit();
                 document.frmNagiosConfig.subForm.disabled = true;
             }
-        }
-        // Check form entries
-        function checkForm() {
+    	}
+    	// Check form entries
+    	function checkForm() {
             // Are all required fields filled in?
             const fields1 = "taFileText";
             const msg1 = "{FILL_ALLFIELDS}";
@@ -37,9 +37,9 @@
             if (check === false) {
                 msginit(msg1,header,1);
                 return false;
-            }
-        }
-        //-->
+            }	
+    	}
+    	//-->
     </script>
     <form name="frmNagiosConfig" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">

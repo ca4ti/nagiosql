@@ -40,7 +40,7 @@ require($preBasePath.'functions/prepend_content.php');
 // ==================
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `command_line`='$chkTfValue2', "
-        . "`command_type`=$chkSelValue1, $preSQLCommon1";
+             . "`command_type`=$chkSelValue1, $preSQLCommon1";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -147,7 +147,7 @@ if ($chkModus == "display") {
     if ($_SESSION['search'][$preSearchSession] != "") {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' "
-            . "OR `command_line` LIKE '%".$strSearchTxt."%')";
+                        . "OR `command_line` LIKE '%".$strSearchTxt."%')";
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
@@ -156,7 +156,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL     = "SELECT count(*) AS `number` FROM `$preTableName` "
-        . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
+                . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
     $booReturn1 = $myDBClass->hasSingleDataset($strSQL, $arrDataLinesCount);
     if ($booReturn1 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -169,8 +169,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL     = "SELECT `id`, `$preKeyField`, `command_line`, `register`, `active`, `config_id`, `access_group` "
-        . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
-        . "AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
+                . "AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

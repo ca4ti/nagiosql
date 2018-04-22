@@ -8,49 +8,49 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <script type="text/JavaScript">
-        <!--
-        // Interrupt input
-        function abort() {
-            this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
-        }
-        // Send form
+	<script type="text/JavaScript">
+		<!--
+		// Interrupt input
+		function abort() {
+			this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
+		}
+    	// Send form
         /**
          * @return {boolean}
          */
         function LockButton() {
-            if (checkForm() === false) {
-                return false;
-            } else {
-                // Enable select fields
-                document.frmDetail.submit();
-                document.frmDetail.subForm.disabled = true;
-            }
-        }
-        // Check form entries
-        function checkForm() {
-            // Are all required fields filled in?
+			if (checkForm() === false) {
+				return false;
+			} else {
+				// Enable select fields
+				document.frmDetail.submit();
+				document.frmDetail.subForm.disabled = true;
+			}
+		}
+    	// Check form entries
+    	function checkForm() {
+      		// Are all required fields filled in?
             const fields1 = "selValue1";
             const msg1 = "{FILL_ALLFIELDS}";
             const header = "{LANG_FORMCHECK}";
             const form = document.frmDetail;
             let check = checkfields2(fields1,form,myFocusObject);
-            if (check === false) {
-                msginit(msg1,header,1);
-                return false;
-            }
-        }
-        //-->
-    </script>
-    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
+			if (check === false) {
+	  			msginit(msg1,header,1);
+				return false;
+	  		}	
+    	}
+    	//-->
+  	</script>
+  	<form name="frmDetail" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td class="content_tbl_row1">{LANG_HOST_NAME} *</td>
                 <td class="content_tbl_row2">
                     <select title="{LANG_HOST_NAME}" name="selValue1" id="selValue1" class="selectbordermust inpmust" tabindex="1">
-                        <!-- BEGIN host -->
+<!-- BEGIN host -->
                         <option value="{DAT_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE}" {DAT_HOST_SEL}>{DAT_HOST}</option>
-                        <!-- END host -->
+<!-- END host -->
                     </select>
                 </td>
                 <td class="content_tbl_row3"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostextinfo','host_name','all','Info');" class="infobutton_1"></td>
@@ -93,21 +93,21 @@
             <tr>
                 <td>{LANG_ACTIVE}</td>
                 <td colspan="2"><input title="{LANG_ACTIVE}" name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} tabindex="6">
-                    <input name="modus" type="hidden" id="modus" value="{MODUS}">
-                    <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}">
-                    <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>
+                  <input name="modus" type="hidden" id="modus" value="{MODUS}">
+                  <input name="hidId" type="hidden" id="hidId" value="{DAT_ID}">
+                <input name="hidLimit" type="hidden" id="hidLimit" value="{LIMIT}"></td>
                 <td>{LANG_3D_COORDS}</td>
                 <td><input title="{LANG_3D_COORDS}" name="tfValue9" type="text" id="tfValue9" value="{DAT_3D_COORDS}" class="short" tabindex="12"><span class="shorttext">(x,y,z)</span></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('hostextinfo','3d_coords','all','Info');" class="infobutton_1"> </td>
             </tr>
             <tr {RESTRICT_GROUP_ADMIN}>
-                <td colspan="3">&nbsp;</td>
+            	<td colspan="3">&nbsp;</td>
                 <td>{LANG_ACCESS_GROUP}</td>
                 <td>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder" tabindex="13">
-                        <!-- BEGIN acc_group -->
+<!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                        <!-- END acc_group -->
+<!-- END acc_group -->
                     </select>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -123,7 +123,7 @@
                 <td colspan="6">&nbsp;</td>
             </tr>
         </table>
-    </form>
+	</form>
 </div>
 <div id="msgcontainer"></div>
 <div id="infodialog">

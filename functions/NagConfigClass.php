@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-20 23:01:27 +0200 (Fri, 20 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-22 00:00:37 +0200 (Sun, 22 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 32 $
+// Revision  : $LastChangedRevision: 33 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -121,16 +121,16 @@ class NagConfigClass
         // Get last change on dataset
         if ($strTableName == "tbl_host") {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_host` ".
-                "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
+                       "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT `active` FROM `tbl_host`  WHERE `host_name`='$strConfigName' ".
-                "AND `config_id`=".$this->intDomainId;
+                       "AND `config_id`=".$this->intDomainId;
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $strActive            = $this->myDBClass->getFieldData($strSQL2);
         } elseif ($strTableName == "tbl_service") {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_service` ".
-                "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
+                       "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT * FROM `$strTableName` WHERE `config_name`='$strConfigName' ".
-                "AND `config_id`=".$this->intDomainId." AND `active`='1'";
+                       "AND `config_id`=".$this->intDomainId." AND `active`='1'";
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $intServiceCount      = $this->myDBClass->countRows($strSQL2);
             if ($intServiceCount != 0) {
@@ -425,7 +425,7 @@ class NagConfigClass
                     $booLogin        = ssh2_auth_password($this->resConnectId, $strUser, $strPasswd);
                     $arrError        = error_get_last();
                     $strPasswordNote = "If you are using ssh2 with user/password - you have to enable ".
-                        "PasswordAuthentication in your sshd_config";
+                                       "PasswordAuthentication in your sshd_config";
                     error_reporting($intErrorReporting);
                 }
             } else {
@@ -498,7 +498,7 @@ class NagConfigClass
                     $intCount2++;
                     $arrStatus = stream_get_meta_data($resStream);
                 } while ($resStream && !(feof($resStream)) && ($intCount1 <= 10) && ($intCount2 <= $intLines) &&
-                ($arrStatus['timed_out'] != true) && $booBreak == false);
+                         ($arrStatus['timed_out'] != true) && $booBreak == false);
                 fclose($resStream);
                 // Close SSH connection because of timing problems
                 unset($this->resConnectId);
@@ -627,7 +627,7 @@ class NagConfigClass
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                            .'wrong (remote FTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
+                        .'wrong (remote FTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 3) { // Remote file (SFTP)
@@ -646,13 +646,13 @@ class NagConfigClass
                         }
                     } else {
                         $this->processClassMessage(translate('Cannot backup the old file because the source file is '
-                                .'missing (remote SFTP) - source file: '). $strSourceFile."::", $this->strErrorMessage);
+                            .'missing (remote SFTP) - source file: '). $strSourceFile."::", $this->strErrorMessage);
                         $intReturn = 1;
                     }
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                            .'wrong (remote SFTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
+                        .'wrong (remote SFTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
@@ -845,7 +845,7 @@ class NagConfigClass
                                 . 'readable) - remote file: ') .$strFileRemote. "::", $this->strErrorMessage);
                     } else {
                         $this->processClassMessage(translate('Remote file is not readable - remote file: ')
-                            . $strFileRemote. "::", $this->strErrorMessage);
+                                . $strFileRemote. "::", $this->strErrorMessage);
                     }
                     $intReturn = 1;
                 }
@@ -856,14 +856,14 @@ class NagConfigClass
                     error_reporting(0);
                     if (!ssh2_scp_send($this->resConnectId, $strFileLocal, $strFileRemote, 0644)) {
                         $this->processClassMessage(translate('Cannot write a remote file (remote file is not writeable)'
-                                .' - remote file: '). $strFileRemote . "::", $this->strErrorMessage);
+                            .' - remote file: '). $strFileRemote . "::", $this->strErrorMessage);
                         $intReturn = 1;
                     }
                     error_reporting($intErrorReporting);
                 } else {
                     $this->processClassMessage(translate('Cannot copy a local file to remote because the local file '.
                             'does not exist or is not readable - local file: ').
-                        $strFileLocal . "::", $this->strErrorMessage);
+                            $strFileLocal . "::", $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
@@ -960,8 +960,8 @@ class NagConfigClass
                 $strSQLAdd = "OR `domainId`=0";
             }
             $strSQL = "SELECT `updateTime` FROM `tbl_tablestatus` "
-                . "WHERE (`domainId`=".$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
-                . "ORDER BY `updateTime` DESC LIMIT 1";
+                    . "WHERE (`domainId`=".$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
+                    . "ORDER BY `updateTime` DESC LIMIT 1";
             $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
             if ($booReturn && isset($arrDataset['updateTime'])) {
                 $arrTimeData['table'] = $arrDataset['updateTime'];
@@ -1219,7 +1219,7 @@ class NagConfigClass
             }
         } else {
             $strSQL  = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' ".
-                "ORDER BY `".$strOrderField."`";
+                       "ORDER BY `".$strOrderField."`";
         }
         $strFile     = $strFileString.".cfg";
         // Load configuration template file
@@ -2143,10 +2143,10 @@ class NagConfigClass
         $intReturn       = 0;
         // Get relation data
         $strSQLRel = "SELECT `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`, `" . $elem['linkTable'] .
-            "`.`exclude` FROM `" . $elem['linkTable'] . "` LEFT JOIN `" . $elem['tableName1'] .
-            "` ON `" . $elem['linkTable'] . "`.`idSlave` = `" . $elem['tableName1'] . "`.`id`" .
-            "WHERE `idMaster`=" . $arrData['id'] . " AND `active`='1' AND $strDomainWhere1" .
-            "ORDER BY `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`";
+                     "`.`exclude` FROM `" . $elem['linkTable'] . "` LEFT JOIN `" . $elem['tableName1'] .
+                     "` ON `" . $elem['linkTable'] . "`.`idSlave` = `" . $elem['tableName1'] . "`.`id`" .
+                     "WHERE `idMaster`=" . $arrData['id'] . " AND `active`='1' AND $strDomainWhere1" .
+                     "ORDER BY `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`";
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
@@ -2197,10 +2197,10 @@ class NagConfigClass
             $arrField = explode("!", $arrData[$elem['fieldName']]);
             $strCommand = strchr($arrData[$elem['fieldName']], "!");
             $strSQLRel = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "`".
-                "WHERE `id`=" . $arrField[0] . "  AND `active`='1' AND $strDomainWhere1";
+                         "WHERE `id`=" . $arrField[0] . "  AND `active`='1' AND $strDomainWhere1";
         } else {
             $strSQLRel = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "`".
-                "WHERE `id`=" . $arrData[$elem['fieldName']] . "  AND `active`='1' AND $strDomainWhere1";
+                         "WHERE `id`=" . $arrData[$elem['fieldName']] . "  AND `active`='1' AND $strDomainWhere1";
         }
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
@@ -2243,10 +2243,10 @@ class NagConfigClass
             foreach ($arrDataRel as $data) {
                 if ($data['idTable'] == 1) {
                     $strSQLName = "SELECT `".$elem['target1']."` FROM `".$elem['tableName1']."`".
-                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 } else {
                     $strSQLName = "SELECT `".$elem['target2']."` FROM `".$elem['tableName2']."`".
-                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 }
                 $strDataValue .= $this->myDBClass->getFieldData($strSQLName) . ",";
             }
@@ -2272,11 +2272,11 @@ class NagConfigClass
         $intReturn       = 0;
         // Get relation data
         $strSQLRel = "SELECT `".$elem['linkTable']."`.`strSlave`, `".$elem['linkTable']."`.`exclude` ".
-            "FROM `".$elem['linkTable']."` ".
-            "LEFT JOIN `tbl_service` ON `".$elem['linkTable']."`.`idSlave`=`tbl_service`.`id` ".
-            "WHERE `".$elem['linkTable']."`.`idMaster`=".$arrData['id']." AND `active`='1' AND ".
-            $strDomainWhere1." ".
-            "ORDER BY `".$elem['linkTable']."`.`strSlave`";
+                     "FROM `".$elem['linkTable']."` ".
+                     "LEFT JOIN `tbl_service` ON `".$elem['linkTable']."`.`idSlave`=`tbl_service`.`id` ".
+                     "WHERE `".$elem['linkTable']."`.`idMaster`=".$arrData['id']." AND `active`='1' AND ".
+                        $strDomainWhere1." ".
+                     "ORDER BY `".$elem['linkTable']."`.`strSlave`";
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
@@ -2318,7 +2318,7 @@ class NagConfigClass
         $arrDataRel      = array();
         $intDataCountRel = 0;
         $strSQLRel = "SELECT * FROM `tbl_variabledefinition` LEFT JOIN `".$elem['linkTable']."` ".
-            "ON `id`=`idSlave` WHERE `idMaster`=".$arrData['id']." ORDER BY `name`";
+                     "ON `id`=`idSlave` WHERE `idMaster`=".$arrData['id']." ORDER BY `name`";
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             foreach ($arrDataRel as $vardata) {

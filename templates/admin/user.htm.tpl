@@ -92,9 +92,9 @@
                 <td>{LANG_LANGUAGE}</td>
                 <td>
                     <select title="{LANG_LANGUAGE}" name="selValue1" id="selValue1" class="selectborder">
-                        <!-- BEGIN language_name -->
+<!-- BEGIN language_name -->
                         <option value="{DAT_LANGUAGE_NAME_ID}" {DAT_LANGUAGE_NAME_SEL}>{DAT_LANGUAGE_NAME}</option>
-                        <!-- END language_name -->
+<!-- END language_name -->
                     </select>
                 </td>
                 <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('user','language','all','Info');" class="infobutton_1"></td>
@@ -103,9 +103,9 @@
                 <td>{LANG_STANDARD_DOMAIN}</td>
                 <td>
                     <select title="{LANG_STANDARD_DOMAIN}" name="selValue2" id="selValue2" class="selectborder">
-                        <!-- BEGIN std_domain -->
+<!-- BEGIN std_domain -->
                         <option value="{DAT_STD_DOMAIN_ID}" {DAT_STD_DOMAIN_SEL}>{DAT_STD_DOMAIN}</option>
-                        <!-- END std_domain -->
+<!-- END std_domain -->
                     </select>
                 </td>
                 <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('user','standarddomain','all','Info');" class="infobutton_1"></td>

@@ -43,18 +43,18 @@ if ($chkShow == 1) {
             $strProxyAuth = base64_encode($SETS['network']['proxyuser'].":".$SETS['network']['proxypasswd']);
             $aContext = array(
                 'http' => array(
-                    'proxy' => 'tcp://'.$SETS['network']['proxyserver'],
-                    'request_fulluri' => true,
-                    'header' => "Proxy-Authorization: Basic $strProxyAuth",
-                    'timeout' => 1,
+                'proxy' => 'tcp://'.$SETS['network']['proxyserver'],
+                'request_fulluri' => true,
+                'header' => "Proxy-Authorization: Basic $strProxyAuth",
+                'timeout' => 1,
                 ),
             );
         } else {
             $aContext = array(
                 'http' => array(
-                    'proxy' => 'tcp://'.$SETS['network']['proxyserver'],
-                    'request_fulluri' => true,
-                    'timeout' => 1,
+                'proxy' => 'tcp://'.$SETS['network']['proxyserver'],
+                'request_fulluri' => true,
+                'timeout' => 1,
                 ),
             );
         }
@@ -103,12 +103,12 @@ if ($chkShow == 1) {
     $setFileAvailable = $strVersion;
     if (version_compare($strVersion, $setFileVersion, '==')) {
         $setFileInformation = "<span class='greenmessage'>".translate('You already have the latest version installed').
-            "</span>";
+                "</span>";
     } elseif (version_compare($strVersion, $setFileVersion, '>=')) {
         $setFileInformation = "<span class='redmessage'>".translate('You are using an old NagiosQL version. Please '.
                 'update to the latest stable version')."</span>: ";
         $setFileInformation .= "<a href=\"http://sourceforge.net/projects/nagiosql/files/\" target=\"_blank\">".
-            "NagiosQL on Sourceforge</a>";
+                "NagiosQL on Sourceforge</a>";
     } elseif (version_compare($strVersion, $setFileVersion, '<=')) {
         $setFileInformation = "<span class='redmessage'>".translate('You are using a newer development version '.
                 'without official support')."</span>";
@@ -116,8 +116,8 @@ if ($chkShow == 1) {
     if (($strError != "none") && ($strError != "")) {
         $setFileInformation = "<span class='redmessage'>".$strError."</span>";
     } ?>
-    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-    <html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
     <head>
         <title>Version check</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -128,70 +128,70 @@ if ($chkShow == 1) {
         <style type="text/css">
             <!--
             body {
-                font-family: Verdana, Arial, Helvetica, sans-serif;
-                font-size: 10px;
-                color: #000000;
-                background-color: #FFFFFF;
-                margin: 0;
-                border: none;
+                  font-family: Verdana, Arial, Helvetica, sans-serif;
+                  font-size: 10px;
+                  color: #000000;
+                  background-color: #FFFFFF;
+                  margin: 0;
+                  border: none;
             }
             -->
         </style>
     </head>
     <body>
-    <table width="100%" border="0" class="content_listtable" style="padding:0; margin:0; top:3px;">
-        <tr>
-            <th style="text-align: center"><?php echo $strInstalled; ?></th>
-            <th style="text-align: center"><?php echo $strAvailable; ?></th>
-            <th style="text-align: left; padding-left: 30px;"><?php echo $strInformation; ?></th>
-        </tr>
-        <tr>
-            <td class="tdmb" style="width:90px;vertical-align:top;padding-top:4px;"><?php
-                echo $setFileVersion; ?></td>
-            <td class="tdmb" style="width:90px;vertical-align:top;padding-top:4px;"><?php
-                echo $setFileAvailable; ?></td>
-            <td class="tdlb" style="width:470px;vertical-align:top;padding-top:4px;"><?php
-                echo $setFileInformation; ?></td>
-        </tr>
-    </table>
-    <script type="text/javascript">
-        <!--
-        parent.document.getElementById('vcheck').className       = 'elementHide';
-        parent.document.getElementById('versioncheck').className = 'elementShow';
-        <?php
-        if (($strError != "none") && ($strError != "")) {
-            echo "            parent.document.getElementById('versioncheck').height = '65';";
-        }
-        ?>
-        //-->
-    </script>
+        <table width="100%" border="0" class="content_listtable" style="padding:0; margin:0; top:3px;">
+            <tr>
+                <th style="text-align: center"><?php echo $strInstalled; ?></th>
+                <th style="text-align: center"><?php echo $strAvailable; ?></th>
+                <th style="text-align: left; padding-left: 30px;"><?php echo $strInformation; ?></th>
+            </tr>
+            <tr>
+                <td class="tdmb" style="width:90px;vertical-align:top;padding-top:4px;"><?php
+                    echo $setFileVersion; ?></td>
+                <td class="tdmb" style="width:90px;vertical-align:top;padding-top:4px;"><?php
+                    echo $setFileAvailable; ?></td>
+                <td class="tdlb" style="width:470px;vertical-align:top;padding-top:4px;"><?php
+                    echo $setFileInformation; ?></td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            <!--
+            parent.document.getElementById('vcheck').className       = 'elementHide';
+            parent.document.getElementById('versioncheck').className = 'elementShow';
+<?php
+if (($strError != "none") && ($strError != "")) {
+    echo "            parent.document.getElementById('versioncheck').height = '65';";
+}
+?>
+            //-->
+        </script>
     </body>
-    </html>
-    <?php
+</html>
+<?php
 } else {
-    ?>
-    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-    <html>
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
     <head>
         <title>Commandline</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <style type="text/css">
             <!--
             body {
-                font-family: Verdana, Arial, Helvetica, sans-serif;
-                font-size: 10px;
-                color: #000000;
-                background-color: #FFFFFF;
-                margin: 0;
-                border: none;
+                  font-family: Verdana, Arial, Helvetica, sans-serif;
+                  font-size: 10px;
+                  color: #000000;
+                  background-color: #FFFFFF;
+                  margin: 0;
+                  border: none;
             }
             -->
         </style>
     </head>
     <body>
-    <p><br>Loading...</p>
+        <p><br>Loading...</p>
     </body>
-    </html>
-    <?php
+</html>
+<?php
 }
 ?>

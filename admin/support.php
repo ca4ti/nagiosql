@@ -47,32 +47,32 @@ foreach ($arrDescription as $elem) {
 }
 $conttp->setVariable("SUBTITLE_1", translate('Support contact information'));
 $conttp->setVariable("SUPPORT_TEXT_1", translate('For questions, the online support forum or contact information '
-    . 'visit our website:'));
+        . 'visit our website:'));
 $conttp->setVariable("WEBSITE_LINK", translate('NagiosQL on sourceforge'));
 //
 // Donation
 // ========
 $conttp->setVariable("SUBTITLE_2", translate('Donate to support NagiosQL'));
 $conttp->setVariable("SUPPORT_TEXT_2", translate('If you like NagiosQL and it simplifies your daily work, then you '
-    . 'may want to support the project by making a donation. This helps us to keep NagiosQL alive and to cover '
-    . 'our costs. Thank you for your donation!'));
+        . 'may want to support the project by making a donation. This helps us to keep NagiosQL alive and to cover '
+        . 'our costs. Thank you for your donation!'));
 $conttp->setVariable("DONATE_LINK", translate('Donate for NagiosQL on sourceforge'));
 //
 // Translations
 // ============
 $conttp->setVariable("SUBTITLE_3", translate('Translation services'));
 $conttp->setVariable("SUPPORT_TEXT_3", translate('NagiosQL was translated into various languages​​. Since some '
-    . 'translators are no longer available in later versions, there may be untranslated words or phrases. If '
-    . 'you want to help us complete the translation, correct them or introduce a new language​​, then sign up '
-    . 'with us now! The translations are simply feasible online - we use an open translation service where '
-    . 'you can register for free at any time:'));
+        . 'translators are no longer available in later versions, there may be untranslated words or phrases. If '
+        . 'you want to help us complete the translation, correct them or introduce a new language​​, then sign up '
+        . 'with us now! The translations are simply feasible online - we use an open translation service where '
+        . 'you can register for free at any time:'));
 $conttp->setVariable("TRANSLATION_LINK", translate('Transifex translation service'));
 //
 // GIT repository
 // ==============
 $conttp->setVariable("SUBTITLE_8", translate('GIT software repository'));
 $conttp->setVariable("SUPPORT_TEXT_5", translate('The NagiosQL sources are available on GitLab. There you will '
-    .'always find the latest bugfixes and changes as well as older branches.'));
+        .'always find the latest bugfixes and changes as well as older branches.'));
 $conttp->setVariable("GIT_LINK", translate('GitLab'));
 //
 // Online version check
@@ -80,15 +80,15 @@ $conttp->setVariable("GIT_LINK", translate('GitLab'));
 $conttp->setVariable("SUBTITLE_4", translate('Version check'));
 if (!isset($SETS['common']['updcheck']) || ($SETS['common']['updcheck'] == '0')) {
     $conttp->setVariable("SUPPORT_TEXT_4", translate('The online version check is not enabled. You can enable it '
-        . 'on the settings page.'));
+            . 'on the settings page.'));
 } elseif (isset($SETS['common']['updcheck']) && ($SETS['common']['updcheck'] == '1')) {
     $conttp->setVariable("SUPPORT_TEXT_4", translate('The online version check connects the NagiosQL page to find '
-        . 'out, if your version is still up to date.'));
+            . 'out, if your version is still up to date.'));
     $conttp->setVariable("LOADER_IMAGE", $_SESSION['SETS']['path']['base_url']."images/loader.gif");
     $conttp->setVariable("VERSION_IF_SRC", $_SESSION['SETS']['path']['base_url']."admin/versioncheck.php?show=0");
     $conttp->parse("versioncheck_frame");
     $conttp->setVariable("VERSION_IF_SRC_RELOAD", $_SESSION['SETS']['path']['base_url'].
-        "admin/versioncheck.php?show=1");
+            "admin/versioncheck.php?show=1");
     $conttp->parse("versioncheck_js");
 }
 //
@@ -159,7 +159,7 @@ if ($SETS['db']['type'] == "mysql") {
         } else {
             $conttp->setVariable("DB_CLASS", "checkorange");
             $conttp->setVariable("DB_RESULT", translate("failed")." (".$strDBVersion." - ".translate("Required:").
-                " 5.0.0)");
+                    " 5.0.0)");
         }
     }
 }
@@ -219,9 +219,9 @@ $myConfigClass->getConfigValues($intConfigId, "method", $intMethod);
 if ($intConfigId != 0) {
     $conttp->setVariable("SUBTITLE_6", translate('Config domain checks'));
     $conttp->setVariable("SUPPORT_TEXT_6", translate('The checks below are based on your data domain and config '
-        . 'domain settings. To change the data domain, use the pull down menu in the upper right corner. Repeat '
-        . 'this check for any data domain you have configured. To change the config domain, use the data domain '
-        . 'menu and select a different config domain value.'));
+            . 'domain settings. To change the data domain, use the pull down menu in the upper right corner. Repeat '
+            . 'this check for any data domain you have configured. To change the config domain, use the data domain '
+            . 'menu and select a different config domain value.'));
     $myConfigClass->getConfigValues($intConfigId, "conffile", $strConffile);
     $myConfigClass->getConfigValues($intConfigId, "target", $strConfName);
     $conttp->setVariable("DOMAIN_NAME", translate("Config domain name"));
@@ -371,7 +371,7 @@ if ($intConfigId != 0) {
         $intPid          = 1;
         if ($strBinary != '') {
             $intBinary = $myConfigClass->sendSSHCommand('ps -ef | grep '.basename($strBinary).' | grep '.
-                basename($strConffile).' | grep -v grep', $arrResultBinary);
+                    basename($strConffile).' | grep -v grep', $arrResultBinary);
         }
         if ($strPidfile != '') {
             $intPid = $myConfigClass->sendSSHCommand('ls ' . $strPidfile, $arrResult2);
@@ -399,7 +399,7 @@ if ($intConfigId != 0) {
             $conttp->setVariable("RW_NAG_COMMAND_CLASS", "checkgreen");
             $conttp->setVariable("RW_NAG_COMMAND_RESULT", translate("ok"));
         } elseif (file_exists($strCommandfile) && is_readable($strCommandfile) && is_writable($strCommandfile) &&
-            ($intDemonOk == 1)) {
+                  ($intDemonOk == 1)) {
             $conttp->setVariable("RW_NAG_COMMAND_CLASS", "checkorange");
             $conttp->setVariable("RW_NAG_COMMAND_RESULT", translate("ok")." (".translate("demon dead")."?)");
         } elseif (!file_exists($strCommandfile)) {
@@ -468,7 +468,7 @@ if ($intConfigId != 0) {
                 if (!is_array($arrResult) || ($arrResult == false)) {
                     $conttp->setVariable("EXE_NAG_BINARY_CLASS", "checkred");
                     $conttp->setVariable("EXE_NAG_BINARY_RESULT", translate("failed")." (".
-                        translate("not executable").")");
+                            translate("not executable").")");
                 } else {
                     $conttp->setVariable("EXE_NAG_BINARY_CLASS", "checkgreen");
                     $conttp->setVariable("EXE_NAG_BINARY_RESULT", translate("ok"));
@@ -476,7 +476,7 @@ if ($intConfigId != 0) {
             } else {
                 $conttp->setVariable("EXE_NAG_BINARY_CLASS", "checkred");
                 $conttp->setVariable("EXE_NAG_BINARY_RESULT", translate("failed")." (".
-                    translate("file is missed").")");
+                        translate("file is missed").")");
             }
         }
     }
@@ -514,7 +514,7 @@ if ($intConfigId != 0) {
             while (!feof($resFile)) {
                 $strLine = trim(fgets($resFile));
                 if ((substr($strLine, 0, 1) == 'c') && ((substr_count($strLine, 'cfg_dir') != 0) ||
-                        (substr_count($strLine, 'cfg_file') != 0))) {
+                    (substr_count($strLine, 'cfg_file') != 0))) {
                     $arrConfig[] = $strLine;
                 }
             }
@@ -526,7 +526,7 @@ if ($intConfigId != 0) {
         // Write file to temporary
         $strFileName = tempnam($SETS['path']['tempdir'], 'nagiosql_conf');
         // Copy configuration from remote system
-        $intReturn = $myConfigClass->remoteFileCopy($strConffile, $intConfigId, $strFileName, 0);
+         $intReturn = $myConfigClass->remoteFileCopy($strConffile, $intConfigId, $strFileName, 0);
         if ($intReturn == 0) {
             $intCheck = 0;
             if (file_exists($strFileName) && is_readable($strFileName)) {
@@ -534,7 +534,7 @@ if ($intConfigId != 0) {
                 while (!feof($resFile)) {
                     $strLine = trim(fgets($resFile));
                     if ((substr($strLine, 0, 1) == 'c') && ((substr_count($strLine, 'cfg_dir') != 0) ||
-                            (substr_count($strLine, 'cfg_file') != 0))) {
+                        (substr_count($strLine, 'cfg_file') != 0))) {
                         $arrConfig[] = $strLine;
                     }
                 }
@@ -567,7 +567,7 @@ if ($intConfigId != 0) {
         $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
             $conttp->setVariable("ACTIVE_CONFIG_COUNT", "<span class=\"checkgreen\">".translate("ok")." (".
-                $intDataCount.")</span>");
+                    $intDataCount.")</span>");
         } elseif ($intDataCount == 0) {
             $conttp->setVariable("ACTIVE_CONFIG_COUNT", "<span class=\"checkgreen\">".translate("not used")."</span>");
         } else {
@@ -575,53 +575,53 @@ if ($intConfigId != 0) {
             $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
         }
         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkred\">".translate("failed")."</span> (".
-            translate("cfg definition missed").")");
+                translate("cfg definition missed").")");
         if (($intCheck == 0) && is_array($arrConfig) && (count($arrConfig) != 0)) {
             foreach ($arrConfig as $line) {
                 if ($elem['file'] != 'directory') {
                     if ((substr_count($line, "cfg_dir=".$strBasedir) != 0) && (substr_count($line, "cfg_dir=".
-                                substr($strHostdir, 0, -1)) == 0) && (substr_count($line, "cfg_dir=".
-                                substr($strServicedir, 0, -1)) == 0)) {
+                         substr($strHostdir, 0, -1)) == 0) && (substr_count($line, "cfg_dir=".
+                         substr($strServicedir, 0, -1)) == 0)) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
-                            "</span> (".$line.")");
+                                "</span> (".$line.")");
                         break;
                     } elseif (substr_count($line, $strBasedir.$elem['file']) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
-                            "</span> (".$line.")");
+                                "</span> (".$line.")");
                         break;
                     } elseif ($intDataCount == 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkorange\">".translate("ok").
-                            "</span> (".translate("cfg definition missed, but actually not used").")");
+                                "</span> (".translate("cfg definition missed, but actually not used").")");
                     } elseif (substr_count($line, $elem['file']) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkred\">".translate("failed").
-                            "</span> (".translate("wrong base path:")." ".$line.")");
+                                "</span> (".translate("wrong base path:")." ".$line.")");
                         break;
                     }
                 } elseif ($elem['table'] == 'tbl_host') {
                     if (substr_count($line, "cfg_dir=".substr($strHostdir, 0, -1)) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
-                            "</span> (".$line.")");
+                                "</span> (".$line.")");
                         break;
                     } elseif ($intDataCount == 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkorange\">".translate("ok").
-                            "</span> (".translate("cfg definition missed, but actually not used").")");
+                                "</span> (".translate("cfg definition missed, but actually not used").")");
                         break;
                     }
                 } elseif ($elem['table'] == 'tbl_service') {
                     if (substr_count($line, "cfg_dir=".substr($strServicedir, 0, -1)) != 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkgreen\">".translate("ok").
-                            "</span> (".$line.")");
+                                "</span> (".$line.")");
                         break;
                     } elseif ($intDataCount == 0) {
                         $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkorange\">".translate("ok").
-                            "</span> (".translate("cfg definition missed, but actually not used").")");
+                                "</span> (".translate("cfg definition missed, but actually not used").")");
                         break;
                     }
                 }
             }
         } else {
             $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkred\">".translate("failed").
-                "</span> (".translate("cfg file not readable").")");
+                    "</span> (".translate("cfg file not readable").")");
         }
         $conttp->parse("configfileline");
         $i++;
@@ -657,7 +657,7 @@ if ($intConfigId != 0) {
                 $conttp->setVariable("CONFIG_NAME", translate("Not used"));
                 $conttp->setVariable("ACTIVE_CONFIG_COUNT", "<span class=\"checkred\">".translate("failed")."</span>");
                 $conttp->setVariable("DEMON_CFG_OK", "<span class=\"checkred\">".translate("unused - please delete!").
-                    "</span> (".$line.")");
+                        "</span> (".$line.")");
                 $conttp->parse("configfileline");
                 $i++;
             }
@@ -683,6 +683,6 @@ $conttp->show("support");
 // Process footer
 // ==============
 $maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");

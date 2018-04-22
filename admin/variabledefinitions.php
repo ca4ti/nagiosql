@@ -40,7 +40,7 @@ if (get_magic_quotes_gpc() == 0) {
 // ========
 if ($chkLinkTab != "") {
     $strSQL    = "SELECT * FROM `tbl_variabledefinition` LEFT JOIN `".$chkLinkTab."` ON `id`=`idSlave` ".
-        "WHERE `idMaster`=$chkDataId ORDER BY `name`";
+                 "WHERE `idMaster`=$chkDataId ORDER BY `name`";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     //
     // Store data to session
@@ -109,53 +109,53 @@ if ($chkMode == "del") {
     <link href="<?php echo $_SESSION['SETS']['path']['base_url']; ?>config/main.css" rel="stylesheet" type="text/css">
     <!--suppress JSUnresolvedVariable -->
     <script type="text/javascript">
-        function doEdit(key,range) {
-            parent.document.frmDetail.txtVariablename.value = decodeURIComponent(key);
-            parent.document.frmDetail.txtVariablevalue.value = decodeURIComponent(range);
-        }
-        function doDel(key) {
-            let link;
-            link = '<?php echo $_SESSION['SETS']['path']['base_url']; ?>';
-            link = link+'admin/variabledefinitions.php?dataId=<?php echo $chkDataId; ?>&mode=del&def='+key;
-            document.location.href = link;
-        }
+          function doEdit(key,range) {
+              parent.document.frmDetail.txtVariablename.value = decodeURIComponent(key);
+              parent.document.frmDetail.txtVariablevalue.value = decodeURIComponent(range);
+          }
+          function doDel(key) {
+                let link;
+                link = '<?php echo $_SESSION['SETS']['path']['base_url']; ?>';
+                link = link+'admin/variabledefinitions.php?dataId=<?php echo $chkDataId; ?>&mode=del&def='+key;
+                document.location.href = link;
+          }
     </script>
 </head>
 <body style="margin:0">
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <?php
-    if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition']) &&
-        (count($_SESSION['variabledefinition']) != 0)) {
-        foreach ($_SESSION['variabledefinition'] as $elem) {
-            if ($elem['status'] == 0) {
-                ?>
-                <tr>
-                    <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
-                        echo htmlentities(stripslashes($elem['definition']), ENT_COMPAT, 'UTF-8'); ?></td>
-                    <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
-                        echo htmlentities(stripslashes($elem['range']), ENT_COMPAT, 'UTF-8'); ?></td>
-                    <td class="tablerow" style="width:50px" align="right"><img src="<?php
-                        echo $_SESSION['SETS']['path']['base_url']; ?>images/edit.gif" width="18" height="18" alt="<?php
-                        echo translate('Modify'); ?>" title="<?php echo translate('Modify'); ?>" onClick="doEdit('<?php
-                        echo rawurlencode(stripslashes($elem['definition'])); ?>','<?php
-                        echo rawurlencode(stripslashes($elem['range'])); ?>')" style="cursor:pointer">&nbsp;<img src="<?php
-                        echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
-                        echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
-                        echo rawurlencode(stripslashes($elem['definition'])); ?>')" style="cursor:pointer"></td>
-                </tr>
-                <?php
-            }
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+<?php
+if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition']) &&
+    (count($_SESSION['variabledefinition']) != 0)) {
+    foreach ($_SESSION['variabledefinition'] as $elem) {
+        if ($elem['status'] == 0) {
+?>
+        <tr>
+            <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
+                echo htmlentities(stripslashes($elem['definition']), ENT_COMPAT, 'UTF-8'); ?></td>
+            <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
+                echo htmlentities(stripslashes($elem['range']), ENT_COMPAT, 'UTF-8'); ?></td>
+            <td class="tablerow" style="width:50px" align="right"><img src="<?php
+                echo $_SESSION['SETS']['path']['base_url']; ?>images/edit.gif" width="18" height="18" alt="<?php
+                echo translate('Modify'); ?>" title="<?php echo translate('Modify'); ?>" onClick="doEdit('<?php
+                echo rawurlencode(stripslashes($elem['definition'])); ?>','<?php
+                echo rawurlencode(stripslashes($elem['range'])); ?>')" style="cursor:pointer">&nbsp;<img src="<?php
+                echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
+                echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
+                echo rawurlencode(stripslashes($elem['definition'])); ?>')" style="cursor:pointer"></td>
+        </tr>
+<?php
         }
-    } else {
-        ?>
+    }
+} else {
+?>
         <tr>
             <td class="tablerow"><?php echo translate('No data'); ?></td>
             <td class="tablerow">&nbsp;</td>
             <td class="tablerow" align="right">&nbsp;</td>
         </tr>
-        <?php
-    }
-    ?>
-</table>
+<?php
+}
+?>
+    </table>
 </body>
 </html>

@@ -16,34 +16,34 @@
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>
+            </tr>	
             <tr>
                 <td>{WRITE_ADDITIONAL_DATA}</td>
                 <td><input name="butValue2" type="submit" id="butValue2" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>
+            </tr>	
             <tr>
                 <td>{CHECK_CONFIG}</td>
                 <td><input name="butValue3" type="submit" id="butValue3" value="{MAKE}"></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>
+            </tr>	
             <tr>
                 <td>{RESTART_NAGIOS}</td>
                 <td><input name="butValue4" type="submit" id="butValue4" value="{MAKE}" {ADD_CONTROL}></td>
             </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
-            </tr>
+            </tr>	
         </table>
-    </form>
+	</form>
     <br>
     <p><span class="redmessage">{ERRORMESSAGE}</span><span class="greenmessage">{INFOMESSAGE}</span></p>
     <p>
-        <!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}</span><br><!-- END verifyline -->
-        {DATA}</p>
+<!-- BEGIN verifyline --><span class="{VERIFY_CLASS}">{VERIFY_LINE}</span><br><!-- END verifyline -->
+    {DATA}</p>
 </div>
 <!-- END main -->

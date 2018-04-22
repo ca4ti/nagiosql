@@ -14,12 +14,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-<table width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-        <td>
-            <!-- END header -->
-            <!-- BEGIN datainsert -->
-            <div id="content_main">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+<!-- END header -->
+<!-- BEGIN datainsert -->
+                <div id="content_main">
                 <form name="frmDataInsert_{OPENER_FIELD}" method="post" action="{ACTION_INSERT}">
                     <table border="0" cellpadding="0">
                         <tr>
@@ -50,10 +50,10 @@
                         </tr>
                     </table>
                 </form>
-            </div>
-        </td>
-    </tr>
-</table>
+                </div>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
 <!-- END datainsert -->

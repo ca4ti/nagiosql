@@ -329,7 +329,6 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
         $_SESSION['refresh']['sd_dependent_service']      = $chkMselValue6;
         $_SESSION['refresh']['sd_servicegroup']           = $chkMselValue7;
         $_SESSION['refresh']['sd_dependent_servicegroup'] = $chkMselValue8;
-        $myVisClass->arrSession = $_SESSION;
         if (isset($arrModifyData['dependent_host_name']) && ($arrModifyData['dependent_host_name'] > 0)) {
             $arrTemp = array();
             $strSQL    = "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHost_DH` "
@@ -418,6 +417,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
             }
             $_SESSION['refresh']['sd_hostgroup']  = $arrTemp;
         }
+        $myVisClass->arrSession = $_SESSION;
     }
     // Do not show modified time list
     $intNoTime = 1;

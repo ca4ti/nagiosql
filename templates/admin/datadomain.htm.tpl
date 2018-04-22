@@ -13,7 +13,7 @@
         <!--
         // Interrupt input
         function abort() {
-            this.location.href = "{ACTION_INSERT}";
+                this.location.href = "{ACTION_INSERT}";
         }
         // Send form
         /**
@@ -27,11 +27,11 @@
                 const selfields = "selValue1";
                 const ar_sel = selfields.split(",");
                 for (let i=0; i<ar_sel.length; i++){
-                    document.getElementById(ar_sel[i]).disabled = false;
-                    for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
-                        document.getElementById(ar_sel[i]).options[y].disabled = false;
-                    }
+                document.getElementById(ar_sel[i]).disabled = false;
+                for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+                    document.getElementById(ar_sel[i]).options[y].disabled = false;
                 }
+            }
                 document.frmDomainInsert.submit();
                 document.frmDomainInsert.subForm.disabled = true;
             }
@@ -77,9 +77,9 @@
                 <td>{LANG_CONFIG_TARGET} *</td>
                 <td>
                     <select title="{LANG_CONFIG_TARGET}" name="selValue1" id="selValue1" class="selectbordermust inpmust">
-                        <!-- BEGIN target -->
+<!-- BEGIN target -->
                         <option value="{DAT_TARGET_ID}" {DAT_TARGET_SEL}>{DAT_TARGET}</option>
-                        <!-- END target -->
+<!-- END target -->
                     </select>
                 </td>
                 <td class="content_tbl_row4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','targets','all','Info');" class="infobutton_1"></td>
@@ -116,9 +116,9 @@
                 <td>{LANG_ACCESS_GROUP}</td>
                 <td>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" tabindex="23" class="selectborder">
-                        <!-- BEGIN acc_group -->
+<!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                        <!-- END acc_group -->
+<!-- END acc_group -->
                     </select>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>

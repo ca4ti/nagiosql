@@ -45,7 +45,7 @@ if (filter_input(INPUT_POST, 'subSave') && ($chkSelValue1 != 0)) {
     } else {
         $myVisClass->processMessage(translate('Data were successfully inserted to the data base!'), $strInfoMessage);
         $myDataClass->writeLog(translate('Access group set for menu item:')." ".
-            $myDBClass->getFieldData("SELECT `mnuName` FROM `tbl_menu` WHERE `mnuId`=$chkSelValue1"));
+                $myDBClass->getFieldData("SELECT `mnuName` FROM `tbl_menu` WHERE `mnuId`=$chkSelValue1"));
     }
 }
 //
@@ -56,13 +56,13 @@ foreach ($arrDescription as $elem) {
     $conttp->setVariable($elem['name'], $elem['string']);
 }
 $conttp->setVariable("LANG_ACCESSDESCRIPTION", translate('In order for a user to get access, he needs to be member '
-    . 'of the group selected here.'));
+        . 'of the group selected here.'));
 //
 // Auswahlfeld einlesen
 // ====================
 $strSQL    = "SELECT A.`mnuId` , B.`mnuName` AS `mainitem`, A.`mnuName` AS `subitem`, A.`mnuGrpId` "
-    . "FROM `tbl_menu` AS A LEFT JOIN `tbl_menu` AS B ON A.`mnuTopId` = B.`mnuId` "
-    . "ORDER BY A.`mnuTopId`, A.`mnuOrderId`";
+           . "FROM `tbl_menu` AS A LEFT JOIN `tbl_menu` AS B ON A.`mnuTopId` = B.`mnuId` "
+           . "ORDER BY A.`mnuTopId`, A.`mnuOrderId`";
 $booReturn  = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
 if ($booReturn == false) {
     $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -102,6 +102,6 @@ $conttp->show("menuaccesssite");
 // Process footer
 // ==============
 $maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");

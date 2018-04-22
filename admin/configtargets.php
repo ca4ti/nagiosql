@@ -64,7 +64,7 @@ if (($chkModus == "modify" || $chkModus == "insert")) {
             // Nagios base configuration files
             if (!is_writable($chkTfValue20)) {
                 $myVisClass->processMessage(str_replace("  ", " ", translate("Nagios config file")." ".$chkTfValue20
-                    ." ".translate("is not writeable")), $strPathMessage);
+                        ." ".translate("is not writeable")), $strPathMessage);
                 $intIsError = 1;
             } else {
                 $intCheck = 0;
@@ -80,13 +80,13 @@ if (($chkModus == "modify" || $chkModus == "insert")) {
                 }
                 if ($intCheck == 0) {
                     $myVisClass->processMessage(str_replace("  ", " ", translate("Nagios config file")." ".
-                        $chkTfValue20." ".translate("is not a valid configuration file!")), $strPathMessage);
+                            $chkTfValue20." ".translate("is not a valid configuration file!")), $strPathMessage);
                     $intIsError = 1;
                 }
             }
             if (!is_writable($chkTfValue21)) {
                 $myVisClass->processMessage(str_replace("  ", " ", translate("Cgi config file")." ".
-                    $chkTfValue21." ".translate("is not writeable")), $strPathMessage);
+                        $chkTfValue21." ".translate("is not writeable")), $strPathMessage);
                 $intIsError = 1;
             }
         }
@@ -111,14 +111,14 @@ if (($chkModus == "modify" || $chkModus == "insert")) {
 // ==================
 if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `server`='$chkTfValue4', "
-        . "`method`='$chkSelValue1', `user`='$chkTfValue5', `password`='$chkTfValue6', "
-        . "`ssh_key_path`='$chkTfValue7', `ftp_secure`=$chkChbValue1, `basedir`='$chkTfValue8', "
-        . "`hostconfig`='$chkTfValue9', `serviceconfig`='$chkTfValue10', `backupdir`='$chkTfValue11', "
-        . "`hostbackup`='$chkTfValue12', `servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', "
-        . "`importdir`='$chkTfValue15', `picturedir`='$chkTfValue16', `commandfile`='$chkTfValue17', "
-        . "`binaryfile`='$chkTfValue18', `pidfile`='$chkTfValue19', `conffile`='$chkTfValue20', "
-        . "`cgifile`='$chkTfValue21', `version`=$chkSelValue2, `access_group`=$chkSelAccGr, `active`='$chkActive',"
-        . "`last_modified`=NOW()";
+             . "`method`='$chkSelValue1', `user`='$chkTfValue5', `password`='$chkTfValue6', "
+             . "`ssh_key_path`='$chkTfValue7', `ftp_secure`=$chkChbValue1, `basedir`='$chkTfValue8', "
+             . "`hostconfig`='$chkTfValue9', `serviceconfig`='$chkTfValue10', `backupdir`='$chkTfValue11', "
+             . "`hostbackup`='$chkTfValue12', `servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', "
+             . "`importdir`='$chkTfValue15', `picturedir`='$chkTfValue16', `commandfile`='$chkTfValue17', "
+             . "`binaryfile`='$chkTfValue18', `pidfile`='$chkTfValue19', `conffile`='$chkTfValue20', "
+             . "`cgifile`='$chkTfValue21', `version`=$chkSelValue2, `access_group`=$chkSelAccGr, `active`='$chkActive',"
+             . "`last_modified`=NOW()";
     if ($chkModus == "insert") {
         $strSQL = "INSERT INTO ".$strSQLx;
     } else {
@@ -318,8 +318,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL     = "SELECT `id`, `$preKeyField`, `alias`, `active`, `nodelete`, `access_group` "
-        . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
-        . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
+                . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

@@ -9,11 +9,11 @@
 // Project  : NagiosQL
 // Component: Installations HowTo
 // Website  : http://www.nagiosql.org
-// Date     : $LastChangedDate: 2017-06-22 09:29:35 +0200 (Thu, 22 Jun 2017) $
+// Date     : $LastChangedDate: 2018-03-27 21:44:52 +0200 (Di, 27 Mär 2018) $
 // Author   : $LastChangedBy: martin $
 // Version  : 3.3.0
-// Revision : $LastChangedRevision: 2 $
-// SVN-ID   : $Id: INSTALLATION_deDE.txt 2 2017-06-22 07:29:35Z martin $
+// Revision : $LastChangedRevision: 3 $
+// SVN-ID   : $Id: INSTALLATION_deDE.txt 3 2018-03-27 19:44:52Z martin $
 //
 ///////////////////////////////////////////////////////////////////////////////
 

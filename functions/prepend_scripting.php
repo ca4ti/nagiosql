@@ -5,108 +5,99 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2017 by Martin Willisegger
+// (c) 2005-2018 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Preprocessing script for scripting files
-// Website   : http://www.nagiosql.org
-// Date      : $LastChangedDate: 2017-06-22 09:48:25 +0200 (Thu, 22 Jun 2017) $
-// Author    : $LastChangedBy: martin $
-// Version   : 3.3.0
-// Revision  : $LastChangedRevision: 4 $
+// Website   : https://sourceforge.net/projects/nagiosql/
+// Version   : 3.4.0
+// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 //error_reporting(E_ERROR);
 //
 // Security Protection
 // ===================
 if (isset($_GET['SETS']) || isset($_POST['SETS'])) {
-	$SETS = "";
+    $SETS = "";
 }
 //
 // Timezone settings (>=PHP5.1)
 // ============================
-if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get")) {
-	@date_default_timezone_set(@date_default_timezone_get());
+if (function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get")) {
+    @date_default_timezone_set(@date_default_timezone_get());
 }
 //
 // Define common variables
 // =======================
 $chkDomainId  = 0;
-$intError 	  = 0;
+$intError     = 0;
 //
 // Define path constants
 //
-define('BASE_PATH', str_replace("functions","",dirname(__FILE__)));
+//define('BASE_PATH', str_replace("functions", "", dirname(__FILE__)));
 //
 // Read settings file
 // ==================
-$preBasePath = str_replace("functions","",dirname(__FILE__));
+$preBasePath = str_replace("functions", "", dirname(__FILE__));
 $preIniFile  = $preBasePath.'config/settings.php';
 //
 // Read file settings
 // ==================
-$SETS = parse_ini_file($preIniFile,true);
+$SETS = parse_ini_file($preIniFile, true);
 //
 // Include external function/class files - part 1
 // ==============================================
-include("mysqli_class.php");
+require($preBasePath.'functions/Autoloader.php');
+functions\Autoloader::register($preBasePath);
 //
 // Initialize classes - part 1
 // ===========================
-$myDBClass  = new mysqlidb;
+$myDBClass  = new functions\MysqliDbClass();
 $myDBClass->arrParams = $SETS['db'];
-$myDBClass->getDatabase();
+$myDBClass->hasDBConnection();
 if ($myDBClass->error == true) {
-	$strDBMessage = $myDBClass->strErrorMessage;
-	$booError     = $myDBClass->error;
+    $strDBMessage = $myDBClass->strErrorMessage;
+    $booError     = $myDBClass->error;
 }
 //
 // Get additional configuration from the table tbl_settings
 // ========================================================
 if ($intError == 0) {
-	$strSQL    = "SELECT `category`,`name`,`value` FROM `tbl_settings`";
-	$booReturn = $myDBClass->getDataArray($strSQL,$arrDataLines,$intDataCount);
-	if ($booReturn == false) {
-  		echo str_replace("::","\n","Error while selecting data from database: ".$myDBClass->strErrorMessage);
-		$intError 	 = 1;
-	} else if ($intDataCount != 0) {
-  		for ($i=0;$i<$intDataCount;$i++) {
-    		$SETS[$arrDataLines[$i]['category']][$arrDataLines[$i]['name']] = $arrDataLines[$i]['value'];
-  		}
-	}
+    $strSQL    = "SELECT `category`,`name`,`value` FROM `tbl_settings`";
+    $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
+    if ($booReturn == false) {
+        echo str_replace("::", "\n", "Error while selecting data from database: ".$myDBClass->strErrorMessage);
+        $intError     = 1;
+    } elseif ($intDataCount != 0) {
+        for ($i=0; $i<$intDataCount; $i++) {
+            $SETS[$arrDataLines[$i]['category']][$arrDataLines[$i]['name']] = $arrDataLines[$i]['value'];
+        }
+    }
 } else {
-	echo "Could not load configuration settings from database - abort\n";
-	exit;
+    echo "Could not load configuration settings from database - abort\n";
+    exit;
 }
 //
 // Include external function/class files
 // =====================================
 include("translator.php");
-include("data_class.php");
-include("config_class.php");
-include("import_class.php");
-require_once($preBasePath.'libraries/pear/HTML/Template/IT.php');
 //
 // Initialize classes
 // ==================
-$myDataClass   = new nagdata;
-$myConfigClass = new nagconfig;
-$myImportClass = new nagimport;
+$arrSession         = array();
+$arrSession['SETS'] = $SETS;
+$myDataClass        = new functions\NagDataClass($arrSession);
+$myConfigClass      = new functions\NagConfigClass($arrSession);
+$myImportClass      = new functions\NagImportClass($arrSession);
 //
 // Propagating the classes themselves
 // ==================================
-$myDataClass->myDBClass   		=& $myDBClass;
-$myDataClass->myConfigClass 	=& $myConfigClass;
-$myConfigClass->myDBClass 		=& $myDBClass;
-$myConfigClass->myDataClass 	=& $myDataClass;
-$myImportClass->myDataClass   	=& $myDataClass;
-$myImportClass->myDBClass   	=& $myDBClass;
-$myImportClass->myConfigClass 	=& $myConfigClass;
-//
-// Set class variables
-// ===================
-$myDataClass->arrSettings 	= $SETS;
-$myConfigClass->arrSettings = $SETS;
-?>
+$myDataClass->myDBClass       =& $myDBClass;
+$myDataClass->myConfigClass   =& $myConfigClass;
+$myConfigClass->myDBClass     =& $myDBClass;
+$myConfigClass->myDataClass   =& $myDataClass;
+$myImportClass->myDataClass   =& $myDataClass;
+$myImportClass->myDBClass     =& $myDBClass;
+$myImportClass->myConfigClass =& $myConfigClass;

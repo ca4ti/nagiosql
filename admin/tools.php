@@ -33,13 +33,13 @@ require($preBasePath.'functions/prepend_adm.php');
 // ===============
 $conttp->setVariable("TITLE", translate('Different tools'));
 $conttp->setVariable("DESC", translate('Useful functions for data import, main configuration, daemon control and '
-    . 'so on.'));
+        . 'so on.'));
 $conttp->parse("main");
 $conttp->show("main");
 //
 // Include Footer
 // ==============
 $maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");

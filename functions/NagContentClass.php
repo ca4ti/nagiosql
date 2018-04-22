@@ -10,10 +10,10 @@
 // Project   : NagiosQL
 // Component : Content Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Date      : $LastChangedDate: 2018-04-15 19:35:30 +0200 (Sun, 15 Apr 2018) $
+// Date      : $LastChangedDate: 2018-04-19 22:24:08 +0200 (Thu, 19 Apr 2018) $
 // Author    : $LastChangedBy: martin $
 // Version   : 3.4.0
-// Revision  : $LastChangedRevision: 27 $
+// Revision  : $LastChangedRevision: 31 $
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -228,10 +228,10 @@ class NagContentClass
                         $strAdd = "";
                     }
                     $objTemplate->setVariable("DATA_FIELD_2", htmlentities(substr(
-                            $arrData[$i][$strField2],
-                            0,
-                            $intLimit
-                        ), ENT_COMPAT, 'UTF-8').$strAdd);
+                        $arrData[$i][$strField2],
+                        0,
+                        $intLimit
+                    ), ENT_COMPAT, 'UTF-8').$strAdd);
                 } else {
                     $objTemplate->setVariable("DATA_FIELD_2", htmlentities(
                         $arrData[$i][$strField2],
@@ -379,7 +379,7 @@ class NagContentClass
     public function showFooter($objTemplate, $setFileVersion)
     {
         $objTemplate->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' ".
-            "target='_blank'>NagiosQL</a> $setFileVersion");
+                                  "target='_blank'>NagiosQL</a> $setFileVersion");
         $objTemplate->parse("footer");
         $objTemplate->show("footer");
     }
@@ -522,8 +522,8 @@ class NagContentClass
         if ($strTableName == "tbl_hostdependency") {
             if ($arrData['dependent_host_name'] != 0) {
                 $strSQLHost = "SELECT `host_name`, `exclude` FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkHostdependencyToHost_DH` ON `id`=`idSlave` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `host_name`";
+                              "LEFT JOIN `tbl_lnkHostdependencyToHost_DH` ON `id`=`idSlave` ".
+                              "WHERE `idMaster`=".$arrData['id']." ORDER BY `host_name`";
                 $this->myDBClass->hasDataArray($strSQLHost, $arrDataHosts, $intDCHost);
                 if ($intDCHost != 0) {
                     foreach ($arrDataHosts as $elem) {
@@ -537,8 +537,8 @@ class NagContentClass
             }
             if ($arrData['dependent_hostgroup_name'] != 0) {
                 $strSQLHost = "SELECT `hostgroup_name`, `exclude` FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_DH` ON `id`=`idSlave` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `hostgroup_name`";
+                              "LEFT JOIN `tbl_lnkHostdependencyToHostgroup_DH` ON `id`=`idSlave` ".
+                              "WHERE `idMaster`=".$arrData['id']." ORDER BY `hostgroup_name`";
                 $this->myDBClass->hasDataArray($strSQLHost, $arrDataHostgroups, $intDCHostgroup);
                 if ($intDCHostgroup != 0) {
                     foreach ($arrDataHostgroups as $elem) {
@@ -555,8 +555,8 @@ class NagContentClass
         if ($strTableName == "tbl_hostescalation") {
             if ($arrData['host_name'] != 0) {
                 $strSQLHost = "SELECT `host_name` FROM `tbl_host` ".
-                    "LEFT JOIN `tbl_lnkHostescalationToHost` ON `id`=`idSlave` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `host_name`";
+                              "LEFT JOIN `tbl_lnkHostescalationToHost` ON `id`=`idSlave` ".
+                              "WHERE `idMaster`=".$arrData['id']." ORDER BY `host_name`";
                 $this->myDBClass->hasDataArray($strSQLHost, $arrDataHosts, $intDCHost);
                 if ($intDCHost != 0) {
                     foreach ($arrDataHosts as $elem) {
@@ -566,8 +566,8 @@ class NagContentClass
             }
             if ($arrData['hostgroup_name'] != 0) {
                 $strSQLHost = "SELECT `hostgroup_name` FROM `tbl_hostgroup` ".
-                    "LEFT JOIN `tbl_lnkHostescalationToHostgroup` ON `id`=`idSlave` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `hostgroup_name`";
+                              "LEFT JOIN `tbl_lnkHostescalationToHostgroup` ON `id`=`idSlave` ".
+                              "WHERE `idMaster`=".$arrData['id']." ORDER BY `hostgroup_name`";
                 $this->myDBClass->hasDataArray($strSQLHost, $arrDataHostgroups, $intDCHostgroup);
                 if ($intDCHostgroup != 0) {
                     foreach ($arrDataHostgroups as $elem) {
@@ -582,7 +582,7 @@ class NagContentClass
                 $strField .= "*";
             } elseif ($arrData['dependent_service_description'] != 0) {
                 $strSQLService = "SELECT `strSlave` FROM `tbl_lnkServicedependencyToService_DS` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `strSlave`";
+                                 "WHERE `idMaster`=".$arrData['id']." ORDER BY `strSlave`";
                 $this->myDBClass->hasDataArray($strSQLService, $arrDataService, $intDCService);
                 if ($intDCService != 0) {
                     foreach ($arrDataService as $elem) {
@@ -592,8 +592,8 @@ class NagContentClass
             }
             if ($strField == "") {
                 $strSQLService = "SELECT `servicegroup_name` FROM `tbl_servicegroup` ".
-                    "LEFT JOIN `tbl_lnkServicedependencyToServicegroup_DS` ON `idSlave`=`id` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `servicegroup_name`";
+                                 "LEFT JOIN `tbl_lnkServicedependencyToServicegroup_DS` ON `idSlave`=`id` ".
+                                 "WHERE `idMaster`=".$arrData['id']." ORDER BY `servicegroup_name`";
                 $this->myDBClass->hasDataArray($strSQLService, $arrDataService, $intDCService);
                 if ($intDCService != 0) {
                     foreach ($arrDataService as $elem) {
@@ -608,7 +608,7 @@ class NagContentClass
                 $strField .= "*";
             } elseif ($arrData['service_description'] != 0) {
                 $strSQLService = "SELECT `strSlave` FROM `tbl_lnkServiceescalationToService` ".
-                    "WHERE `idMaster`=".$arrData['id'];
+                                 "WHERE `idMaster`=".$arrData['id'];
                 $this->myDBClass->hasDataArray($strSQLService, $arrDataServices, $intDCServices);
                 if ($intDCServices != 0) {
                     foreach ($arrDataServices as $elem) {
@@ -618,8 +618,8 @@ class NagContentClass
             }
             if ($strField == "") {
                 $strSQLService = "SELECT `servicegroup_name` FROM `tbl_servicegroup` ".
-                    "LEFT JOIN `tbl_lnkServiceescalationToServicegroup` ON `idSlave`=`id` ".
-                    "WHERE `idMaster`=".$arrData['id']." ORDER BY `servicegroup_name`";
+                                 "LEFT JOIN `tbl_lnkServiceescalationToServicegroup` ON `idSlave`=`id` ".
+                                 "WHERE `idMaster`=".$arrData['id']." ORDER BY `servicegroup_name`";
                 $this->myDBClass->hasDataArray($strSQLService, $arrDataService, $intDCService);
                 if ($intDCService != 0) {
                     foreach ($arrDataService as $elem) {

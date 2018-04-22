@@ -8,111 +8,111 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-    <!--suppress JSUnusedLocalSymbols, JSUnresolvedVariable -->
+	<!--suppress JSUnusedLocalSymbols, JSUnresolvedVariable -->
     <script type="text/JavaScript">
-        <!--
-        // Initialize change dialog
-        openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}","1");
-        openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}","1");
-        openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_HOSTGROUPS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}","1");
-        openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTGRS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}","1");
-        openMutDlgInit("mselValue5","mutdialogvalue5","{LANG_MODIFY_SELECTION}: {LANG_SERVICES}","mutvalue5","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue6","mutdialogvalue6","{LANG_MODIFY_SELECTION}: {LANG_DEPENDSERVICES}","mutvalue6","{LANG_SAVE}","{LANG_ABORT}");
-        openMutDlgInit("mselValue7","mutdialogvalue7","{LANG_MODIFY_SELECTION}: {LANG_SERVICEGROUPS}","mutvalue7","{LANG_SAVE}","{LANG_ABORT}","1");
-        openMutDlgInit("mselValue8","mutdialogvalue8","{LANG_MODIFY_SELECTION}: {LANG_DEPENDSERVICEGROUPS}","mutvalue8","{LANG_SAVE}","{LANG_ABORT}","1");
+		<!--
+    	// Initialize change dialog
+		openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_HOSTS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}","1");
+		openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}","1");
+		openMutDlgInit("mselValue3","mutdialogvalue3","{LANG_MODIFY_SELECTION}: {LANG_HOSTGROUPS}","mutvalue3","{LANG_SAVE}","{LANG_ABORT}","1");
+		openMutDlgInit("mselValue4","mutdialogvalue4","{LANG_MODIFY_SELECTION}: {LANG_DEPENDHOSTGRS}","mutvalue4","{LANG_SAVE}","{LANG_ABORT}","1");
+		openMutDlgInit("mselValue5","mutdialogvalue5","{LANG_MODIFY_SELECTION}: {LANG_SERVICES}","mutvalue5","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue6","mutdialogvalue6","{LANG_MODIFY_SELECTION}: {LANG_DEPENDSERVICES}","mutvalue6","{LANG_SAVE}","{LANG_ABORT}");
+		openMutDlgInit("mselValue7","mutdialogvalue7","{LANG_MODIFY_SELECTION}: {LANG_SERVICEGROUPS}","mutvalue7","{LANG_SAVE}","{LANG_ABORT}","1");
+		openMutDlgInit("mselValue8","mutdialogvalue8","{LANG_MODIFY_SELECTION}: {LANG_DEPENDSERVICEGROUPS}","mutvalue8","{LANG_SAVE}","{LANG_ABORT}","1");
         let update = 1;
         // Process form updateServices
-        function updateForm(key) {
-            document.frmDetail.modus.value = "refresh";
+		function updateForm(key) {
+			document.frmDetail.modus.value = "refresh";
             const selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5,mselValue6,mselValue7,mselValue8";
             const ar_sel = selfields.split(",");
             for (let i=0;i<ar_sel.length;i++){
-                document.getElementById(ar_sel[i]).disabled = false;
-                for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
-                    document.getElementById(ar_sel[i]).options[y].disabled = false;
-                }
-            }
-            document.frmDetail.submit();
-        }
-        // Interrupt input
-        function abort() {
-            this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
-        }
-        // Refresh form
-        function updateServices(intMode) {
-            if (intMode === 2) {
-                document.frmDetail.mselValue1.value = "";
-                document.frmDetail.mselValue1.selectedIndex = -1;
-            }
-            if (intMode === 4) {
-                document.frmDetail.mselValue2.value = "";
-                document.frmDetail.mselValue2.selectedIndex = -1;
-            }
-            alert('da');
-            document.frmDetail.modus.value = "refresh";
-            document.frmDetail.submit();
-        }
-        // Send form
+				document.getElementById(ar_sel[i]).disabled = false;
+				for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+					document.getElementById(ar_sel[i]).options[y].disabled = false;
+				}
+			}
+			document.frmDetail.submit();
+		}
+		// Interrupt input
+		function abort() {
+			this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
+		}
+		// Refresh form
+		function updateServices(intMode) {
+			if (intMode === 2) {
+				document.frmDetail.mselValue1.value = "";
+				document.frmDetail.mselValue1.selectedIndex = -1;
+			}
+			if (intMode === 4) {
+				document.frmDetail.mselValue2.value = "";
+				document.frmDetail.mselValue2.selectedIndex = -1;
+			}
+			alert('da');
+			document.frmDetail.modus.value = "refresh";
+			document.frmDetail.submit();
+		}
+    	// Send form
         /**
          * @return {boolean}
          */
         function LockButton() {
-            if (checkForm() === false) {
-                return false;
-            } else {
-                // Enable select fields
+			if (checkForm() === false) {
+				return false;
+			} else {
+				// Enable select fields
                 const selfields = "mselValue1,mselValue2,mselValue3,mselValue4,mselValue5,mselValue6,mselValue7,mselValue8";
                 const ar_sel = selfields.split(",");
                 for (let i=0;i<ar_sel.length;i++){
-                    document.getElementById(ar_sel[i]).disabled = false;
-                    for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
-                        document.getElementById(ar_sel[i]).options[y].disabled = false;
-                    }
-                }
-                document.frmDetail.submit();
-                document.frmDetail.subForm.disabled = true;
-            }
-        }
-        // Check form entries
-        function checkForm() {
-            // Are all required fields filled in?
+					document.getElementById(ar_sel[i]).disabled = false;
+					for (let y=0;y<document.getElementById(ar_sel[i]).length;++y) {
+						document.getElementById(ar_sel[i]).options[y].disabled = false;
+					}
+				}
+				document.frmDetail.submit();
+				document.frmDetail.subForm.disabled = true;
+			}
+		}
+    	// Check form entries
+		function checkForm() {
+      		// Are all required fields filled in?
             const fields1 = "tfValue1";
             const msg1 = "{FILL_ALLFIELDS}";
             const header = "{LANG_FORMCHECK}";
             const form = document.frmDetail;
             let check = checkfields(fields1,form,myFocusObject);
-            if (check === false) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            // Are dependent services or dependent servicegroup selected?
-            if ((form.mselValue6.value === "") &&
-                (form.mselValue8.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-            // Are services or servicegroups selected?
-            if ((form.mselValue5.value === "") &&
-                (form.mselValue7.value === "")) {
-                msginit(msg1,header,1);
-                return false;
-            }
-        }
-        //-->
-    </script>
-    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
-        <table border="0" cellpadding="0" class="content_formtable">
+			if (check === false) {
+				msginit(msg1,header,1);
+				return false;
+			}	
+			// Are dependent services or dependent servicegroup selected?
+			if ((form.mselValue6.value === "") &&
+				(form.mselValue8.value === "")) {
+				msginit(msg1,header,1);
+				return false;
+			}
+			// Are services or servicegroups selected?
+			if ((form.mselValue5.value === "") &&
+				(form.mselValue7.value === "")) {
+				msginit(msg1,header,1);
+				return false;
+			}
+		}
+    	//-->
+  	</script>
+  	<form name="frmDetail" method="post" action="{ACTION_INSERT}">
+  		<table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td class="content_tbl_row1" valign="top">{LANG_DEPENDHOSTS} (*)</td>
                 <td class="content_tbl_row2" valign="top" rowspan="2">
                     <table cellpadding="0" cellspacing="0" border="0">
                         <tr>
                             <td>
-                                <select title="{LANG_DEPENDHOSTS}" name="mselValue2[]" size="5" multiple id="mselValue2" class="selectbordermust inpmust" onchange="updateServices(3)" {MSIE_DISABLED}>
-                                    <!-- BEGIN dependent_host -->
-                                    <option value="{DAT_DEPENDENT_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPENDENT_HOST_SEL}" {DAT_DEPENDENT_HOST_SEL} {OPTION_DISABLED}>{DAT_DEPENDENT_HOST}</option>
-                                    <!-- END dependent_host -->
-                                </select>
+                            	<select title="{LANG_DEPENDHOSTS}" name="mselValue2[]" size="5" multiple id="mselValue2" class="selectbordermust inpmust" onchange="updateServices(3)" {MSIE_DISABLED}>
+<!-- BEGIN dependent_host -->
+                            		<option value="{DAT_DEPENDENT_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPENDENT_HOST_SEL}" {DAT_DEPENDENT_HOST_SEL} {OPTION_DISABLED}>{DAT_DEPENDENT_HOST}</option>
+<!-- END dependent_host -->
+                            	</select>
                             </td>
                         </tr>
                     </table>
@@ -124,9 +124,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_HOSTS}" name="mselValue1[]" size="5" multiple id="mselValue1" class="selectbordermust inpmust" onChange="updateServices(1)" {MSIE_DISABLED}>
-                                    <!-- BEGIN host -->
+<!-- BEGIN host -->
                                     <option value="{DAT_HOST_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOST_SEL}" {DAT_HOST_SEL} {OPTION_DISABLED}>{DAT_HOST}</option>
-                                    <!-- END host -->
+<!-- END host -->
                                 </select>
                             </td>
                         </tr>
@@ -137,7 +137,7 @@
             <tr>
                 <td><small>{LANG_CTRLINFO}</small></td>
                 <td><small>{LANG_CTRLINFO}</small></td>
-            </tr>
+            </tr>  
             <tr class="{VERSION_30_VISIBLE}">
                 <td valign="top">{LANG_DEPENDHOSTGRS} (*)</td>
                 <td valign="top" rowspan="2">
@@ -145,9 +145,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_DEPENDHOSTGRS}" name="mselValue4[]" size="5" multiple id="mselValue4" class="selectbordermust inpmust" onChange="updateServices(4)" {MSIE_DISABLED}>
-                                    <!-- BEGIN dependent_hostgroup -->
-                                    <option value="{DAT_DEPENDENT_HOSTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPENDENT_HOSTGROUP_SEL}" {DAT_DEPENDENT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_DEPENDENT_HOSTGROUP}</option>
-                                    <!-- END dependent_hostgroup -->
+<!-- BEGIN dependent_hostgroup -->
+                                <option value="{DAT_DEPENDENT_HOSTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPENDENT_HOSTGROUP_SEL}" {DAT_DEPENDENT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_DEPENDENT_HOSTGROUP}</option>
+<!-- END dependent_hostgroup -->
                                 </select>
                             </td>
                         </tr>
@@ -160,9 +160,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_HOSTGROUPS}" name="mselValue3[]" size="5" multiple id="mselValue3" class="selectbordermust inpmust" onChange="updateServices(2)" {MSIE_DISABLED}>
-                                    <!-- BEGIN hostgroup -->
+<!-- BEGIN hostgroup -->
                                     <option value="{DAT_HOSTGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_HOSTGROUP_SEL}" {DAT_HOSTGROUP_SEL} {OPTION_DISABLED}>{DAT_HOSTGROUP}</option>
-                                    <!-- END hostgroup -->
+<!-- END hostgroup -->
                                 </select>
                             </td>
                         </tr>
@@ -181,9 +181,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_DEPENDSERVICES}" name="mselValue6[]" size="5" multiple id="mselValue6" class="selectbordermust inpmust" onChange="updateServices(3)" {MSIE_DISABLED}>
-                                    <!-- BEGIN dependent_service -->
+<!-- BEGIN dependent_service -->
                                     <option value="{DAT_DEPENDENT_SERVICE_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPENDENT_SERVICE_SEL}" {DAT_DEPENDENT_SERVICE_SEL} {OPTION_DISABLED}>{DAT_DEPENDENT_SERVICE}</option>
-                                    <!-- END dependent_service -->
+<!-- END dependent_service -->
                                 </select>
                             </td>
                             <td valign="top" style="padding-left:1px"></td>
@@ -197,9 +197,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_SERVICES}" name="mselValue5[]" size="5" multiple id="mselValue5" class="selectbordermust inpmust" onChange="updateServices(1)" {MSIE_DISABLED}>
-                                    <!-- BEGIN service -->
+<!-- BEGIN service -->
                                     <option value="{DAT_SERVICE_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_SERVICE_SEL}" {DAT_SERVICE_SEL} {OPTION_DISABLED}>{DAT_SERVICE}</option>
-                                    <!-- END service -->
+<!-- END service -->
                                 </select>
                             </td>
                         </tr>
@@ -218,9 +218,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_DEPENDSERVICEGROUPS}" name="mselValue8[]" size="5" multiple id="mselValue8" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN dependent_servicegroup -->
+<!-- BEGIN dependent_servicegroup -->
                                     <option value="{DAT_DEPENDENT_SERVICEGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_DEPENDENT_SERVICEGROUP_SEL}" {DAT_DEPENDENT_SERVICEGROUP_SEL} {OPTION_DISABLED}>{DAT_DEPENDENT_SERVICEGROUP}</option>
-                                    <!-- END dependent_servicegroup -->
+<!-- END dependent_servicegroup -->
                                 </select>
                             </td>
                             <td valign="top" style="padding-left:1px"></td>
@@ -234,9 +234,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_SERVICEGROUPS}" name="mselValue7[]" size="5" multiple id="mselValue7" class="selectbordermust inpmust" {MSIE_DISABLED}>
-                                    <!-- BEGIN servicegroup -->
+<!-- BEGIN servicegroup -->
                                     <option value="{DAT_SERVICEGROUP_ID}" class="empty_class inpmust {SPECIAL_STYLE} {IE_SERVICEGROUP_SEL}" {DAT_SERVICEGROUP_SEL} {OPTION_DISABLED}>{DAT_SERVICEGROUP}</option>
-                                    <!-- END servicegroup -->
+<!-- END servicegroup -->
                                 </select>
                             </td>
                         </tr>
@@ -262,7 +262,7 @@
                 	<select title="{LANG_DEPENDENCY_PERIOD}" name="selValue1" id="selValue1" class="selectborder">
 <!-- BEGIN timeperiod -->
                         <option value="{DAT_TIMEPERIOD_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_TIMEPERIOD_SEL}>{DAT_TIMEPERIOD}</option>
-                        <!-- END timeperiod -->
+<!-- END timeperiod -->
                     </select>
                 </span></td>
                 <td><span class="{VERSION_30_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('servicedependency','dependency_period','all','Info');" class="infobutton_1"></span></td>
@@ -283,17 +283,17 @@
                             <td class="radio_cell_1"><input title="n" name="chbGr1f" type="checkbox" class=" checkbox" id="chbGr1f" value="n" {DAT_EON_CHECKED}></td>
                             <td class="radio_cell_1">n</td>
                         </tr>
-                    </table>
+                    </table>      
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('servicedependency','execution_failure_criteria','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td {RESTRICT_GROUP_ADMIN}>{LANG_ACCESS_GROUP}</td>
                 <td {RESTRICT_GROUP_ADMIN}>
-                    <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
-                        <!-- BEGIN acc_group -->
+                	<select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
+<!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-                        <!-- END acc_group -->
+<!-- END acc_group -->
                     </select>
                 </td>
                 <td {RESTRICT_GROUP_ADMIN}><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -314,14 +314,14 @@
                             <td class="radio_cell_1"><input title="n" name="chbGr2f" type="checkbox" class=" checkbox" id="chbGr2f" value="n" {DAT_NON_CHECKED}></td>
                             <td class="radio_cell_1">n</td>
                         </tr>
-                    </table>
+                    </table>       
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('servicedependency','notification_failure_criteria','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
-                <td>{LANG_REGISTERED}</td>
-                <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
-                <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
+              <td>{LANG_REGISTERED}</td>
+              <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
+              <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td>{LANG_ACTIVE}</td>
@@ -340,8 +340,8 @@
             <tr>
                 <td colspan="6">&nbsp;</td>
             </tr>
-        </table>
-    </form>
+		</table>
+  </form>
 </div>
 <div id="mutdialogvalue2">
     <div id="mutdialogvalue2content" class="bd"></div>

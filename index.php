@@ -47,7 +47,7 @@ require($preBasePath.'functions/prepend_adm.php');
 $conttp->setVariable("TITLE", translate('Welcome to'));
 $conttp->setVariable("TITLE_LOGIN", translate('Welcome'));
 $conttp->setVariable("LOGIN_TEXT", translate('Please enter your username and password to access NagiosQL.<br>If '
-    . 'you forgot one of them, please contact your Administrator.'));
+                   . 'you forgot one of them, please contact your Administrator.'));
 $conttp->setVariable("USERNAME", translate('Username'));
 $conttp->setVariable("PASSWORD", translate('Password'));
 $conttp->setVariable("LOGIN", translate('Login'));
@@ -64,6 +64,6 @@ $conttp->show("main");
 // Include footer
 // ==============
 $maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+                   . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse("footer");
 $maintp->show("footer");
