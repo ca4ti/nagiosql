@@ -20,12 +20,12 @@
 // Security Protection
 // ===================
 if (isset($_GET['SETS']) || isset($_POST['SETS'])) {
-    $SETS = "";
+    $SETS = '';
 }
 //
 // Timezone settings (>=PHP5.1)
 // ============================
-if (function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get")) {
+if (function_exists('date_default_timezone_set') and function_exists('date_default_timezone_get')) {
     @date_default_timezone_set(@date_default_timezone_get());
 }
 //
@@ -40,7 +40,7 @@ $intError     = 0;
 //
 // Read settings file
 // ==================
-$preBasePath = str_replace("functions", "", dirname(__FILE__));
+$preBasePath = str_replace('functions', '', __DIR__);
 $preIniFile  = $preBasePath.'config/settings.php';
 //
 // Read file settings
@@ -49,7 +49,7 @@ $SETS = parse_ini_file($preIniFile, true);
 //
 // Include external function/class files - part 1
 // ==============================================
-require($preBasePath.'functions/Autoloader.php');
+require $preBasePath.'functions/Autoloader.php';
 functions\Autoloader::register($preBasePath);
 //
 // Initialize classes - part 1
@@ -65,10 +65,10 @@ if ($myDBClass->error == true) {
 // Get additional configuration from the table tbl_settings
 // ========================================================
 if ($intError == 0) {
-    $strSQL    = "SELECT `category`,`name`,`value` FROM `tbl_settings`";
+    $strSQL    = 'SELECT `category`,`name`,`value` FROM `tbl_settings`';
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn == false) {
-        echo str_replace("::", "\n", "Error while selecting data from database: ".$myDBClass->strErrorMessage);
+        echo str_replace('::', "\n", 'Error while selecting data from database: ' .$myDBClass->strErrorMessage);
         $intError     = 1;
     } elseif ($intDataCount != 0) {
         for ($i=0; $i<$intDataCount; $i++) {
@@ -82,7 +82,7 @@ if ($intError == 0) {
 //
 // Include external function/class files
 // =====================================
-include("translator.php");
+include 'translator.php';
 //
 // Initialize classes
 // ==================

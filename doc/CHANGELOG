@@ -1,6 +1,7 @@
 CHANGELOG 3.4.0
 ---------------
 - Support for PHP 7.x (developped and tested with PHP 7.2.2)
+- Support for PHP < 5.5 dropped
 - Code reworked to follow PSR1/PSR2 standards
 - New class autoloader function
 - Minor bugfixes - mostly in SSH/SFTP and FTP variant
@@ -29,10 +30,3 @@ CHANGELOG 3.2.0
 - [OK] Servicegroup support for servicedependencies and serviceescalations
 - [OK][BUG] Reworked service selection in servicedependencies and serviceescalations
 - [OK][BUG] Reworked right management (menu access / read rights)
-
-OPEN in 3.2.0
--------------
-- YUI3 - YUI3 is still BETA
-- Reworking templates for better integration
-- Support for different time zones of remote systems (timestamp/file_stamp)
-- PosgresQL support (comes with 3.2.x)

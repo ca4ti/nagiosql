@@ -8,6 +8,7 @@
 <!-- BEGIN logbooksite -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
+    <!--suppress JSUnusedLocalSymbols -->
     <script type="text/javascript">
         <!--
         // build calendar
@@ -37,6 +38,12 @@
                 return false;
             }
             confirminit("{LANG_DELETELOG}","{LANG_SECURE_QUESTION}",2,"{LANG_YES}","{LANG_NO}",1);
+        }
+        // Submit form
+        function confOpenerYes(key) {
+            if (key === 1) {
+                document.frmLogfile.submit();
+            }
         }
         //-->
     </script>

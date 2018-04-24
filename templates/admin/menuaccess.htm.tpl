@@ -21,10 +21,10 @@
             <tr>
                 <td class="content_tbl_row1">{LANG_MENU_PAGE}</td>
                 <td style="width:500px;">
-                    <select title="{LANG_MENU_PAGE}<" name="selValue1" onChange="update();" class="selectborder">
-<!-- BEGIN submenu -->
+                    <select title="{LANG_MENU_PAGE}" name="selValue1" onChange="update();" class="selectborder">
+                        <!-- BEGIN submenu -->
                         <option value="{SUBMENU_VALUE}" {SUBMENU_SELECTED}>{SUBMENU_NAME}</option>
-<!-- END submenu -->
+                        <!-- END submenu -->
                     </select>
                 </td>
             </tr>
@@ -35,9 +35,9 @@
                 <td>{LANG_ACCESS_GROUP}</td>
                 <td>
                     <select title="{LANG_ACCESS_GROUP}" name="selValue2" class="selectborder">
-<!-- BEGIN acc_group -->
+                        <!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-<!-- END acc_group -->
+                        <!-- END acc_group -->
                     </select></td>
             </tr>
             <tr>

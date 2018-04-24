@@ -31,23 +31,22 @@ namespace functions;
 class NagConfigClass
 {
     // Define class variables
-    private $arrSettings         = array();     // Array includes all global settings
-    private $resConnectServer    = '';          // Connection server name for FTP and SSH connections
-    private $resConnectType      = 'none';      // Connection type for FTP and SSH connections
-    private $arrRelData          = "";          // Relation data
+    /** @var resource $resConnectId */
     public $resConnectId;                       // Connection id for FTP and SSH connections
     public $resSFTP;                            // SFTP ressource id
 
-    //private $arrRelData         = "";         // Relation data
-    //
     public $arrSession           = array();     // Session content
-    public $strRelTable          = "";          // Relation table name
+    public $strRelTable          = '';          // Relation table name
+    public $strErrorMessage      = '';          // String including error messages
+    public $strInfoMessage       = '';          // String including information messages
+    public $strPicPath           = 'none';      // Picture path string
     public $intNagVersion        = 0;           // Nagios version id
-    public $strPicPath           = "none";      // Picture path string
     public $intDomainId          = 0;           // Configuration domain ID
-    public $strErrorMessage      = "";          // String including error messages
-    public $strInfoMessage       = "";          // String including information messages
-
+    // PRIVATE
+    private $arrSettings         = array();     // Array includes all global settings
+    private $resConnectServer    = '';          // Connection server name for FTP and SSH connections
+    private $resConnectType      = 'none';      // Connection type for FTP and SSH connections
+    private $arrRelData          = '';          // Relation data
     // Class includes
     /** @var MysqliDbClass */
     public $myDBClass;                          // Database class reference
@@ -76,17 +75,17 @@ class NagConfigClass
      * @param string $strValue                  Configuration value (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getDomainData($strConfigItem, &$strValue)
+    public function getDomainData($strConfigItem, &$strValue): int
     {
         // Variable definition
         $intReturn = 0;
         // Request domain data from database
-        $strSQL   = "SELECT `".$strConfigItem."` FROM `tbl_datadomain` WHERE `id` = ".$this->intDomainId;
+        $strSQL   = 'SELECT `' .$strConfigItem. '` FROM `tbl_datadomain` WHERE `id` = ' .$this->intDomainId;
         $strValue = $this->myDBClass->getFieldData($strSQL);
-        if ($strValue == "") {
+        if ($strValue == '') {
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -104,31 +103,31 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function lastModifiedDir($strTableName, $strConfigName, $intDataId, &$arrTimeData, &$intTimeInfo)
+    public function lastModifiedDir($strTableName, $strConfigName, $intDataId, &$arrTimeData, &$intTimeInfo): int
     {
         // Variable definitions
         $intReturn       = 0;
         // Create file name
-        $strFileName  = $strConfigName.".cfg";
+        $strFileName  = $strConfigName. '.cfg';
         // Get table times
         $strActive            = 0;
         $arrTimeData          = array();
-        $arrTimeData['table'] = "unknown";
+        $arrTimeData['table'] = 'unknown';
         // Clear status cache
         clearstatcache();
         // Get last change on dataset
-        if ($strTableName == "tbl_host") {
+        if ($strTableName == 'tbl_host') {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_host` ".
-                       "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
+                "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT `active` FROM `tbl_host`  WHERE `host_name`='$strConfigName' ".
-                       "AND `config_id`=".$this->intDomainId;
+                'AND `config_id`=' .$this->intDomainId;
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $strActive            = $this->myDBClass->getFieldData($strSQL2);
-        } elseif ($strTableName == "tbl_service") {
+        } elseif ($strTableName == 'tbl_service') {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_service` ".
-                       "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
+                "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT * FROM `$strTableName` WHERE `config_name`='$strConfigName' ".
-                       "AND `config_id`=".$this->intDomainId." AND `active`='1'";
+                'AND `config_id`=' .$this->intDomainId." AND `active`='1'";
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $intServiceCount      = $this->myDBClass->countRows($strSQL2);
             if ($intServiceCount != 0) {
@@ -146,14 +145,14 @@ class NagConfigClass
         if ($intRetVal2 == 0) {
             foreach ($arrConfigId as $intConfigId) {
                 // Get configuration file data
-                $this->getConfigValues($intConfigId, "target", $strTarget);
+                $this->getConfigValues($intConfigId, 'target', $strTarget);
                 // Get last change on dataset
-                if ($strTableName == "tbl_host") {
-                    $this->getConfigValues($intConfigId, "hostconfig", $strBaseDir);
-                } elseif ($strTableName == "tbl_service") {
-                    $this->getConfigValues($intConfigId, "serviceconfig", $strBaseDir);
+                if ($strTableName == 'tbl_host') {
+                    $this->getConfigValues($intConfigId, 'hostconfig', $strBaseDir);
+                } elseif ($strTableName == 'tbl_service') {
+                    $this->getConfigValues($intConfigId, 'serviceconfig', $strBaseDir);
                 }
-                $arrTimeData[$strTarget] = "unknown";
+                $arrTimeData[$strTarget] = 'unknown';
                 $intFileStampTemp        = -1;
                 // Get time data
                 $intReturn = $this->getFileDate(
@@ -166,11 +165,11 @@ class NagConfigClass
                 if (($intFileStampTemp == 0) && ($strActive == '1')) {
                     $intTimeInfo = 2;
                 }
-                if ((strtotime($arrTimeData['table']) > $intFileStampTemp) && ($strActive == '1')) {
+                if (($strActive == '1') && (strtotime($arrTimeData['table']) > $intFileStampTemp)) {
                     $intTimeInfo = 1;
                 }
             }
-            $intItems    = count($arrTimeData) - 1;
+            $intItems    = \count($arrTimeData) - 1;
             $intUnknown  = 0;
             $intUpToDate = 0;
             foreach ($arrTimeData as $key) {
@@ -190,7 +189,7 @@ class NagConfigClass
         } else {
             $intTimeInfo = 4;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -198,7 +197,7 @@ class NagConfigClass
      * @param array $arrConfigId                Configuration target IDs (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigTargets(&$arrConfigId)
+    public function getConfigTargets(&$arrConfigId): int
     {
         // Variable definition
         $arrData      = array();
@@ -206,7 +205,7 @@ class NagConfigClass
         $intDataCount = 0;
         $intReturn    = 1;
         // Request target ID
-        $strSQL    = "SELECT `targets` FROM `tbl_datadomain` WHERE `id`=".$this->intDomainId;
+        $strSQL    = 'SELECT `targets` FROM `tbl_datadomain` WHERE `id`=' .$this->intDomainId;
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
             foreach ($arrData as $elem) {
@@ -214,7 +213,7 @@ class NagConfigClass
             }
             $intReturn = 0;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -224,17 +223,17 @@ class NagConfigClass
      * @param string $strValue                  Configuration value (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigValues($intConfigId, $strConfigKey, &$strValue)
+    public function getConfigValues($intConfigId, $strConfigKey, &$strValue): int
     {
         // Define variables
         $intReturn = 1;
         // Read database
-        $strSQL    = "SELECT `".$strConfigKey."` FROM `tbl_configtarget` WHERE `id`=".$intConfigId;
+        $strSQL    = 'SELECT `' .$strConfigKey. '` FROM `tbl_configtarget` WHERE `id`=' .$intConfigId;
         $strValue  = $this->myDBClass->getFieldData($strSQL);
-        if ($strValue != "") {
+        if ($strValue != '') {
             $intReturn = 0;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -242,29 +241,29 @@ class NagConfigClass
      * @param int $intConfigId                  Configuration ID
      * @param string $strFile                   Configuration file name
      * @param string $strBaseDir                Base directory with configuration file
-     * @param int $intFileStamp                 File timestamp (by reference)
+     * @param int|bool $intFileStamp            File timestamp (by reference)
      * @param string $strTimeData               Human readable string of file time stamp (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getFileDate($intConfigId, $strFile, $strBaseDir, &$intFileStamp, &$strTimeData)
+    public function getFileDate($intConfigId, $strFile, $strBaseDir, &$intFileStamp, &$strTimeData): int
     {
         $strMethod  = 1;
         $intReturn  = 0;
         // Get configuration file data
-        $this->getConfigValues($intConfigId, "method", $strMethod);
-        $strTimeData  = "unknown";
+        $this->getConfigValues($intConfigId, 'method', $strMethod);
+        $strTimeData  = 'unknown';
         $intFileStamp = -1;
         // Lokal file system
-        if (($strMethod == 1) && (file_exists($strBaseDir."/".$strFile))) {
-            $intFileStamp        = filemtime($strBaseDir."/".$strFile);
-            $strTimeData = date("Y-m-d H:i:s", $intFileStamp);
+        if (($strMethod == 1) && file_exists($strBaseDir. '/' .$strFile)) {
+            $intFileStamp = filemtime($strBaseDir. '/' .$strFile);
+            $strTimeData = date('Y-m-d H:i:s', $intFileStamp);
         } elseif ($strMethod == 2) { // FTP file system
             // Check connection
             $intReturn = $this->getFTPConnection($intConfigId);
             if ($intReturn == 0) {
-                $intFileStamp = ftp_mdtm($this->resConnectId, $strBaseDir . "/" . $strFile);
+                $intFileStamp = ftp_mdtm($this->resConnectId, $strBaseDir . '/' . $strFile);
                 if ($intFileStamp != -1) {
-                    $strTimeData = date("Y-m-d H:i:s", $intFileStamp);
+                    $strTimeData = date('Y-m-d H:i:s', $intFileStamp);
                 }
             }
         } elseif ($strMethod == 3) { // SSH file system
@@ -274,17 +273,16 @@ class NagConfigClass
             $strFilePath = str_replace('//', '/', $strBaseDir.'/'.$strFile);
             $strCommand  = 'ls '.$strFilePath;
             $arrResult   =  array();
-            if (($intReturn == 0) && ($this->sendSSHCommand($strCommand, $arrResult) == 0)) {
-                if (isset($arrResult[0]) && ($arrResult[0] == $strFilePath)) {
-                    $arrInfo      = ssh2_sftp_stat($this->resSFTP, $strFilePath);
-                    $intFileStamp = $arrInfo['mtime'];
-                    if ($intFileStamp != -1) {
-                        $strTimeData = date("Y-m-d H:i:s", $intFileStamp);
-                    }
+            if (($intReturn == 0) && ($this->sendSSHCommand($strCommand, $arrResult) == 0) &&
+                isset($arrResult[0]) && ($arrResult[0] == $strFilePath)) {
+                $arrInfo      = ssh2_sftp_stat($this->resSFTP, $strFilePath);
+                $intFileStamp = $arrInfo['mtime'];
+                if ($intFileStamp != -1) {
+                    $strTimeData = date('Y-m-d H:i:s', $intFileStamp);
                 }
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -293,19 +291,20 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function getFTPConnection($intConfigID)
+    public function getFTPConnection($intConfigID): int
     {
         // Define variables
         $intReturn = 0;
+        $arrError  = array();
         // Already connected?
-        if (!isset($this->resConnectId) || !is_resource($this->resConnectId) || ($this->resConnectType != "FTP")) {
+        if (empty($this->resConnectId) || !\is_resource($this->resConnectId) || ($this->resConnectType != 'FTP')) {
             // Define variables
             $booLogin = false;
-            $this->getConfigValues($intConfigID, "server", $strServer);
-            $this->getConfigValues($intConfigID, "ftp_secure", $intFtpSecure);
+            $this->getConfigValues($intConfigID, 'server', $strServer);
+            $this->getConfigValues($intConfigID, 'ftp_secure', $intFtpSecure);
             // Set up basic connection
             $this->resConnectServer = $strServer;
-            $this->resConnectType = "FTP";
+            $this->resConnectType = 'FTP';
             // Secure FTP?
             if ($intFtpSecure == 1) {
                 $this->resConnectId = ftp_ssl_connect($strServer);
@@ -314,8 +313,8 @@ class NagConfigClass
             }
             // Login with username and password
             if ($this->resConnectId) {
-                $this->getConfigValues($intConfigID, "user", $strUser);
-                $this->getConfigValues($intConfigID, "password", $strPasswd);
+                $this->getConfigValues($intConfigID, 'user', $strUser);
+                $this->getConfigValues($intConfigID, 'password', $strPasswd);
                 $intErrorReporting = error_reporting();
                 error_reporting('0');
                 $booLogin = ftp_login($this->resConnectId, $strUser, $strPasswd);
@@ -335,15 +334,15 @@ class NagConfigClass
             // Check connection
             if ((!$this->resConnectId) || (!$booLogin)) {
                 $this->myDataClass->writeLog(translate('Connection to remote system failed (FTP connection):') .
-                    " " . $strServer);
+                    ' ' . $strServer);
                 $this->processClassMessage(translate('Connection to remote system failed (FTP connection):') .
-                    " <b>" . $strServer . "</b>::", $this->strErrorMessage);
-                if (isset($arrError) && ($arrError['message'] != "")) {
-                    $this->processClassMessage($arrError['message'] . "::", $this->strErrorMessage);
+                    ' <b>' . $strServer . '</b>::', $this->strErrorMessage);
+                if ($arrError !== null && ($arrError['message'] != '')) {
+                    $this->processClassMessage($arrError['message'] . '::', $this->strErrorMessage);
                 }
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -352,20 +351,21 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function getSSHConnection($intConfigID)
+    public function getSSHConnection($intConfigID): int
     {
         // Define variables
-        $intReturn = 0;
+        $intReturn       = 0;
+        $strPasswordNote = '';
         // Already connected?
-        if (!isset($this->resConnectId) || !is_resource($this->resConnectId) || ($this->resConnectType != "SSH")) {
+        if (empty($this->resConnectId) || !\is_resource($this->resConnectId) || ($this->resConnectType != 'SSH')) {
             // SSH Possible
-            if (!function_exists('ssh2_connect')) {
-                $this->processClassMessage(translate('SSH module not loaded!')."::", $this->strErrorMessage);
-                return(1);
+            if (!\function_exists('ssh2_connect')) {
+                $this->processClassMessage(translate('SSH module not loaded!'). '::', $this->strErrorMessage);
+                return 1;
             }
             // Define variables
             $booLogin = false;
-            $this->getConfigValues($intConfigID, "server", $strServer);
+            $this->getConfigValues($intConfigID, 'server', $strServer);
             $this->resConnectServer = $strServer;
             $this->resConnectType   = 'SSH';
             $intErrorReporting  = error_reporting();
@@ -376,42 +376,42 @@ class NagConfigClass
             // Check connection
             if ($this->resConnectId) {
                 // Login with username and password
-                $this->getConfigValues($intConfigID, "user", $strUser);
-                $this->getConfigValues($intConfigID, "password", $strPasswd);
-                $this->getConfigValues($intConfigID, "ssh_key_path", $strSSHKeyPath);
+                $this->getConfigValues($intConfigID, 'user', $strUser);
+                $this->getConfigValues($intConfigID, 'password', $strPasswd);
+                $this->getConfigValues($intConfigID, 'ssh_key_path', $strSSHKeyPath);
                 if ($strSSHKeyPath != '') {
                     $strPublicKey = str_replace('//', '/', $strSSHKeyPath.'/id_rsa.pub');
                     $strPrivatKey = str_replace('//', '/', $strSSHKeyPath.'/id_rsa');
                     // Check if ssh key file are readable
                     if (!file_exists($strPublicKey) || !is_readable($strPublicKey)) {
-                        $this->myDataClass->writeLog(translate('SSH public key does not exist or is not readable')." ".
-                            $strSSHKeyPath.$strPublicKey);
-                        $this->processClassMessage(translate('SSH public key does not exist or is not readable')." <b>".
-                            $strSSHKeyPath.$strPublicKey."</b>::", $this->strErrorMessage);
+                        $this->myDataClass->writeLog(translate('SSH public key does not exist or is not readable')
+                            . ' ' . $strSSHKeyPath.$strPublicKey);
+                        $this->processClassMessage(translate('SSH public key does not exist or is not readable')
+                            . ' <b>' . $strSSHKeyPath.$strPublicKey. '</b>::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                     if (!file_exists($strPrivatKey) || !is_readable($strPrivatKey)) {
-                        $this->myDataClass->writeLog(translate('SSH private key does not exist or is not readable')." ".
-                            $strPrivatKey);
-                        $this->processClassMessage(translate('SSH private key does not exist or is not readable')." ".
-                            $strPrivatKey."::", $this->strErrorMessage);
+                        $this->myDataClass->writeLog(translate('SSH private key does not exist or is not readable')
+                            . ' ' . $strPrivatKey);
+                        $this->processClassMessage(translate('SSH private key does not exist or is not readable'). ' ' .
+                            $strPrivatKey. '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                     $intErrorReporting  = error_reporting();
                     error_reporting(0);
-                    if ($strPasswd == "") {
+                    if ($strPasswd == '') {
                         $booLogin = ssh2_auth_pubkey_file(
                             $this->resConnectId,
                             $strUser,
-                            $strSSHKeyPath."/id_rsa.pub",
-                            $strSSHKeyPath."/id_rsa"
+                            $strSSHKeyPath. '/id_rsa.pub',
+                            $strSSHKeyPath. '/id_rsa'
                         );
                     } else {
                         $booLogin = ssh2_auth_pubkey_file(
                             $this->resConnectId,
                             $strUser,
-                            $strSSHKeyPath."/id_rsa.pub",
-                            $strSSHKeyPath."/id_rsa",
+                            $strSSHKeyPath. '/id_rsa.pub',
+                            $strSSHKeyPath. '/id_rsa',
                             $strPasswd
                         );
                     }
@@ -422,31 +422,31 @@ class NagConfigClass
                     error_reporting(0);
                     $booLogin        = ssh2_auth_password($this->resConnectId, $strUser, $strPasswd);
                     $arrError        = error_get_last();
-                    $strPasswordNote = "If you are using ssh2 with user/password - you have to enable ".
-                                       "PasswordAuthentication in your sshd_config";
+                    $strPasswordNote = 'If you are using ssh2 with user/password - you have to enable ' .
+                        'PasswordAuthentication in your sshd_config';
                     error_reporting($intErrorReporting);
                 }
             } else {
                 $this->myDataClass->writeLog(translate('Connection to remote system failed (SSH2 connection):').
-                    " ".$strServer);
+                    ' ' .$strServer);
                 $this->processClassMessage(translate('Connection to remote system failed (SSH2 connection):').
-                    " <b>".$strServer."</b>::", $this->strErrorMessage);
-                if ($arrError['message'] != "") {
-                    $this->processClassMessage($arrError['message']."::", $this->strErrorMessage);
+                    ' <b>' .$strServer. '</b>::', $this->strErrorMessage);
+                if ($arrError['message'] != '') {
+                    $this->processClassMessage($arrError['message']. '::', $this->strErrorMessage);
                 }
                 $intReturn = 1;
             }
             // Check connection
             if ((!$this->resConnectId) || (!$booLogin)) {
                 $this->myDataClass->writeLog(translate('Connection to remote system failed (SSH2 connection):').
-                    " ".$strServer);
+                    ' ' .$strServer);
                 $this->processClassMessage(translate('Connection to remote system failed (SSH2 connection):')
-                    ." ".$strServer."::", $this->strErrorMessage);
-                if ($arrError['message'] != "") {
-                    $this->processClassMessage($arrError['message']."::", $this->strErrorMessage);
+                    . ' ' .$strServer. '::', $this->strErrorMessage);
+                if ($arrError['message'] != '') {
+                    $this->processClassMessage($arrError['message']. '::', $this->strErrorMessage);
                 }
-                if (isset($strPasswordNote)) {
-                    $this->processClassMessage($strPasswordNote."::", $this->strErrorMessage);
+                if ($strPasswordNote !== null) {
+                    $this->processClassMessage($strPasswordNote. '::', $this->strErrorMessage);
                 }
                 $this->resConnectServer = '';
                 $this->resConnectType   = 'none';
@@ -457,7 +457,7 @@ class NagConfigClass
                 $this->resSFTP = ssh2_sftp($this->resConnectId);
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -467,7 +467,7 @@ class NagConfigClass
      * @param int $intLines                     Maximal length of output to read
      * @return int                              0 = successful / 1 = error
      */
-    public function sendSSHCommand($strCommand, &$arrResult, $intLines = 100)
+    public function sendSSHCommand($strCommand, &$arrResult, $intLines = 100): int
     {
         // Define variables
         $intCount1 = 0; // empty lines
@@ -476,7 +476,7 @@ class NagConfigClass
         $this->getConfigTargets($arrConfigSet);
         // Check connection
         $intReturn = $this->getSSHConnection($arrConfigSet[0]);
-        if (is_resource($this->resConnectId)) {
+        if (\is_resource($this->resConnectId)) {
             // Send command
             $resStream = ssh2_exec($this->resConnectId, $strCommand.'; echo __END__');
             if ($resStream) {
@@ -487,23 +487,23 @@ class NagConfigClass
                     $strLine = stream_get_line($resStream, 1024, "\n");
                     if ($strLine == '') {
                         $intCount1++;
-                    } elseif (substr_count($strLine, "__END__") != 1) {
+                    } elseif (substr_count($strLine, '__END__') != 1) {
                         $arrResult[] = $strLine;
                         $intReturn   = 0;
-                    } elseif (substr_count($strLine, "__END__") == 1) {
+                    } elseif (substr_count($strLine, '__END__') == 1) {
                         $booBreak = true;
                     }
                     $intCount2++;
                     $arrStatus = stream_get_meta_data($resStream);
-                } while ($resStream && !(feof($resStream)) && ($intCount1 <= 10) && ($intCount2 <= $intLines) &&
-                         ($arrStatus['timed_out'] != true) && $booBreak == false);
+                } while ($resStream && !feof($resStream) && ($intCount1 <= 10) && ($intCount2 <= $intLines) &&
+                ($arrStatus['timed_out'] != true) && $booBreak == false);
                 fclose($resStream);
                 // Close SSH connection because of timing problems
                 unset($this->resConnectId);
                 //sleep(1);
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -511,12 +511,12 @@ class NagConfigClass
      * @param string $strNewMessage             New message to add
      * @param string $strOldMessage             Modified message string (by reference)
      */
-    public function processClassMessage($strNewMessage, &$strOldMessage)
+    public function processClassMessage($strNewMessage, &$strOldMessage): void
     {
-        $strNewMessage = str_replace("::::", "::", $strNewMessage);
-        if (($strOldMessage != "") && ($strNewMessage != "") && (substr_count($strOldMessage, $strNewMessage) == 0)) {
+        $strNewMessage = str_replace('::::', '::', $strNewMessage);
+        if (($strOldMessage != '') && ($strNewMessage != '') && (substr_count($strOldMessage, $strNewMessage) == 0)) {
             $strOldMessage .= $strNewMessage;
-        } elseif ($strOldMessage == "") {
+        } elseif ($strOldMessage == '') {
             $strOldMessage .= $strNewMessage;
         }
     }
@@ -526,7 +526,7 @@ class NagConfigClass
      * @param array $arrConfigId                Configuration target IDs (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigSets(&$arrConfigId)
+    public function getConfigSets(&$arrConfigId): int
     {
         // Variable definition
         $arrData      = array();
@@ -534,7 +534,7 @@ class NagConfigClass
         $intDataCount = 0;
         $intReturn    = 1;
         // Request target ID
-        $strSQL    = "SELECT `targets` FROM `tbl_datadomain` WHERE `id`=".$this->intDomainId;
+        $strSQL    = 'SELECT `targets` FROM `tbl_datadomain` WHERE `id`=' .$this->intDomainId;
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0)) {
             foreach ($arrData as $elem) {
@@ -542,7 +542,7 @@ class NagConfigClass
             }
             $intReturn = 0;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -553,7 +553,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function moveFile($strType, $strName, $intConfigID)
+    public function moveFile($strType, $strName, $intConfigID): int
     {
         // Variable definitions
         $strConfigDir = '';
@@ -561,21 +561,21 @@ class NagConfigClass
         $intReturn    = 0;
         // Get directories
         switch ($strType) {
-            case "host":
-                $this->getConfigData($intConfigID, "hostconfig", $strConfigDir);
-                $this->getConfigData($intConfigID, "hostbackup", $strBackupDir);
+            case 'host':
+                $this->getConfigData($intConfigID, 'hostconfig', $strConfigDir);
+                $this->getConfigData($intConfigID, 'hostbackup', $strBackupDir);
                 break;
-            case "service":
-                $this->getConfigData($intConfigID, "serviceconfig", $strConfigDir);
-                $this->getConfigData($intConfigID, "servicebackup", $strBackupDir);
+            case 'service':
+                $this->getConfigData($intConfigID, 'serviceconfig', $strConfigDir);
+                $this->getConfigData($intConfigID, 'servicebackup', $strBackupDir);
                 break;
-            case "basic":
-                $this->getConfigData($intConfigID, "basedir", $strConfigDir);
-                $this->getConfigData($intConfigID, "backupdir", $strBackupDir);
+            case 'basic':
+                $this->getConfigData($intConfigID, 'basedir', $strConfigDir);
+                $this->getConfigData($intConfigID, 'backupdir', $strBackupDir);
                 break;
-            case "nagiosbasic":
-                $this->getConfigData($intConfigID, "nagiosbasedir", $strConfigDir);
-                $this->getConfigData($intConfigID, "backupdir", $strBackupDir);
+            case 'nagiosbasic':
+                $this->getConfigData($intConfigID, 'nagiosbasedir', $strConfigDir);
+                $this->getConfigData($intConfigID, 'backupdir', $strBackupDir);
                 break;
             default:
                 $intReturn = 1;
@@ -583,33 +583,35 @@ class NagConfigClass
         if ($intReturn == 0) {
             // Variable definition
             $intMethod          = 1;
-            $strDate            = date("YmdHis", time());
-            $strSourceFile      = $strConfigDir."/".$strName;
-            $strDestinationFile = $strBackupDir."/".$strName."_old_".$strDate;
+            $strDate            = date('YmdHis');
+            $strSourceFile      = $strConfigDir. '/' .$strName;
+            $strDestinationFile = $strBackupDir. '/' .$strName. '_old_' .$strDate;
             $booRetVal          = false;
             // Get connection method
-            $this->getConfigData($intConfigID, "method", $intMethod);
+            $this->getConfigData($intConfigID, 'method', $intMethod);
             // Local file system
             if ($intMethod == 1) {
                 // Save configuration file
-                if (file_exists($strSourceFile) && is_writable($strBackupDir) &&  is_writable($strConfigDir)) {
-                    copy($strSourceFile, $strDestinationFile);
-                    unlink($strSourceFile);
-                } elseif (!file_exists($strSourceFile)) {
-                    $this->processClassMessage(translate('Cannot backup the old file because the source file is '
-                            . 'missing - source file: ') . $strSourceFile . "::", $this->strErrorMessage);
-                    $intReturn = 1;
+                if (file_exists($strSourceFile)) {
+                    if (is_writable($strBackupDir) && is_writable($strConfigDir)) {
+                        copy($strSourceFile, $strDestinationFile);
+                        unlink($strSourceFile);
+                    } else {
+                        $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
+                                .'wrong - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
+                        $intReturn = 1;
+                    }
                 } else {
-                    $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                            .'wrong - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
+                    $this->processClassMessage(translate('Cannot backup the old file because the source file is '
+                            . 'missing - source file: ') . $strSourceFile . '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 2) { // Remote file (FTP)
                 // Check connection
                 $intReturn = $this->getFTPConnection($intConfigID);
                 if ($intReturn == 0) {
-                    $strSourceFile      = str_replace("//", "/", $strSourceFile);
-                    $strDestinationFile = str_replace("//", "/", $strDestinationFile);
+                    $strSourceFile      = str_replace('//', '/', $strSourceFile);
+                    $strDestinationFile = str_replace('//', '/', $strDestinationFile);
                     // Save configuration file
                     $intFileStamp = ftp_mdtm($this->resConnectId, $strSourceFile);
                     if ($intFileStamp > -1) {
@@ -619,13 +621,13 @@ class NagConfigClass
                         error_reporting($intErrorReporting);
                     } else {
                         $this->processClassMessage(translate('Cannot backup the old file because the source file is '
-                                .'missing (remote FTP) - source file: '). $strSourceFile."::", $this->strErrorMessage);
+                                .'missing (remote FTP) - source file: '). $strSourceFile. '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                        .'wrong (remote FTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
+                            .'wrong (remote FTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 3) { // Remote file (SFTP)
@@ -633,8 +635,8 @@ class NagConfigClass
                 $intReturn = $this->getSSHConnection($intConfigID);
                 // Save configuration file
                 $arrResult          = array();
-                $strSourceFile      = str_replace("//", "/", $strSourceFile);
-                $strDestinationFile = str_replace("//", "/", $strDestinationFile);
+                $strSourceFile      = str_replace('//', '/', $strSourceFile);
+                $strDestinationFile = str_replace('//', '/', $strDestinationFile);
                 $strCommand         = 'ls '.$strSourceFile;
                 if (($intReturn == 0) && ($this->sendSSHCommand($strCommand, $arrResult) == 0)) {
                     if (isset($arrResult[0]) && $arrResult[0] == $strSourceFile) {
@@ -644,18 +646,18 @@ class NagConfigClass
                         }
                     } else {
                         $this->processClassMessage(translate('Cannot backup the old file because the source file is '
-                            .'missing (remote SFTP) - source file: '). $strSourceFile."::", $this->strErrorMessage);
+                                .'missing (remote SFTP) - source file: '). $strSourceFile. '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                        .'wrong (remote SFTP) - destination file: ').$strDestinationFile."::", $this->strErrorMessage);
+                            .'wrong (remote SFTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -665,26 +667,28 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function removeFile($strFileName, $intConfigID)
+    public function removeFile($strFileName, $intConfigID): int
     {
         // Variable definitions
         $intMethod = 1;
         $intReturn = 0;
         $booRetVal = false;
         // Get connection method
-        $this->getConfigData($intConfigID, "method", $intMethod);
+        $this->getConfigData($intConfigID, 'method', $intMethod);
         // Local file system
         if ($intMethod == 1) {
             // Save configuration file
-            if (file_exists($strFileName) && is_writable($strFileName)) {
-                unlink($strFileName);
-            } elseif (!file_exists($strFileName)) {
+            if (file_exists($strFileName)) {
+                if (is_writable($strFileName)) {
+                    unlink($strFileName);
+                } else {
+                    $this->processClassMessage(translate('Cannot delete the file (wrong permissions)!').'::'.
+                        $strFileName. '::', $this->strErrorMessage);
+                    $intReturn = 1;
+                }
+            } else {
                 $this->processClassMessage(translate('Cannot delete the file (file does not exist)!').'::'.
-                    $strFileName."::", $this->strErrorMessage);
-                $intReturn = 1;
-            } elseif (!is_writable($strFileName)) {
-                $this->processClassMessage(translate('Cannot delete the file (wrong permissions)!').'::'.
-                    $strFileName."::", $this->strErrorMessage);
+                    $strFileName. '::', $this->strErrorMessage);
                 $intReturn = 1;
             }
         } elseif ($intMethod == 2) { // Remote file (FTP)
@@ -700,13 +704,13 @@ class NagConfigClass
                     error_reporting($intErrorReporting);
                 } else {
                     $this->processClassMessage(translate('Cannot delete file because it does not exists (remote '
-                            . 'FTP)!')."::", $this->strErrorMessage);
+                            . 'FTP)!'). '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
             if ($booRetVal == false) {
                 $this->processClassMessage(translate('Cannot delete file because the permissions are incorrect '
-                        . '(remote FTP)!')."::", $this->strErrorMessage);
+                        . '(remote FTP)!'). '::', $this->strErrorMessage);
                 $intReturn = 1;
             }
         } elseif ($intMethod == 3) { // Remote file (SFTP)
@@ -718,17 +722,17 @@ class NagConfigClass
                     $booRetVal = ssh2_sftp_unlink($this->resSFTP, $strFileName);
                 } else {
                     $this->processClassMessage(translate('Cannot delete file because it does not exists (remote '
-                            . 'SSH/SFTP)!')."::", $this->strErrorMessage);
+                            . 'SSH/SFTP)!'). '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
             if (($intReturn == 0) && ($booRetVal == false)) {
                 $this->processClassMessage(translate('Cannot delete file because the permissions are incorrect '
-                        . '(remote SSH/SFTP)!')."::", $this->strErrorMessage);
+                        . '(remote SSH/SFTP)!'). '::', $this->strErrorMessage);
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -738,15 +742,15 @@ class NagConfigClass
      * @param string $strValue                  Configuration value (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigData($intConfigId, $strConfigItem, &$strValue)
+    public function getConfigData($intConfigId, $strConfigItem, &$strValue): int
     {
         $intReturn = 1;
-        $strSQL   = "SELECT `".$strConfigItem."` FROM `tbl_configtarget` WHERE `id` = ".$intConfigId;
+        $strSQL   = 'SELECT `' .$strConfigItem. '` FROM `tbl_configtarget` WHERE `id` = ' .$intConfigId;
         $strValue = $this->myDBClass->getFieldData($strSQL);
-        if ($strValue != "") {
+        if ($strValue != '') {
             $intReturn = 0;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -754,7 +758,7 @@ class NagConfigClass
      * @param string $strPath                   Physical path
      * @return int                              0 = successful / 1 = error
      */
-    public function isDirWriteable($strPath)
+    public function isDirWriteable($strPath): int
     {
         // Define variables
         $intReturnFile = 1;
@@ -762,7 +766,7 @@ class NagConfigClass
         $intReturn     = 1;
         // Is input path a file?
         if (file_exists($strPath) && is_file($strPath)) {
-            $resFile = fopen($strPath, 'a');
+            $resFile = fopen($strPath, 'ab');
             if ($resFile) {
                 $intReturnFile = 0;
             }
@@ -770,25 +774,25 @@ class NagConfigClass
             $intReturnFile = 0;
         }
         if (is_file($strPath)) {
-            $strDirectory = dirname($strPath);
+            $strDirectory = \dirname($strPath);
         } else {
             $strDirectory = $strPath;
         }
-        $strFile = $strDirectory.'/'.uniqid(mt_rand()).'.tmp';
+        $strFile = $strDirectory.'/'.uniqid(mt_rand(), true).'.tmp';
         // Check writing in directory directly
-        if (is_dir($strDirectory) && is_writeable($strDirectory)) {
-            $resFile = fopen($strFile, 'w');
+        if (is_dir($strDirectory) && is_writable($strDirectory)) {
+            $resFile = fopen($strFile, 'wb');
             if ($resFile) {
                 $intReturnDir = 0;
                 unlink($strFile);
             }
-        } elseif (!is_dir($strDirectory)) {
+        } else {
             $intReturnDir = 0;
         }
         if (($intReturnDir == 0) && ($intReturnFile == 0)) {
             $intReturn = 0;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -800,14 +804,14 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function remoteFileCopy($strFileRemote, $intConfigID, $strFileLocal, $intDirection = 0)
+    public function remoteFileCopy($strFileRemote, $intConfigID, $strFileLocal, $intDirection = 0): int
     {
         // Variable definitions
         $intMethod = 3;
         $intReturn = 0;
         $arrTemp   = array();
         // Get method
-        $this->getConfigData($intConfigID, "method", $intMethod);
+        $this->getConfigData($intConfigID, 'method', $intMethod);
         if ($intMethod == 2) {
             // Check connection
             $intReturn = $this->getFTPConnection($intConfigID);
@@ -816,7 +820,7 @@ class NagConfigClass
                 error_reporting(0);
                 if (!ftp_get($this->resConnectId, $strFileLocal, $strFileRemote, FTP_ASCII)) {
                     $this->processClassMessage(translate('Cannot get the remote file (it does not exist or is not '
-                            . 'readable) - remote file: '). $strFileRemote."::", $this->strErrorMessage);
+                            . 'readable) - remote file: '). $strFileRemote. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
                 error_reporting($intErrorReporting);
@@ -825,7 +829,7 @@ class NagConfigClass
                 error_reporting(0);
                 if (!ftp_put($this->resConnectId, $strFileRemote, $strFileLocal, FTP_ASCII)) {
                     $this->processClassMessage(translate('Cannot write the remote file (remote file is not writeable)'
-                            . '- remote file: ').$strFileRemote."::", $this->strErrorMessage);
+                            . '- remote file: ').$strFileRemote. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
                 error_reporting($intErrorReporting);
@@ -838,12 +842,12 @@ class NagConfigClass
                 $intErrorReporting = error_reporting();
                 error_reporting(0);
                 if (!ssh2_scp_recv($this->resConnectId, $strFileRemote, $strFileLocal)) {
-                    if (($this->sendSSHCommand('ls ' . $strFileRemote, $arrTemp) != 0)) {
+                    if ($this->sendSSHCommand('ls ' . $strFileRemote, $arrTemp) != 0) {
                         $this->processClassMessage(translate('Cannot get the remote file (it does not exist or is not '
-                                . 'readable) - remote file: ') .$strFileRemote. "::", $this->strErrorMessage);
+                                . 'readable) - remote file: ') .$strFileRemote. '::', $this->strErrorMessage);
                     } else {
                         $this->processClassMessage(translate('Remote file is not readable - remote file: ')
-                                . $strFileRemote. "::", $this->strErrorMessage);
+                            . $strFileRemote. '::', $this->strErrorMessage);
                     }
                     $intReturn = 1;
                 }
@@ -854,19 +858,19 @@ class NagConfigClass
                     error_reporting(0);
                     if (!ssh2_scp_send($this->resConnectId, $strFileLocal, $strFileRemote, 0644)) {
                         $this->processClassMessage(translate('Cannot write a remote file (remote file is not writeable)'
-                            .' - remote file: '). $strFileRemote . "::", $this->strErrorMessage);
+                                .' - remote file: '). $strFileRemote . '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                     error_reporting($intErrorReporting);
                 } else {
                     $this->processClassMessage(translate('Cannot copy a local file to remote because the local file '.
                             'does not exist or is not readable - local file: ').
-                            $strFileLocal . "::", $this->strErrorMessage);
+                        $strFileLocal . '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -877,15 +881,17 @@ class NagConfigClass
      * @param array $arrOutput                  Output array (by reference)
      * @param string $strErrorMessage           Error messages (by reference)
      */
-    public function storeDirToArray($strSourceDir, $strIncPattern, $strExcPattern, &$arrOutput, &$strErrorMessage)
+    public function storeDirToArray($strSourceDir, $strIncPattern, $strExcPattern, &$arrOutput, &$strErrorMessage): void
     {
-        while (substr($strSourceDir, -1) == "/" or substr($strSourceDir, -1) == "\\") {
+        // Define variables
+        $arrDir = array();
+        while (substr($strSourceDir, -1) == '/' or substr($strSourceDir, -1) == "\\") {
             $strSourceDir = substr($strSourceDir, 0, -1);
         }
         $resHandle = opendir($strSourceDir);
         if ($resHandle === false) {
             if ($this->intDomainId != 0) {
-                $strErrorMessage .= translate('Could not open directory').": ".$strSourceDir;
+                $strErrorMessage .= translate('Could not open directory'). ': ' .$strSourceDir;
             }
         } else {
             $booBreak = true;
@@ -897,23 +903,23 @@ class NagConfigClass
             closedir($resHandle);
             sort($arrDir);
             foreach ($arrDir as $file) {
-                if (!preg_match("/^\.{1,2}/", $file) && strlen($file)) {
-                    if (is_dir($strSourceDir."/".$file)) {
+                if ('' !== $file && !preg_match("/^\.{1,2}/", $file)) {
+                    if (is_dir($strSourceDir. '/' .$file)) {
                         $this->storeDirToArray(
-                            $strSourceDir."/".$file,
+                            $strSourceDir. '/' .$file,
                             $strIncPattern,
                             $strExcPattern,
                             $arrOutput,
                             $strErrorMessage
                         );
                     } else {
-                        if (preg_match("/".$strIncPattern."/", $file) && (($strExcPattern == "") ||
-                                !preg_match("/".$strExcPattern."/", $file))) {
-                            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                                $strSourceDir=str_replace("/", "\\", $strSourceDir);
+                        if (preg_match('/' .$strIncPattern. '/', $file) && (($strExcPattern == '') ||
+                                !preg_match('/' .$strExcPattern. '/', $file))) {
+                            if (0 === stripos(PHP_OS, 'WIN')) {
+                                $strSourceDir=str_replace('/', "\\", $strSourceDir);
                                 $arrOutput [] = $strSourceDir."\\".$file;
                             } else {
-                                $arrOutput [] = $strSourceDir."/".$file;
+                                $arrOutput [] = $strSourceDir. '/' .$file;
                             }
                         }
                     }
@@ -947,25 +953,25 @@ class NagConfigClass
         }
         // Get table times
         $arrTimeData          = array();
-        $arrTimeData['table'] = "unknown";
+        $arrTimeData['table'] = 'unknown';
         // Clear status cache
         clearstatcache();
-        $intRetVal1 = $this->getDomainData("enable_common", $intEnableCommon);
+        $intRetVal1 = $this->getDomainData('enable_common', $intEnableCommon);
         // Get last change of date table
         if ($intRetVal1 == 0) {
             $strSQLAdd = '';
             if ($intEnableCommon == 1) {
-                $strSQLAdd = "OR `domainId`=0";
+                $strSQLAdd = 'OR `domainId`=0';
             }
-            $strSQL = "SELECT `updateTime` FROM `tbl_tablestatus` "
-                    . "WHERE (`domainId`=".$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
-                    . "ORDER BY `updateTime` DESC LIMIT 1";
+            $strSQL = 'SELECT `updateTime` FROM `tbl_tablestatus` '
+                . 'WHERE (`domainId`=' .$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
+                . 'ORDER BY `updateTime` DESC LIMIT 1';
             $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
             if ($booReturn && isset($arrDataset['updateTime'])) {
                 $arrTimeData['table'] = $arrDataset['updateTime'];
             } else {
-                $strSQL = "SELECT `last_modified` FROM `".$strTableName."` "
-                    . "WHERE `config_id`=".$this->intDomainId." ORDER BY `last_modified` DESC LIMIT 1";
+                $strSQL = 'SELECT `last_modified` FROM `' .$strTableName. '` '
+                    . 'WHERE `config_id`=' .$this->intDomainId. ' ORDER BY `last_modified` DESC LIMIT 1';
                 $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
                 if (($booReturn == true) && isset($arrDataset['last_modified'])) {
                     $arrTimeData['table'] = $arrDataset['last_modified'];
@@ -981,8 +987,8 @@ class NagConfigClass
         if ($intRetVal2 == 0) {
             foreach ($arrConfigId as $intConfigId) {
                 // Get configuration file data
-                $this->getConfigData($intConfigId, "target", $strTarget);
-                $this->getConfigData($intConfigId, "basedir", $strBaseDir);
+                $this->getConfigData($intConfigId, 'target', $strTarget);
+                $this->getConfigData($intConfigId, 'basedir', $strBaseDir);
                 // Get time data
                 $intReturn = $this->getFileDate(
                     $intConfigId,
@@ -991,10 +997,8 @@ class NagConfigClass
                     $intFileStampTemp,
                     $arrTimeData[$strTarget]
                 );
-                if ($intFileStampTemp != 0) {
-                    if (strtotime($arrTimeData['table']) > $intFileStampTemp) {
-                        $strCheckConfig = translate('Warning: configuration file is out of date!');
-                    }
+                if ($intFileStampTemp != 0 && strtotime($arrTimeData['table']) > $intFileStampTemp) {
+                    $strCheckConfig = translate('Warning: configuration file is out of date!');
                 }
                 if ($arrTimeData[$strTarget] == 'unknown') {
                     $strCheckConfig = translate('Warning: configuration file is out of date!');
@@ -1003,7 +1007,7 @@ class NagConfigClass
         } else {
             $strCheckConfig = translate('Warning: no configuration target defined!');
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1015,30 +1019,30 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function createConfig($strTableName, $intMode = 0)
+    public function createConfig($strTableName, $intMode = 0): int
     {
         // Define Variables
         $intReturn     = 0;
         // Do not create configs in common domain
         if ($this->intDomainId == 0) {
             $this->processClassMessage(translate('It is not possible to write config files directly from the common '
-                    . 'domain!')."::", $this->strErrorMessage);
+                    . 'domain!'). '::', $this->strErrorMessage);
             $intReturn = 1;
         }
         if ($intReturn == 0) {
             // Get configuration targets
             $this->getConfigSets($arrConfigID);
-            if (($arrConfigID != 1) && is_array($arrConfigID)) {
+            if (($arrConfigID != 1) && \is_array($arrConfigID)) {
                 foreach ($arrConfigID as $intConfigID) {
                     $intReturn = $this->writeConfTemplate($intConfigID, $strTableName, $intMode);
                 }
             } else {
                 $this->processClassMessage(translate('Warning: no configuration target defined!').
-                    "::", $this->strErrorMessage);
+                    '::', $this->strErrorMessage);
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1051,16 +1055,16 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function createConfigSingle($strTableName, $intDbId = 0, $intMode = 0)
+    public function createConfigSingle($strTableName, $intDbId = 0, $intMode = 0): int
     {
         // Define Variables
         $arrData            = array();
         $intDataCount       = 0;
         $setEnableCommon    = 0;
         $intReturn          = 0;
-        $strDomainWhere     = " (`config_id`=".$this->intDomainId.") ";
+        $strDomainWhere     = ' (`config_id`=' .$this->intDomainId. ') ';
         // Read some settings and informations
-        $this->getDomainData("enable_common", $setEnableCommon);
+        $this->getDomainData('enable_common', $setEnableCommon);
         // Variable rewritting
         if ($setEnableCommon != 0) {
             $strDomainWhere = str_replace(')', ' OR `config_id`=0)', $strDomainWhere);
@@ -1068,26 +1072,27 @@ class NagConfigClass
         // Do not create configs in common domain
         if ($this->intDomainId == 0) {
             $this->processClassMessage(translate('It is not possible to write config files directly from the common '
-                    . 'domain!')."::", $this->strErrorMessage);
+                    . 'domain!'). '::', $this->strErrorMessage);
             $intReturn = 1;
         }
         if ($intReturn == 0) {
             if ($intDbId == 0) {
-                $strSQL = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' ORDER BY `id`";
+                $strSQL = 'SELECT * FROM `' .$strTableName."` WHERE $strDomainWhere AND `active`='1' ORDER BY `id`";
             } else {
-                $strSQL = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' AND `id`=$intDbId";
+                $strSQL = 'SELECT * FROM `' .$strTableName."` WHERE $strDomainWhere AND `active`='1' AND `id`=$intDbId";
             }
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
             if (($booReturn != false) && ($intDataCount != 0)) {
+                /** @noinspection ForeachInvariantsInspection */
                 for ($i = 0; $i < $intDataCount; $i++) {
                     // Process form POST variable
-                    $strChbName = "chbId_".$arrData[$i]['id'];
+                    $strChbName = 'chbId_' .$arrData[$i]['id'];
                     // Check if this POST variable exists or the data ID parameter matches
-                    if ((filter_input(INPUT_POST, $strChbName) !== null) || (($intDbId != 0) &&
-                            ($intDbId == $arrData[$i]['id']))) {
+                    if ((($intDbId != 0) && ($intDbId == $arrData[$i]['id'])) ||
+                        (filter_input(INPUT_POST, $strChbName) !== null)) {
                         // Get configuration targets
                         $this->getConfigSets($arrConfigID);
-                        if (($arrConfigID != 1) && is_array($arrConfigID)) {
+                        if (($arrConfigID != 1) && \is_array($arrConfigID)) {
                             foreach ($arrConfigID as $intConfigID) {
                                 $intReturn = $this->writeConfTemplate(
                                     $intConfigID,
@@ -1099,7 +1104,7 @@ class NagConfigClass
                             }
                         } else {
                             $this->processClassMessage(translate('Warning: no configuration target defined!').
-                                "::", $this->strErrorMessage);
+                                '::', $this->strErrorMessage);
                             $intReturn = 1;
                         }
                     }
@@ -1108,11 +1113,11 @@ class NagConfigClass
                 $this->myDataClass->writeLog(translate('Writing of the configuration failed - no dataset or not '
                     . 'activated dataset found'));
                 $this->processClassMessage(translate('Writing of the configuration failed - no dataset or not '
-                        . 'activated dataset found')."::", $this->strErrorMessage);
+                        . 'activated dataset found'). '::', $this->strErrorMessage);
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
 
@@ -1123,7 +1128,7 @@ class NagConfigClass
      * @return array                            filename (configuration file name)
      *                                          order_field (database order field)
      */
-    public function getConfData()
+    public function getConfData(): array
     {
         $arrConfData['tbl_timeperiod']        = array('filename' => 'timeperiods.cfg',
             'order_field' => 'timeperiod_name');
@@ -1155,7 +1160,7 @@ class NagConfigClass
             'order_field' => 'host_name');
         $arrConfData['tbl_serviceextinfo']    = array('filename' => 'serviceextinfo.cfg',
             'order_field' => 'host_name');
-        return($arrConfData);
+        return $arrConfData;
     }
 
     /**
@@ -1170,20 +1175,21 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    private function writeConfTemplate($intConfigID, $strTableName, $intMode, $arrTableData = array(), $intID = 0)
+    /** @noinspection ArrayTypeOfParameterByDefaultValueInspection */
+    private function writeConfTemplate($intConfigID, $strTableName, $intMode, $arrTableData = array(), $intID = 0): int
     {
         // Variable definitions
         $strSQL         = '';
         $strOrderField  = '';
         $strFileString  = '';
         $arrTplOptions  = array('use_preg' => false);
-        $strDomainWhere = " (`config_id`=" . $this->intDomainId . ") ";
+        $strDomainWhere = ' (`config_id`=' . $this->intDomainId . ') ';
         $intType        = 0;
         $intReturn      = 0;
         // Read some settings and informations
-        $this->getConfigData($intConfigID, "utf8_decode", $setUTF8Decode);
-        $this->getDomainData("enable_common", $setEnableCommon);
-        $this->getConfigData($intConfigID, "version", $intNagiosVersion);
+        $this->getConfigData($intConfigID, 'utf8_decode', $setUTF8Decode);
+        $this->getDomainData('enable_common', $setEnableCommon);
+        $this->getConfigData($intConfigID, 'version', $intNagiosVersion);
         $arrConfigData = $this->getConfData();
         if (isset($arrConfigData[$strTableName])) {
             $strFileString = str_replace('.cfg', '', $arrConfigData[$strTableName]['filename']);
@@ -1194,51 +1200,53 @@ class NagConfigClass
             $strDomainWhere = str_replace(')', ' OR `config_id`=0)', $strDomainWhere);
         }
         // Special processing for table host and service
-        $setTemplate = $strFileString.".tpl.dat";
+        $setTemplate = $strFileString. '.tpl.dat';
         if (($strTableName == 'tbl_host') || ($strTableName == 'tbl_service')) {
             // Define variable names based on table name
             switch ($strTableName) {
-                case "tbl_host":
+                case 'tbl_host':
                     $strFileString = $arrTableData[$intID]['host_name'];
                     $intDomainId   = $arrTableData[$intID]['config_id'];
-                    $setTemplate   = "hosts.tpl.dat";
+                    $setTemplate   = 'hosts.tpl.dat';
                     $intType       = 1;
-                    $strSQL        = "SELECT * FROM `" . $strTableName . "` WHERE `host_name`='$strFileString' "
+                    $strSQL        = 'SELECT * FROM `' . $strTableName . "` WHERE `host_name`='$strFileString' "
                         . "AND `active`='1' AND `config_id`=$intDomainId";
                     break;
-                case "tbl_service":
+                case 'tbl_service':
                     $strFileString = $arrTableData[$intID]['config_name'];
                     $intDomainId   = $arrTableData[$intID]['config_id'];
-                    $setTemplate   = "services.tpl.dat";
+                    $setTemplate   = 'services.tpl.dat';
                     $intType       = 2;
-                    $strSQL        = "SELECT * FROM `" . $strTableName . "` WHERE `config_name`='$strFileString' "
+                    $strSQL        = 'SELECT * FROM `' . $strTableName . "` WHERE `config_name`='$strFileString' "
                         . "AND `active`='1' AND `config_id`=$intDomainId ORDER BY `service_description`";
                     break;
             }
         } else {
-            $strSQL  = "SELECT * FROM `".$strTableName."` WHERE $strDomainWhere AND `active`='1' ".
-                       "ORDER BY `".$strOrderField."`";
+            $strSQL  = 'SELECT * FROM `' .$strTableName."` WHERE $strDomainWhere AND `active`='1' ".
+                'ORDER BY `' .$strOrderField. '`';
         }
-        $strFile     = $strFileString.".cfg";
+        $strFile     = $strFileString. '.cfg';
         // Load configuration template file
-        $tplConf = new \HTML_Template_IT($this->arrSettings['path']['base_path']."/templates/files/");
+        $tplConf = new \HTML_Template_IT($this->arrSettings['path']['base_path']. '/templates/files/');
         $tplConf->loadTemplatefile($setTemplate, true, true);
         $tplConf->setOptions($arrTplOptions);
-        $tplConf->setVariable("CREATE_DATE", date("Y-m-d H:i:s", time()));
-        $tplConf->setVariable("NAGIOS_QL_VERSION", $this->arrSettings['db']['version']);
-        $tplConf->setVariable("VERSION", $this->getVersionString($intConfigID));
+        $tplConf->setVariable('CREATE_DATE', date('Y-m-d H:i:s'));
+        $tplConf->setVariable('NAGIOS_QL_VERSION', $this->arrSettings['db']['version']);
+        $tplConf->setVariable('VERSION', $this->getVersionString($intConfigID));
         // Write data from configuration table
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
-        if (($booReturn) && ($intDataCount != 0) && ($strFileString != '')) {
+        if ($booReturn && ($intDataCount != 0) && ($strFileString != '')) {
             // Process every data set
+            /** @noinspection ForeachInvariantsInspection */
             for ($i = 0; $i < $intDataCount; $i++) {
                 $intDataId = 0;
+                /** @noinspection ForeachSourceInspection */
                 foreach ($arrData[$i] as $key => $value) {
-                    if ($key == "id") {
+                    if ($key == 'id') {
                         $intDataId = $value;
                     }
-                    if ($key == "config_name") {
-                        $key = "#NAGIOSQL_CONFIG_NAME";
+                    if ($key == 'config_name') {
+                        $key = '#NAGIOSQL_CONFIG_NAME';
                     }
                     // UTF8 decoded vaules
                     if ($setUTF8Decode == 1) {
@@ -1255,61 +1263,62 @@ class NagConfigClass
                     // Inset data field
                     if ($intSkip != 1) {
                         // Insert fill spaces
-                        $strFillLen = (30-strlen($key));
-                        $strSpace = " ";
+                        $strFillLen = (30- \strlen($key));
+                        $strSpace = ' ';
                         for ($f = 0; $f < $strFillLen; $f++) {
-                            $strSpace .= " ";
+                            $strSpace .= ' ';
                         }
                         // Write key and value to template
-                        $tplConf->setVariable("ITEM_TITLE", $key.$strSpace);
+                        $tplConf->setVariable('ITEM_TITLE', $key.$strSpace);
                         // Short values
-                        if ((strlen($value) < 800) || ($intNagiosVersion != 3)) {
-                            $tplConf->setVariable("ITEM_VALUE", $value);
-                            $tplConf->parse("configline");
+                        if (($intNagiosVersion != 3) || (\strlen($value) < 800)) {
+                            $tplConf->setVariable('ITEM_VALUE', $value);
+                            $tplConf->parse('configline');
                         } else { // Long values
-                            $arrValueTemp = explode(",", $value);
-                            $strValueNew  = "";
-                            $intArrCount  = count($arrValueTemp);
+                            $arrValueTemp = explode(',', $value);
+                            $strValueNew  = '';
+                            $intArrCount  = \count($arrValueTemp);
                             $intCounter   = 0;
-                            $strSpace     = " ";
+                            $strSpace     = ' ';
                             for ($f = 0; $f < 30; $f++) {
-                                $strSpace .= " ";
+                                $strSpace .= ' ';
                             }
                             foreach ($arrValueTemp as $elem) {
-                                if (strlen($strValueNew) < 800) {
-                                    $strValueNew .= $elem.",";
+                                if (\strlen($strValueNew) < 800) {
+                                    $strValueNew .= $elem. ',';
                                 } else {
-                                    if (substr($strValueNew, -1) == ",") {
+                                    if (substr($strValueNew, -1) == ',') {
                                         $strValueNew = substr($strValueNew, 0, -1);
                                     }
                                     if ($intCounter < $intArrCount) {
-                                        $strValueNew = $strValueNew.",\\";
-                                        $tplConf->setVariable("ITEM_VALUE", $strValueNew);
-                                        $tplConf->parse("configline");
-                                        $tplConf->setVariable("ITEM_TITLE", $strSpace);
+                                        $strValueNew .= ",\\";
+                                        $tplConf->setVariable('ITEM_VALUE', $strValueNew);
+                                        $tplConf->parse('configline');
+                                        $tplConf->setVariable('ITEM_TITLE', $strSpace);
                                     } else {
-                                        $tplConf->setVariable("ITEM_VALUE", $strValueNew);
-                                        $tplConf->parse("configline");
-                                        $tplConf->setVariable("ITEM_TITLE", $strSpace);
+                                        $tplConf->setVariable('ITEM_VALUE', $strValueNew);
+                                        $tplConf->parse('configline');
+                                        $tplConf->setVariable('ITEM_TITLE', $strSpace);
                                     }
-                                    $strValueNew = $elem.",";
+                                    $strValueNew = $elem. ',';
                                 }
                                 $intCounter++;
                             }
-                            if ($strValueNew != "") {
-                                if (substr($strValueNew, -1) == ",") {
+                            if ($strValueNew != '') {
+                                if (substr($strValueNew, -1) == ',') {
                                     $strValueNew = substr($strValueNew, 0, -1);
                                 }
-                                $tplConf->setVariable("ITEM_VALUE", $strValueNew);
-                                $tplConf->parse("configline");
+                                $tplConf->setVariable('ITEM_VALUE', $strValueNew);
+                                $tplConf->parse('configline');
                             }
                         }
                     }
                 }
                 // Special processing for time periods
-                if ($strTableName == "tbl_timeperiod") {
-                    $strSQLTime = "SELECT `definition`, `range` "
-                        . "FROM `tbl_timedefinition` WHERE `tipId` = ".$arrData[$i]['id'];
+                if ($strTableName == 'tbl_timeperiod') {
+                    $arrDataTime = array();
+                    $strSQLTime = 'SELECT `definition`, `range` '
+                        . 'FROM `tbl_timedefinition` WHERE `tipId` = ' .$arrData[$i]['id'];
                     $booReturn  = $this->myDBClass->hasDataArray($strSQLTime, $arrDataTime, $intDataCountTime);
                     if ($booReturn && $intDataCountTime != 0) {
                         foreach ($arrDataTime as $data) {
@@ -1317,36 +1326,36 @@ class NagConfigClass
                             if ($intNagiosVersion < 3) {
                                 $arrWeekdays = array('monday','tuesday','wednesday','thursday','friday','saturday',
                                     'sunday');
-                                if (!in_array($data['definition'], $arrWeekdays)) {
+                                if (!\in_array($data['definition'], $arrWeekdays, true)) {
                                     continue;
                                 }
                             }
                             // Insert fill spaces
-                            $strFillLen = (30-strlen($data['definition']));
-                            $strSpace = " ";
+                            $strFillLen = (30- \strlen($data['definition']));
+                            $strSpace = ' ';
                             for ($f = 0; $f < $strFillLen; $f++) {
-                                $strSpace .= " ";
+                                $strSpace .= ' ';
                             }
                             // Write key and value
-                            $tplConf->setVariable("ITEM_TITLE", $data['definition'].$strSpace);
-                            $tplConf->setVariable("ITEM_VALUE", $data['range']);
-                            $tplConf->parse("configline");
+                            $tplConf->setVariable('ITEM_TITLE', $data['definition'].$strSpace);
+                            $tplConf->setVariable('ITEM_VALUE', $data['range']);
+                            $tplConf->parse('configline');
                         }
                     }
                 }
                 // Write configuration set
-                $tplConf->parse("configset");
+                $tplConf->parse('configset');
             }
-        } elseif (($booReturn) && ($intDataCount == 0) && ($strFileString != '')) {
+        } elseif ($booReturn && ($intDataCount == 0) && ($strFileString != '')) {
             $this->processClassMessage(translate('Error while selecting data from database:')
-                ."::", $this->strErrorMessage);
+                . '::', $this->strErrorMessage);
             $this->processClassMessage($this->myDBClass->strErrorMessage, $this->strErrorMessage);
             $intReturn = 1;
         } else {
             $this->myDataClass->writeLog(translate('Writing of the configuration failed - no dataset '
                 . 'or not activated dataset found'));
             $this->processClassMessage(translate('Writing of the configuration failed - no dataset '
-                    . 'or not activated dataset found')."::", $this->strErrorMessage);
+                    . 'or not activated dataset found'). '::', $this->strErrorMessage);
             $intReturn = 1;
         }
         if ($intMode == 0) {
@@ -1366,7 +1375,7 @@ class NagConfigClass
         } elseif ($intMode == 1) {
             $tplConf->show();
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1374,21 +1383,21 @@ class NagConfigClass
      * @param int $intConfigID                  Configuration target ID
      * @return string                           Version string
      */
-    private function getVersionString($intConfigID)
+    private function getVersionString($intConfigID): string
     {
         $arrVersion = array(
-            "Nagios 2.x config file",
-            "Nagios 2.9 config file",
-            "Nagios 3.x config file",
-            "Nagios 4.x config file"
+            'Nagios 2.x config file',
+            'Nagios 2.9 config file',
+            'Nagios 3.x config file',
+            'Nagios 4.x config file'
         );
-        $this->getConfigData($intConfigID, "version", $intVersion);
-        if (($intVersion >= 1) && ($intVersion <= count($arrVersion))) {
+        $this->getConfigData($intConfigID, 'version', $intVersion);
+        if (($intVersion >= 1) && ($intVersion <= \count($arrVersion))) {
             $strVersion = $arrVersion[$intVersion - 1];
         } else {
             $strVersion = '';
         }
-        return($strVersion);
+        return $strVersion;
     }
 
     /**
@@ -1399,143 +1408,142 @@ class NagConfigClass
      * @param string $value                     Data value
      * @return int
      */
-    private function skipEntries($strTableName, $intVersionValue, $key, &$value)
+    private function skipEntries($strTableName, $intVersionValue, $key, &$value): int
     {
         // Define variables
         $arrOption = array();
         $intReturn = 0;
         // Skip common fields
-        $strSpecial  = "id,active,last_modified,access_rights,access_group,config_id,template,nodelete,command_type,";
-        $strSpecial .= "import_hash";
+        $strSpecial  = 'id,active,last_modified,access_rights,access_group,config_id,template,nodelete,command_type,';
+        $strSpecial .= 'import_hash';
 
         // Skip fields of special tables
-        if ($strTableName == "tbl_hosttemplate") {
-            $strSpecial .= ",parents_tploptions,hostgroups_tploptions,contacts_tploptions";
-            $strSpecial .= ",contact_groups_tploptions,use_template_tploptions";
+        if ($strTableName == 'tbl_hosttemplate') {
+            $strSpecial .= ',parents_tploptions,hostgroups_tploptions,contacts_tploptions';
+            $strSpecial .= ',contact_groups_tploptions,use_template_tploptions';
         }
-        if ($strTableName == "tbl_servicetemplate") {
-            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,parents_tploptions,contacts_tploptions";
-            $strSpecial .= ",servicegroups_tploptions,contact_groups_tploptions,use_template_tploptions";
+        if ($strTableName == 'tbl_servicetemplate') {
+            $strSpecial .= ',host_name_tploptions,hostgroup_name_tploptions,parents_tploptions,contacts_tploptions';
+            $strSpecial .= ',servicegroups_tploptions,contact_groups_tploptions,use_template_tploptions';
         }
-        if ($strTableName == "tbl_contact") {
-            $strSpecial .= ",use_template_tploptions,contactgroups_tploptions";
-            $strSpecial .= ",host_notification_commands_tploptions,service_notification_commands_tploptions";
+        if ($strTableName == 'tbl_contact') {
+            $strSpecial .= ',use_template_tploptions,contactgroups_tploptions';
+            $strSpecial .= ',host_notification_commands_tploptions,service_notification_commands_tploptions';
         }
-        if ($strTableName == "tbl_contacttemplate") {
-            $strSpecial .= ",use_template_tploptions,contactgroups_tploptions";
-            $strSpecial .= ",host_notification_commands_tploptions,service_notification_commands_tploptions";
+        if ($strTableName == 'tbl_contacttemplate') {
+            $strSpecial .= ',use_template_tploptions,contactgroups_tploptions';
+            $strSpecial .= ',host_notification_commands_tploptions,service_notification_commands_tploptions';
         }
-        if ($strTableName == "tbl_host") {
-            $strSpecial .= ",parents_tploptions,hostgroups_tploptions,contacts_tploptions";
-            $strSpecial .= ",contact_groups_tploptions,use_template_tploptions";
+        if ($strTableName == 'tbl_host') {
+            $strSpecial .= ',parents_tploptions,hostgroups_tploptions,contacts_tploptions';
+            $strSpecial .= ',contact_groups_tploptions,use_template_tploptions';
         }
-        if ($strTableName == "tbl_service") {
-            $strSpecial .= ",host_name_tploptions,hostgroup_name_tploptions,parents_tploptions";
-            $strSpecial .= ",servicegroups_tploptions,contacts_tploptions,contact_groups_tploptions";
-            $strSpecial .= ",use_template_tploptions";
+        if ($strTableName == 'tbl_service') {
+            $strSpecial .= ',host_name_tploptions,hostgroup_name_tploptions,parents_tploptions';
+            $strSpecial .= ',servicegroups_tploptions,contacts_tploptions,contact_groups_tploptions';
+            $strSpecial .= ',use_template_tploptions';
         }
 
         // Pass fields based on nagios version lower than 3.x
         if ($intVersionValue < 3) {
-            if ($strTableName == "tbl_timeperiod") {
-                $strSpecial .= ",use_template,exclude,name";
+            if ($strTableName == 'tbl_timeperiod') {
+                $strSpecial .= ',use_template,exclude,name';
             }
-            if (($strTableName == "tbl_contact") || ($strTableName == "tbl_contacttemplate")) {
-                $strSpecial .= ",host_notifications_enabled,service_notifications_enabled,can_submit_commands";
-                $strSpecial .= ",retain_status_information,retain_nonstatus_information";
-                $arrOption['host_notification_options']    = ",s";
-                $arrOption['service_notification_options'] = ",s";
+            if (($strTableName == 'tbl_contact') || ($strTableName == 'tbl_contacttemplate')) {
+                $strSpecial .= ',host_notifications_enabled,service_notifications_enabled,can_submit_commands';
+                $strSpecial .= ',retain_status_information,retain_nonstatus_information';
+                $arrOption['host_notification_options']    = ',s';
+                $arrOption['service_notification_options'] = ',s';
             }
-            if ($strTableName == "tbl_contactgroup") {
-                $strSpecial .= ",contactgroup_members";
+            if ($strTableName == 'tbl_contactgroup') {
+                $strSpecial .= ',contactgroup_members';
             }
-            if ($strTableName == "tbl_hostgroup") {
-                $strSpecial .= ",hostgroup_members,notes,notes_url,action_url";
+            if ($strTableName == 'tbl_hostgroup') {
+                $strSpecial .= ',hostgroup_members,notes,notes_url,action_url';
             }
-            if ($strTableName == "tbl_servicegroup") {
-                $strSpecial .= ",servicegroup_members,notes,notes_url,action_url";
+            if ($strTableName == 'tbl_servicegroup') {
+                $strSpecial .= ',servicegroup_members,notes,notes_url,action_url';
             }
-            if ($strTableName == "tbl_hostdependency") {
-                $strSpecial .= ",dependent_hostgroup_name,hostgroup_name,dependency_period";
+            if ($strTableName == 'tbl_hostdependency') {
+                $strSpecial .= ',dependent_hostgroup_name,hostgroup_name,dependency_period';
             }
-            if ($strTableName == "tbl_hostescalation") {
-                $strSpecial .= ",contacts";
+            if ($strTableName == 'tbl_hostescalation') {
+                $strSpecial .= ',contacts';
             }
-            if ($strTableName == "tbl_servicedependency") {
-                $strSpecial .= ",dependent_hostgroup_name,hostgroup_name,dependency_period,dependent_servicegroup_name";
-                $strSpecial .= ",servicegroup_name";
+            if ($strTableName == 'tbl_servicedependency') {
+                $strSpecial .= ',dependent_hostgroup_name,hostgroup_name,dependency_period,dependent_servicegroup_name';
+                $strSpecial .= ',servicegroup_name';
             }
-            if ($strTableName == "tbl_serviceescalation") {
-                $strSpecial .= ",hostgroup_name,contacts,servicegroup_name";
+            if ($strTableName == 'tbl_serviceescalation') {
+                $strSpecial .= ',hostgroup_name,contacts,servicegroup_name';
             }
-            if (($strTableName == "tbl_host") || ($strTableName == "tbl_hosttemplate")) {
-                $strSpecial .= ",initial_state,flap_detection_options,contacts,notes,notes_url,action_url";
-                $strSpecial .= ",icon_image,icon_image_alt,vrml_image,statusmap_image,2d_coords,3d_coords";
-                $arrOption['notification_options'] = ",s";
+            if (($strTableName == 'tbl_host') || ($strTableName == 'tbl_hosttemplate')) {
+                $strSpecial .= ',initial_state,flap_detection_options,contacts,notes,notes_url,action_url';
+                $strSpecial .= ',icon_image,icon_image_alt,vrml_image,statusmap_image,2d_coords,3d_coords';
+                $arrOption['notification_options'] = ',s';
             }
             // Services
-            if (($strTableName == "tbl_service") || ($strTableName == "tbl_servicetemplate")) {
-                $strSpecial .= ",initial_state,flap_detection_options,contacts,notes,notes_url,action_url";
-                $strSpecial .= ",icon_image,icon_image_alt";
-                $arrOption['notification_options'] = ",s";
+            if (($strTableName == 'tbl_service') || ($strTableName == 'tbl_servicetemplate')) {
+                $strSpecial .= ',initial_state,flap_detection_options,contacts,notes,notes_url,action_url';
+                $strSpecial .= ',icon_image,icon_image_alt';
+                $arrOption['notification_options'] = ',s';
             }
         }
         // Pass fields based on nagios version higher than 2.x
         if ($intVersionValue > 2) {
-            if ($strTableName == "tbl_servicetemplate") {
-                $strSpecial .= ",parallelize_check ";
+            if ($strTableName == 'tbl_servicetemplate') {
+                $strSpecial .= ',parallelize_check ';
             }
-            if ($strTableName == "tbl_service") {
-                $strSpecial .= ",parallelize_check";
+            if ($strTableName == 'tbl_service') {
+                $strSpecial .= ',parallelize_check';
             }
         }
         // Pass fields based on nagios version lower than 4.x
         if ($intVersionValue < 4) {
-            if (($strTableName == "tbl_contact") || ($strTableName == "tbl_contacttemplate")) {
-                $strSpecial .= ",minimum_importance";
+            if (($strTableName == 'tbl_contact') || ($strTableName == 'tbl_contacttemplate')) {
+                $strSpecial .= ',minimum_importance';
             }
-            if ($strTableName == "tbl_host") {
-                $strSpecial .= ",importance";
+            if ($strTableName == 'tbl_host') {
+                $strSpecial .= ',importance';
             }
-            if (($strTableName == "tbl_service") || ($strTableName == "tbl_servicetemplate")) {
-                $strSpecial .= ",importance,parents";
+            if (($strTableName == 'tbl_service') || ($strTableName == 'tbl_servicetemplate')) {
+                $strSpecial .= ',importance,parents';
             }
         }
         if ($intVersionValue == 1) {
-            $strSpecial .= "";
+            $strSpecial .= '';
         }
         // Reduce option values
-        if ((count($arrOption) != 0) && array_key_exists($key, $arrOption)) {
-            $value = str_replace($arrOption[$key], '', $value);
-            $value = str_replace(str_replace(',', '', $arrOption[$key]), '', $value);
+        if (array_key_exists($key, $arrOption) && (\count($arrOption) != 0)) {
+            $value = str_replace(array($arrOption[$key], str_replace(',', '', $arrOption[$key])), '', $value);
             if ($value == '') {
                 $intReturn = 1;
             }
         }
         if ($intReturn == 0) {
             // Skip entries
-            $arrSpecial = explode(",", $strSpecial);
-            if (($value == "") || (in_array($key, $arrSpecial))) {
+            $arrSpecial = explode(',', $strSpecial);
+            if (($value == '') || \in_array($key, $arrSpecial, true)) {
                 $intReturn = 1;
             }
         }
         if ($intReturn == 0) {
             // Do not write config data (based on 'skip' option)
-            $strNoTwo  = "active_checks_enabled,passive_checks_enabled,obsess_over_host,check_freshness,";
-            $strNoTwo .= "event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,";
-            $strNoTwo .= "retain_nonstatus_information,notifications_enabled,parallelize_check,is_volatile,";
-            $strNoTwo .= "host_notifications_enabled,service_notifications_enabled,can_submit_commands,";
-            $strNoTwo .= "obsess_over_service";
-            foreach (explode(",", $strNoTwo) as $elem) {
-                if (($key == $elem) && ($value == "2")) {
+            $strNoTwo  = 'active_checks_enabled,passive_checks_enabled,obsess_over_host,check_freshness,';
+            $strNoTwo .= 'event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,';
+            $strNoTwo .= 'retain_nonstatus_information,notifications_enabled,parallelize_check,is_volatile,';
+            $strNoTwo .= 'host_notifications_enabled,service_notifications_enabled,can_submit_commands,';
+            $strNoTwo .= 'obsess_over_service';
+            foreach (explode(',', $strNoTwo) as $elem) {
+                if (($key == $elem) && ($value == '2')) {
                     $intReturn = 1;
                 }
-                if (($intVersionValue < 3) && ($key == $elem) && ($value == "3")) {
+                if (($intVersionValue < 3) && ($key == $elem) && ($value == '3')) {
                     $intReturn = 1;
                 }
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1548,7 +1556,7 @@ class NagConfigClass
      * @return int                              0 = use data / 1 = skip data
      *                                          Status message is stored in message class variables
      */
-    private function getRelationData($strTableName, $resTemplate, $arrData, $strDataKey, &$strDataValue)
+    private function getRelationData($strTableName, $resTemplate, $arrData, $strDataKey, &$strDataValue): int
     {
         // Define Variables
         $intReturn    = 0;
@@ -1567,17 +1575,17 @@ class NagConfigClass
             $arrRelations = $this->arrRelData;
             $intReturn   = 0;
         }
-        if (($intSkipProc == 0) && (!is_array($arrRelations)) && (count($arrRelations) == 0)) {
+        if (($intSkipProc == 0) && (!\is_array($arrRelations)) && (\count($arrRelations) == 0)) {
             $intSkipProc = 1;
             $intReturn   = 1;
         }
         if ($intSkipProc == 0) {
             // Common domain is enabled?
-            $this->getDomainData("enable_common", $intCommonEnable);
+            $this->getDomainData('enable_common', $intCommonEnable);
             if ($intCommonEnable == 1) {
-                $strDomainWhere1 = " (`config_id`=" . $this->intDomainId . " OR `config_id`=0) ";
+                $strDomainWhere1 = ' (`config_id`=' . $this->intDomainId . ' OR `config_id`=0) ';
             } else {
-                $strDomainWhere1 = " `config_id`=" . $this->intDomainId . " ";
+                $strDomainWhere1 = ' `config_id`=' . $this->intDomainId . ' ';
             }
             // Process relations
             foreach ($arrRelations as $elem) {
@@ -1602,14 +1610,14 @@ class NagConfigClass
                         $intReturn = $this->processRelation6($arrData, $strDataValue, $elem, $strDomainWhere1);
                         // Process "*"
                     } elseif ($strDataValue == 2) {
-                        $strDataValue = "*";
+                        $strDataValue = '*';
                     } else {
                         $intReturn = 1;
                     }
                 }
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1621,337 +1629,333 @@ class NagConfigClass
      * @param string $value                     Data value (by reference)
      * @param int $intSkip                      Skip value (by reference) 1 = skip / 0 = pass
      */
-    private function renameFields($strTableName, $intConfigID, $intDataId, &$key, &$value, &$intSkip)
+    private function renameFields($strTableName, $intConfigID, $intDataId, &$key, &$value, &$intSkip): void
     {
         if ($this->intNagVersion == 0) {
-            $this->getConfigData($intConfigID, "version", $this->intNagVersion);
+            $this->getConfigData($intConfigID, 'version', $this->intNagVersion);
         }
         // Picture path
-        if ($this->strPicPath == "none") {
-            $this->getConfigData($intConfigID, "picturedir", $this->strPicPath);
+        if ($this->strPicPath == 'none') {
+            $this->getConfigData($intConfigID, 'picturedir', $this->strPicPath);
         }
-        if ($key == "icon_image") {
+        if ($key == 'icon_image') {
             $value = $this->strPicPath.$value;
         }
-        if ($key == "vrml_image") {
+        if ($key == 'vrml_image') {
             $value = $this->strPicPath.$value;
         }
-        if ($key == "statusmap_image") {
+        if ($key == 'statusmap_image') {
             $value = $this->strPicPath.$value;
         }
         // Tables
-        if ($strTableName == "tbl_host") {
-            if ($key == "use_template") {
-                $key = "use";
+        if ($strTableName == 'tbl_host') {
+            if ($key == 'use_template') {
+                $key = 'use';
             }
-            $strVIValues  = "active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,";
-            $strVIValues .= "event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,";
-            $strVIValues .= "retain_nonstatus_information,notifications_enabled";
-            if (in_array($key, explode(",", $strVIValues))) {
+            $strVIValues  = 'active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,';
+            $strVIValues .= 'event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,';
+            $strVIValues .= 'retain_nonstatus_information,notifications_enabled';
+            if (\in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
-                    $value = "null";
+                    $value = 'null';
                 }
                 if ($value == 3) {
-                    $value = "null";
+                    $value = 'null';
                 }
             }
-            if ($key == "parents") {
-                $value = $this->checkTpl($value, "parents_tploptions", "tbl_host", $intDataId, $intSkip);
+            if ($key == 'parents') {
+                $value = $this->checkTpl($value, 'parents_tploptions', 'tbl_host', $intDataId, $intSkip);
             }
-            if ($key == "hostgroups") {
-                $value = $this->checkTpl($value, "hostgroups_tploptions", "tbl_host", $intDataId, $intSkip);
+            if ($key == 'hostgroups') {
+                $value = $this->checkTpl($value, 'hostgroups_tploptions', 'tbl_host', $intDataId, $intSkip);
             }
-            if ($key == "contacts") {
-                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_host", $intDataId, $intSkip);
+            if ($key == 'contacts') {
+                $value = $this->checkTpl($value, 'contacts_tploptions', 'tbl_host', $intDataId, $intSkip);
             }
-            if ($key == "contact_groups") {
-                $value = $this->checkTpl($value, "contact_groups_tploptions", "tbl_host", $intDataId, $intSkip);
+            if ($key == 'contact_groups') {
+                $value = $this->checkTpl($value, 'contact_groups_tploptions', 'tbl_host', $intDataId, $intSkip);
             }
-            if ($key == "use") {
-                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_host", $intDataId, $intSkip);
+            if ($key == 'use') {
+                $value = $this->checkTpl($value, 'use_template_tploptions', 'tbl_host', $intDataId, $intSkip);
             }
-            if ($key == "check_command") {
+            if ($key == 'check_command') {
                 $value = str_replace("\::bang::", "\!", $value);
             }
-            if ($key == "check_command") {
-                $value = str_replace("::bang::", "\!", $value);
+            if ($key == 'check_command') {
+                $value = str_replace('::bang::', "\!", $value);
             }
         }
-        if ($strTableName == "tbl_service") {
-            if ($key == "use_template") {
-                $key = "use";
+        if ($strTableName == 'tbl_service') {
+            if ($key == 'use_template') {
+                $key = 'use';
             }
             if (($this->intNagVersion != 3) && ($this->intNagVersion != 2)) {
-                if ($key == "check_interval") {
-                    $key = "normal_check_interval";
+                if ($key == 'check_interval') {
+                    $key = 'normal_check_interval';
                 }
-                if ($key == "retry_interval") {
-                    $key = "retry_check_interval";
+                if ($key == 'retry_interval') {
+                    $key = 'retry_check_interval';
                 }
             }
-            $strVIValues  = "is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,";
-            $strVIValues .= "obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,";
-            $strVIValues .= "process_perf_data,retain_status_information,retain_nonstatus_information,";
-            $strVIValues .= "notifications_enabled";
-            if (in_array($key, explode(",", $strVIValues))) {
+            $strVIValues  = 'is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,';
+            $strVIValues .= 'obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,';
+            $strVIValues .= 'process_perf_data,retain_status_information,retain_nonstatus_information,';
+            $strVIValues .= 'notifications_enabled';
+            if (\in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
-                    $value = "null";
+                    $value = 'null';
                 }
                 if ($value == 3) {
-                    $value = "null";
+                    $value = 'null';
                 }
             }
-            if ($key == "host_name") {
-                $value = $this->checkTpl($value, "host_name_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'host_name') {
+                $value = $this->checkTpl($value, 'host_name_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "hostgroup_name") {
-                $value = $this->checkTpl($value, "hostgroup_name_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'hostgroup_name') {
+                $value = $this->checkTpl($value, 'hostgroup_name_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "parents") {
-                $value = $this->checkTpl($value, "parents_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'parents') {
+                $value = $this->checkTpl($value, 'parents_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "servicegroups") {
-                $value = $this->checkTpl($value, "servicegroups_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'servicegroups') {
+                $value = $this->checkTpl($value, 'servicegroups_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "contacts") {
-                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'contacts') {
+                $value = $this->checkTpl($value, 'contacts_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "contact_groups") {
-                $value = $this->checkTpl($value, "contact_groups_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'contact_groups') {
+                $value = $this->checkTpl($value, 'contact_groups_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "use") {
-                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_service", $intDataId, $intSkip);
+            if ($key == 'use') {
+                $value = $this->checkTpl($value, 'use_template_tploptions', 'tbl_service', $intDataId, $intSkip);
             }
-            if ($key == "check_command") {
+            if ($key == 'check_command') {
                 $value = str_replace("\::bang::", "\!", $value);
             }
-            if ($key == "check_command") {
-                $value = str_replace("::bang::", "\!", $value);
+            if ($key == 'check_command') {
+                $value = str_replace('::bang::', "\!", $value);
             }
         }
-        if ($strTableName == "tbl_hosttemplate") {
-            if ($key == "template_name") {
-                $key = "name";
+        if ($strTableName == 'tbl_hosttemplate') {
+            if ($key == 'template_name') {
+                $key = 'name';
             }
-            if ($key == "use_template") {
-                $key = "use";
+            if ($key == 'use_template') {
+                $key = 'use';
             }
-            $strVIValues  = "active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,";
-            $strVIValues .= "event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,";
-            $strVIValues .= "retain_nonstatus_information,notifications_enabled";
-            if (in_array($key, explode(",", $strVIValues))) {
+            $strVIValues  = 'active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,';
+            $strVIValues .= 'event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,';
+            $strVIValues .= 'retain_nonstatus_information,notifications_enabled';
+            if (\in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
-                    $value = "null";
+                    $value = 'null';
                 }
                 if ($value == 3) {
-                    $value = "null";
+                    $value = 'null';
                 }
             }
-            if ($key == "parents") {
-                $value = $this->checkTpl($value, "parents_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            if ($key == 'parents') {
+                $value = $this->checkTpl($value, 'parents_tploptions', 'tbl_hosttemplate', $intDataId, $intSkip);
             }
-            if ($key == "hostgroups") {
-                $value = $this->checkTpl($value, "hostgroups_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            if ($key == 'hostgroups') {
+                $value = $this->checkTpl($value, 'hostgroups_tploptions', 'tbl_hosttemplate', $intDataId, $intSkip);
             }
-            if ($key == "contacts") {
-                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            if ($key == 'contacts') {
+                $value = $this->checkTpl($value, 'contacts_tploptions', 'tbl_hosttemplate', $intDataId, $intSkip);
             }
-            if ($key == "contact_groups") {
-                $value = $this->checkTpl($value, "contact_groups_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            if ($key == 'contact_groups') {
+                $value = $this->checkTpl($value, 'contact_groups_tploptions', 'tbl_hosttemplate', $intDataId, $intSkip);
             }
-            if ($key == "use") {
-                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_hosttemplate", $intDataId, $intSkip);
+            if ($key == 'use') {
+                $value = $this->checkTpl($value, 'use_template_tploptions', 'tbl_hosttemplate', $intDataId, $intSkip);
             }
         }
-        if ($strTableName == "tbl_servicetemplate") {
-            if ($key == "template_name") {
-                $key = "name";
+        if ($strTableName == 'tbl_servicetemplate') {
+            if ($key == 'template_name') {
+                $key = 'name';
             }
-            if ($key == "use_template") {
-                $key = "use";
+            if ($key == 'use_template') {
+                $key = 'use';
             }
             if (($this->intNagVersion != 3) && ($this->intNagVersion != 2)) {
-                if ($key == "check_interval") {
-                    $key = "normal_check_interval";
+                if ($key == 'check_interval') {
+                    $key = 'normal_check_interval';
                 }
-                if ($key == "retry_interval") {
-                    $key = "retry_check_interval";
+                if ($key == 'retry_interval') {
+                    $key = 'retry_check_interval';
                 }
             }
-            $strVIValues  = "is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,";
-            $strVIValues .= "obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,";
-            $strVIValues .= "process_perf_data,retain_status_information,retain_nonstatus_information,";
-            $strVIValues .= "notifications_enabled";
-            if (in_array($key, explode(",", $strVIValues))) {
+            $strVIValues  = 'is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,';
+            $strVIValues .= 'obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,';
+            $strVIValues .= 'process_perf_data,retain_status_information,retain_nonstatus_information,';
+            $strVIValues .= 'notifications_enabled';
+            if (\in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
-                    $value = "null";
+                    $value = 'null';
                 }
                 if ($value == 3) {
-                    $value = "null";
+                    $value = 'null';
                 }
             }
-            if ($key == "host_name") {
-                $value = $this->checkTpl($value, "host_name_tploptions", "tbl_servicetemplate", $intDataId, $intSkip);
+            if ($key == 'host_name') {
+                $value = $this->checkTpl($value, 'host_name_tploptions', 'tbl_servicetemplate', $intDataId, $intSkip);
             }
-            if ($key == "hostgroup_name") {
+            if ($key == 'hostgroup_name') {
                 $value = $this->checkTpl(
                     $value,
-                    "hostgroup_name_tploptions",
-                    "tbl_servicetemplate",
+                    'hostgroup_name_tploptions',
+                    'tbl_servicetemplate',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "parents") {
-                $value = $this->checkTpl($value, "parents_tploptions", "tbl_servicetemplate", $intDataId, $intSkip);
+            if ($key == 'parents') {
+                $value = $this->checkTpl($value, 'parents_tploptions', 'tbl_servicetemplate', $intDataId, $intSkip);
             }
-            if ($key == "servicegroups") {
+            if ($key == 'servicegroups') {
                 $value = $this->checkTpl(
                     $value,
-                    "servicegroups_tploptions",
-                    "tbl_servicetemplate",
+                    'servicegroups_tploptions',
+                    'tbl_servicetemplate',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "contacts") {
-                $value = $this->checkTpl($value, "contacts_tploptions", "tbl_servicetemplate", $intDataId, $intSkip);
+            if ($key == 'contacts') {
+                $value = $this->checkTpl($value, 'contacts_tploptions', 'tbl_servicetemplate', $intDataId, $intSkip);
             }
-            if ($key == "contact_groups") {
+            if ($key == 'contact_groups') {
                 $value = $this->checkTpl(
                     $value,
-                    "contact_groups_tploptions",
-                    "tbl_servicetemplate",
+                    'contact_groups_tploptions',
+                    'tbl_servicetemplate',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "use") {
+            if ($key == 'use') {
                 $value = $this->checkTpl(
                     $value,
-                    "use_template_tploptions",
-                    "tbl_servicetemplate",
+                    'use_template_tploptions',
+                    'tbl_servicetemplate',
                     $intDataId,
                     $intSkip
                 );
             }
         }
-        if ($strTableName == "tbl_contact") {
-            if ($key == "use_template") {
-                $key = "use";
+        if ($strTableName == 'tbl_contact') {
+            if ($key == 'use_template') {
+                $key = 'use';
             }
-            $strVIValues  = "host_notifications_enabled,service_notifications_enabled,can_submit_commands,";
-            $strVIValues .= "retain_status_information,retain_nonstatus_information";
-            if (in_array($key, explode(",", $strVIValues))) {
+            $strVIValues  = 'host_notifications_enabled,service_notifications_enabled,can_submit_commands,';
+            $strVIValues .= 'retain_status_information,retain_nonstatus_information';
+            if (\in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
-                    $value = "null";
+                    $value = 'null';
                 }
                 if ($value == 3) {
-                    $value = "null";
+                    $value = 'null';
                 }
             }
-            if ($key == "contactgroups") {
-                $value = $this->checkTpl($value, "contactgroups_tploptions", "tbl_contact", $intDataId, $intSkip);
+            if ($key == 'contactgroups') {
+                $value = $this->checkTpl($value, 'contactgroups_tploptions', 'tbl_contact', $intDataId, $intSkip);
             }
-            if ($key == "host_notification_commands") {
+            if ($key == 'host_notification_commands') {
                 $value = $this->checkTpl(
                     $value,
-                    "host_notification_commands_tploptions",
-                    "tbl_contact",
+                    'host_notification_commands_tploptions',
+                    'tbl_contact',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "service_notification_commands") {
+            if ($key == 'service_notification_commands') {
                 $value = $this->checkTpl(
                     $value,
-                    "service_notification_commands_tploptions",
-                    "tbl_contact",
+                    'service_notification_commands_tploptions',
+                    'tbl_contact',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "use") {
-                $value = $this->checkTpl($value, "use_template_tploptions", "tbl_contact", $intDataId, $intSkip);
+            if ($key == 'use') {
+                $value = $this->checkTpl($value, 'use_template_tploptions', 'tbl_contact', $intDataId, $intSkip);
             }
         }
-        if ($strTableName == "tbl_contacttemplate") {
-            if ($key == "template_name") {
-                $key = "name";
+        if ($strTableName == 'tbl_contacttemplate') {
+            if ($key == 'template_name') {
+                $key = 'name';
             }
-            if ($key == "use_template") {
-                $key = "use";
+            if ($key == 'use_template') {
+                $key = 'use';
             }
-            $strVIValues  = "host_notifications_enabled,service_notifications_enabled,can_submit_commands,";
-            $strVIValues .= "retain_status_information,retain_nonstatus_information";
-            if (in_array($key, explode(",", $strVIValues))) {
+            $strVIValues  = 'host_notifications_enabled,service_notifications_enabled,can_submit_commands,';
+            $strVIValues .= 'retain_status_information,retain_nonstatus_information';
+            if (\in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
-                    $value = "null";
+                    $value = 'null';
                 }
                 if ($value == 3) {
-                    $value = "null";
+                    $value = 'null';
                 }
             }
-            if ($key == "contactgroups") {
+            if ($key == 'contactgroups') {
                 $value = $this->checkTpl(
                     $value,
-                    "contactgroups_tploptions",
-                    "tbl_contacttemplate",
+                    'contactgroups_tploptions',
+                    'tbl_contacttemplate',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "host_notification_commands") {
+            if ($key == 'host_notification_commands') {
                 $value = $this->checkTpl(
                     $value,
-                    "host_notification_commands_tploptions",
-                    "tbl_contacttemplate",
+                    'host_notification_commands_tploptions',
+                    'tbl_contacttemplate',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "service_notification_commands") {
+            if ($key == 'service_notification_commands') {
                 $value = $this->checkTpl(
                     $value,
-                    "service_notification_commands_tploptions",
-                    "tbl_contacttemplate",
+                    'service_notification_commands_tploptions',
+                    'tbl_contacttemplate',
                     $intDataId,
                     $intSkip
                 );
             }
-            if ($key == "use") {
+            if ($key == 'use') {
                 $value = $this->checkTpl(
                     $value,
-                    "use_template_tploptions",
-                    "tbl_contacttemplate",
+                    'use_template_tploptions',
+                    'tbl_contacttemplate',
                     $intDataId,
                     $intSkip
                 );
             }
         }
-        if (($strTableName == "tbl_hosttemplate") || ($strTableName == "tbl_servicetemplate") ||
-            ($strTableName == "tbl_contacttemplate")) {
-            if ($key == "register") {
-                $value = "0";
-            }
+        if ((($strTableName == 'tbl_hosttemplate') || ($strTableName == 'tbl_servicetemplate') ||
+                ($strTableName == 'tbl_contacttemplate')) && $key == 'register') {
+            $value = '0';
         }
-        if ($strTableName == "tbl_timeperiod") {
-            if ($key == "use_template") {
-                $key = "use";
-            }
+        if ($strTableName == 'tbl_timeperiod' && $key == 'use_template') {
+            $key = 'use';
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  Help function: Open configuration file
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  $strFile            -> File name
-    //  $intConfigID        -> Configuration ID
-    //  $intType            -> Type ID
-    //  $resConfigFile      -> Temporary or configuration file ressource (return value)
-    //  $strConfigFile      -> Configuration file name  (return value)
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    private function getConfigFile($strFile, $intConfigID, $intType, &$resConfigFile, &$strConfigFile)
+    /**
+     * Open configuration file
+     * @param string $strFile                   File name
+     * @param int $intConfigID                  Configuration ID
+     * @param int $intType                      Type ID
+     * @param resource|bool $resConfigFile      Temporary or configuration file ressource (by reference)
+     * @param string $strConfigFile             Configuration file name (by reference)
+     * @return int
+     */
+    private function getConfigFile($strFile, $intConfigID, $intType, &$resConfigFile, &$strConfigFile): int
     {
         // Variable definitions
         $strBaseDir   = '';
@@ -1959,36 +1963,36 @@ class NagConfigClass
         $intReturn    = 0;
         // Get config data
         if ($intType == 1) {
-            $this->getConfigData($intConfigID, "hostconfig", $strBaseDir);
+            $this->getConfigData($intConfigID, 'hostconfig', $strBaseDir);
             $strType = 'host';
         } elseif ($intType == 2) {
-            $this->getConfigData($intConfigID, "serviceconfig", $strBaseDir);
+            $this->getConfigData($intConfigID, 'serviceconfig', $strBaseDir);
             $strType = 'service';
         } else {
-            $this->getConfigData($intConfigID, "basedir", $strBaseDir);
+            $this->getConfigData($intConfigID, 'basedir', $strBaseDir);
             $strType = 'basic';
         }
-        $this->getConfigData($intConfigID, "method", $intMethod);
+        $this->getConfigData($intConfigID, 'method', $intMethod);
         // Backup config file
         $this->moveFile($strType, $strFile, $intConfigID);
         // Variable definition
-        $strConfigFile = $strBaseDir."/".$strFile;
+        $strConfigFile = $strBaseDir. '/' .$strFile;
         // Local file system
         if ($intMethod == 1) {
             // Save configuration file
-            if (is_writable($strConfigFile) || ((!file_exists($strConfigFile) && (is_writable($strBaseDir))))) {
-                $resConfigFile = fopen($strConfigFile, "w");
+            if (is_writable($strConfigFile) || (!file_exists($strConfigFile) && is_writable($strBaseDir))) {
+                $resConfigFile = fopen($strConfigFile, 'wb');
                 chmod($strConfigFile, 0644);
             } else {
-                $this->myDataClass->writeLog(translate('Configuration write failed:')." ".$strFile);
+                $this->myDataClass->writeLog(translate('Configuration write failed:'). ' ' .$strFile);
                 $this->processClassMessage(translate('Cannot open/overwrite the configuration file (check the '
-                        .'permissions)!')."::", $this->strErrorMessage);
+                        .'permissions)!'). '::', $this->strErrorMessage);
                 $intReturn = 1;
             }
         } elseif ($intMethod == 2) { // Remote file (FTP)
             // Check connection
-            if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
-                ($this->resConnectType != "FTP")) {
+            if (empty($this->resConnectId) || !\is_resource($this->resConnectId) ||
+                ($this->resConnectType != 'FTP')) {
                 $intReturn = $this->getFTPConnection($intConfigID);
             }
             if ($intReturn == 0) {
@@ -1998,12 +2002,12 @@ class NagConfigClass
                 } else {
                     $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
                 }
-                $resConfigFile = fopen($strConfigFile, "w");
+                $resConfigFile = fopen($strConfigFile, 'wb');
             }
         } elseif ($intMethod == 3) { // Remote file (SFTP)
             // Check connection
-            if (!isset($this->resConnectId) || !is_resource($this->resConnectId) ||
-                ($this->resConnectType != "SSH")) {
+            if (empty($this->resConnectId) || !\is_resource($this->resConnectId) ||
+                ($this->resConnectType != 'SSH')) {
                 $intReturn = $this->getSSHConnection($intConfigID);
             }
             if ($intReturn == 0) {
@@ -2012,10 +2016,10 @@ class NagConfigClass
                 } else {
                     $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
                 }
-                $resConfigFile = fopen($strConfigFile, "w");
+                $resConfigFile = fopen($strConfigFile, 'wb');
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////
     //  Help function: Write configuration file
@@ -2027,19 +2031,19 @@ class NagConfigClass
     //  $resConfigFile                -> Temporary or configuration file ressource
     //  $strConfigFile                -> Configuration file name
     ///////////////////////////////////////////////////////////////////////////////////////////
-    private function writeConfigFile($strData, $strFile, $intType, $intConfigID, $resConfigFile, $strConfigFile)
+    private function writeConfigFile($strData, $strFile, $intType, $intConfigID, $resConfigFile, $strConfigFile): int
     {
         // Variable definitions
         $intReturn = 0;
         // Get config data
         if ($intType == 1) {
-            $this->getConfigData($intConfigID, "hostconfig", $strBaseDir);
+            $this->getConfigData($intConfigID, 'hostconfig', $strBaseDir);
         } elseif ($intType == 2) {
-            $this->getConfigData($intConfigID, "serviceconfig", $strBaseDir);
+            $this->getConfigData($intConfigID, 'serviceconfig', $strBaseDir);
         } else {
-            $this->getConfigData($intConfigID, "basedir", $strBaseDir);
+            $this->getConfigData($intConfigID, 'basedir', $strBaseDir);
         }
-        $this->getConfigData($intConfigID, "method", $intMethod);
+        $this->getConfigData($intConfigID, 'method', $intMethod);
         $strData  = str_replace("\r\n", "\n", $strData);
         fwrite($resConfigFile, $strData);
         // Local filesystem
@@ -2047,19 +2051,19 @@ class NagConfigClass
             fclose($resConfigFile);
         } elseif ($intMethod == 2) { // FTP access
             // SSH Possible
-            if (!function_exists('ftp_put')) {
-                $this->processClassMessage(translate('FTP module not loaded!')."::", $this->strErrorMessage);
+            if (!\function_exists('ftp_put')) {
+                $this->processClassMessage(translate('FTP module not loaded!'). '::', $this->strErrorMessage);
                 $intReturn = 1;
             } else {
                 $intErrorReporting = error_reporting();
                 error_reporting(0);
-                if (!ftp_put($this->resConnectId, $strBaseDir . "/" . $strFile, $strConfigFile, FTP_ASCII)) {
+                if (!ftp_put($this->resConnectId, $strBaseDir . '/' . $strFile, $strConfigFile, FTP_ASCII)) {
                     $arrError = error_get_last();
                     error_reporting($intErrorReporting);
                     $this->processClassMessage(translate('Cannot open/overwrite the configuration file (FTP connection '
-                            .'failed)!') . "::", $this->strErrorMessage);
-                    if ($arrError['message'] != "") {
-                        $this->processClassMessage($arrError['message'] . "::", $this->strErrorMessage);
+                            .'failed)!') . '::', $this->strErrorMessage);
+                    if ($arrError['message'] != '') {
+                        $this->processClassMessage($arrError['message'] . '::', $this->strErrorMessage);
                     }
                     $intReturn = 1;
                 }
@@ -2069,19 +2073,19 @@ class NagConfigClass
             }
         } elseif ($intMethod == 3) { // SSH access
             // SSH Possible
-            if (!function_exists('ssh2_scp_send')) {
-                $this->processClassMessage(translate('SSH module not loaded!')."::", $this->strErrorMessage);
+            if (!\function_exists('ssh2_scp_send')) {
+                $this->processClassMessage(translate('SSH module not loaded!'). '::', $this->strErrorMessage);
                 $intReturn = 1;
             } else {
                 $intErrorReporting = error_reporting();
                 error_reporting(0);
-                if (!ssh2_scp_send($this->resConnectId, $strConfigFile, $strBaseDir . "/" . $strFile, 0644)) {
+                if (!ssh2_scp_send($this->resConnectId, $strConfigFile, $strBaseDir . '/' . $strFile, 0644)) {
                     $arrError = error_get_last();
                     error_reporting($intErrorReporting);
                     $this->processClassMessage(translate('Cannot open/overwrite the configuration file (remote SFTP)!').
-                        "::", $this->strErrorMessage);
-                    if ($arrError['message'] != "") {
-                        $this->processClassMessage($arrError['message'] . "::", $this->strErrorMessage);
+                        '::', $this->strErrorMessage);
+                    if ($arrError['message'] != '') {
+                        $this->processClassMessage($arrError['message'] . '::', $this->strErrorMessage);
                     }
                     $this->resConnectId = null;
                     $intReturn = 1;
@@ -2093,11 +2097,11 @@ class NagConfigClass
             }
         }
         if ($intReturn == 0) {
-            $this->myDataClass->writeLog(translate('Configuration successfully written:') . " " . $strFile);
+            $this->myDataClass->writeLog(translate('Configuration successfully written:') . ' ' . $strFile);
             $this->processClassMessage(translate('Configuration file successfully written!').
-                "::", $this->strInfoMessage);
+                '::', $this->strInfoMessage);
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -2109,21 +2113,21 @@ class NagConfigClass
      * @param int $intSkip                  Skip value (by reference)
      * @return string                       Manipulated data value
      */
-    public function checkTpl($strValue, $strKeyField, $strTable, $intId, &$intSkip)
+    public function checkTpl($strValue, $strKeyField, $strTable, $intId, &$intSkip): string
     {
         if ($this->intNagVersion < 3) {
-            return($strValue);
+            return $strValue;
         }
-        $strSQL   = "SELECT `".$strKeyField."` FROM `".$strTable."` WHERE `id` = $intId";
+        $strSQL   = 'SELECT `' .$strKeyField. '` FROM `' .$strTable."` WHERE `id` = $intId";
         $intValue = $this->myDBClass->getFieldData($strSQL);
         if ($intValue == 0) {
-            return("+".$strValue);
+            return('+' .$strValue);
         }
         if ($intValue == 1) {
             $intSkip = 0;
-            return("null");
+            return 'null';
         }
-        return($strValue);
+        return $strValue;
     }
 
     /**
@@ -2140,38 +2144,38 @@ class NagConfigClass
         $intDataCountRel = 0;
         $intReturn       = 0;
         // Get relation data
-        $strSQLRel = "SELECT `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`, `" . $elem['linkTable'] .
-                     "`.`exclude` FROM `" . $elem['linkTable'] . "` LEFT JOIN `" . $elem['tableName1'] .
-                     "` ON `" . $elem['linkTable'] . "`.`idSlave` = `" . $elem['tableName1'] . "`.`id`" .
-                     "WHERE `idMaster`=" . $arrData['id'] . " AND `active`='1' AND $strDomainWhere1" .
-                     "ORDER BY `" . $elem['tableName1'] . "`.`" . $elem['target1'] . "`";
+        $strSQLRel = 'SELECT `' . $elem['tableName1'] . '`.`' . $elem['target1'] . '`, `' . $elem['linkTable'] .
+            '`.`exclude` FROM `' . $elem['linkTable'] . '` LEFT JOIN `' . $elem['tableName1'] .
+            '` ON `' . $elem['linkTable'] . '`.`idSlave` = `' . $elem['tableName1'] . '`.`id`' .
+            'WHERE `idMaster`=' . $arrData['id'] . " AND `active`='1' AND $strDomainWhere1" .
+            'ORDER BY `' . $elem['tableName1'] . '`.`' . $elem['target1'] . '`';
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
             if ($strDataValue == 2) {
-                $strDataValue = "*,";
+                $strDataValue = '*,';
             } else {
-                $strDataValue = "";
+                $strDataValue = '';
             }
             foreach ($arrDataRel as $data) {
                 if ($data['exclude'] == 0) {
-                    $strDataValue .= $data[$elem['target1']] . ",";
+                    $strDataValue .= $data[$elem['target1']] . ',';
                 } elseif ($this->intNagVersion >= 3) {
-                    $strDataValue .= "!" . $data[$elem['target1']] . ",";
+                    $strDataValue .= '!' . $data[$elem['target1']] . ',';
                 }
             }
             $strDataValue = substr($strDataValue, 0, -1);
-            if ($strDataValue == "") {
+            if ($strDataValue == '') {
                 $intReturn = 1;
             }
         } else {
             if ($strDataValue == 2) {
-                $strDataValue = "*";
+                $strDataValue = '*';
             } else {
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -2190,33 +2194,33 @@ class NagConfigClass
         $intReturn       = 0;
         $strCommand      = '';
         // Get relation data
-        if (($elem['tableName1'] == "tbl_command") &&
-            (substr_count($arrData[$elem['fieldName']], "!") != 0)) {
-            $arrField = explode("!", $arrData[$elem['fieldName']]);
-            $strCommand = strchr($arrData[$elem['fieldName']], "!");
-            $strSQLRel = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "`".
-                         "WHERE `id`=" . $arrField[0] . "  AND `active`='1' AND $strDomainWhere1";
+        if (($elem['tableName1'] == 'tbl_command') &&
+            (substr_count($arrData[$elem['fieldName']], '!') != 0)) {
+            $arrField = explode('!', $arrData[$elem['fieldName']]);
+            $strCommand = strstr($arrData[$elem['fieldName']], '!');
+            $strSQLRel = 'SELECT `' . $elem['target1'] . '` FROM `' . $elem['tableName1'] . '`' .
+                'WHERE `id`=' . $arrField[0] . "  AND `active`='1' AND $strDomainWhere1";
         } else {
-            $strSQLRel = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "`".
-                         "WHERE `id`=" . $arrData[$elem['fieldName']] . "  AND `active`='1' AND $strDomainWhere1";
+            $strSQLRel = 'SELECT `' . $elem['target1'] . '` FROM `' . $elem['tableName1'] . '`' .
+                'WHERE `id`=' . $arrData[$elem['fieldName']] . "  AND `active`='1' AND $strDomainWhere1";
         }
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
-            if (($elem['tableName1'] == "tbl_command") && (substr_count($strDataValue, "!") != 0)) {
+            if (($elem['tableName1'] == 'tbl_command') && (substr_count($strDataValue, '!') != 0)) {
                 $strDataValue = $arrDataRel[0][$elem['target1']] . $strCommand;
             } else {
                 $strDataValue = $arrDataRel[0][$elem['target1']];
             }
         } else {
-            if (($elem['tableName1'] == "tbl_command") && (substr_count($strDataValue, "!") != 0) &&
+            if (($elem['tableName1'] == 'tbl_command') && (substr_count($strDataValue, '!') != 0) &&
                 ($arrField[0] == -1)) {
-                $strDataValue = "null";
+                $strDataValue = 'null';
             } else {
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -2233,26 +2237,26 @@ class NagConfigClass
         $intDataCountRel = 0;
         $intReturn       = 0;
         // Get relation data
-        $strSQLRel = "SELECT * FROM `".$elem['linkTable']."` WHERE `idMaster`=".$arrData['id']." ORDER BY idSort";
+        $strSQLRel = 'SELECT * FROM `' .$elem['linkTable']. '` WHERE `idMaster`=' .$arrData['id']. ' ORDER BY idSort';
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
-            $strDataValue = "";
+            $strDataValue = '';
             foreach ($arrDataRel as $data) {
                 if ($data['idTable'] == 1) {
-                    $strSQLName = "SELECT `".$elem['target1']."` FROM `".$elem['tableName1']."`".
-                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                    $strSQLName = 'SELECT `' .$elem['target1']. '` FROM `' .$elem['tableName1']. '`' .
+                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 } else {
-                    $strSQLName = "SELECT `".$elem['target2']."` FROM `".$elem['tableName2']."`".
-                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                    $strSQLName = 'SELECT `' .$elem['target2']. '` FROM `' .$elem['tableName2']. '`' .
+                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 }
-                $strDataValue .= $this->myDBClass->getFieldData($strSQLName) . ",";
+                $strDataValue .= $this->myDBClass->getFieldData($strSQLName) . ',';
             }
             $strDataValue = substr($strDataValue, 0, -1);
         } else {
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -2269,39 +2273,39 @@ class NagConfigClass
         $intDataCountRel = 0;
         $intReturn       = 0;
         // Get relation data
-        $strSQLRel = "SELECT `".$elem['linkTable']."`.`strSlave`, `".$elem['linkTable']."`.`exclude` ".
-                     "FROM `".$elem['linkTable']."` ".
-                     "LEFT JOIN `tbl_service` ON `".$elem['linkTable']."`.`idSlave`=`tbl_service`.`id` ".
-                     "WHERE `".$elem['linkTable']."`.`idMaster`=".$arrData['id']." AND `active`='1' AND ".
-                        $strDomainWhere1." ".
-                     "ORDER BY `".$elem['linkTable']."`.`strSlave`";
+        $strSQLRel = 'SELECT `' .$elem['linkTable']. '`.`strSlave`, `' .$elem['linkTable']. '`.`exclude` ' .
+            'FROM `' .$elem['linkTable']. '` ' .
+            'LEFT JOIN `tbl_service` ON `' .$elem['linkTable']. '`.`idSlave`=`tbl_service`.`id` ' .
+            'WHERE `' .$elem['linkTable']. '`.`idMaster`=' .$arrData['id']." AND `active`='1' AND ".
+            $strDomainWhere1. ' ' .
+            'ORDER BY `' .$elem['linkTable']. '`.`strSlave`';
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
             if ($strDataValue == 2) {
-                $strDataValue = "*,";
+                $strDataValue = '*,';
             } else {
-                $strDataValue = "";
+                $strDataValue = '';
             }
             foreach ($arrDataRel as $data) {
                 if ($data['exclude'] == 0) {
-                    $strDataValue .= $data['strSlave'] . ",";
+                    $strDataValue .= $data['strSlave'] . ',';
                 } elseif ($this->intNagVersion >= 3) {
-                    $strDataValue .= "!" . $data['strSlave'] . ",";
+                    $strDataValue .= '!' . $data['strSlave'] . ',';
                 }
             }
             $strDataValue = substr($strDataValue, 0, -1);
-            if ($strDataValue == "") {
+            if ($strDataValue == '') {
                 $intReturn = 1;
             }
         } else {
             if ($strDataValue == 2) {
-                $strDataValue = "*";
+                $strDataValue = '*';
             } else {
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -2315,23 +2319,23 @@ class NagConfigClass
         // Define variables
         $arrDataRel      = array();
         $intDataCountRel = 0;
-        $strSQLRel = "SELECT * FROM `tbl_variabledefinition` LEFT JOIN `".$elem['linkTable']."` ".
-                     "ON `id`=`idSlave` WHERE `idMaster`=".$arrData['id']." ORDER BY `name`";
+        $strSQLRel = 'SELECT * FROM `tbl_variabledefinition` LEFT JOIN `' .$elem['linkTable']. '` ' .
+            'ON `id`=`idSlave` WHERE `idMaster`=' .$arrData['id']. ' ORDER BY `name`';
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             foreach ($arrDataRel as $vardata) {
                 // Insert fill spaces
-                $strFillLen = (30 - strlen($vardata['name']));
-                $strSpace = " ";
+                $strFillLen = (30 - \strlen($vardata['name']));
+                $strSpace = ' ';
                 for ($f = 0; $f < $strFillLen; $f++) {
-                    $strSpace .= " ";
+                    $strSpace .= ' ';
                 }
-                $resTemplate->setVariable("ITEM_TITLE", $vardata['name'] . $strSpace);
-                $resTemplate->setVariable("ITEM_VALUE", $vardata['value']);
-                $resTemplate->parse("configline");
+                $resTemplate->setVariable('ITEM_TITLE', $vardata['name'] . $strSpace);
+                $resTemplate->setVariable('ITEM_VALUE', $vardata['value']);
+                $resTemplate->parse('configline');
             }
         }
-        return(1);
+        return 1;
     }
 
     /**
@@ -2352,59 +2356,58 @@ class NagConfigClass
         $intHG2 = 0;
         $intReturn = 0;
         // Get relation data
-        $strSQLMaster = "SELECT * FROM `" . $elem['linkTable'] . "` WHERE `idMaster`=" . $arrData['id'];
+        $strSQLMaster = 'SELECT * FROM `' . $elem['linkTable'] . '` WHERE `idMaster`=' . $arrData['id'];
         $booReturn = $this->myDBClass->hasDataArray($strSQLMaster, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
             // Rewrite $strDataValue with returned relation data
-            $strDataValue = "";
+            $strDataValue = '';
             foreach ($arrDataRel as $data) {
                 if ($data['idSlaveHG'] != 0) {
-                    $strSQLSrv = "SELECT `" . $elem['target2'] . "` FROM `" . $elem['tableName2'] .
-                        "` WHERE `id`=" . $data['idSlaveS'];
+                    $strSQLSrv = 'SELECT `' . $elem['target2'] . '` FROM `' . $elem['tableName2'] .
+                        '` WHERE `id`=' . $data['idSlaveS'];
                     $strService = $this->myDBClass->getFieldData($strSQLSrv);
-                    $strSQLHG1 = "SELECT `host_name` FROM `tbl_host` " .
-                        "LEFT JOIN `tbl_lnkHostgroupToHost` ON `id`=`idSlave` " .
-                        "WHERE `idMaster`=" . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $strSQLHG1 = 'SELECT `host_name` FROM `tbl_host` ' .
+                        'LEFT JOIN `tbl_lnkHostgroupToHost` ON `id`=`idSlave` ' .
+                        'WHERE `idMaster`=' . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
                     $booReturn = $this->myDBClass->hasDataArray($strSQLHG1, $arrHG1, $intHG1);
                     if ($booReturn && ($intHG1 != 0)) {
                         foreach ($arrHG1 as $elemHG1) {
-                            if (substr_count($strDataValue, $elemHG1['host_name'] . "," . $strService) == 0) {
-                                $strDataValue .= $elemHG1['host_name'] . "," . $strService . ",";
+                            if (substr_count($strDataValue, $elemHG1['host_name'] . ',' . $strService) == 0) {
+                                $strDataValue .= $elemHG1['host_name'] . ',' . $strService . ',';
                             }
                         }
                     }
-                    $strSQLHG2 = "SELECT `host_name` FROM `tbl_host` " .
-                        "LEFT JOIN `tbl_lnkHostToHostgroup` ON `id`=`idMaster` " .
-                        "WHERE `idSlave`=" . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $strSQLHG2 = 'SELECT `host_name` FROM `tbl_host` ' .
+                        'LEFT JOIN `tbl_lnkHostToHostgroup` ON `id`=`idMaster` ' .
+                        'WHERE `idSlave`=' . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
                     $booReturn = $this->myDBClass->hasDataArray($strSQLHG2, $arrHG2, $intHG2);
                     if ($booReturn && ($intHG2 != 0)) {
                         foreach ($arrHG2 as $elemHG2) {
-                            if (substr_count($strDataValue, $elemHG2['host_name'] . "," . $strService) == 0) {
-                                $strDataValue .= $elemHG2['host_name'] . "," . $strService . ",";
+                            if (substr_count($strDataValue, $elemHG2['host_name'] . ',' . $strService) == 0) {
+                                $strDataValue .= $elemHG2['host_name'] . ',' . $strService . ',';
                             }
                         }
                     }
                 } else {
-                    $strSQLHost = "SELECT `" . $elem['target1'] . "` FROM `" . $elem['tableName1'] . "` " .
-                        "WHERE `id`=" . $data['idSlaveH'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $strSQLHost = 'SELECT `' . $elem['target1'] . '` FROM `' . $elem['tableName1'] . '` ' .
+                        'WHERE `id`=' . $data['idSlaveH'] . "  AND `active`='1' AND $strDomainWhere1";
                     $strHost = $this->myDBClass->getFieldData($strSQLHost);
-                    $strSQLSrv = "SELECT `" . $elem['target2'] . "` FROM `" . $elem['tableName2'] . "` " .
-                        "WHERE `id`=" . $data['idSlaveS'] . "  AND `active`='1' AND $strDomainWhere1";
+                    $strSQLSrv = 'SELECT `' . $elem['target2'] . '` FROM `' . $elem['tableName2'] . '` ' .
+                        'WHERE `id`=' . $data['idSlaveS'] . "  AND `active`='1' AND $strDomainWhere1";
                     $strService = $this->myDBClass->getFieldData($strSQLSrv);
-                    if (($strHost != "") && ($strService != "")) {
-                        if (substr_count($strDataValue, $strHost . "," . $strService) == 0) {
-                            $strDataValue .= $strHost . "," . $strService . ",";
-                        }
+                    if (($strHost != '') && ($strService != '') &&
+                        substr_count($strDataValue, $strHost . ',' . $strService) == 0) {
+                        $strDataValue .= $strHost . ',' . $strService . ',';
                     }
                 }
             }
             $strDataValue = substr($strDataValue, 0, -1);
-            if ($strDataValue == "") {
+            if ($strDataValue == '') {
                 $intReturn = 1;
             }
         } else {
             $intReturn = 1;
         }
-        return ($intReturn);
+        return $intReturn;
     }
 }

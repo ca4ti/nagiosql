@@ -22,18 +22,18 @@ $intWriteAccessId = 0;   // Write access to data id ($chkDataId)
 $intReadAccessId  = 0;   // Read access to data id ($chkListId)
 $intDataWarning   = 0;   // Missing data indicator
 $intNoTime        = 0;   // Show modified time list (0=show)
-$strSearchWhere   = "";  // SQL WHERE addon for searching
-$strSearchWhere2  = "";  // SQL WHERE addon for configuration selection list
+$strSearchWhere   = '';  // SQL WHERE addon for searching
+$strSearchWhere2  = '';  // SQL WHERE addon for configuration selection list
 $chkTfValue3      = '';
 $chkTfValue5      = '';
 //
 // Define missing variables used in this prepend file
 // ==================================================
 if (!isset($preTableName)) {
-    $preTableName        = "";
+    $preTableName        = '';
 } // Predefined variable table name
 if (!isset($preSearchSession)) {
-    $preSearchSession    = "";
+    $preSearchSession    = '';
 } // Predefined variable search session
 //
 // Store some variables to content class
@@ -86,9 +86,9 @@ for ($i = 1; $i <= 8; $i++) {
     $tmpVar2 = 'intMselValue'.$i;
     $$tmpVar = filter_input(INPUT_POST, 'mselValue'.$i, FILTER_SANITIZE_STRING, FILTER_FORCE_ARRAY);
     // Multiselect data processing
-    if (($$tmpVar[0] == "") || ($$tmpVar[0] == "0")) {
+    if (($$tmpVar[0] == '') || ($$tmpVar[0] == '0')) {
         $$tmpVar2 = 0;
-    } elseif ($$tmpVar[0] == "*") {
+    } elseif ($$tmpVar[0] == '*') {
         $$tmpVar2 = 2;
     } else {
         $$tmpVar2 = 1;
@@ -125,7 +125,7 @@ for ($i = 1; $i <= 9; $i++) {
     $tmpVar  = 'chkTfNullVal'.$i;
     $$tmpVar = filter_input(INPUT_POST, 'tfNullVal'.$i, FILTER_SANITIZE_STRING);
     if (isset($$tmpVar) && ($$tmpVar != '')) {
-        intval($myVisClass->checkNull($$tmpVar));
+        $myVisClass->checkNull($$tmpVar);
     } else {
         $$tmpVar = 'NULL';
     }
@@ -157,12 +157,12 @@ $chkTaFileText  = stripslashes($chkTaFileTextRaw);
 // Search/sort/filter - session data
 // =================================
 if (!isset($_SESSION['search']) || !isset($_SESSION['search'][$preSearchSession])) {
-    $_SESSION['search'][$preSearchSession]  = "";
+    $_SESSION['search'][$preSearchSession]  = '';
 }
 if (!isset($_SESSION['search']) || !isset($_SESSION['search']['config_selection'])) {
-    $_SESSION['search']['config_selection'] = "";
+    $_SESSION['search']['config_selection'] = '';
 }
-if (($chkModus == "checkform") || ($chkModus == "filter")) {
+if (($chkModus == 'checkform') || ($chkModus == 'filter')) {
     $_SESSION['search'][$preSearchSession]  = $chkTfSearch;
     $_SESSION['search']['config_selection'] = $chkSelCnfName;
 }
@@ -170,13 +170,13 @@ if (($chkModus == "checkform") || ($chkModus == "filter")) {
 // Process additional templates/variables
 // ======================================
 if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) &&
-   (count($_SESSION['templatedefinition']) != 0)) {
+    (count($_SESSION['templatedefinition']) != 0)) {
     $intTemplates = 1;
 } else {
     $intTemplates = 0;
 }
 if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition']) &&
-   (count($_SESSION['variabledefinition']) != 0)) {
+    (count($_SESSION['variabledefinition']) != 0)) {
     $intVariables = 1;
 } else {
     $intVariables = 0;
@@ -190,10 +190,10 @@ if ($hidActive   == 1) {
 if ($chkGroupAdm == 1) {
     $strGroupSQL = "`access_group`=$chkSelAccGr, ";
 } else {
-    $strGroupSQL = "";
+    $strGroupSQL = '';
 }
 $preSQLCommon1 = "$strGroupSQL `active`='$chkActive', `register`='$chkRegister', `config_id`=$chkDomainId, "
-               . "`last_modified`=NOW()";
+    . '`last_modified`=NOW()';
 $preSQLCommon2 = "$strGroupSQL `active`='$chkActive', `register`='0', `config_id`=$chkDomainId, `last_modified`=NOW()";
 $intRet1 = 0;
 $intRet2 = 0;
@@ -216,20 +216,20 @@ if (isset($prePageKey)) {
 if (!isset($preNoAccessGrp) || ($preNoAccessGrp == 0)) {
     if ($chkDataId != 0) {
         $strSQLWrite      = "SELECT `access_group` FROM `$preTableName` WHERE `id`=".$chkDataId;
-        $intWriteAccessId = $myVisClass->checkAccountGroup((intval($myDBClass->getFieldData($strSQLWrite))), 'write');
+        $intWriteAccessId = $myVisClass->checkAccountGroup((int)$myDBClass->getFieldData($strSQLWrite), 'write');
         $myContentClass->intWriteAccessId = $intWriteAccessId;
     }
     if ($chkListId != 0) {
         $strSQLWrite      = "SELECT `access_group` FROM `$preTableName` WHERE `id`=".$chkListId;
-        $intReadAccessId  = $myVisClass->checkAccountGroup((intval($myDBClass->getFieldData($strSQLWrite))), 'read');
-        $intWriteAccessId = $myVisClass->checkAccountGroup((intval($myDBClass->getFieldData($strSQLWrite))), 'write');
+        $intReadAccessId  = $myVisClass->checkAccountGroup((int)$myDBClass->getFieldData($strSQLWrite), 'read');
+        $intWriteAccessId = $myVisClass->checkAccountGroup((int)$myDBClass->getFieldData($strSQLWrite), 'write');
         $myContentClass->intWriteAccessId = $intWriteAccessId;
     }
 }
 //
 // Data processing
 // ===============
-if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
+if (($chkModus == 'make') && ($intGlobalWriteAccess == 0)) {
     $intError    = 0;
     $intSuccess = 0;
     // Get write access groups
@@ -238,14 +238,14 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
     if ($preTableName == 'tbl_host') {
         /** @var string $strDomainWhere - defined in prepend_adm.php */
         $strSQL    = "SELECT `id` FROM `$preTableName` "
-                   . "WHERE $strDomainWhere AND `access_group` IN ($strAccess) AND `active`='1'";
+            . "WHERE $strDomainWhere AND `access_group` IN ($strAccess) AND `active`='1'";
         $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn == false) {
             $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
         }
         if ($booReturn && ($intDataCount != 0)) {
             foreach ($arrData as $data) {
-                $intReturn = $myConfigClass->createConfigSingle("$preTableName", $data['id']);
+                $intReturn = $myConfigClass->createConfigSingle($preTableName, $data['id']);
                 if ($intReturn == 1) {
                     $intError++;
                     $myVisClass->processMessage($myConfigClass->strErrorMessage, $strErrorMessage);
@@ -255,27 +255,27 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
             }
         } else {
             $myVisClass->processMessage(translate('Some configuration files were not written. Dataset not activated, '
-                    . 'not found or you do not have write permission!'), $strErrorMessage);
+                . 'not found or you do not have write permission!'), $strErrorMessage);
         }
         if ($intSuccess != 0) {
             $myVisClass->processMessage(translate('Configuration files successfully written!'), $strInfoMessage);
         }
         if ($intError   != 0) {
             $myVisClass->processMessage(translate('Some configuration files were not written. Dataset not activated, '
-                    . 'not found or you do not have write permission!'), $strErrorMessage);
+                . 'not found or you do not have write permission!'), $strErrorMessage);
         }
     } elseif ($preTableName == 'tbl_service') {
         /** @var string $strDomainWhere - defined in prepend_adm.php */
         $strSQL  = "SELECT `id`, `$preKeyField` FROM `$preTableName` "
-                 . "WHERE $strDomainWhere AND `access_group` IN ($strAccess) AND `active`='1' "
-                 . "GROUP BY `$preKeyField`, `id`";
+            . "WHERE $strDomainWhere AND `access_group` IN ($strAccess) AND `active`='1' "
+            . "GROUP BY `$preKeyField`, `id`";
         $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn == false) {
             $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
         }
         if ($booReturn && ($intDataCount != 0)) {
             foreach ($arrData as $data) {
-                $intReturn = $myConfigClass->createConfigSingle("$preTableName", $data['id']);
+                $intReturn = $myConfigClass->createConfigSingle($preTableName, $data['id']);
                 if ($intReturn == 1) {
                     $intError++;
                     $myVisClass->processMessage($myConfigClass->strErrorMessage, $strErrorMessage);
@@ -285,14 +285,14 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
             }
         } else {
             $myVisClass->processMessage(translate('Some configuration files were not written. Dataset not activated, '
-                    . 'not found or you do not have write permission!'), $strErrorMessage);
+                . 'not found or you do not have write permission!'), $strErrorMessage);
         }
         if ($intSuccess != 0) {
             $myVisClass->processMessage(translate('Configuration files successfully written!'), $strInfoMessage);
         }
         if ($intError   != 0) {
             $myVisClass->processMessage(translate('Some configuration files were not written. Dataset not activated, '
-                    . 'not found or you do not have write permission!'), $strErrorMessage);
+                . 'not found or you do not have write permission!'), $strErrorMessage);
         }
     } else {
         $intReturn = $myConfigClass->createConfig($preTableName, 0);
@@ -303,8 +303,8 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
             $myVisClass->processMessage($myConfigClass->strInfoMessage, $strInfoMessage);
         }
     }
-    $chkModus  = "display";
-} elseif (($chkModus == "checkform") && ($chkSelModify == "info")) {
+    $chkModus  = 'display';
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'info')) {
     // Display additional relation information
     if ($preTableName == 'tbl_service') {
         $intReturn = $myDataClass->infoRelation($preTableName, $chkListId, "$preKeyField,service_description");
@@ -312,26 +312,26 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
         $intReturn = $myDataClass->infoRelation($preTableName, $chkListId, $preKeyField);
     }
     $myVisClass->processMessage($myDataClass->strInfoMessage, $strConsistMessage);
-    $chkModus  = "display";
-} elseif (($chkModus == "checkform") && ($chkSelModify == "delete") && ($intGlobalWriteAccess == 0)) {
+    $chkModus  = 'display';
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'delete') && ($intGlobalWriteAccess == 0)) {
     // Delete selected datasets
-    if (($preTableName == 'tbl_user') && ($chkTfValue5 == "Admin")) {
-        $myVisClass->processMessage(translate("Admin cannot be deleted"), $strErrorMessage);
+    if (($preTableName == 'tbl_user') && ($chkTfValue5 == 'Admin')) {
+        $myVisClass->processMessage(translate('Admin cannot be deleted'), $strErrorMessage);
         $intReturn = 0;
     } elseif ((($preTableName == 'tbl_datadomain') || ($preTableName == 'tbl_configtarget')) &&
-              ($chkTfValue3 == "localhost")) {
+        ($chkTfValue3 == 'localhost')) {
         $myVisClass->processMessage(translate("Localhost can't be deleted"), $strErrorMessage);
         $intReturn = 0;
     } elseif (($preTableName == 'tbl_user') || ($preTableName == 'tbl_datadomain') ||
-              ($preTableName == 'tbl_configtarget')) {
+        ($preTableName == 'tbl_configtarget')) {
         $intReturn = $myDataClass->dataDeleteEasy($preTableName, $chkListId);
     } else {
         $intReturn = $myDataClass->dataDeleteFull($preTableName, $chkListId);
     }
     $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
     $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
-    $chkModus  = "display";
-} elseif (($chkModus == "checkform") && ($chkSelModify == "copy") && ($intGlobalWriteAccess == 0)) {
+    $chkModus  = 'display';
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'copy') && ($intGlobalWriteAccess == 0)) {
     // Copy selected datasets
     $intReturn = $myDataClass->dataCopyEasy($preTableName, $preKeyField, $chkListId, $chkSelTarDom);
     if ($intReturn == 1) {
@@ -340,8 +340,8 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
     if ($intReturn == 0) {
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
     }
-    $chkModus = "display";
-} elseif (($chkModus == "checkform") && ($chkSelModify == "activate") && ($intGlobalWriteAccess == 0)) {
+    $chkModus = 'display';
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'activate') && ($intGlobalWriteAccess == 0)) {
     // Activate selected datasets
     $intReturn = $myDataClass->dataActivate($preTableName, $chkListId);
     if ($intReturn == 1) {
@@ -350,8 +350,8 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
     if ($intReturn == 0) {
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
     }
-    $chkModus  = "display";
-} elseif (($chkModus == "checkform") && ($chkSelModify == "deactivate") && ($intGlobalWriteAccess == 0)) {
+    $chkModus  = 'display';
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'deactivate') && ($intGlobalWriteAccess == 0)) {
     // Deactivate selected datasets
     $intReturn = $myDataClass->dataDeactivate($preTableName, $chkListId);
     if ($intReturn == 1) {
@@ -363,14 +363,14 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
     // Remove deactivated files
     if ($preTableName == 'tbl_host') {
         if ($chkListId != 0) {
-            $strChbName = "chbId_".$chkListId;
-            $_POST[$strChbName] = "on";
+            $strChbName = 'chbId_' .$chkListId;
+            $_POST[$strChbName] = 'on';
         }
         // Get write access groups
         $strAccess = $myVisClass->getAccessGroups('write');
         // Getting data sets
-        $strSQL    = "SELECT `id`, `host_name` FROM `".$preTableName."` "
-                   . "WHERE `active`='0' AND `access_group` IN ($strAccess) AND `config_id`=".$chkDomainId;
+        $strSQL    = 'SELECT `id`, `host_name` FROM `' .$preTableName. '` '
+            . "WHERE `active`='0' AND `access_group` IN ($strAccess) AND `config_id`=".$chkDomainId;
         $booReturn    = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0) && ($chkDomainId != 0)) {
             $intReturn  = $myConfigClass->getConfigTargets($arrConfigID);
@@ -378,16 +378,17 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
             $intSuccess = 0;
             if (($arrConfigID != 1) && is_array($arrConfigID)) {
                 foreach ($arrData as $elem) {
-                    $strChbName = "chbId_".$elem['id'];
+                    $strChbName = 'chbId_' .$elem['id'];
                     // was the current record is marked for deactivate?
                     if ((filter_input(INPUT_POST, $strChbName) != null) &&
                         (filter_input(INPUT_POST, $strChbName, FILTER_SANITIZE_STRING) == 'on')) {
                         $intCount  = 0;
                         $intReturn = 0;
                         foreach ($arrConfigID as $intConfigID) {
-                            $intReturn += $myConfigClass->moveFile("host", $elem['host_name'].".cfg", $intConfigID);
+                            $intReturn += $myConfigClass->moveFile('host', $elem['host_name']. '.cfg', $intConfigID);
                             if ($intReturn == 0) {
-                                $myDataClass->writeLog(translate('Host file deleted:')." ".$elem['host_name'].".cfg");
+                                $myDataClass->writeLog(translate('Host file deleted:'). ' ' .$elem['host_name']
+                                    . '.cfg');
                                 $intCount++;
                             }
                         }
@@ -405,23 +406,23 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
                 }
                 if ($intError != 0) {
                     $myVisClass->processMessage(translate('Errors while deleting the old configuration file - please '
-                            . 'check!:'), $strErrorMessage);
+                        . 'check!:'), $strErrorMessage);
                 }
             }
         } elseif ($chkDomainId == 0) {
             $myVisClass->processMessage(translate('Common files cannot be removed from target systems - please check '
-                    . 'manually'), $strErrorMessage);
+                . 'manually'), $strErrorMessage);
         }
     } elseif ($preTableName == 'tbl_service') {
         if ($chkListId != 0) {
-            $strChbName = "chbId_".$chkListId;
-            $_POST[$strChbName] = "on";
+            $strChbName = 'chbId_' .$chkListId;
+            $_POST[$strChbName] = 'on';
         }
         // Get write access groups
         $strAccess = $myVisClass->getAccessGroups('write');
         // Getting data sets
-        $strSQL    = "SELECT `id`, `config_name` FROM `".$preTableName."` "
-                   . "WHERE `active`='0' AND `access_group` IN ($strAccess) AND `config_id`=".$chkDomainId;
+        $strSQL    = 'SELECT `id`, `config_name` FROM `' .$preTableName. '` '
+            . "WHERE `active`='0' AND `access_group` IN ($strAccess) AND `config_id`=".$chkDomainId;
         $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount != 0) && ($chkDomainId != 0)) {
             $intReturn  = $myConfigClass->getConfigTargets($arrConfigID);
@@ -430,23 +431,23 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
             if (($arrConfigID != 1) && is_array($arrConfigID)) {
                 $intCount  = 0;
                 foreach ($arrData as $elem) {
-                    $strChbName = "chbId_".$elem['id'];
+                    $strChbName = 'chbId_' .$elem['id'];
                     // was the current record is marked for deactivate?
-                    if ((filter_input(INPUT_POST, $strChbName)) && (filter_input(INPUT_POST, $strChbName) == "on")) {
+                    if (filter_input(INPUT_POST, $strChbName) && (filter_input(INPUT_POST, $strChbName) == 'on')) {
                         $intServiceCount = $myDBClass->countRows("SELECT * FROM `$preTableName` "
-                                                               . "WHERE `$preKeyField`='".$elem['config_name']."' "
-                                                               . "AND `config_id`=$chkDomainId AND `active`='1'");
+                            . "WHERE `$preKeyField`='".$elem['config_name']."' "
+                            . "AND `config_id`=$chkDomainId AND `active`='1'");
                         if ($intServiceCount == 0) {
                             $intReturn = 0;
                             foreach ($arrConfigID as $intConfigID) {
                                 $intReturn += $myConfigClass->moveFile(
-                                    "service",
-                                    $elem['config_name'].".cfg",
+                                    'service',
+                                    $elem['config_name']. '.cfg',
                                     $intConfigID
                                 );
                                 if ($intReturn == 0) {
-                                    $myDataClass->writeLog(translate('Service file deleted:')." ".
-                                                                      $elem['config_name'].".cfg");
+                                    $myDataClass->writeLog(translate('Service file deleted:'). ' ' .
+                                        $elem['config_name']. '.cfg');
                                 }
                                 $intCount++;
                             }
@@ -461,44 +462,44 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
                 }
                 if (($intSuccess != 0) && ($intCount != 0)) {
                     $myVisClass->processMessage(translate('The assigned, no longer used configuration files were '
-                            . 'deleted successfully!'), $strInfoMessage);
+                        . 'deleted successfully!'), $strInfoMessage);
                 }
                 if ($intError != 0) {
                     $myVisClass->processMessage(translate('Errors while deleting the old configuration file - please '
-                            . 'check!:'), $strErrorMessage);
+                        . 'check!:'), $strErrorMessage);
                 }
             }
         } elseif ($chkDomainId == 0) {
             $myVisClass->processMessage(translate('Common files cannot be removed from target systems - please check '
-                    . 'manually'), $strErrorMessage);
+                . 'manually'), $strErrorMessage);
         }
     }
-    $chkModus  = "display";
-} elseif (($chkModus == "checkform") && ($chkSelModify == "modify")) {
+    $chkModus  = 'display';
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'modify')) {
     // Open the dataset to modify
     if ($intReadAccessId == 0) {
         $booReturn = $myDBClass->hasSingleDataset("SELECT * FROM `$preTableName` "
-                . "WHERE `id`=".$chkListId, $arrModifyData);
+            . 'WHERE `id`=' .$chkListId, $arrModifyData);
         if ($booReturn == false) {
             $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
             $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
-            $chkModus = "display";
+            $chkModus = 'display';
         } else {
-            $chkModus = "add";
+            $chkModus = 'add';
         }
     } else {
         $myVisClass->processMessage(translate('No permission to open configuration!'), $strErrorMessage);
-        $chkModus = "display";
+        $chkModus = 'display';
     }
-} elseif (($chkModus == "checkform") && ($chkSelModify == "config") && ($intGlobalWriteAccess == 0)) {
+} elseif (($chkModus == 'checkform') && ($chkSelModify == 'config') && ($intGlobalWriteAccess == 0)) {
     // Write configuration file (hosts and services)
-    $intDSId  = (int)substr(array_search("on", filter_input_array(INPUT_POST)), 6);
+    $intDSId  = (int)substr(array_search('on', filter_input_array(INPUT_POST), true), 6);
     if (isset($chkListId) && ($chkListId != 0)) {
         $intDSId = $chkListId;
     }
     $intValCount = 0;
     foreach (filter_input_array(INPUT_POST) as $key => $elem) {
-        if ($elem == "on") {
+        if ($elem == 'on') {
             $intValCount++;
         }
     }
@@ -512,12 +513,12 @@ if (($chkModus == "make") && ($intGlobalWriteAccess == 0)) {
     if ($intReturn == 0) {
         $myVisClass->processMessage($myConfigClass->strInfoMessage, $strInfoMessage);
     }
-    $chkModus  = "display";
+    $chkModus  = 'display';
 }
 //
 // Some common list view functions
 // ===============================
-if ($chkModus != "add") {
+if ($chkModus != 'add') {
     // Get Group id's with READ
     $strAccess = $myVisClass->getAccessGroups('read');
     // Include domain list

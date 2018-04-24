@@ -9,7 +9,7 @@
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
     <div class="redmessage">{PATHMESSAGE}</div>
-	<script type="text/javascript">
+    <script type="text/javascript">
         <!--
         // Interrupt input
         function abort() {
@@ -51,16 +51,16 @@
             if (check === false) {
                 msginit(msg1,header,1);
                 return false;
-            }	
-            if (form.selValue1.value === 2) {
+            }
+            if (form.selValue1.value === '2') {
                 let check2;
                 check2 = checkfields(fields2,form,myFocusObject);
                 if (check2 === false) {
                     msginit(msg1,header,1);
                     return false;
-                }	
-            }  
-            if (form.selValue1.value === 3) {
+                }
+            }
+            if (form.selValue1.value === '3') {
                 let check2a;
                 let check2b;
                 check2a = checkfields(fields2,form,myFocusObject);
@@ -68,8 +68,8 @@
                 if ((check2a === false) && (check2b === false)) {
                     msginit(msg1,header,1);
                     return false;
-                }	
-            }  
+                }
+            }
             // Check for illegal chars
             if (form.tfValue1.value.match(/[^a-zA-Z0-9.@_-]/)) {
                 msginit(msg2+" {LANG_DOMAIN}",header,1);
@@ -105,7 +105,6 @@
         }
         // Enable hidden fields
         function showFields(key) {
-            alert(key);
             if (key === '1') {
                 document.getElementById('user').className    = "elementHide";
                 document.getElementById('passwd').className  = "elementHide";
@@ -134,8 +133,8 @@
             }
         }
         //-->
-        </script>
-	<form name="frmDomainInsert" method="post" action="{ACTION_INSERT}">
+    </script>
+    <form name="frmDomainInsert" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td class="content_tbl_row1" style=" width:270px;">{LANG_CONFIG_TARGET} *</td>
@@ -224,11 +223,11 @@
                 <td><input title="{LANG_IMPORT_DIRECTORY}" name="tfValue15" type="text" id="tfValue15" tabindex="15" value="{DAT_IMPORTDIR}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','importdir','all','Info');" class="infobutton_1"></td>
             </tr>
-    		<tr {COMMON_INVISIBLE}>
-      			<td>{LANG_PICTURE_DIRECTORY}</td>
-      			<td><input title="{LANG_PICTURE_DIRECTORY}" name="tfValue16" type="text" id="tfValue16" tabindex="16" value="{DAT_PICTUREDIR}"  style="width:350px;"></td>
+            <tr {COMMON_INVISIBLE}>
+                <td>{LANG_PICTURE_DIRECTORY}</td>
+                <td><input title="{LANG_PICTURE_DIRECTORY}" name="tfValue16" type="text" id="tfValue16" tabindex="16" value="{DAT_PICTUREDIR}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','picturedir','all','Info');" class="infobutton_1"></td>
-    		</tr>
+            </tr>
             <tr {COMMON_INVISIBLE}>
                 <td colspan="3">&nbsp;</td>
             </tr>
@@ -265,11 +264,11 @@
                 <td>
                     <select title="{LANG_NAGIOS_VERSION}" name="selValue2" id="selValue2" tabindex="21" class="selectborder">
                         <option value="4" {VER_SELECTED_4}>4.x</option>
-                    	<option value="3" {VER_SELECTED_3}>3.x</option>
+                        <option value="3" {VER_SELECTED_3}>3.x</option>
                         <option value="1" {VER_SELECTED_1}>2.x</option>
                         <option value="2" {VER_SELECTED_2}>2.9</option>
                     </select>
-		</td>
+                </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','version','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
@@ -279,9 +278,9 @@
                 <td>{LANG_ACCESS_GROUP}</td>
                 <td>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" tabindex="23" class="selectborder">
-<!-- BEGIN acc_group -->
+                        <!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-<!-- END acc_group -->
+                        <!-- END acc_group -->
                     </select>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -299,16 +298,16 @@
             <tr>
                 <td colspan="3"><input name="subForm" type="button" id="subForm" value="{LANG_SAVE}" onClick="LockButton();" {DISABLE_SAVE}>&nbsp;<input name="subAbort" type="button" id="subAbort" onClick="abort();" value="{LANG_ABORT}"><span class="required_info">* {LANG_REQUIRED}</span></td>
             </tr>
-		</table>
-	</form>
+        </table>
+    </form>
 </div>
 <div id="msgcontainer"></div>
 <div id="infodialog">
     <div id="dialogcontent" class="bd"></div>
 </div>
 <script type="text/javascript">
-  <!--
-  checkMust();
-  //-->
+    <!--
+    checkMust();
+    //-->
 </script>
 <!-- END datainsert -->

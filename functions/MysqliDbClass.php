@@ -49,7 +49,7 @@ class MysqliDbClass
     public $strDBId;                    // Will be filled in functions
     public $intLastId        = 0;       // Will be filled in functions
     public $intAffectedRows  = 0;       // Will be filled in functions
-    public $strErrorMessage  = "";      // Will be filled in functions
+    public $strErrorMessage  = '';      // Will be filled in functions
     public $booSSLuse        = false;   // Defines if SSL is used or not
     public $arrParams        = array(); // Must be filled in while initialization
 
@@ -58,11 +58,11 @@ class MysqliDbClass
      */
     public function __construct()
     {
-        $this->arrParams['server']      = "";
+        $this->arrParams['server']      = '';
         $this->arrParams['port']        = 0;
-        $this->arrParams['username']    = "";
-        $this->arrParams['password']    = "";
-        $this->arrParams['database']    = "";
+        $this->arrParams['username']    = '';
+        $this->arrParams['password']    = '';
+        $this->arrParams['database']    = '';
     }
 
     /**
@@ -79,7 +79,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasDBConnection($intMode = 0)
+    public function hasDBConnection($intMode = 0): bool
     {
         $booReturn = true;
         $this->dbconnect();
@@ -92,7 +92,7 @@ class MysqliDbClass
                 $booReturn = false;
             }
         }
-        return($booReturn);
+        return $booReturn;
     }
 
     /**
@@ -101,52 +101,52 @@ class MysqliDbClass
      * @return string                           <data> = successful / <empty> = error
      *                                          Status messages are stored in class variable
      */
-    public function getFieldData($strSQL)
+    public function getFieldData($strSQL): string
     {
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error           = false;
-        $strReturn             = "";
+        $strReturn             = '';
         // Send the SQL statement to the server
         $resQuery = mysqli_query($this->strDBId, $strSQL);
         // Error processing
-        if ($resQuery && (mysqli_num_rows($resQuery) != 0) && (mysqli_error($this->strDBId) == "")) {
+        if ($resQuery && (mysqli_num_rows($resQuery) != 0) && (mysqli_error($this->strDBId) == '')) {
             // Return the field value from position 0/0
             $arrDataset = mysqli_fetch_array($resQuery, MYSQLI_NUM);
             $strReturn = $arrDataset[0];
-        } elseif (mysqli_error($this->strDBId) != "") {
-            $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+        } elseif (mysqli_error($this->strDBId) != '') {
+            $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
             $this->error             = true;
         }
-        return($strReturn);
+        return $strReturn;
     }
 
     /**
      * Sends an SQL statement to the server and returns the result of the first data set
      * @param string $strSQL                    SQL Statement
-     * @param array $arrDataset                 Result array (by reference)
+     * @param array|null $arrDataset            Result array (by reference)
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasSingleDataset($strSQL, &$arrDataset)
+    public function hasSingleDataset($strSQL, &$arrDataset): bool
     {
-        $arrDataset = array();
+        //$arrDataset = array();
         $booReturn  = true;
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error           = false;
         // Send the SQL statement to the server
         $resQuery = mysqli_query($this->strDBId, $strSQL);
         // Error processing
-        if ($resQuery && (mysqli_num_rows($resQuery) != 0) && (mysqli_error($this->strDBId) == "")) {
+        if ($resQuery && (mysqli_num_rows($resQuery) != 0) && (mysqli_error($this->strDBId) == '')) {
             // Put the values into the array
             $arrDataset = mysqli_fetch_array($resQuery, MYSQLI_ASSOC);
-        } elseif (mysqli_error($this->strDBId) != "") {
-            $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+        } elseif (mysqli_error($this->strDBId) != '') {
+            $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
             $this->error            = true;
             $booReturn              = false;
         }
-        return($booReturn);
+        return $booReturn;
     }
 
     /**
@@ -157,18 +157,18 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasDataArray($strSQL, &$arrDataset, &$intDataCount)
+    public function hasDataArray($strSQL, &$arrDataset, &$intDataCount): bool
     {
         $arrDataset   = array();
         $intDataCount = 0;
         $booReturn    = true;
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error            = false;
         // Send the SQL statement to the server
         $resQuery = mysqli_query($this->strDBId, $strSQL);
         // Error processing
-        if ($resQuery && (mysqli_num_rows($resQuery) != 0) && (mysqli_error($this->strDBId) == "")) {
+        if ($resQuery && (mysqli_num_rows($resQuery) != 0) && (mysqli_error($this->strDBId) == '')) {
             $intDataCount = mysqli_num_rows($resQuery);
             $intCount = 0;
             // Put the values into the array
@@ -178,12 +178,12 @@ class MysqliDbClass
                 }
                 $intCount++;
             }
-        } elseif (mysqli_error($this->strDBId) != "") {
-            $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+        } elseif (mysqli_error($this->strDBId) != '') {
+            $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
             $this->error            = true;
             $booReturn              = false;
         }
-        return($booReturn);
+        return $booReturn;
     }
 
     /**
@@ -192,24 +192,24 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function insertData($strSQL)
+    public function insertData($strSQL): bool
     {
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error           = false;
         $booReturn             = true;
         // Send the SQL statement to the server
         mysqli_query($this->strDBId, $strSQL);
         // Error processing
-        if (mysqli_error($this->strDBId) == "") {
+        if (mysqli_error($this->strDBId) == '') {
             $this->intLastId        = mysqli_insert_id($this->strDBId);
             $this->intAffectedRows  = mysqli_affected_rows($this->strDBId);
         } else {
-            $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+            $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
             $this->error            = true;
             $booReturn              = false;
         }
-        return($booReturn);
+        return $booReturn;
     }
 
     /**
@@ -218,22 +218,22 @@ class MysqliDbClass
      * @return int                              <number> = successful / 0 = no dataset or error
      *                                          Status messages are stored in class variable
      */
-    public function countRows($strSQL)
+    public function countRows($strSQL): int
     {
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error           = false;
         $intReturn             = 0;
         // Send the SQL statement to the server
         $resQuery = mysqli_query($this->strDBId, $strSQL);
         // Error processing
-        if ($resQuery && (mysqli_error($this->strDBId) == "")) {
+        if ($resQuery && (mysqli_error($this->strDBId) == '')) {
             $intReturn = mysqli_num_rows($resQuery);
         } else {
             $this->strErrorMessage .= mysqli_error($this->strDBId);
             $this->error            = true;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -241,7 +241,7 @@ class MysqliDbClass
      * @param string $strInput                  Input String
      * @return string                           Output String
      */
-    public function realEscape($strInput)
+    public function realEscape($strInput): string
     {
         return mysqli_real_escape_string($this->strDBId, $strInput);
     }
@@ -250,7 +250,7 @@ class MysqliDbClass
      * Initialize a mysql database connection
      * @return bool                             true = successful / false = error
      */
-    private function dbinit()
+    private function dbinit(): bool
     {
         $this->strDBId = mysqli_init();
         return true;
@@ -265,10 +265,10 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    private function dbconnect($dbserver = null, $dbport = null, $dbuser = null, $dbpasswd = null)
+    private function dbconnect($dbserver = null, $dbport = null, $dbuser = null, $dbpasswd = null): bool
     {
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error           = false;
         $booReturn             = true;
         // Get parameters
@@ -285,15 +285,15 @@ class MysqliDbClass
             $dbpasswd = $this->arrParams['password'];
         }
         // Not all parameters available
-        if (($dbserver == "") || ($dbuser == "") || ($dbpasswd == "")) {
-            $this->strErrorMessage .= gettext("Missing server connection parameter!")."::";
+        if (($dbserver == '') || ($dbuser == '') || ($dbpasswd == '')) {
+            $this->strErrorMessage .= gettext('Missing server connection parameter!'). '::';
             $this->error = true;
             $booReturn   = false;
         }
         if ($booReturn == true) {
             $this->dbinit();
             //if ($this->booSSLuse == true) {
-                // TO BE DEFINED
+            // TO BE DEFINED
             //}
             $intErrorReporting = error_reporting();
             error_reporting(0);
@@ -305,14 +305,14 @@ class MysqliDbClass
             error_reporting($intErrorReporting);
             // Connection fails
             if ($booReturn == false) {
-                $this->strErrorMessage  = "[".$dbserver."] ".gettext("Connection to the database server has failed "
-                                        . "by reason:")." ::";
+                $this->strErrorMessage  = '[' .$dbserver. '] ' .gettext('Connection to the database server has failed '
+                        . 'by reason:'). ' ::';
                 $strError = mysqli_connect_error();
-                $this->strErrorMessage .= $strError."::";
+                $this->strErrorMessage .= $strError. '::';
                 $this->error            = true;
             }
         }
-        return($booReturn);
+        return $booReturn;
     }
 
     /**
@@ -321,10 +321,10 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    private function dbselect($database = null)
+    private function dbselect($database = null): bool
     {
         // Reset error variables
-        $this->strErrorMessage = "";
+        $this->strErrorMessage = '';
         $this->error           = false;
         $booReturn             = true;
         // Get parameters
@@ -332,8 +332,8 @@ class MysqliDbClass
             $database = $this->arrParams['database'];
         }
         // Not all parameters available
-        if ($database == "") {
-            $this->strErrorMessage .= gettext("Missing database connection parameter!")."::";
+        if ($database == '') {
+            $this->strErrorMessage .= gettext('Missing database connection parameter!'). '::';
             $this->error   = true;
             $booReturn     = false;
         }
@@ -341,30 +341,30 @@ class MysqliDbClass
             $bolConnect = mysqli_select_db($this->strDBId, $database);
             // Session cannot be etablished
             if (!$bolConnect) {
-                $this->strErrorMessage .= "[".$database."] " .
-                                          gettext("Connection to the database has failed by reason:")." ::";
-                $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+                $this->strErrorMessage .= '[' .$database. '] ' .
+                    gettext('Connection to the database has failed by reason:'). ' ::';
+                $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
                 $this->error            = true;
                 $booReturn              = false;
             }
         }
         if ($booReturn == true) {
             mysqli_query($this->strDBId, "set names 'utf8'");
-            if (mysqli_error($this->strDBId) != "") {
-                $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+            if (mysqli_error($this->strDBId) != '') {
+                $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
                 $this->error            = true;
                 $booReturn              = false;
             }
         }
         if ($booReturn == true) {
             mysqli_query($this->strDBId, "set session sql_mode = 'NO_ENGINE_SUBSTITUTION'");
-            if (mysqli_error($this->strDBId) != "") {
-                $this->strErrorMessage .= mysqli_error($this->strDBId)."::";
+            if (mysqli_error($this->strDBId) != '') {
+                $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
                 $this->error            = true;
                 $booReturn              = false;
             }
         }
-        return($booReturn);
+        return $booReturn;
     }
 
     /*
@@ -402,7 +402,7 @@ class MysqliDbClass
      * Close database server connectuon
      * @return bool                             true = successful / false = error
      */
-    private function dbDisconnect()
+    private function dbDisconnect(): bool
     {
         mysqli_close($this->strDBId);
         return true;

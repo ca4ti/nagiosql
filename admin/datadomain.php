@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId    = 35;
-$preContent   = "admin/datadomain.htm.tpl";
-$preListTpl   = "admin/datalist_common.htm.tpl";
+$preContent   = 'admin/datadomain.htm.tpl';
+$preListTpl   = 'admin/datalist_common.htm.tpl';
 $preTableName = 'tbl_datadomain';
 $preKeyField  = 'domain';
 $preAccess    = 1;
@@ -32,38 +32,38 @@ $preFieldvars = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     if ($chkTfValue1 == 'common') {
         $chkSelValue1 = 0;
     }
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `targets`=$chkSelValue1, "
-             . "`version`=$chkSelValue2, `access_group`=$chkSelAccGr, `enable_common`=$chkSelValue3, "
-             . "`active`='$chkActive', `last_modified`=NOW()";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+        . "`version`=$chkSelValue2, `access_group`=$chkSelAccGr, `enable_common`=$chkSelValue3, "
+        . "`active`='$chkActive', `last_modified`=NOW()";
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != "") && ($chkTfValue2 != "") && (($chkTfValue1 == 'common') || ($chkSelValue1 != 0))) {
+        if (($chkTfValue1 != '') && ($chkTfValue2 != '') && (($chkTfValue1 == 'common') || ($chkSelValue1 != 0))) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
-                if ($chkModus == "insert") {
-                    $myDataClass->writeLog(translate('New Domain inserted:')." ".$chkTfValue1);
+                if ($chkModus == 'insert') {
+                    $myDataClass->writeLog(translate('New Domain inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus == "modify") {
-                    $myDataClass->writeLog(translate('Domain modified:')." ".$chkTfValue1);
+                if ($chkModus == 'modify') {
+                    $myDataClass->writeLog(translate('Domain modified:'). ' ' .$chkTfValue1);
                 }
             }
         } else {
@@ -75,17 +75,17 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus = "display";
+if ($chkModus != 'add') {
+    $chkModus = 'display';
 }
 //
 // Single view
 // ===========
-if ($chkModus == "add") {
+if ($chkModus == 'add') {
     // Process configuration target selection fields
-    
+
     if (isset($arrModifyData['targets'])) {
         $intFieldId = $arrModifyData['targets'];
     } else {
@@ -110,45 +110,45 @@ if ($chkModus == "add") {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
-    $conttp->setVariable("TITLE", translate('Data domain administration'));
-    $conttp->setVariable("FILL_ALLFIELDS", translate('Please fill in all fields marked with an *'));
-    $conttp->setVariable("FILL_ILLEGALCHARS", translate('The following field contains illegal characters:'));
-    $conttp->setVariable("ENABLE", translate('Enable'));
-    $conttp->setVariable("DISABLE", translate('Disable'));
+    $conttp->setVariable('TITLE', translate('Data domain administration'));
+    $conttp->setVariable('FILL_ALLFIELDS', translate('Please fill in all fields marked with an *'));
+    $conttp->setVariable('FILL_ILLEGALCHARS', translate('The following field contains illegal characters:'));
+    $conttp->setVariable('ENABLE', translate('Enable'));
+    $conttp->setVariable('DISABLE', translate('Disable'));
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, 0, '');
         // Nagios version
-        $conttp->setVariable("VER_SELECTED_".$arrModifyData['version'], "selected");
+        $conttp->setVariable('VER_SELECTED_' .$arrModifyData['version'], 'selected');
         // Enable common domain
-        $conttp->setVariable("ENA_COMMON_SELECTED_".$arrModifyData['enable_common'], "selected");
+        $conttp->setVariable('ENA_COMMON_SELECTED_' .$arrModifyData['enable_common'], 'selected');
         // Domain localhost cant' be renamed
-        if ($arrModifyData['domain'] == "localhost") {
-            $conttp->setVariable("DOMAIN_DISABLE", "readonly");
-            $conttp->setVariable("LOCKCLASS", "inputlock");
-        } elseif ($arrModifyData['domain'] == "common") {
-            $conttp->setVariable("DOMAIN_DISABLE", "readonly");
-            $conttp->setVariable("COMMON_INVISIBLE", "class=\"elementHide\"");
-            $conttp->setVariable("LOCKCLASS", "inputlock");
+        if ($arrModifyData['domain'] == 'localhost') {
+            $conttp->setVariable('DOMAIN_DISABLE', 'readonly');
+            $conttp->setVariable('LOCKCLASS', 'inputlock');
+        } elseif ($arrModifyData['domain'] == 'common') {
+            $conttp->setVariable('DOMAIN_DISABLE', 'readonly');
+            $conttp->setVariable('COMMON_INVISIBLE', 'class="elementHide"');
+            $conttp->setVariable('LOCKCLASS', 'inputlock');
         } else {
-            $conttp->setVariable("CHECK_TARGETS", ",selValue1");
+            $conttp->setVariable('CHECK_TARGETS', ',selValue1');
         }
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Data domain administration'));
-    $mastertp->setVariable("FIELD_1", translate('Data domain'));
-    $mastertp->setVariable("FIELD_2", translate('Description'));
+    $mastertp->setVariable('TITLE', translate('Data domain administration'));
+    $mastertp->setVariable('FIELD_1', translate('Data domain'));
+    $mastertp->setVariable('FIELD_2', translate('Description'));
     // Row sorting
     $strOrderString = "ORDER BY `domain` $hidSortDir";
     if ($hidSortBy == 2) {
@@ -167,9 +167,9 @@ if ($chkModus == "display") {
         }
     }
     // Get datasets
-    $strSQL     = "SELECT `id`, `domain`, `alias`, `active`, `nodelete`, `access_group` "
-                . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
-                . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
+    $strSQL     = 'SELECT `id`, `domain`, `alias`, `active`, `nodelete`, `access_group` '
+        . "FROM `$preTableName` WHERE `access_group` IN ($strAccess) $strOrderString "
+        . "LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

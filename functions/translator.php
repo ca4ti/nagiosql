@@ -28,15 +28,16 @@ function translate($translation)
 ///
 function getLanguageCodefromLanguage($languagetosearch)
 {
-    $strReturn = "en_GB";
+    $strReturn = 'en_GB';
     $detaillanguages = getLanguageData();
+    /** @noinspection ForeachSourceInspection */
     foreach ($detaillanguages as $key2 => $languagename) {
         if ($languagetosearch == $languagename['description']) {
             $strReturn = $key2;
         }
     }
     // else return default en code
-    return($strReturn);
+    return $strReturn;
 }
 
 function getLanguageNameFromCode($codetosearch, $withnative = true)
@@ -51,7 +52,7 @@ function getLanguageNameFromCode($codetosearch, $withnative = true)
             $strReturn = $detaillanguages[$codetosearch]['description'];
         }
     }
-    return($strReturn);
+    return $strReturn;
 }
 
 
@@ -97,7 +98,7 @@ function getLanguageData()
     // Danish
     $supportedLanguages['da_DK']['description'] = translate('Danish');
     $supportedLanguages['da_DK']['nativedescription'] = 'Dansk';
-   
+
     // No longer supported language because of missing translators
     //
     //  // Japanese
@@ -247,7 +248,7 @@ function getLanguageData()
     //  $supportedLanguages['vi']['description'] = translate('Vietnamese');
     //  $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 
-    uasort($supportedLanguages, "user_sort");
+    uasort($supportedLanguages, 'user_sort');
     return $supportedLanguages;
 }
 
@@ -258,5 +259,5 @@ function user_sort($intValue1, $intValue2)
     if ($intValue1['description'] > $intValue2['description']) {
         $intReturn = 1;
     }
-    return($intReturn);
+    return $intReturn;
 }

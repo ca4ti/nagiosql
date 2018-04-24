@@ -21,7 +21,7 @@
   * Webserver like Apache 2.x
   * MySQL 5.x or greater
   * Nagios 2.x/3.x or Nagios compatible monitoring software
-  * PHP 5.2.0 or greater including:
+  * PHP 5.5.0 or greater including:
     * PHP Module: Session
     * PHP Module: MySQLi
     * PHP Module: gettext
@@ -35,7 +35,7 @@
 NEW INSTALLATION
 ================
 
-  1. Download and extract NagiosQL 3.3 to a directory within your Apache Document Root
+  1. Download and extract NagiosQL 3.4 to a directory within your Apache Document Root
   2. Start the Installation Wizard by opening install/index.php
   3. Switch to your preferred language (see Appendix 1.)
   4. Follow the instructions to install NagiosQL
@@ -44,13 +44,13 @@ NEW INSTALLATION
 === UPGRADES ===
 ================
 
-  1. Upgrade from NagiosQL 1.x and 2.x are not possible, you should better start at "New Installation" and after the installation is done, 
+  1. Upgrade from NagiosQL 1.x and 2.x are not possible, you should better start at "New Installation" and after the installation is done,
      import Nagios configuration files with NagiosQL
-  2. Upgrade from NagiosQL 3.x 
-    a. Download and extract NagiosQL 3.3 to a NEW directory and change your Apache DocumentRoot to the new directory
+  2. Upgrade from NagiosQL 3.x
+    a. Download and extract NagiosQL 3.4 to a NEW directory and change your Apache DocumentRoot to the new directory
 	b. If the same Apache configuration is used (old NagiosQL directory moved away and new NagiosQL directory moved to the old
 	   DocumentRoot), you should restart the apache demon before upgrade
-    b. Move your old config/settings.php file to the new NagiosQL 3.3 config/ folder
+    b. Move your old config/settings.php file to the new NagiosQL 3.4 config/ folder
 	c. Backup your old NagiosQL database (as example with mysqldump)
     d. Start the Installation Wizard by opening install/index.php
     e. Switch to your preferred language (see Appendix) and follow the instructions
