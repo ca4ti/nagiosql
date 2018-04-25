@@ -71,6 +71,7 @@ CREATE TABLE `tbl_configtarget` (
   `pidfile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `conffile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `cgifile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `resourcefile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `version` tinyint(3) UNSIGNED NOT NULL DEFAULT '3',
   `access_group` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
@@ -82,7 +83,7 @@ CREATE TABLE `tbl_configtarget` (
 --
 -- Datasets for table `tbl_configtarget`
 --
-INSERT INTO `tbl_configtarget` (`id`, `target`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `ftp_secure`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `cgifile`, `version`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES (1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', 0, '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagiosql/', '/opt/nagios/etc/objects/', '', '/var/nagios/rw/nagios.cmd', '/opt/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagiosql/nagios.cfg', '/etc/nagiosql/cgi.cfg', 3, 0, '1', '1', NOW());
+INSERT INTO `tbl_configtarget` (`id`, `target`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `ftp_secure`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `cgifile`, `resourcefile`, `version`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES (1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', 0, '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagios/', '/opt/nagios/etc/objects/', '', '/var/nagios/rw/nagios.cmd', '/opt/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagios/nagios.cfg', '/etc/nagios/cgi.cfg', '/etc/nagios/resource.cfg', 3, 0, '1', '1', NOW());
 
 -- --------------------------------------------------------
 

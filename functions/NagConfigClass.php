@@ -642,7 +642,7 @@ class NagConfigClass
                     if (isset($arrResult[0]) && $arrResult[0] == $strSourceFile) {
                         $arrInfo      = ssh2_sftp_stat($this->resSFTP, $strSourceFile);
                         if ($arrInfo['mtime'] > -1) {
-                            $booRetVal  = ssh2_sftp_rename($this->resSFTP, $strSourceFile, $strDestinationFile);
+                            $booRetVal = ssh2_sftp_rename($this->resSFTP, $strSourceFile, $strDestinationFile);
                         }
                     } else {
                         $this->processClassMessage(translate('Cannot backup the old file because the source file is '
@@ -902,8 +902,10 @@ class NagConfigClass
             }
             closedir($resHandle);
             sort($arrDir);
+            /** @var string $file */
             foreach ($arrDir as $file) {
-                if ('' !== $file && !preg_match("/^\.{1,2}/", $file)) {
+                /** @noinspection StrlenInEmptyStringCheckContextInspection */
+                if (!preg_match("/^\.{1,2}/", $file) && \strlen($file)) {
                     if (is_dir($strSourceDir. '/' .$file)) {
                         $this->storeDirToArray(
                             $strSourceDir. '/' .$file,

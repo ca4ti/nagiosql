@@ -30,6 +30,8 @@ $arrDescription[] = array('name' => 'LANG_FTPS',
 $arrDescription[] = array('name' => 'LANG_SERVER_NAME',                'string' => translate('Server name'));
 $arrDescription[] = array('name' => 'LANG_CONFIGURATION_DIRECTORIES',
     'string' => translate('Configuration directories'));
+$arrDescription[] = array('name' => 'LANG_NAGIOS_DIRECTORIES',
+    'string' => translate('Nagios configuration files and directories'));
 $arrDescription[] = array('name' => 'LANG_BASE_DIRECTORY',             'string' => translate('Base directory'));
 $arrDescription[] = array('name' => 'LANG_HOST_DIRECTORY',             'string' => translate('Host directory'));
 $arrDescription[] = array('name' => 'LANG_SERVICE_DIRECTORY',          'string' => translate('Service directory'));
@@ -43,6 +45,7 @@ $arrDescription[] = array('name' => 'LANG_NAGIOS_BINARY_FILE',         'string' 
 $arrDescription[] = array('name' => 'LANG_NAGIOS_PROCESS_FILE',        'string' => translate('Nagios process file'));
 $arrDescription[] = array('name' => 'LANG_NAGIOS_CONFIG_FILE',         'string' => translate('Nagios config file'));
 $arrDescription[] = array('name' => 'LANG_NAGIOS_CGI_FILE',            'string' => translate('Nagios cgi file'));
+$arrDescription[] = array('name' => 'LANG_NAGIOS_RESOURCE_FILE',       'string' => translate('Nagios resource file'));
 $arrDescription[] = array('name' => 'LANG_NAGIOS_VERSION',             'string' => translate('Nagios version'));
 $arrDescription[] = array('name' => 'LANG_ENABLE_COMMON_DOMAIN',       'string' => translate('Use common domain'));
 $arrDescription[] = array('name' => 'LANG_ENABLE_UTF8_DECODE',

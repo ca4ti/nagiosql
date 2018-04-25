@@ -22,6 +22,7 @@ UPDATE `tbl_settings` SET `value` = '3.4.0' WHERE `tbl_settings`.`name` = 'versi
 --  Modify existing tbl_configtarget
 --
 ALTER TABLE `tbl_configtarget` ADD `cgifile` VARCHAR(255) NOT NULL AFTER `conffile`;
+ALTER TABLE `tbl_configtarget` ADD `resourcefile` VARCHAR(255) NOT NULL AFTER `cgifile`;
 ALTER TABLE `tbl_configtarget` ADD `ftp_secure` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `ssh_key_path`;
 --
 --  Modify existing tbl_contact

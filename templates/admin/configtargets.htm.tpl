@@ -38,7 +38,7 @@
                 fields2 = "";
                 fields3 = "";
             } else {
-                fields1 = "tfValue1,tfValue2,tfValue4,tfValue8,tfValue9,tfValue10,tfValue11,tfValue12,tfValue13,tfValue14,tfValue20";
+                fields1 = "tfValue1,tfValue2,tfValue4,tfValue8,tfValue9,tfValue10,tfValue11,tfValue12,tfValue13,tfValue14,tfValue20,tfValue21,tfValue22";
                 fields2 = "tfValue5,tfValue6";
                 fields3 = "tfValue5,tfValue7";
             }
@@ -214,6 +214,12 @@
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','backupservicedir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr {COMMON_INVISIBLE}>
+                <td colspan="3"><strong>{LANG_NAGIOS_DIRECTORIES}</strong></td>
+            </tr>
+            <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_BASEDIR} *</td>
                 <td><input title="{LANG_NAGIOS_BASEDIR}" name="tfValue14" type="text" id="tfValue14" tabindex="14" value="{DAT_NAGIOSBASEDIR}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','nagiosbasedir','all','Info');" class="infobutton_1"></td>
@@ -227,9 +233,6 @@
                 <td>{LANG_PICTURE_DIRECTORY}</td>
                 <td><input title="{LANG_PICTURE_DIRECTORY}" name="tfValue16" type="text" id="tfValue16" tabindex="16" value="{DAT_PICTUREDIR}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','picturedir','all','Info');" class="infobutton_1"></td>
-            </tr>
-            <tr {COMMON_INVISIBLE}>
-                <td colspan="3">&nbsp;</td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_COMMAND_FILE}</td>
@@ -255,6 +258,11 @@
                 <td>{LANG_NAGIOS_CGI_FILE} *</td>
                 <td><input title="{LANG_NAGIOS_CGI_FILE}" name="tfValue21" type="text" id="tfValue21" tabindex="21" value="{DAT_CGIFILE}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','cgifile','all','Info');" class="infobutton_1"></td>
+            </tr>
+            <tr {COMMON_INVISIBLE}>
+                <td>{LANG_NAGIOS_RESOURCE_FILE} *</td>
+                <td><input title="{LANG_NAGIOS_RESOURCE_FILE}" name="tfValue22" type="text" id="tfValue22" tabindex="22" value="{DAT_RESOURCEFILE}"  style="width:350px;" class="inpmust"></td>
+                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','resourcefile','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>

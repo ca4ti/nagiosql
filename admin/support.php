@@ -100,7 +100,7 @@ $conttp->setVariable('FAILED', translate('failed'));
 $conttp->setVariable('OK', translate('ok'));
 // PHP version check
 $conttp->setVariable('PHP_VERSION', translate('PHP version'));
-if (PHP_VERSION_ID >= 50300) {
+if (PHP_VERSION_ID >= 50500) {
     $conttp->setVariable('PHP_CLASS', 'checkgreen');
     $conttp->setVariable('PHP_RESULT', translate('ok'). ' (' .PHP_VERSION. ')');
 } else {

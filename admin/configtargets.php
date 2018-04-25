@@ -83,9 +83,19 @@ if (($chkModus == 'modify' || $chkModus == 'insert') && $chkDataId != 0) {
                 $intIsError = 1;
             }
         }
+        if (!is_writable($chkTfValue14)) {
+            $myVisClass->processMessage(str_replace('  ', ' ', translate('Nagios base directory'). ' ' .
+                $chkTfValue14. ' ' .translate('is not writeable')), $strPathMessage);
+            $intIsError = 1;
+        }
         if (!is_writable($chkTfValue21)) {
-            $myVisClass->processMessage(str_replace('  ', ' ', translate('Cgi config file'). ' ' .
+            $myVisClass->processMessage(str_replace('  ', ' ', translate('Nagios cgi config file'). ' ' .
                 $chkTfValue21. ' ' .translate('is not writeable')), $strPathMessage);
+            $intIsError = 1;
+        }
+        if (!is_readable($chkTfValue22)) {
+            $myVisClass->processMessage(str_replace('  ', ' ', translate('Nagios resource config file'). ' ' .
+                $chkTfValue22. ' ' .translate('is not readable')), $strPathMessage);
             $intIsError = 1;
         }
     }
@@ -115,8 +125,8 @@ if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAcce
         . "`hostbackup`='$chkTfValue12', `servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', "
         . "`importdir`='$chkTfValue15', `picturedir`='$chkTfValue16', `commandfile`='$chkTfValue17', "
         . "`binaryfile`='$chkTfValue18', `pidfile`='$chkTfValue19', `conffile`='$chkTfValue20', "
-        . "`cgifile`='$chkTfValue21', `version`=$chkSelValue2, `access_group`=$chkSelAccGr, `active`='$chkActive',"
-        . '`last_modified`=NOW()';
+        . "`cgifile`='$chkTfValue21', `resourcefile`='$chkTfValue22',`version`=$chkSelValue2, "
+        . "`access_group`=$chkSelAccGr, `active`='$chkActive',`last_modified`=NOW()";
     if ($chkModus == 'insert') {
         $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
@@ -263,6 +273,7 @@ if ($chkModus == 'add') {
         $conttp->setVariable('DAT_PIDFILE', $chkTfValue19);
         $conttp->setVariable('DAT_CONFFILE', $chkTfValue20);
         $conttp->setVariable('DAT_CGIFILE', $chkTfValue21);
+        $conttp->setVariable('DAT_RESOURCEFILE', $chkTfValue22);
         $conttp->setVariable('DAT_PICTUREDIR', $chkTfValue16);
         // NagiosQL version
         if ($chkSelValue2 == 1) {
