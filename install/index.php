@@ -109,7 +109,7 @@ if (file_exists($filConfig) && is_readable($filConfig)) {
 				// Include mysql class
 				include("../functions/mysqli_class.php");
 				// Initialize mysql class
-				$myDBClass = new mysqldb;
+				$myDBClass = new mysqlidb;
 			} else {
 				$intDBFallback = 1;
 			}
