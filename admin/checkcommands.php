@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 18;
-$preContent       = "admin/checkcommands.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/checkcommands.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'checkcommand';
 $preTableName     = 'tbl_command';
 $preKeyField      = 'command_name';
@@ -33,23 +33,23 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `command_line`='$chkTfValue2', "
-             . "`command_type`=$chkSelValue1, $preSQLCommon1";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+        . "`command_type`=$chkSelValue1, $preSQLCommon1";
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != "") && ($chkTfValue2 != "")) {
+        if (($chkTfValue1 != '') && ($chkTfValue2 != '')) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -57,11 +57,11 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus  == "insert") {
-                    $myDataClass->writeLog(translate('New command inserted:')." ".$chkTfValue1);
+                if ($chkModus  == 'insert') {
+                    $myDataClass->writeLog(translate('New command inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus  == "modify") {
-                    $myDataClass->writeLog(translate('Command modified:')." ".$chkTfValue1);
+                if ($chkModus  == 'modify') {
+                    $myDataClass->writeLog(translate('Command modified:'). ' ' .$chkTfValue1);
                 }
             }
         } else {
@@ -73,10 +73,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus = "display";
+if ($chkModus != 'add') {
+    $chkModus = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -88,7 +88,7 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if ($chkModus == "add") {
+if ($chkModus == 'add') {
     // Do not show modified time list
     $intNoTime = 1;
     // Process access group selection field
@@ -104,50 +104,50 @@ if ($chkModus == "add") {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     if ($intVersion != 3) {
-        $conttp->setVariable("VERSION_20_VALUE_MUST", "mselValue1,");
+        $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
-    $conttp->setVariable("TITLE", translate('Command definitions'));
-    $conttp->setVariable("NO_TYPE", translate('unclassified'));
-    $conttp->setVariable("CHECK_TYPE", translate('check command'));
-    $conttp->setVariable("MISC_TYPE", translate('misc command'));
+    $conttp->setVariable('TITLE', translate('Command definitions'));
+    $conttp->setVariable('NO_TYPE', translate('unclassified'));
+    $conttp->setVariable('CHECK_TYPE', translate('check command'));
+    $conttp->setVariable('MISC_TYPE', translate('misc command'));
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo);
         // Insert command type
         if ($arrModifyData['command_type'] == 1) {
-            $conttp->setVariable("CHECK_TYPE_SELECTED", "selected");
+            $conttp->setVariable('CHECK_TYPE_SELECTED', 'selected');
         }
         if ($arrModifyData['command_type'] == 2) {
-            $conttp->setVariable("MISC_TYPE_SELECTED", "selected");
+            $conttp->setVariable('MISC_TYPE_SELECTED', 'selected');
         }
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Command definitions'));
-    $mastertp->setVariable("FIELD_1", translate('Command name'));
-    $mastertp->setVariable("FIELD_2", translate('Command line'));
+    $mastertp->setVariable('TITLE', translate('Command definitions'));
+    $mastertp->setVariable('FIELD_1', translate('Command name'));
+    $mastertp->setVariable('FIELD_2', translate('Command line'));
     // Process search string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' "
-                        . "OR `command_line` LIKE '%".$strSearchTxt."%')";
+            . "OR `command_line` LIKE '%".$strSearchTxt."%')";
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
@@ -156,7 +156,7 @@ if ($chkModus == "display") {
     }
     // Count datasets
     $strSQL     = "SELECT count(*) AS `number` FROM `$preTableName` "
-                . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
+        . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";
     $booReturn1 = $myDBClass->hasSingleDataset($strSQL, $arrDataLinesCount);
     if ($booReturn1 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -169,8 +169,8 @@ if ($chkModus == "display") {
     }
     // Get datasets
     $strSQL     = "SELECT `id`, `$preKeyField`, `command_line`, `register`, `active`, `config_id`, `access_group` "
-                . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
-                . "AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+        . "FROM `$preTableName` WHERE $strDomainWhere $strSearchWhere "
+        . "AND `access_group` IN ($strAccess) $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

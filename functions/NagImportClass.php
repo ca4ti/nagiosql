@@ -164,7 +164,7 @@ class NagImportClass
                 }
             }
             if ($intRemoveTmp == 1) {
-                unlink($strFileName);
+                unlink($strImportFile);
             }
         } else {
             $this->strErrorMessage .= translate('Import file does not exist or is not readable:'). ' ' .$strFileName
@@ -192,7 +192,12 @@ class NagImportClass
         $strImportFile    = '';
         $strImportFileTmp = '';
         // File transfer method
-        $intRetVal = $this->myConfigClass->getConfigData($intConfigId, 'method', $intMethod);
+        if (substr_count($strFileName, 'nagiosql_local_imp') == 1) {
+            $intMethod = 1;
+            $intRetVal = 0;
+        } else {
+            $intRetVal = $this->myConfigClass->getConfigData($intConfigId, 'method', $intMethod);
+        }
         if ($intRetVal != 0) {
             $this->strErrorMessage .= translate('Unable to get configuration data:'). ' method::';
             $intReturn = 1;

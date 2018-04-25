@@ -17,28 +17,28 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId  = 6;
-$preContent = "admin/mainpages.htm.tpl";
+$preContent = 'admin/mainpages.htm.tpl';
 //
 // Include preprocessing file
 // ==========================
-require($preBasePath.'functions/prepend_adm.php');
+require $preBasePath.'functions/prepend_adm.php';
 //
 // Include content
 // ===============
-$conttp->setVariable("TITLE", translate('Different tools'));
-$conttp->setVariable("DESC", translate('Useful functions for data import, main configuration, daemon control, etc.'));
-$conttp->parse("main");
-$conttp->show("main");
+$conttp->setVariable('TITLE', translate('Different tools'));
+$conttp->setVariable('DESC', translate('Useful functions for data import, main configuration, daemon control, etc.'));
+$conttp->parse('main');
+$conttp->show('main');
 //
 // Include Footer
 // ==============
-$maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
-        . "target='_blank'>NagiosQL</a> $setFileVersion");
-$maintp->parse("footer");
-$maintp->show("footer");
+$maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
+    . "target='_blank'>NagiosQL</a> $setFileVersion");
+$maintp->parse('footer');
+$maintp->show('footer');

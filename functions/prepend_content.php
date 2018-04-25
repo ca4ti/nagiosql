@@ -61,7 +61,7 @@ $chkSelCnfName  = filter_input(INPUT_POST, 'selCnfName', FILTER_SANITIZE_STRING)
 // Common text field value
 for ($i = 1; $i <= 22; $i++) {
     $tmpVar  = 'chkTfValue'.$i;
-    $$tmpVar = filter_input(INPUT_POST, 'tfValue'.$i, FILTER_SANITIZE_STRING);
+    $$tmpVar = filter_input(INPUT_POST, 'tfValue'.$i, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
     if (get_magic_quotes_gpc() == 0) {
         $$tmpVar = addslashes($$tmpVar);
     }
@@ -80,6 +80,7 @@ for ($i = 1; $i <= 8; $i++) {
         $$tmpVar = $myVisClass->tfSecure($$tmpVar);
     }
 }
+
 // Common multi select field value
 for ($i = 1; $i <= 8; $i++) {
     $tmpVar  = 'chkMselValue'.$i;
