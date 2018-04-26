@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 15;
-$preContent       = "admin/contactgroups.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/contactgroups.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'contactgroup';
 $preTableName     = 'tbl_contactgroup';
 $preKeyField      = 'contactgroup_name';
@@ -33,23 +33,23 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `members`=$intMselValue1, "
              . "`contactgroup_members`=$intMselValue2, $preSQLCommon1";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != "") && ($chkTfValue2 != "") && ($intMselValue1 != 0)) {
+        if (($chkTfValue1 != '') && ($chkTfValue2 != '') && ($intMselValue1 != 0)) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -57,19 +57,19 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus  == "insert") {
-                    $myDataClass->writeLog(translate('New contact group inserted:')." ".$chkTfValue1);
+                if ($chkModus  == 'insert') {
+                    $myDataClass->writeLog(translate('New contact group inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus  == "modify") {
-                    $myDataClass->writeLog(translate('Contact group modified:')." ".$chkTfValue1);
+                if ($chkModus  == 'modify') {
+                    $myDataClass->writeLog(translate('Contact group modified:'). ' ' .$chkTfValue1);
                 }
                 //
                 // Insert/update relations
                 // =======================
-                if ($chkModus == "insert") {
+                if ($chkModus == 'insert') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkContactgroupToContact",
+                            'tbl_lnkContactgroupToContact',
                             $chkDataId,
                             $chkMselValue1
                         );
@@ -79,7 +79,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue2  != 0) {
                         $intRet2 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkContactgroupToContactgroup",
+                            'tbl_lnkContactgroupToContactgroup',
                             $chkDataId,
                             $chkMselValue2
                         );
@@ -87,34 +87,34 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet2) && ($intRet2 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
-                } elseif ($chkModus == "modify") {
+                } elseif ($chkModus == 'modify') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkContactgroupToContact",
+                            'tbl_lnkContactgroupToContact',
                             $chkDataId,
                             $chkMselValue1
                         );
                     } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkContactgroupToContact", $chkDataId);
+                        $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkContactgroupToContact', $chkDataId);
                     }
                     if ($intRet1 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkContactgroupToContactgroup",
+                            'tbl_lnkContactgroupToContactgroup',
                             $chkDataId,
                             $chkMselValue2
                         );
                     } else {
-                        $intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkContactgroupToContactgroup", $chkDataId);
+                        $intRet2 = $myDataClass->dataDeleteRelation('tbl_lnkContactgroupToContactgroup', $chkDataId);
                     }
                     if ($intRet2 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
                 if (($intRet1 + $intRet2) != 0) {
-                    $strInfoMessage = "";
+                    $strInfoMessage = '';
                 }
             }
         } else {
@@ -126,10 +126,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus    = "display";
+if ($chkModus != 'add') {
+    $chkModus    = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -141,8 +141,8 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if ($chkModus == "add") {
-    $conttp->setVariable("TITLE", translate('Define contact groups (contactgroups.cfg)'));
+if ($chkModus == 'add') {
+    $conttp->setVariable('TITLE', translate('Define contact groups (contactgroups.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     // Process contact member selection fields
@@ -195,36 +195,36 @@ if ($chkModus == "add") {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     if ($intVersion != 3) {
-        $conttp->setVariable("VERSION_20_VALUE_MUST", "mselValue1,");
+        $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                  . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                  . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo);
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Define contact groups (contactgroups.cfg)'));
-    $mastertp->setVariable("FIELD_1", translate('Contact group'));
-    $mastertp->setVariable("FIELD_2", translate('Description'));
+    $mastertp->setVariable('TITLE', translate('Define contact groups (contactgroups.cfg)'));
+    $mastertp->setVariable('FIELD_1', translate('Contact group'));
+    $mastertp->setVariable('FIELD_2', translate('Description'));
     // Process filter string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%')";
     }

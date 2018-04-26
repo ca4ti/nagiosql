@@ -38,7 +38,7 @@ require $preBasePath.'functions/prepend_content.php';
 if (($chkTfValue1 != '') && ($chkTfValue2 != '')) {
     // Check old password
     $strSQL    = 'SELECT * FROM `tbl_user` '
-        . "WHERE `username`='".$_SESSION['username']."' AND `password`=MD5('$chkTfValue1')";
+               . "WHERE `username`='".$_SESSION['username']."' AND `password`=MD5('$chkTfValue1')";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
@@ -48,7 +48,7 @@ if (($chkTfValue1 != '') && ($chkTfValue2 != '')) {
         if (($chkTfValue2 === $chkTfValue3) && (strlen($chkTfValue2) >=5)) {
             // Update database
             $strSQLUpdate = "UPDATE `tbl_user` SET `password`=MD5('$chkTfValue2'), `last_login`=NOW() "
-                . "WHERE `username`='".$_SESSION['username']."'";
+                          . "WHERE `username`='".$_SESSION['username']."'";
             $booReturn = $myDBClass->insertData($strSQLUpdate);
             if ($booReturn == true) {
                 $myDataClass->writeLog(translate('Password successfully modified'));
@@ -59,8 +59,8 @@ if (($chkTfValue1 != '') && ($chkTfValue2 != '')) {
                 $_SESSION['groupadm']  = 0;
                 $_SESSION['domain']    = 0;
                 header('Location: ' .$SETS['path']['protocol']. '://' .
-                    filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
-                    $_SESSION['SETS']['path']['base_url']. 'index.php');
+                        filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING).
+                        $_SESSION['SETS']['path']['base_url']. 'index.php');
             } else {
                 $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
                 $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -113,6 +113,6 @@ $conttp->show('passwordsite');
 // Include footer
 // ==============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+                   . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

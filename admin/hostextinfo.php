@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 21;
-$preContent       = "admin/hostextinfo.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/hostextinfo.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'hostextinfo';
 $preTableName     = 'tbl_hostextinfo';
 $preKeyField      = 'host_name';
@@ -33,25 +33,25 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`=$chkSelValue1, `notes`='$chkTfValue1', `notes_url`='$chkTfValue2', "
         . "`action_url`='$chkTfValue3', `icon_image`='$chkTfValue4', `icon_image_alt`='$chkTfValue5', "
         . "`vrml_image`='$chkTfValue6', `statusmap_image`='$chkTfValue7', `2d_coords`='$chkTfValue8', "
         . "`3d_coords`='$chkTfValue9', $preSQLCommon1";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
         if ($chkSelValue1 != 0) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -59,11 +59,11 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus == "insert") {
-                    $myDataClass->writeLog(translate('New host extended information inserted:')." ".$chkSelValue1);
+                if ($chkModus == 'insert') {
+                    $myDataClass->writeLog(translate('New host extended information inserted:'). ' ' .$chkSelValue1);
                 }
-                if ($chkModus == "modify") {
-                    $myDataClass->writeLog(translate('Host extended information modified:')." ".$chkSelValue1);
+                if ($chkModus == 'modify') {
+                    $myDataClass->writeLog(translate('Host extended information modified:'). ' ' .$chkSelValue1);
                 }
             }
         } else {
@@ -75,10 +75,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus    = "display";
+if ($chkModus != 'add') {
+    $chkModus    = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -90,8 +90,8 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if ($chkModus == "add") {
-    $conttp->setVariable("TITLE", translate('Define host extended information (hostextinfo.cfg)'));
+if ($chkModus == 'add') {
+    $conttp->setVariable('TITLE', translate('Define host extended information (hostextinfo.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     if (isset($arrModifyData[$preKeyField])) {
@@ -118,36 +118,36 @@ if ($chkModus == "add") {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     if ($intVersion != 3) {
-        $conttp->setVariable("VERSION_20_VALUE_MUST", "mselValue1,");
+        $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo);
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Define host extended information (hostextinfo.cfg)'));
-    $mastertp->setVariable("FIELD_1", translate('Host name'));
-    $mastertp->setVariable("FIELD_2", translate('Notes'));
+    $mastertp->setVariable('TITLE', translate('Define host extended information (hostextinfo.cfg)'));
+    $mastertp->setVariable('FIELD_1', translate('Host name'));
+    $mastertp->setVariable('FIELD_2', translate('Notes'));
     // Process search string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`tbl_host`.`$preKeyField` LIKE '%".$strSearchTxt."%' OR `$preTableName`.`notes` "
             . "LIKE '%".$strSearchTxt."%' OR `$preTableName`.`notes_url` LIKE '%".$strSearchTxt."%')";

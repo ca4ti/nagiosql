@@ -17,7 +17,7 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'install', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'install', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
@@ -25,44 +25,38 @@ $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRIN
 $preContent = $preBasePath.'install/templates/install.htm.tpl';
 $preEncode  = 'utf-8';
 $preLocale  = $preBasePath.'config/locale';
-$chkModus   = "none";
+$chkModus   = 'none';
 //
 // Include preprocessing file
 // ==========================
-require($preBasePath.'install/functions/prepend_install.php');
+require $preBasePath.'install/functions/prepend_install.php';
 //
 // Actual database files
 // =====================
 $preSqlNewInstall = $preBasePath.'install/sql/nagiosQL_v34_db_mysql.sql';
 $preSqlUpdateLast = $preBasePath.'install/sql/update_320_340.sql';
-$preNagiosQL_ver  = "3.4.0";
+$preNagiosQL_ver  = '3.4.0';
 //
 // Process initial value
 // =====================
 if (!isset($_SESSION['init_settings'])) {
-    header("Location: index.php");
+    header('Location: index.php');
     exit;
 }
-$strInitDBtype   = isset($_SESSION['SETS']['db']['type'])     ? $_SESSION['SETS']['db']['type']
-                                                              : $_SESSION['init_settings']['db']['type'];
-$strInitDBserver = isset($_SESSION['SETS']['db']['server'])   ? $_SESSION['SETS']['db']['server']
-                                                              : $_SESSION['init_settings']['db']['server'];
-$strInitDBname   = isset($_SESSION['SETS']['db']['database']) ? $_SESSION['SETS']['db']['database']
-                                                              : $_SESSION['init_settings']['db']['database'];
-$strInitDBuser   = isset($_SESSION['SETS']['db']['username']) ? $_SESSION['SETS']['db']['username']
-                                                              : $_SESSION['init_settings']['db']['username'];
-$strInitDBpass   = isset($_SESSION['SETS']['db']['password']) ? $_SESSION['SETS']['db']['password']
-                                                              : $_SESSION['init_settings']['db']['password'];
-$strInitDBport   = isset($_SESSION['SETS']['db']['port'])     ? $_SESSION['SETS']['db']['port']
-                                                              : $_SESSION['init_settings']['db']['port'];
+$strInitDBtype   = $_SESSION['SETS']['db']['type']     ?? $_SESSION['init_settings']['db']['type'];
+$strInitDBserver = $_SESSION['SETS']['db']['server']   ?? $_SESSION['init_settings']['db']['server'];
+$strInitDBname   = $_SESSION['SETS']['db']['database'] ?? $_SESSION['init_settings']['db']['database'];
+$strInitDBuser   = $_SESSION['SETS']['db']['username'] ?? $_SESSION['init_settings']['db']['username'];
+$strInitDBpass   = $_SESSION['SETS']['db']['password'] ?? $_SESSION['init_settings']['db']['password'];
+$strInitDBport   = $_SESSION['SETS']['db']['port']     ?? $_SESSION['init_settings']['db']['port'];
 //
 // Init session parameters
 // =======================
 if (!isset($_SESSION['install']['jscript'])) {
-    $_SESSION['install']['jscript']    = "no";
+    $_SESSION['install']['jscript']    = 'no';
 }
 if (!isset($_SESSION['install']['locale'])) {
-    $_SESSION['install']['locale']     = "en_GB";
+    $_SESSION['install']['locale']     = 'en_GB';
 }
 if (!isset($_SESSION['install']['dbtype'])) {
     $_SESSION['install']['dbtype']     = $strInitDBtype;
@@ -71,7 +65,7 @@ if (!isset($_SESSION['install']['dbserver'])) {
     $_SESSION['install']['dbserver']   = $strInitDBserver;
 }
 if (!isset($_SESSION['install']['localsrv'])) {
-    $_SESSION['install']['localsrv']   = "";
+    $_SESSION['install']['localsrv']   = '';
 }
 if (!isset($_SESSION['install']['dbname'])) {
     $_SESSION['install']['dbname']     = $strInitDBname;
@@ -83,16 +77,16 @@ if (!isset($_SESSION['install']['dbpass'])) {
     $_SESSION['install']['dbpass']     = $strInitDBpass;
 }
 if (!isset($_SESSION['install']['admuser'])) {
-    $_SESSION['install']['admuser']    = "root";
+    $_SESSION['install']['admuser']    = 'root';
 }
 if (!isset($_SESSION['install']['admpass'])) {
-    $_SESSION['install']['admpass']    = "";
+    $_SESSION['install']['admpass']    = '';
 }
 if (!isset($_SESSION['install']['qluser'])) {
-    $_SESSION['install']['qluser']     = "admin";
+    $_SESSION['install']['qluser']     = 'admin';
 }
 if (!isset($_SESSION['install']['qlpass'])) {
-    $_SESSION['install']['qlpass']     = "";
+    $_SESSION['install']['qlpass']     = '';
 }
 if (!isset($_SESSION['install']['dbport'])) {
     $_SESSION['install']['dbport']     = $strInitDBport;
@@ -110,21 +104,21 @@ if (!isset($_SESSION['install']['createpath'])) {
     $_SESSION['install']['createpath'] = 0;
 }
 if (!isset($_SESSION['install']['qlpath'])) {
-    $_SESSION['install']['qlpath']     = "/etc/nagiosql";
+    $_SESSION['install']['qlpath']     = '/etc/nagiosql';
 }
 if (!isset($_SESSION['install']['nagpath'])) {
-    $_SESSION['install']['nagpath']    = "/etc/nagios";
+    $_SESSION['install']['nagpath']    = '/etc/nagios';
 }
 //
 // POST parameters
 // ===============
 $arrStep = array(1,2,3);
 $chkStep = filter_input(INPUT_POST, 'hidStep', FILTER_VALIDATE_INT);
-if (! in_array($chkStep, $arrStep)) {
+if (!in_array($chkStep, $arrStep, true)) {
     $chkStep = 1;
 }
 $chkStepG = filter_input(INPUT_GET, 'step', FILTER_VALIDATE_INT);
-if (($chkStepG != null) && (in_array($chkStepG, $arrStep))) {
+if (($chkStepG != null) && in_array($chkStepG, $arrStep, true)) {
     $chkStep = $chkStepG;
 }
 //
@@ -178,12 +172,12 @@ $_SESSION['install']['createpath'] = filter_input(
     FILTER_VALIDATE_INT,
     array('options' => array('default' => 0))
 );
-$strSqlFile =  str_replace("DBTYPE", $_SESSION['install']['dbtype'], $preSqlNewInstall);
+$strSqlFile =  str_replace('DBTYPE', $_SESSION['install']['dbtype'], $preSqlNewInstall);
 if (filter_input(INPUT_POST, 'butNewInstall') != null) {
-    $chkModus = "Installation";
+    $chkModus = 'Installation';
 }
 if (filter_input(INPUT_POST, 'butUpgrade') != null) {
-    $chkModus = "Update";
+    $chkModus = 'Update';
 }
 if (!isset($_SESSION['install']['mode'])) {
     $_SESSION['install']['mode'] = $chkModus;
@@ -192,10 +186,10 @@ if (!isset($_SESSION['install']['mode'])) {
 // Language settings
 // =================
 if (extension_loaded('gettext')) {
-    putenv("LC_ALL=".$_SESSION['install']['locale'].$preEncode);
-    putenv("LANG=".$_SESSION['install']['locale'].$preEncode);
+    putenv('LC_ALL=' .$_SESSION['install']['locale'].$preEncode);
+    putenv('LANG=' .$_SESSION['install']['locale'].$preEncode);
     // GETTEXT domain
-    setlocale(LC_ALL, $_SESSION['install']['locale'].".".$preEncode);
+    setlocale(LC_ALL, $_SESSION['install']['locale']. '.' .$preEncode);
     bindtextdomain($_SESSION['install']['locale'], $preLocale);
     bind_textdomain_codeset($_SESSION['install']['locale'], $preEncode);
     textdomain($_SESSION['install']['locale']);
@@ -204,14 +198,14 @@ if (extension_loaded('gettext')) {
 // Content in buffer laden
 // =======================
 ob_start();
-include "step".$chkStep.".php";
+include 'step' .$chkStep. '.php';
 $strContentRaw = ob_get_contents();
 ob_end_clean();
 //
 // Build content
 // =============
-$arrTemplate['PAGETITLE']  = "[NagiosQL] Installation Wizard";
-$arrTemplate['MAIN_TITLE'] = $myInstClass->translate("Welcome to the NagiosQL Installation Wizard");
+$arrTemplate['PAGETITLE']  = '[NagiosQL] Installation Wizard';
+$arrTemplate['MAIN_TITLE'] = $myInstClass->translate('Welcome to the NagiosQL Installation Wizard');
 $arrTemplate['CONTENT']    = $strContentRaw;
 //
 // Write content

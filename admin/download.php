@@ -17,7 +17,7 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Version control
@@ -28,7 +28,7 @@ session_cache_limiter('private_no_expire');
 // ==========================
 $preNoMain    = 1;
 $preNoLogin   = 1;
-require($preBasePath.'functions/prepend_adm.php');
+require $preBasePath.'functions/prepend_adm.php';
 //
 // Process post parameters
 // =======================
@@ -42,13 +42,13 @@ $arrConfig = $myConfigClass->getConfData();
 if (isset($arrConfig[$chkTable])) {
     $strFile = $arrConfig[$chkTable]['filename'];
 } else {
-    $strFile = $chkConfig.".cfg";
+    $strFile = $chkConfig. '.cfg';
 }
-if ($strFile == ".cfg") {
+if ($strFile == '.cfg') {
     exit;
 }
-header("Content-Disposition: attachment; filename=".$strFile);
-header("Content-Type: text/plain");
+header('Content-Disposition: attachment; filename=' .$strFile);
+header('Content-Type: text/plain');
 //
 // Get data
 // ========
@@ -57,4 +57,4 @@ if ($chkLine == 0) {
 } else {
     $myConfigClass->createConfigSingle($chkTable, $chkLine, 1);
 }
-$myDataClass->writeLog(translate('Download')." ".$strFile);
+$myDataClass->writeLog(translate('Download'). ' ' .$strFile);

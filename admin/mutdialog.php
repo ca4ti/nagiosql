@@ -19,12 +19,12 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
-$preContent   = "admin/mutdialog.htm.tpl";
+$preContent   = 'admin/mutdialog.htm.tpl';
 //
 // Process post parameters
 // =======================
@@ -36,28 +36,28 @@ $chkObject  = filter_input(INPUT_GET, 'object', FILTER_SANITIZE_STRING);
 $preAccess    = 1;
 $preFieldvars = 1;
 $preNoMain    = 1;
-require($preBasePath.'functions/prepend_adm.php');
+require $preBasePath.'functions/prepend_adm.php';
 //
 // Include content
 // ===============
-$conttp->setVariable("BASE_PATH", $_SESSION['SETS']['path']['base_url']);
-$conttp->setVariable("OPENER_FIELD", $chkObject);
-$conttp->parse("header");
-$conttp->show("header");
+$conttp->setVariable('BASE_PATH', $_SESSION['SETS']['path']['base_url']);
+$conttp->setVariable('OPENER_FIELD', $chkObject);
+$conttp->parse('header');
+$conttp->show('header');
 //
 // Form
 // ====
 foreach ($arrDescription as $elem) {
     $conttp->setVariable($elem['name'], $elem['string']);
 }
-$conttp->setVariable("OPENER_FIELD", $chkObject);
-$conttp->setVariable("ACTION_INSERT", filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
-$conttp->setVariable("IMAGE_PATH", $_SESSION['SETS']['path']['base_url']."images/");
-$conttp->setVariable("AVAILABLE", translate('Available'));
-$conttp->setVariable("SELECTED", translate('Selected'));
+$conttp->setVariable('OPENER_FIELD', $chkObject);
+$conttp->setVariable('ACTION_INSERT', filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
+$conttp->setVariable('IMAGE_PATH', $_SESSION['SETS']['path']['base_url']. 'images/');
+$conttp->setVariable('AVAILABLE', translate('Available'));
+$conttp->setVariable('SELECTED', translate('Selected'));
 if (($intExclude == 1) || ($intVersion < 3)) {
-    $conttp->setVariable("DISABLE_HTML_BEGIN", "<!--");
-    $conttp->setVariable("DISABLE_HTML_END", "-->");
+    $conttp->setVariable('DISABLE_HTML_BEGIN', '<!--');
+    $conttp->setVariable('DISABLE_HTML_END', '-->');
 }
-$conttp->parse("datainsert");
-$conttp->show("datainsert");
+$conttp->parse('datainsert');
+$conttp->show('datainsert');

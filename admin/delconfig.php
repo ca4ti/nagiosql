@@ -34,7 +34,7 @@ require $preBasePath.'functions/prepend_content.php';
 //
 // Get configuration set ID
 // ========================
-$myConfigClass->getConfigTargets($arrConfigSet);
+ $myConfigClass->getConfigTargets($arrConfigSet);
 $intConfigId  = $arrConfigSet[0];
 $myConfigClass->getConfigValues($intConfigId, 'method', $intMethod);
 $myConfigClass->getConfigValues($intConfigId, 'basedir', $strBaseDir);
@@ -185,6 +185,6 @@ $conttp->show('main');
 // Footer ausgeben
 // ===============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

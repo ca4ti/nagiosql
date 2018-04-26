@@ -15,39 +15,44 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// Path settings
+// ===================
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
+//
 // Define common variables
 // =======================
 $preNoMain        = 1;
 //
 // Include preprocessing file
 // ==========================
-require("../functions/prepend_adm.php");
-$strCommandLine = "&nbsp;";
-$intCount        = 0;
+require $preBasePath. 'functions/prepend_adm.php';
+$strCommandLine = '&nbsp;';
+$intCount       = 0;
 //
 // Get database values
 // ===================
-if (isset($_GET['cname']) && ($_GET['cname'] != "")) {
+if (isset($_GET['cname']) && ($_GET['cname'] != '')) {
     $strResult = $myDBClass->getFieldData("SELECT command_line FROM tbl_command WHERE id='".
         filter_var($_GET['cname'], FILTER_SANITIZE_NUMBER_INT)."'");
-    if (($strResult != false) && ($strResult != "")) {
+    if (($strResult != false) && ($strResult != '')) {
         $strCommandLine = $strResult;
-        $intCount = substr_count($strCommandLine, "ARG");
-        if (substr_count($strCommandLine, "ARG8") != 0) {
+        $intCount = substr_count($strCommandLine, 'ARG');
+        if (substr_count($strCommandLine, 'ARG8') != 0) {
             $intCount = 8;
-        } elseif (substr_count($strCommandLine, "ARG7") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG7') != 0) {
             $intCount = 7;
-        } elseif (substr_count($strCommandLine, "ARG6") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG6') != 0) {
             $intCount = 6;
-        } elseif (substr_count($strCommandLine, "ARG5") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG5') != 0) {
             $intCount = 5;
-        } elseif (substr_count($strCommandLine, "ARG4") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG4') != 0) {
             $intCount = 4;
-        } elseif (substr_count($strCommandLine, "ARG3") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG3') != 0) {
             $intCount = 3;
-        } elseif (substr_count($strCommandLine, "ARG2") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG2') != 0) {
             $intCount = 2;
-        } elseif (substr_count($strCommandLine, "ARG1") != 0) {
+        } elseif (substr_count($strCommandLine, 'ARG1') != 0) {
             $intCount = 1;
         } else {
             $intCount = 0;

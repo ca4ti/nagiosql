@@ -66,7 +66,7 @@ if (($chkTaFileText != '') && ($arrConfigSet[0] != 0)) {
             $myDataClass->writeLog(translate('Configuration successfully written:'). ' ' .$strConfigfile);
         } else {
             $myVisClass->processMessage(translate('Cannot open/overwrite the configuration file (check the '
-                . 'permissions)!'), $strErrorMessage);
+                    . 'permissions)!'), $strErrorMessage);
             $myDataClass->writeLog(translate('Configuration write failed:'). ' ' .$strConfigfile);
         }
     } elseif (($intMethod == 2) || ($intMethod == 3)) {
@@ -89,7 +89,7 @@ if (($chkTaFileText != '') && ($arrConfigSet[0] != 0)) {
             unlink($strFileName);
         } else {
             $myVisClass->processMessage(translate('Cannot open/overwrite the configuration file (check the permissions '
-                . 'on remote system)!'), $strErrorMessage);
+                    . 'on remote system)!'), $strErrorMessage);
             $myDataClass->writeLog(translate('Configuration write failed (remote):'). ' ' .$strConfigfile);
             unlink($strFileName);
         }
@@ -160,6 +160,6 @@ $conttp->show('naginsert');
 // Process footer
 // ==============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

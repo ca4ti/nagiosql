@@ -42,7 +42,7 @@ require $preBasePath.'functions/prepend_content.php';
 // ==================
 if (($chkModus == 'insert') || ($chkModus == 'modify')) {
     $strSQLx = "`$preTableName` SET `groupname`='$chkTfValue1', `description`='$chkTfValue2', `active`='$chkActive', "
-        . '`last_modified`=NOW()';
+             . '`last_modified`=NOW()';
     if ($chkModus == 'insert') {
         $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
@@ -99,8 +99,8 @@ if (($chkModus == 'insert') || ($chkModus == 'modify')) {
                             }
                             // if ($intLink  == 1) $intRead = 1;
                             $strSQL    = 'INSERT INTO `tbl_lnkGroupToUser` (`idMaster`,`idSlave`,`read`,`write`,'
-                                . "`link`) VALUES ($chkDataId,".$elem['user'].",'$intRead','$intWrite',"
-                                . "'$intLink')";
+                                       . "`link`) VALUES ($chkDataId,".$elem['user'].",'$intRead','$intWrite',"
+                                       . "'$intLink')";
                             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($intReturn != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -183,7 +183,7 @@ if ($chkModus == 'display') {
     }
     // Get datasets
     $strSQL     = 'SELECT `id`, `groupname`, `description`, `active` '
-        . "FROM `$preTableName` $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

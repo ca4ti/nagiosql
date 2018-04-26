@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 12;
-$preContent       = "admin/hosttemplates.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/hosttemplates.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'hosttemplate';
 $preTableName     = 'tbl_hosttemplate';
 $preKeyField      = 'template_name';
@@ -33,8 +33,8 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Data processing
 // ===============
@@ -42,19 +42,19 @@ $strNO = substr($chkChbGr1a.$chkChbGr1b.$chkChbGr1c.$chkChbGr1d.$chkChbGr1e, 0, 
 $strIS = substr($chkChbGr2a.$chkChbGr2b.$chkChbGr2c, 0, -1);
 $strFL = substr($chkChbGr3a.$chkChbGr3b.$chkChbGr3c, 0, -1);
 $strST = substr($chkChbGr4a.$chkChbGr4b.$chkChbGr4c, 0, -1);
-if ($chkSelValue1 != "") {
+if ($chkSelValue1 != '') {
     for ($i = 1; $i <= 8; $i++) {
         $tmpVar = 'chkTfArg'.$i;
-        $$tmpVar = str_replace("!", "::bang::", $$tmpVar);
-        if ($$tmpVar != "") {
-            $chkSelValue1 .= "!".$$tmpVar;
+        $$tmpVar = str_replace('!', '::bang::', $$tmpVar);
+        if ($$tmpVar != '') {
+            $chkSelValue1 .= '!' .$$tmpVar;
         }
     }
 }
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `parents`=$intMselValue1, "
              . "`parents_tploptions`=$chkRadValue1, `importance`=$chkTfNullVal9, `hostgroups`=$intMselValue2, "
              . "`hostgroups_tploptions`=$chkRadValue2, `check_command`='$chkSelValue1', `use_template`=$intTemplates, "
@@ -75,15 +75,15 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
              . "`icon_image`='$chkTfValue8', `icon_image_alt`='$chkTfValue10', `vrml_image`='$chkTfValue4', "
              . "`statusmap_image`='$chkTfValue6', `2d_coords`='$chkTfValue9', `3d_coords`='$chkTfValue11', "
              . "`use_variables`=$intVariables, $preSQLCommon2";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if ($chkTfValue1 != "") {
+        if ($chkTfValue1 != '') {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -91,19 +91,19 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus == "insert") {
-                    $myDataClass->writeLog(translate('New host template inserted:')." ".$chkTfValue1);
+                if ($chkModus == 'insert') {
+                    $myDataClass->writeLog(translate('New host template inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus == "modify") {
-                    $myDataClass->writeLog(translate('Host template modified:')." ".$chkTfValue1);
+                if ($chkModus == 'modify') {
+                    $myDataClass->writeLog(translate('Host template modified:'). ' ' .$chkTfValue1);
                 }
                 //
                 // Insert/update relations
                 // =======================
-                if ($chkModus == "insert") {
+                if ($chkModus == 'insert') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHosttemplateToHost",
+                            'tbl_lnkHosttemplateToHost',
                             $chkDataId,
                             $chkMselValue1
                         );
@@ -113,7 +113,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHosttemplateToHostgroup",
+                            'tbl_lnkHosttemplateToHostgroup',
                             $chkDataId,
                             $chkMselValue2
                         );
@@ -123,7 +123,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue3 != 0) {
                         $intRet3 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHosttemplateToContact",
+                            'tbl_lnkHosttemplateToContact',
                             $chkDataId,
                             $chkMselValue3
                         );
@@ -133,7 +133,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue4 != 0) {
                         $intRet4 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHosttemplateToContactgroup",
+                            'tbl_lnkHosttemplateToContactgroup',
                             $chkDataId,
                             $chkMselValue4
                         );
@@ -141,64 +141,64 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet4) && ($intRet4 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
-                } elseif ($chkModus == "modify") {
+                } elseif ($chkModus == 'modify') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHosttemplateToHost",
+                            'tbl_lnkHosttemplateToHost',
                             $chkDataId,
                             $chkMselValue1
                         );
                     } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkHosttemplateToHost", $chkDataId);
+                        $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkHosttemplateToHost', $chkDataId);
                     }
                     if ($intRet1 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHosttemplateToHostgroup",
+                            'tbl_lnkHosttemplateToHostgroup',
                             $chkDataId,
                             $chkMselValue2
                         );
                     } else {
-                        $intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkHosttemplateToHostgroup", $chkDataId);
+                        $intRet2 = $myDataClass->dataDeleteRelation('tbl_lnkHosttemplateToHostgroup', $chkDataId);
                     }
                     if ($intRet2 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue3 != 0) {
                         $intRet3 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHosttemplateToContact",
+                            'tbl_lnkHosttemplateToContact',
                             $chkDataId,
                             $chkMselValue3
                         );
                     } else {
-                        $intRet3 = $myDataClass->dataDeleteRelation("tbl_lnkHosttemplateToContact", $chkDataId);
+                        $intRet3 = $myDataClass->dataDeleteRelation('tbl_lnkHosttemplateToContact', $chkDataId);
                     }
                     if ($intRet3 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue4 != 0) {
                         $intRet4 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHosttemplateToContactgroup",
+                            'tbl_lnkHosttemplateToContactgroup',
                             $chkDataId,
                             $chkMselValue4
                         );
                     } else {
-                        $intRet4 = $myDataClass->dataDeleteRelation("tbl_lnkHosttemplateToContactgroup", $chkDataId);
+                        $intRet4 = $myDataClass->dataDeleteRelation('tbl_lnkHosttemplateToContactgroup', $chkDataId);
                     }
                     if ($intRet4 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
                 if (($intRet1 + $intRet2 + $intRet3 + $intRet4) != 0) {
-                    $strInfoMessage = "";
+                    $strInfoMessage = '';
                 }
                 //
                 // Insert/update session data for templates
                 // ========================================
-                if ($chkModus == "modify") {
-                    $strSQL    = "DELETE FROM `tbl_lnkHosttemplateToHosttemplate` WHERE `idMaster`=".$chkDataId;
+                if ($chkModus == 'modify') {
+                    $strSQL    = 'DELETE FROM `tbl_lnkHosttemplateToHosttemplate` WHERE `idMaster`=' .$chkDataId;
                     $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                     if ($intReturn != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -207,11 +207,12 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                 if (isset($_SESSION['templatedefinition']) && is_array($_SESSION['templatedefinition']) &&
                     (count($_SESSION['templatedefinition']) != 0)) {
                     $intSortId = 1;
+                    /** @noinspection ForeachSourceInspection */
                     foreach ($_SESSION['templatedefinition'] as $elem) {
                         if ($elem['status'] == 0) {
-                            $strSQL     = "INSERT INTO `tbl_lnkHosttemplateToHosttemplate` (`idMaster`,`idSlave`, "
-                                        . "`idTable`,`idSort`) VALUES ($chkDataId,".$elem['idSlave'].", "
-                                        . $elem['idTable'].",".$intSortId.")";
+                            $strSQL     = 'INSERT INTO `tbl_lnkHosttemplateToHosttemplate` (`idMaster`,`idSlave`, '
+                                        . "`idTable`,`idSort`) VALUES ($chkDataId,".$elem['idSlave']. ', '
+                                        . $elem['idTable']. ',' .$intSortId. ')';
                             $intReturn  = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($intReturn != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -223,22 +224,23 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                 //
                 // Insert/update session data for free variables
                 // =============================================
-                if ($chkModus == "modify") {
-                    $strSQL    = "SELECT * FROM `tbl_lnkHosttemplateToVariabledefinition` WHERE `idMaster`=".$chkDataId;
+                if ($chkModus == 'modify') {
+                    $strSQL    = 'SELECT * FROM `tbl_lnkHosttemplateToVariabledefinition` WHERE `idMaster`='
+                               . $chkDataId;
                     $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
                     if ($booReturn == false) {
                         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intDataCount != 0) {
                         foreach ($arrData as $elem) {
-                            $strSQL    = "DELETE FROM `tbl_variabledefinition` WHERE `id`=".$elem['idSlave'];
+                            $strSQL    = 'DELETE FROM `tbl_variabledefinition` WHERE `id`=' .$elem['idSlave'];
                             $intReturn  = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($intReturn != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
                         }
                     }
-                    $strSQL    = "DELETE FROM `tbl_lnkHosttemplateToVariabledefinition` WHERE `idMaster`=".$chkDataId;
+                    $strSQL    = 'DELETE FROM `tbl_lnkHosttemplateToVariabledefinition` WHERE `idMaster`=' .$chkDataId;
                     $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
                     if ($intReturn != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
@@ -248,13 +250,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     (count($_SESSION['variabledefinition']) != 0)) {
                     foreach ($_SESSION['variabledefinition'] as $elem) {
                         if ($elem['status'] == 0) {
-                            $strSQL     = "INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`) "
+                            $strSQL     = 'INSERT INTO `tbl_variabledefinition` (`name`,`value`,`last_modified`) '
                                         . "VALUES ('".$elem['definition']."','".$elem['range']."',now())";
                             $intReturn1 = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($intReturn1 != 0) {
                                 $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                             }
-                            $strSQL     = "INSERT INTO `tbl_lnkHosttemplateToVariabledefinition` (`idMaster`, "
+                            $strSQL     = 'INSERT INTO `tbl_lnkHosttemplateToVariabledefinition` (`idMaster`, '
                                         . "`idSlave`) VALUES ($chkDataId,$intInsertId)";
                             $intReturn2 = $myDataClass->dataInsert($strSQL, $intInsertId);
                             if ($intReturn2 != 0) {
@@ -273,10 +275,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus    = "display";
+if ($chkModus != 'add') {
+    $chkModus    = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -288,14 +290,14 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if ($chkModus == "add") {
-    $conttp->setVariable("TITLE", translate('Host template definition (hosttemplates.cfg)'));
+if ($chkModus == 'add') {
+    $conttp->setVariable('TITLE', translate('Host template definition (hosttemplates.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     // Process template fields
-    $strWhere = "";
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
-        $strWhere = "AND `id` <> ".$arrModifyData['id'];
+    $strWhere = '';
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
+        $strWhere = 'AND `id` <> ' .$arrModifyData['id'];
     }
     $strSQL1    = "SELECT `id`,`$preKeyField`, `active` FROM `$preTableName` "
                 . "WHERE `config_id` = $chkDomainId $strWhere ORDER BY `$preKeyField`";
@@ -304,37 +306,39 @@ if ($chkModus == "add") {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     }
     if ($intDataCountTpl != 0) {
+        /** @var array $arrDataTpl */
         foreach ($arrDataTpl as $elem) {
             if ($elem['active'] == 0) {
-                $strActive = " [inactive]";
-                $conttp->setVariable("SPECIAL_STYLE", "inactive_option");
+                $strActive = ' [inactive]';
+                $conttp->setVariable('SPECIAL_STYLE', 'inactive_option');
             } else {
-                $strActive = "";
-                $conttp->setVariable("SPECIAL_STYLE", "");
+                $strActive = '';
+                $conttp->setVariable('SPECIAL_STYLE', '');
             }
-            $conttp->setVariable("DAT_TEMPLATE", htmlspecialchars($elem[$preKeyField], ENT_QUOTES, 'UTF-8').$strActive);
-            $conttp->setVariable("DAT_TEMPLATE_ID", $elem['id']."::1");
-            $conttp->parse("template");
+            $conttp->setVariable('DAT_TEMPLATE', htmlspecialchars($elem[$preKeyField], ENT_QUOTES, 'UTF-8').$strActive);
+            $conttp->setVariable('DAT_TEMPLATE_ID', $elem['id']. '::1');
+            $conttp->parse('template');
         }
     }
-    $strSQL2    = "SELECT `id`, `name`, `active` FROM `tbl_host` "
+    $strSQL2    = 'SELECT `id`, `name`, `active` FROM `tbl_host` '
                 . "WHERE `name` <> '' AND `config_id` = $chkDomainId ORDER BY `name`";
-    $booReturn2 = $myDBClass->hasDataArray($strSQL2, $arrDataHpl, $intDataCount);
+    $booReturn2 = $myDBClass->hasDataArray($strSQL2, $arrDataHpl, $intDataCountHpl);
     if ($booReturn2 == false) {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     }
-    if ($arrDataHpl != 0) {
+    if ($intDataCountHpl != 0) {
+        /** @var array $arrDataHpl */
         foreach ($arrDataHpl as $elem) {
             if ($elem['active'] == 0) {
-                $strActive = " [inactive]";
-                $conttp->setVariable("SPECIAL_STYLE", "inactive_option");
+                $strActive = ' [inactive]';
+                $conttp->setVariable('SPECIAL_STYLE', 'inactive_option');
             } else {
-                $strActive = "";
-                $conttp->setVariable("SPECIAL_STYLE", "");
+                $strActive = '';
+                $conttp->setVariable('SPECIAL_STYLE', '');
             }
-            $conttp->setVariable("DAT_TEMPLATE", htmlspecialchars($elem['name'], ENT_QUOTES, 'UTF-8').$strActive);
-            $conttp->setVariable("DAT_TEMPLATE_ID", $elem['id']."::2");
-            $conttp->parse("template");
+            $conttp->setVariable('DAT_TEMPLATE', htmlspecialchars($elem['name'], ENT_QUOTES, 'UTF-8').$strActive);
+            $conttp->setVariable('DAT_TEMPLATE_ID', $elem['id']. '::2');
+            $conttp->parse('template');
         }
     }
     // Process host selection field
@@ -372,8 +376,8 @@ if ($chkModus == "add") {
         $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
     }
     // Process check command selection field
-    if (isset($arrModifyData['check_command']) && ($arrModifyData['check_command'] != "")) {
-        $arrCommand = explode("!", $arrModifyData['check_command']);
+    if (isset($arrModifyData['check_command']) && ($arrModifyData['check_command'] != '')) {
+        $arrCommand = explode('!', $arrModifyData['check_command']);
         $intFieldId = $arrCommand[0];
     } else {
         $intFieldId = 0;
@@ -455,88 +459,88 @@ if ($chkModus == "add") {
         $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
     }
     // Initial add/modify form definitions
-    $strChbFields = "ACE,PCE,FRE,OBS,EVH,FLE,STI,NSI,PED,NOE,PAR,HOG,COT,COG,TPL";
+    $strChbFields = 'ACE,PCE,FRE,OBS,EVH,FLE,STI,NSI,PED,NOE,PAR,HOG,COT,COG,TPL';
     $myContentClass->addFormInit($conttp, $strChbFields);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     if ($intVersion != 3) {
-        $conttp->setVariable("VERSION_20_VALUE_MUST", "mselValue1,");
+        $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                  . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                  . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo, $strChbFields);
-        $conttp->setVariable("DAT_ACE".$arrModifyData['active_checks_enabled']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_PCE".$arrModifyData['passive_checks_enabled']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_FRE".$arrModifyData['check_freshness']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_OBS".$arrModifyData['obsess_over_host']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_EVH".$arrModifyData['event_handler_enabled']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_FLE".$arrModifyData['flap_detection_enabled']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_STI".$arrModifyData['retain_status_information']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_NSI".$arrModifyData['retain_nonstatus_information']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_PED".$arrModifyData['process_perf_data']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_NOE".$arrModifyData['notifications_enabled']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_PAR".$arrModifyData['parents_tploptions']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_HOG".$arrModifyData['hostgroups_tploptions']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_COT".$arrModifyData['contacts_tploptions']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_COG".$arrModifyData['contact_groups_tploptions']."_CHECKED", "checked");
-        $conttp->setVariable("DAT_TPL".$arrModifyData['use_template_tploptions']."_CHECKED", "checked");
+        $conttp->setVariable('DAT_ACE' .$arrModifyData['active_checks_enabled']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_PCE' .$arrModifyData['passive_checks_enabled']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_FRE' .$arrModifyData['check_freshness']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_OBS' .$arrModifyData['obsess_over_host']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_EVH' .$arrModifyData['event_handler_enabled']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_FLE' .$arrModifyData['flap_detection_enabled']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_STI' .$arrModifyData['retain_status_information']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_NSI' .$arrModifyData['retain_nonstatus_information']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_PED' .$arrModifyData['process_perf_data']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_NOE' .$arrModifyData['notifications_enabled']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_PAR' .$arrModifyData['parents_tploptions']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_HOG' .$arrModifyData['hostgroups_tploptions']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_COT' .$arrModifyData['contacts_tploptions']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_COG' .$arrModifyData['contact_groups_tploptions']. '_CHECKED', 'checked');
+        $conttp->setVariable('DAT_TPL' .$arrModifyData['use_template_tploptions']. '_CHECKED', 'checked');
         // Special processing for -1 values - write 'null' to integer fields
-        $strIntegerfelder  = "max_check_attempts,check_interval,retry_interval,freshness_threshold,low_flap_threshold,";
-        $strIntegerfelder .= "high_flap_threshold,notification_interval,first_notification_delay";
-        foreach (explode(",", $strIntegerfelder) as $elem) {
+        $strIntegerfelder  = 'max_check_attempts,check_interval,retry_interval,freshness_threshold,low_flap_threshold,';
+        $strIntegerfelder .= 'high_flap_threshold,notification_interval,first_notification_delay';
+        foreach (explode(',', $strIntegerfelder) as $elem) {
             if ($arrModifyData[$elem] == -1) {
-                $conttp->setVariable("DAT_".strtoupper($elem), "null");
+                $conttp->setVariable('DAT_' .strtoupper($elem), 'null');
             }
         }
-        if ($arrModifyData['check_command'] != "") {
-            $arrArgument = explode("!", $arrModifyData['check_command']);
+        if ($arrModifyData['check_command'] != '') {
+            $arrArgument = explode('!', $arrModifyData['check_command']);
             foreach ($arrArgument as $key => $value) {
                 if ($key == 0) {
-                    $conttp->setVariable("IFRAME_SRC", $_SESSION['SETS']['path']['base_url'].
-                            "admin/commandline.php?cname=".$value);
+                    $conttp->setVariable('IFRAME_SRC', $_SESSION['SETS']['path']['base_url'].
+                        'admin/commandline.php?cname=' .$value);
                 } else {
-                    $value1 = str_replace("::bang::", "!", $value);
-                    $value2 = str_replace("::back::", "\\", $value1);
-                    $conttp->setVariable("DAT_ARG".$key, htmlentities($value, ENT_QUOTES, 'UTF-8'));
+                    $value1 = str_replace('::bang::', '!', $value);
+                    $value2 = str_replace('::back::', "\\", $value1);
+                    $conttp->setVariable('DAT_ARG' .$key, htmlentities($value, ENT_QUOTES, 'UTF-8'));
                 }
             }
         }
         // Process option fields
-        foreach (explode(",", $arrModifyData['initial_state']) as $elem) {
-            $conttp->setVariable("DAT_IS".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['initial_state']) as $elem) {
+            $conttp->setVariable('DAT_IS' .strtoupper($elem). '_CHECKED', 'checked');
         }
-        foreach (explode(",", $arrModifyData['flap_detection_options']) as $elem) {
-            $conttp->setVariable("DAT_FL".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['flap_detection_options']) as $elem) {
+            $conttp->setVariable('DAT_FL' .strtoupper($elem). '_CHECKED', 'checked');
         }
-        foreach (explode(",", $arrModifyData['notification_options']) as $elem) {
-            $conttp->setVariable("DAT_NO".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['notification_options']) as $elem) {
+            $conttp->setVariable('DAT_NO' .strtoupper($elem). '_CHECKED', 'checked');
         }
-        foreach (explode(",", $arrModifyData['stalking_options']) as $elem) {
-            $conttp->setVariable("DAT_ST".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['stalking_options']) as $elem) {
+            $conttp->setVariable('DAT_ST' .strtoupper($elem). '_CHECKED', 'checked');
         }
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Host template definition (hosttemplates.cfg)'));
-    $mastertp->setVariable("FIELD_1", translate('Host template name'));
-    $mastertp->setVariable("FIELD_2", translate('Description'));
+    $mastertp->setVariable('TITLE', translate('Host template definition (hosttemplates.cfg)'));
+    $mastertp->setVariable('FIELD_1', translate('Host template name'));
+    $mastertp->setVariable('FIELD_2', translate('Description'));
     // Process search string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%')";
     }
@@ -569,13 +573,11 @@ if ($chkModus == "display") {
     }
     // Process data
     $myContentClass->listData($mastertp, $arrDataLines, $intDataCount, $intLineCount, $preKeyField, 'alias');
-    if ($myContentClass->strErrorMessage != "") {
+    if ($myContentClass->strErrorMessage != '') {
         $myVisClass->processMessage($myContentClass->strErrorMessage, $strErrorMessage);
     }
 }
 // Show messages
-$arrTimeData       = array();
-$strTimeInfoString = "";
 $myContentClass->showMessages(
     $mastertp,
     $strErrorMessage,

@@ -70,7 +70,7 @@ if ($chkButValue1 != '') {
     }
     // Write service configuration
     $strSQL   = 'SELECT `id`, `config_name` '
-        . "FROM `tbl_service` WHERE `config_id` = $chkDomainId AND `active`='1' GROUP BY `config_name`";
+              . "FROM `tbl_service` WHERE `config_id` = $chkDomainId AND `active`='1' GROUP BY `config_name`";
     $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
     if ($intDataCount != 0) {
         $intError = 0;
@@ -323,7 +323,7 @@ if ($chkButValue3 != '') {
             error_reporting(0);
             if (!($resFile = ftp_exec($myConfigClass->resConnectId, $strBinary.' -v '.$strConffile))) {
                 $myVisClass->processMessage(translate('Remote execution (FTP SITE EXEC) is not supported on your '
-                    . 'system!'), $strErrorMessage);
+                        . 'system!'), $strErrorMessage);
             }
             ftp_close($conn_id);
             error_reporting($intErrorReporting);
@@ -342,7 +342,7 @@ if ($chkButValue3 != '') {
                 $intResult = $myConfigClass->sendSSHCommand($strBinary.' -v '.$strConffile, $arrResult, 15000);
                 if (!is_array($arrResult) || ($arrResult == false)) {
                     $myVisClass->processMessage(translate('Remote execution of nagios verify command failed (remote '
-                        . 'SSH)!'), $strErrorMessage);
+                            . 'SSH)!'), $strErrorMessage);
                 }
             } else {
                 $myVisClass->processMessage(
@@ -360,7 +360,6 @@ if ($chkButValue4 != '') {
     $myConfigClass->getConfigValues($intConfigId, 'binaryfile', $strBinary);
     $myConfigClass->getConfigValues($intConfigId, 'pidfile', $strPidfile);
     $myConfigClass->getConfigValues($intConfigId, 'version', $intVersion);
-    echo  $intVersion;
     // Check state nagios demon
     clearstatcache();
     if ($intMethod == 1) {
@@ -392,7 +391,7 @@ if ($chkButValue4 != '') {
                     );
                 } else {
                     $myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no execute '
-                        . 'permissions'));
+                            . 'permissions'));
                     $myVisClass->processMessage(
                         translate('Nagios command file not found or no write permissions!'),
                         $strErrorMessage
@@ -400,9 +399,9 @@ if ($chkButValue4 != '') {
                 }
             } else {
                 $myDataClass->writeLog(translate('Restart failed - Nagios command file not found or no execute '
-                    . 'permissions'));
+                        . 'permissions'));
                 $myVisClass->processMessage(translate('Restart failed - Nagios command file not found or no rights '
-                    . 'to execute'), $strErrorMessage);
+                        . 'to execute'), $strErrorMessage);
             }
         } else {
             $myDataClass->writeLog(translate('Restart failed - Nagios daemon was not running'));
@@ -438,7 +437,7 @@ if ($chkButValue4 != '') {
                 $intFileStamp2 = $arrInfo2['mtime'];
                 if ($intFileStamp2 <= $intFileStamp1) {
                     $myVisClass->processMessage(translate('Restart failed - Nagios command file not found or no '
-                        . 'rights to execute (remote SSH)!'), $strErrorMessage);
+                            . 'rights to execute (remote SSH)!'), $strErrorMessage);
                 } else {
                     $myDataClass->writeLog(translate('Nagios daemon successfully restarted (remote SSH)'));
                     $myVisClass->processMessage(
@@ -495,7 +494,7 @@ if (isset($resFile) && ($resFile != false)) {
     }
     $myDataClass->writeLog(translate('Nagios written configuration files checked - Warnings/Errors:'). ' '
         .$intWarning. '/' .
-        $intError);
+            $intError);
     pclose($resFile);
     if (($intError == 0) && ($intWarning == 0)) {
         $conttp->setVariable('VERIFY_CLASS', 'greenmessage');
@@ -531,7 +530,7 @@ if (isset($resFile) && ($resFile != false)) {
     }
     $myDataClass->writeLog(translate('Nagios written configuration files checked - Warnings/Errors:'). ' '
         .$intWarning. '/' .
-        $intError);
+            $intError);
     if (($intError == 0) && ($intWarning == 0)) {
         $conttp->setVariable('VERIFY_CLASS', 'greenmessage');
         $conttp->setVariable('VERIFY_LINE', '<b>' .translate('Written configuration files are valid, Nagios can be '
@@ -560,6 +559,6 @@ $conttp->show('main');
 // Insert footer
 // =============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

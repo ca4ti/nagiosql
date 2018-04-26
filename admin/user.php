@@ -55,8 +55,8 @@ if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAcce
             $chkChbValue1 = '1';
         }
         $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', $strPasswd "
-            . "`admin_enable`='$chkChbValue1', `wsauth`='$chkChbValue2', `active`='$chkActive', "
-            . "`language`='$chkSelValue1', `domain`='$chkSelValue2', `last_modified`=NOW()";
+                 . "`admin_enable`='$chkChbValue1', `wsauth`='$chkChbValue2', `active`='$chkActive', "
+                 . "`language`='$chkSelValue1', `domain`='$chkSelValue2', `last_modified`=NOW()";
         if ($chkModus == 'insert') {
             $strSQL = 'INSERT INTO ' .$strSQLx;
         } else {
@@ -115,7 +115,7 @@ if ($chkModus == 'add') {
     }
     if ($intFieldId == 0) {
         $intFieldId = $myDBClass->getFieldData('SELECT `id` FROM `tbl_language` '
-            . "WHERE `locale`='".$_SESSION['SETS']['data']['locale']."'");
+                                             . "WHERE `locale`='".$_SESSION['SETS']['data']['locale']."'");
         $intFieldId = (int)$intFieldId;
     }
     $intReturn2 = $myVisClass->parseSelectSimple('tbl_language', 'language', 'language_name', 0, $intFieldId);
@@ -194,7 +194,7 @@ if ($chkModus == 'display') {
     }
     // Get datasets
     $strSQL     = "SELECT `id`, `$preKeyField`, `alias`, `active`, `nodelete` "
-        . "FROM `$preTableName` $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
+                . "FROM `$preTableName` $strOrderString LIMIT $chkLimit,".$SETS['common']['pagelines'];
     $booReturn2 = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn2 == false) {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);

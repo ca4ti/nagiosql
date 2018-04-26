@@ -34,11 +34,10 @@ class NagInstallClass
 {
     // Define class variables
     public $arrSession           = array();     // Session content
-    private $arrSettings         = array();     // Array includes all global settings
 
     // Class includes
     /** @var \HTML_Template_IT  */
-    public $filTemplate = "";                   // template file
+    public $filTemplate = '';                   // template file
     /** @var MysqliDbClass */
     public $myDBClass;                          // Database class reference
 
@@ -48,10 +47,6 @@ class NagInstallClass
      */
     public function __construct($arrSession)
     {
-        if (isset($arrSession['SETS'])) {
-            // Read global settings
-            $this->arrSettings = $arrSession['SETS'];
-        }
         $this->arrSession = $arrSession;
     }
     
@@ -65,21 +60,20 @@ class NagInstallClass
     {
         // Open template file
         if (file_exists($strTplFile) && is_readable($strTplFile)) {
-            $strTemplate = "";
-            $datTplFile = fopen($strTplFile, 'r');
+            $strTemplate = '';
+            $datTplFile = fopen($strTplFile, 'rb');
             while (!feof($datTplFile)) {
                 $strTemplate .= fgets($datTplFile);
             }
             foreach ($arrTemplate as $key => $elem) {
-                if (substr_count($strTemplate, "{".$key."}") != 0) {
-                    $strTemplate = str_replace("{".$key."}", $elem, $strTemplate);
+                if (substr_count($strTemplate, '{' .$key. '}') != 0) {
+                    $strTemplate = str_replace('{' .$key. '}', $elem, $strTemplate);
                 }
             }
-            return($strTemplate);
-        } else {
-            echo $this->translate("Template file not found").": ".$strTplFile;
+            return $strTemplate;
         }
-        return(0);
+        echo $this->translate('Template file not found'). ': ' .$strTplFile;
+        return 0;
     }
 
     /**
@@ -87,19 +81,17 @@ class NagInstallClass
      * @param string $strLangString             String to translate
      * @return string                           Translated string
      */
-    public function translate($strLangString)
+    public function translate($strLangString): string
     {
         $strTemp1 = gettext($strLangString);
-        $strTemp2 = str_replace('"', '&quot;', $strTemp1);
-        $strFinal = str_replace("'", '&#039;', $strTemp2);
-        return($strFinal);
+        return str_replace(array('"', "'"), array('&quot;', '&#039;'), $strTemp1);
     }
 
     /**
      * Return supported languages
      * @return array                            Array including supported languages
      */
-    public function getLangData()
+    public function getLangData(): array
     {
         $arrLangSupported = array();
         unset($arrLangSupported);
@@ -296,7 +288,7 @@ class NagInstallClass
             $nativedescription[$key] = $row['nativedescription'];
         }
         array_multisort($description, SORT_ASC, $nativedescription, SORT_ASC, $arrLangSupported);
-        return($arrLangSupported);
+        return $arrLangSupported;
     }
     
     /**
@@ -316,7 +308,7 @@ class NagInstallClass
                 $strReturn = $arrLanguages[$strCode]['description'];
             }
         }
-        return($strReturn);
+        return $strReturn;
     }
     
     /**
@@ -326,26 +318,27 @@ class NagInstallClass
      * @param int $intMode                      Mode (0=admin user/1=NagiosQL user
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function openAdmDBSrv(&$strStatusMessage, &$strErrorMessage, $intMode = 0)
+    public function openAdmDBSrv(&$strStatusMessage, &$strErrorMessage, $intMode = 0): int
     {
         $intStatus  = 0;
         $intReturn  = 0;
         $this->myDBClass->hasDBConnection(1);
         if ($this->myDBClass->error == true) {
-            $strErrorMessage .= str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+            $strErrorMessage .= str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
             $intStatus = 1;
         }
         /** @noinspection PhpStatementHasEmptyBodyInspection */
+        /** @noinspection MissingOrEmptyGroupStatementInspection */
         if ($intMode == 1) {
             // TO BE DEFINED
         }
         if ($intStatus == 0) {
-            $strStatusMessage = "<span class=\"green\">".$this->translate("passed")."</span>";
+            $strStatusMessage = '<span class="green">' .$this->translate('passed'). '</span>';
         } else {
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
             $intReturn  = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -355,28 +348,29 @@ class NagInstallClass
      * @param int $intMode                      Mode (0=admin user/1=NagiosQL user
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function openDatabase(&$strStatusMessage, &$strErrorMessage, $intMode = 0)
+    public function openDatabase(&$strStatusMessage, &$strErrorMessage, $intMode = 0): int
     {
         $intStatus = 0;
         $intReturn = 0;
         // Connect to database
         $booDB      = $this->myDBClass->hasDBConnection();
         if (!$booDB) {
-            $strErrorMessage .= $this->translate('Error while connecting to database:')."<br>";
-            $strErrorMessage .= str_replace("::", "<br>", $this->myDBClass->strErrorMessage)."\n";
+            $strErrorMessage .= $this->translate('Error while connecting to database:'). '<br>';
+            $strErrorMessage .= str_replace('::', '<br>', $this->myDBClass->strErrorMessage)."\n";
             $intStatus = 1;
         }
         /** @noinspection PhpStatementHasEmptyBodyInspection */
+        /** @noinspection MissingOrEmptyGroupStatementInspection */
         if ($intMode == 1) {
             // TO BE DEFINED
         }
         if ($intStatus == 0) {
-            $strStatusMessage = "<span class=\"green\">".$this->translate("passed")."</span>";
+            $strStatusMessage = '<span class="green">' .$this->translate('passed'). '</span>';
         } else {
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -386,34 +380,34 @@ class NagInstallClass
      * @param string $setVersion                Database version
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function checkDBVersion(&$strStatusMessage, &$strErrorMessage, &$setVersion)
+    public function checkDBVersion(&$strStatusMessage, &$strErrorMessage, &$setVersion): int
     {
         $arrDataset = array();
         $intReturn  = 0;
-        $strDBError = "";
+        $strDBError = '';
         $intVersion = 0;
         // Read version string from DB
-        if ($this->arrSession['install']['dbtype'] == "mysqli") {
+        if ($this->arrSession['install']['dbtype'] == 'mysqli') {
             $this->myDBClass->hasSingleDataset("SHOW VARIABLES LIKE 'version'", $arrDataset);
             $setVersion = $arrDataset['Value'];
-            $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
-            $intVersion = version_compare($setVersion, "4.1.0");
+            $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
+            $intVersion = version_compare($setVersion, '4.1.0');
         }
-        if ($strDBError == "") {
+        if ($strDBError == '') {
             // Is the currrent version supported?
             if ($intVersion >=0) {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("supported")."</span>";
+                $strStatusMessage = '<span class="green">' .$this->translate('supported'). '</span>';
             } else {
-                $strStatusMessage = "<span class=\"red\">".$this->translate("not supported")."</span>";
+                $strStatusMessage = '<span class="red">' .$this->translate('not supported'). '</span>';
                 $intReturn = 1;
             }
         } else {
             $strErrorMessage .=    $strDBError."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-            $setVersion          = "unknown";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+            $setVersion          = 'unknown';
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
     
     /**
@@ -424,50 +418,50 @@ class NagInstallClass
      * @param string $setVersion                Current NagiosQL version string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function checkQLVersion(&$strStatusMessage, &$strErrorMessage, &$arrUpdate, &$setVersion)
+    public function checkQLVersion(&$strStatusMessage, &$strErrorMessage, &$arrUpdate, &$setVersion): int
     {
         $intReturn  = 0;
         $strSQL     = "SELECT `value` FROM `tbl_settings` WHERE `category`='db' AND `name`='version'";
         $setVersion = $this->myDBClass->getFieldData($strSQL);
-        $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+        $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
         // Process result
-        if (($strDBError == "") && ($setVersion != "")) {
+        if (($strDBError == '') && ($setVersion != '')) {
             // NagiosQL version supported?
             $intVersionError = 0;
             switch ($setVersion) {
                 case '3.0.0':
-                    $arrUpdate[] = "sql/update_300_310.sql";
-                    $arrUpdate[] = "sql/update_310_320.sql";
+                    $arrUpdate[] = 'sql/update_300_310.sql';
+                    $arrUpdate[] = 'sql/update_310_320.sql';
                     break;
                 case '3.0.1':
-                    $arrUpdate[] = "sql/update_302_303.sql";
-                    $arrUpdate[] = "sql/update_304_310.sql";
-                    $arrUpdate[] = "sql/update_310_320.sql";
+                    $arrUpdate[] = 'sql/update_302_303.sql';
+                    $arrUpdate[] = 'sql/update_304_310.sql';
+                    $arrUpdate[] = 'sql/update_310_320.sql';
                     break;
                 case '3.0.2':
-                    $arrUpdate[] = "sql/update_302_303.sql";
-                    $arrUpdate[] = "sql/update_304_310.sql";
-                    $arrUpdate[] = "sql/update_310_320.sql";
+                    $arrUpdate[] = 'sql/update_302_303.sql';
+                    $arrUpdate[] = 'sql/update_304_310.sql';
+                    $arrUpdate[] = 'sql/update_310_320.sql';
                     break;
                 case '3.0.3':
-                    $arrUpdate[] = "sql/update_304_310.sql";
-                    $arrUpdate[] = "sql/update_310_320.sql";
+                    $arrUpdate[] = 'sql/update_304_310.sql';
+                    $arrUpdate[] = 'sql/update_310_320.sql';
                     break;
                 case '3.0.4':
-                    $arrUpdate[] = "sql/update_304_310.sql";
-                    $arrUpdate[] = "sql/update_310_320.sql";
+                    $arrUpdate[] = 'sql/update_304_310.sql';
+                    $arrUpdate[] = 'sql/update_310_320.sql';
                     break;
                 case '3.1.0':
-                    $arrUpdate[] = "sql/update_310_320.sql";
+                    $arrUpdate[] = 'sql/update_310_320.sql';
                     break;
                 case '3.1.1':
-                    $arrUpdate[] = "sql/update_311_320.sql";
+                    $arrUpdate[] = 'sql/update_311_320.sql';
                     break;
                 case '3.2.0':
-                    $arrUpdate[] = "sql/update_320_340.sql";
+                    $arrUpdate[] = 'sql/update_320_340.sql';
                     break;
                 case '3.3.0':
-                    $arrUpdate[] = "sql/update_320_340.sql";
+                    $arrUpdate[] = 'sql/update_320_340.sql';
                     break;
                 case '3.4.0':
                     $intVersionError = 2;
@@ -477,27 +471,29 @@ class NagInstallClass
                     break;
             }
             if ($intVersionError == 0) {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("supported")."</span> (".$setVersion.")";
+                $strStatusMessage = '<span class="green">' .$this->translate('supported'). '</span> ('
+                    .$setVersion. ')';
             } elseif ($intVersionError == 2) {
-                $strErrorMessage .= $this->translate("Your NagiosQL installation is up to date - no further "
-                                                   . "actions are needed!")."<br>\n";
-                $strStatusMessage = "<span class=\"green\">".$this->translate("up-to-date")."</span> (".$setVersion.")";
+                $strErrorMessage .= $this->translate('Your NagiosQL installation is up to date - no further '
+                                                   . 'actions are needed!')."<br>\n";
+                $strStatusMessage = '<span class="green">' .$this->translate('up-to-date'). '</span> ('
+                    .$setVersion. ')';
                 $intReturn  = 1;
             } else {
-                $strErrorMessage .= $this->translate("Updates to NagiosQL 3.2 and above are only supported from "
-                                                   . "NagiosQL 3.0.0 and above!")."<br>\n";
-                $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".$setVersion.")";
+                $strErrorMessage .= $this->translate('Updates to NagiosQL 3.2 and above are only supported from '
+                                                   . 'NagiosQL 3.0.0 and above!')."<br>\n";
+                $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span> (' .$setVersion. ')';
                 $intReturn  = 1;
             }
         } else {
-            $strErrorMessage .= $this->translate("Error while selecting settings table.")."<br>\n";
+            $strErrorMessage .= $this->translate('Error while selecting settings table.')."<br>\n";
             $strErrorMessage .= $strDBError."<br>\n";
-            $strErrorMessage .= $this->translate("Updates to NagiosQL 3.2 and above are only supported "
-                                               . "from NagiosQL 3.0.0 and above!")."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+            $strErrorMessage .= $this->translate('Updates to NagiosQL 3.2 and above are only supported '
+                                               . 'from NagiosQL 3.0.0 and above!')."<br>\n";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
             $intReturn  = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -506,21 +502,21 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function dropDB(&$strStatusMessage, &$strErrorMessage)
+    public function dropDB(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn  = 0;
-        $booReturn  = $this->myDBClass->insertData("DROP DATABASE ".$this->arrSession['install']['dbname']);
-        $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+        $booReturn  = $this->myDBClass->insertData('DROP DATABASE ' .$this->arrSession['install']['dbname']);
+        $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
         if ($booReturn) {
-            $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".
-                                $this->arrSession['install']['dbname'].")";
+            $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span> (' .
+                                $this->arrSession['install']['dbname']. ')';
         } else {
             $strErrorMessage .= $strDBError."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".
-                $this->arrSession['install']['dbname'].")";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span> (' .
+                $this->arrSession['install']['dbname']. ')';
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -529,35 +525,35 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function createDB(&$strStatusMessage, &$strErrorMessage)
+    public function createDB(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn = 0;
-        $strSQL    = "";
+        $strSQL    = '';
         // Create database
-        if (($this->arrSession['install']['dbtype'] == "mysql") ||
-            ($this->arrSession['install']['dbtype'] == "mysqli")) {
-            $strSQL = "CREATE DATABASE ".$this->arrSession['install']['dbname']." DEFAULT CHARACTER SET utf8 DEFAULT "
-                    . "COLLATE utf8_unicode_ci";
+        if (($this->arrSession['install']['dbtype'] == 'mysql') ||
+            ($this->arrSession['install']['dbtype'] == 'mysqli')) {
+            $strSQL = 'CREATE DATABASE ' .$this->arrSession['install']['dbname']. ' DEFAULT CHARACTER SET utf8 DEFAULT '
+                    . 'COLLATE utf8_unicode_ci';
         } else {
-            $strErrorMessage .= $this->translate("Unsupported database type.")."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".
-                                 $this->arrSession['install']['dbname'].")";
+            $strErrorMessage .= $this->translate('Unsupported database type.')."<br>\n";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span> (' .
+                                 $this->arrSession['install']['dbname']. ')';
             $intReturn = 1;
         }
         if ($intReturn == 0) {
             $booReturn  = $this->myDBClass->insertData($strSQL);
-            $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+            $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
             if ($booReturn) {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".
-                                     $this->arrSession['install']['dbname'].")";
+                $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span> (' .
+                                     $this->arrSession['install']['dbname']. ')';
             } else {
                 $strErrorMessage .= $strDBError."<br>\n";
-                $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span> (".
-                                     $this->arrSession['install']['dbname'].")";
+                $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span> (' .
+                                     $this->arrSession['install']['dbname']. ')';
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -566,17 +562,17 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function grantDBUser(&$strStatusMessage, &$strErrorMessage)
+    public function grantDBUser(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn    = 0;
         $intUserError = 0;
         $strDBError   = '';
         // Grant user
-        if (($this->arrSession['install']['dbtype'] == "mysql") ||
-            ($this->arrSession['install']['dbtype'] == "mysqli")) {
+        if (($this->arrSession['install']['dbtype'] == 'mysql') ||
+            ($this->arrSession['install']['dbtype'] == 'mysqli')) {
             // does the user exist?
             $intUserError = 0;
-            $this->myDBClass->insertData("FLUSH PRIVILEGES");
+            $this->myDBClass->insertData('FLUSH PRIVILEGES');
             $strSQL     = "SELECT * FROM `mysql`.`user` WHERE  `Host`='".$this->arrSession['install']['localsrv']."' "
                         . "AND `User`='".$this->arrSession['install']['dbuser']."'";
             $intCount   = $this->myDBClass->countRows($strSQL);
@@ -587,42 +583,42 @@ class NagInstallClass
                 $booReturn = $this->myDBClass->insertData($strSQL);
                 if ($booReturn == false) {
                     $intUserError = 1;
-                    $strDBError   = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                    $strDBError   = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                 }
-            } elseif ($this->myDBClass->strErrorMessage == "") {
+            } elseif ($this->myDBClass->strErrorMessage == '') {
                 $intUserError = 2;
             } else {
                 $intUserError = 1;
-                $strDBError   = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                $strDBError   = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
             }
             if ($intUserError != 1) {
-                $this->myDBClass->insertData("FLUSH PRIVILEGES");
-                $strSQL    = "GRANT SELECT, INSERT, UPDATE, DELETE, LOCK TABLES ON "
-                           . "`".$this->arrSession['install']['dbname']."`.*  TO "
+                $this->myDBClass->insertData('FLUSH PRIVILEGES');
+                $strSQL    = 'GRANT SELECT, INSERT, UPDATE, DELETE, LOCK TABLES ON '
+                           . '`' .$this->arrSession['install']['dbname']. '`.*  TO '
                            . "'".$this->arrSession['install']['dbuser']."'@'"
                            . $this->arrSession['install']['localsrv']."'";
                 $booReturn = $this->myDBClass->insertData($strSQL);
                 if ($booReturn == false) {
                     $intUserError    = 1;
-                    $strDBError    = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                    $strDBError    = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                 }
-                $this->myDBClass->insertData("FLUSH PRIVILEGES");
+                $this->myDBClass->insertData('FLUSH PRIVILEGES');
             }
         }
         if ($intUserError != 1) {
             if ($intUserError == 2) {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".
-                                    $this->translate("Only added rights to existing user").": ".
-                                    $this->arrSession['install']['dbuser'].")";
+                $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span> (' .
+                                    $this->translate('Only added rights to existing user'). ': ' .
+                                    $this->arrSession['install']['dbuser']. ')';
             } else {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+                $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
             }
         } else {
             $strErrorMessage .= $strDBError."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -632,36 +628,36 @@ class NagInstallClass
      * @param array $arrUpdate                  Array including all update files
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function updateQLDB(&$strStatusMessage, &$strErrorMessage, $arrUpdate)
+    public function updateQLDB(&$strStatusMessage, &$strErrorMessage, $arrUpdate): int
     {
         $intReturn      = 0;
         $intUpdateOk    = 0;
         $intUpdateError = 0;
-        if (is_array($arrUpdate) && (count($arrUpdate) != 0)) {
+        if (\is_array($arrUpdate) && (\count($arrUpdate) != 0)) {
             $intUpdateOk    = 0;
             $intUpdateError = 0;
         } else {
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-            $strErrorMessage .= $this->translate("No SQL update files available")."<br>\n";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+            $strErrorMessage .= $this->translate('No SQL update files available')."<br>\n";
             $intReturn        = 1;
         }
         if ($intReturn == 0) {
             foreach ($arrUpdate as $elem) {
-                if (($intUpdateError == 0) && (is_readable($elem))) {
+                if (($intUpdateError == 0) && is_readable($elem)) {
                     $this->processSqlFile($elem, $intUpdateOk, $intUpdateError, $strStatusMessage, $strErrorMessage);
                 } else {
-                    $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-                    $strErrorMessage .= $this->translate("SQL file is not readable or empty")." (".$elem.")<br>\n";
+                    $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+                    $strErrorMessage .= $this->translate('SQL file is not readable or empty'). ' (' .$elem.")<br>\n";
                     $intUpdateError++;
                 }
             }
             if ($intUpdateError == 0) {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+                $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
             } else {
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -672,11 +668,11 @@ class NagInstallClass
      * @param string $strStatus                 Status message string
      * @param string $strError                  Error message string
      */
-    private function processSqlFile($strFileName, &$intSuccess, &$intError, &$strStatus, &$strError)
+    private function processSqlFile($strFileName, &$intSuccess, &$intError, &$strStatus, &$strError): void
     {
-        $filSqlNew = fopen($strFileName, "r");
+        $filSqlNew = fopen($strFileName, 'rb');
         if ($filSqlNew) {
-            $strSqlCommand = "";
+            $strSqlCommand = '';
             $intSQLError   = 0;
             $intLineCount  = 0;
             while (!feof($filSqlNew)) {
@@ -685,30 +681,30 @@ class NagInstallClass
                     continue;
                 }   // skip if an error was found
                 $intLineCount++;
-                if (($strLine == "") || (substr($strLine, 0, 2) == "--")) {
+                if (($strLine == '') || (0 === strpos($strLine, '--'))) {
                     continue;
                 }   // skip empty and comment lines
                 $strSqlCommand .= $strLine;
-                if (substr($strSqlCommand, -1) == ";") {
+                if (substr($strSqlCommand, -1) == ';') {
                     $booReturn = $this->myDBClass->insertData($strSqlCommand);
                     if ($booReturn == false) {
                         $intSQLError = 1;
-                        $strError   .= str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                        $strError   .= str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                         $intError    = 1;
                     }
-                    $strSqlCommand = "";
+                    $strSqlCommand = '';
                 }
             }
             if ($intSQLError == 0) {
                 $intSuccess++;
             } else {
-                $strStatus = "<span class=\"red\">".$this->translate("failed")."</span> (Line: ".
-                              $intLineCount." in file: ".$strFileName.")";
+                $strStatus = '<span class="red">' .$this->translate('failed'). '</span> (Line: ' .
+                              $intLineCount. ' in file: ' .$strFileName. ')';
                 $intError++;
             }
         } else {
-            $strStatus = "<span class=\"red\">".$this->translate("failed")."</span>";
-            $strError .= $this->translate("SQL file is not readable or empty")." (".$strFileName.")<br>\n";
+            $strStatus = '<span class="red">' .$this->translate('failed'). '</span>';
+            $strError .= $this->translate('SQL file is not readable or empty'). ' (' .$strFileName.")<br>\n";
             $intError++;
         }
     }
@@ -719,31 +715,31 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function createNQLAdmin(&$strStatusMessage, &$strErrorMessage)
+    public function createNQLAdmin(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn = 0;
         // Create admin user
         $strSQL  = "SELECT `id` FROM `tbl_language` WHERE `locale`='".$this->arrSession['install']['locale']."'";
-        $intLang = intval($this->myDBClass->getFieldData($strSQL));
+        $intLang = (int)$this->myDBClass->getFieldData($strSQL);
         if ($intLang == 0) {
             $intLang = 1;
         }
         /** @noinspection SqlSignature */
-        $strSQL  = "INSERT INTO `tbl_user` (`id`, `username`, `alias`, `password`, `admin_enable`, `wsauth`, "
-                 . "`active`, `nodelete`, `language`, `domain`, `last_login`, `last_modified`) "
+        $strSQL  = 'INSERT INTO `tbl_user` (`id`, `username`, `alias`, `password`, `admin_enable`, `wsauth`, '
+                 . '`active`, `nodelete`, `language`, `domain`, `last_login`, `last_modified`) '
                  . "VALUES (1, '".$this->arrSession['install']['qluser']."', 'Administrator', "
                  . "MD5('".$this->arrSession['install']['qlpass']."'), '1', '0', '1', '1', '".$intLang
                  . "', '1', '', NOW());";
         $booReturn  = $this->myDBClass->insertData($strSQL);
-        $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+        $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
         if ($booReturn) {
-            $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+            $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
         } else {
             $strErrorMessage .=    $strDBError."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -752,49 +748,53 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function updateSettingsDB(&$strStatusMessage, &$strErrorMessage)
+    public function updateSettingsDB(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn = 0;
         // Checking initial settings
         $arrInitial[] = array('category'=>'db','name'=>'version','value'=>$this->arrSession['install']['version']);
         $arrInitial[] = array('category'=>'db','name'=>'type','value'=>$this->arrSession['install']['dbtype']);
+        /** @noinspection ForeachSourceInspection */
         foreach ($this->arrSession['init_settings'] as $key => $value) {
             if ($key == 'db') {
                 continue;
             } // do not store db values to database
+            /** @var array $value */
             foreach ($value as $key2 => $value2) {
                 $arrInitial[] = array('category'=>$key,'name'=>$key2,'value'=>$value2);
             }
         }
+        /** @noinspection ForeachSourceInspection */
         foreach ($arrInitial as $elem) {
-            $strSQL1 = "SELECT `value` FROM `tbl_settings` "
+            $strSQL1 = 'SELECT `value` FROM `tbl_settings` '
                      . "WHERE `category`='".$elem['category']."' AND `name`='".$elem['name']."'";
-            $strSQL2 = "INSERT INTO `tbl_settings` (`category`, `name`, `value`) "
+            $strSQL2 = 'INSERT INTO `tbl_settings` (`category`, `name`, `value`) '
                      . "VALUES ('".$elem['category']."', '".$elem['name']."', '".$elem['value']."')";
             $intCount   = $this->myDBClass->countRows($strSQL1);
             if ($intCount == 0) {
                 $booReturn  = $this->myDBClass->insertData($strSQL2);
                 if ($booReturn == false) {
-                    $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-                    $strErrorMessage .= $this->translate("Inserting initial data to settings database has "
-                                     . "failed:")."1<br>";
-                    $strErrorMessage .= str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                    $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+                    $strErrorMessage .= $this->translate('Inserting initial data to settings database has '
+                                     . 'failed:'). '1<br>';
+                    $strErrorMessage .= str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                     $intReturn = 1;
                 }
-            } elseif ($this->myDBClass->strErrorMessage != "") {
-                $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-                $strErrorMessage .= $this->translate("Inserting initial data to settings database has failed:")."2<br>";
-                $strErrorMessage .= str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+            } elseif ($this->myDBClass->strErrorMessage != '') {
+                $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+                $strErrorMessage .= $this->translate('Inserting initial data to settings database has failed:')
+                    . '2<br>';
+                $strErrorMessage .= str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                 $intReturn = 1;
             }
         }
         if ($intReturn == 0) {
-            $strBaseURL  = str_replace("install/install.php", "", filter_input(INPUT_SERVER, 'PHP_SELF', 513));
+            $strBaseURL  = str_replace('install/install.php', '', filter_input(INPUT_SERVER, 'PHP_SELF', 513));
             $strBasePath = substr(realpath('.'), 0, -7);
             // Update some values
             $arrSettings[]     = array('category'=>'db','name'=>'version',
                 'value'=>$this->arrSession['install']['version']);
-            if (substr_count(filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_STRING), "HTTPS") != 0) {
+            if (substr_count(filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_STRING), 'HTTPS') != 0) {
                 $arrSettings[] = array('category'=>'path','name'=>'protocol','value'=>'https');
             } else {
                 $arrSettings[] = array('category'=>'path','name'=>'protocol','value'=>'http');
@@ -803,22 +803,23 @@ class NagInstallClass
                 'value'=>$this->arrSession['install']['locale']);
             $arrSettings[]     = array('category'=>'path','name'=>'base_url','value'=>$strBaseURL);
             $arrSettings[]     = array('category'=>'path','name'=>'base_path','value'=>$strBasePath);
+            /** @var array $arrSettings */
             foreach ($arrSettings as $elem) {
                 $strSQL    = "UPDATE `tbl_settings` SET `value`='".$elem['value']."' "
                            . "WHERE `category`='".$elem['category']."' AND `name`='".$elem['name']."'";
                 $booReturn = $this->myDBClass->insertData($strSQL);
                 if ($booReturn == false) {
-                    $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-                    $strErrorMessage .=    $this->translate("Inserting initial data to settings database has failed:");
-                    $strErrorMessage .=    str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                    $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+                    $strErrorMessage .=    $this->translate('Inserting initial data to settings database has failed:');
+                    $strErrorMessage .=    str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                     $intReturn        = 1;
                 }
             }
             if ($intReturn == 0) {
-                $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+                $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -827,15 +828,15 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function updateSettingsFile(&$strStatusMessage, &$strErrorMessage)
+    public function updateSettingsFile(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn = 0;
         // open settings file
-        $strBaseURL  = str_replace("install/install.php", "", filter_input(INPUT_SERVER, 'PHP_SELF', 513));
+        $strBaseURL  = str_replace('install/install.php', '', filter_input(INPUT_SERVER, 'PHP_SELF', 513));
         $strBasePath = substr(realpath('.'), 0, -7);
         $strErrorId  = error_reporting();
         error_reporting(0);
-        $filSettings = fopen($strBasePath."config/settings.php", "w");
+        $filSettings = fopen($strBasePath. 'config/settings.php', 'wb');
         error_reporting($strErrorId);
         if ($filSettings) {
             // Write Database Configuration into settings.php
@@ -851,28 +852,28 @@ class NagInstallClass
             fwrite($filSettings, "; Project  : NagiosQL\n");
             fwrite($filSettings, "; Component: Database Configuration\n");
             fwrite($filSettings, "; Website  : https://sourceforge.net/projects/nagiosql/\n");
-            fwrite($filSettings, "; Date     : ".date("F j, Y, g:i a")."\n");
-            fwrite($filSettings, "; Version  : ".$this->arrSession['install']['version']."\n");
+            fwrite($filSettings, '; Date     : ' .date('F j, Y, g:i a')."\n");
+            fwrite($filSettings, '; Version  : ' .$this->arrSession['install']['version']."\n");
             fwrite($filSettings, ";\n");
             fwrite($filSettings, ";///////////////////////////////////////////////////////////////////////////////\n");
             fwrite($filSettings, "[db]\n");
-            fwrite($filSettings, "type         = ".$this->arrSession['install']['dbtype']."\n");
-            fwrite($filSettings, "server       = ".$this->arrSession['install']['dbserver']."\n");
-            fwrite($filSettings, "port         = ".$this->arrSession['install']['dbport']."\n");
-            fwrite($filSettings, "database     = ".$this->arrSession['install']['dbname']."\n");
-            fwrite($filSettings, "username     = ".$this->arrSession['install']['dbuser']."\n");
-            fwrite($filSettings, "password     = ".$this->arrSession['install']['dbpass']."\n");
+            fwrite($filSettings, 'type         = ' .$this->arrSession['install']['dbtype']."\n");
+            fwrite($filSettings, 'server       = ' .$this->arrSession['install']['dbserver']."\n");
+            fwrite($filSettings, 'port         = ' .$this->arrSession['install']['dbport']."\n");
+            fwrite($filSettings, 'database     = ' .$this->arrSession['install']['dbname']."\n");
+            fwrite($filSettings, 'username     = ' .$this->arrSession['install']['dbuser']."\n");
+            fwrite($filSettings, 'password     = ' .$this->arrSession['install']['dbpass']."\n");
             fwrite($filSettings, "[path]\n");
-            fwrite($filSettings, "base_url     = ".$strBaseURL."\n");
-            fwrite($filSettings, "base_path    = ".$strBasePath."\n");
+            fwrite($filSettings, 'base_url     = ' .$strBaseURL."\n");
+            fwrite($filSettings, 'base_path    = ' .$strBasePath."\n");
             fclose($filSettings);
-            $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+            $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
         } else {
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-            $strErrorMessage .=    $this->translate("Connot open/write to config/settings.php")."<br>\n";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+            $strErrorMessage .=    $this->translate('Connot open/write to config/settings.php')."<br>\n";
             $intReturn = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -881,13 +882,13 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function updateQLpath(&$strStatusMessage, &$strErrorMessage)
+    public function updateQLpath(&$strStatusMessage, &$strErrorMessage): int
     {
         $intReturn = 0;
         // Update configuration target database
-        $strNagiosQLpath = str_replace("//", "/", $this->arrSession['install']['qlpath']."/");
-        $strNagiosPath   = str_replace("//", "/", $this->arrSession['install']['nagpath']."/");
-        $strSQL          = "UPDATE `tbl_configtarget` SET "
+        $strNagiosQLpath = str_replace('//', '/', $this->arrSession['install']['qlpath']. '/');
+        $strNagiosPath   = str_replace('//', '/', $this->arrSession['install']['nagpath']. '/');
+        $strSQL          = 'UPDATE `tbl_configtarget` SET '
                          . "`basedir`='".$strNagiosQLpath."', "
                          . "`hostconfig`='".$strNagiosQLpath."hosts/', "
                          . "`serviceconfig`='".$strNagiosQLpath."services/', "
@@ -900,44 +901,50 @@ class NagInstallClass
                          . "`last_modified`=NOW() WHERE `target`='localhost'";
         $booReturn            = $this->myDBClass->insertData($strSQL);
         if ($booReturn == false) {
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-            $strErrorMessage .= $this->translate("Inserting path data to database has failed:")." ".
-                                str_replace("::", "<br>", $this->myDBClass->strErrorMessage)."\n";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+            $strErrorMessage .= $this->translate('Inserting path data to database has failed:'). ' ' .
+                                str_replace('::', '<br>', $this->myDBClass->strErrorMessage)."\n";
             $intReturn = 1;
         }
-        if ($intReturn == 0) {
-            // Create real paths
-            if ($this->arrSession['install']['createpath'] == 1) {
-                if (is_writable($strNagiosQLpath) && is_dir($strNagiosQLpath) && is_executable($strNagiosQLpath)) {
-                    if (!file_exists($strNagiosQLpath."hosts")) {
-                        mkdir($strNagiosQLpath."hosts", 0755);
-                    }
-                    if (!file_exists($strNagiosQLpath."services")) {
-                        mkdir($strNagiosQLpath."services", 0755);
-                    }
-                    if (!file_exists($strNagiosQLpath."backup")) {
-                        mkdir($strNagiosQLpath."backup", 0755);
-                    }
-                    if (!file_exists($strNagiosQLpath."backup/hosts")) {
-                        mkdir($strNagiosQLpath."backup/hosts", 0755);
-                    }
-                    if (!file_exists($strNagiosQLpath."backup/services")) {
-                        mkdir($strNagiosQLpath."backup/services", 0755);
-                    }
-                    $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span> (".
-                                         $this->translate("Check the permissions of the created paths!").")";
-                } else {
-                    $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
-                    $strErrorMessage .= $this->translate("NagiosQL config path is not writeable - only database "
-                                      . "values updated")."<br>\n";
-                    $intReturn        = 1;
+        if ($intReturn == 0 && $this->arrSession['install']['createpath'] == 1) {
+            if (is_writable($strNagiosQLpath) && is_dir($strNagiosQLpath) && is_executable($strNagiosQLpath)) {
+                if (!file_exists($strNagiosQLpath . 'hosts') && !mkdir($strNagiosQLpath . 'hosts', 0755) &&
+                    !is_dir($strNagiosQLpath . 'hosts')) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $strNagiosQLpath . 'hosts'));
                 }
+                if (!file_exists($strNagiosQLpath . 'services') && !mkdir($strNagiosQLpath . 'services', 0755) &&
+                    !is_dir($strNagiosQLpath . 'services')) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $strNagiosQLpath
+                        . 'services'));
+                }
+                if (!file_exists($strNagiosQLpath . 'backup') && !mkdir($strNagiosQLpath . 'backup', 0755) &&
+                    !is_dir($strNagiosQLpath . 'backup')) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $strNagiosQLpath . 'backup'));
+                }
+                if (!file_exists($strNagiosQLpath . 'backup/hosts') &&
+                    !mkdir($strNagiosQLpath . 'backup/hosts', 0755) && !is_dir($strNagiosQLpath . 'backup/hosts')) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $strNagiosQLpath
+                        . 'backup/hosts'));
+                }
+                if (!file_exists($strNagiosQLpath . 'backup/services') &&
+                    !mkdir($strNagiosQLpath . 'backup/services', 0755) &&
+                    !is_dir($strNagiosQLpath . 'backup/services')) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $strNagiosQLpath
+                        . 'backup/services'));
+                }
+                $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span> (' .
+                                     $this->translate('Check the permissions of the created paths!'). ')';
+            } else {
+                $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
+                $strErrorMessage .= $this->translate('NagiosQL config path is not writeable - only database '
+                                  . 'values updated')."<br>\n";
+                $intReturn        = 1;
             }
         }
         if ($intReturn == 0) {
-            $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+            $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -946,25 +953,25 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function convQLDB(&$strStatusMessage, &$strErrorMessage)
+    public function convQLDB(&$strStatusMessage, &$strErrorMessage): int
     {
-        $strDBError = "";
+        $strDBError = '';
         $intReturn  = 0;
-        if ($this->arrSession['install']['dbtype'] == "mysqli") {
-            $strSQL     = "ALTER DATABASE `".$this->arrSession['install']['dbname']."` "
-                        . "DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+        if ($this->arrSession['install']['dbtype'] == 'mysqli') {
+            $strSQL     = 'ALTER DATABASE `' .$this->arrSession['install']['dbname']. '` '
+                        . 'DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
             $this->myDBClass->insertData($strSQL);
-            $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+            $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
         }
-        if ($strDBError == "") {
-            $strStatusMessage = "<span class=\"green\">".$this->translate("done")."</span>";
+        if ($strDBError == '') {
+            $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
         } else {
-            $strErrorMessage .= $this->translate("Database errors while converting to utf-8:")."<br>".
+            $strErrorMessage .= $this->translate('Database errors while converting to utf-8:'). '<br>' .
                                 $strDBError."<br>\n";
-            $strStatusMessage = "<span class=\"red\">".$this->translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .$this->translate('failed'). '</span>';
             $intReturn        = 1;
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -973,46 +980,47 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function convQLDBTables(&$strStatusMessage, &$strErrorMessage)
+    public function convQLDBTables(&$strStatusMessage, &$strErrorMessage): int
     {
         $arrDataset   = array();
         $intDataCount = 0;
         $intReturn    = 0;
         $intError     = 0;
-        $strDBError   = "";
+        $strDBError   = '';
         // Read version string from DB
-        if ($this->arrSession['install']['dbtype'] == "mysqli") {
-            $strSQL = "SHOW TABLES FROM `".$this->arrSession['install']['dbname']."`";
+        if ($this->arrSession['install']['dbtype'] == 'mysqli') {
+            $strSQL = 'SHOW TABLES FROM `' .$this->arrSession['install']['dbname']. '`';
             $this->myDBClass->hasDataArray($strSQL, $arrDataset, $intDataCount);
             if ($intDataCount != 0) {
                 foreach ($arrDataset as $elem) {
                     if ($intError == 1) {
                         continue;
                     }
-                    $strSQL    = "ALTER TABLE `".$elem[0]."` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                    $strSQL    = 'ALTER TABLE `' .$elem[0]. '` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
                     $booReturn = $this->myDBClass->insertData($strSQL);
                     if ($booReturn == false) {
                         $intError   = 1;
-                        $strDBError = str_replace("::", "<br>", $this->myDBClass->strErrorMessage);
+                        $strDBError = str_replace('::', '<br>', $this->myDBClass->strErrorMessage);
                     }
                 }
             }
         } else {
-            $strErrorMessage .= translate("Database type not defined!")." (".$this->arrSession['install']['dbtype']
+            $strErrorMessage .= translate('Database type not defined!'). ' (' .$this->arrSession['install']['dbtype']
                 .")<br>\n";
-            $strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .translate('failed'). '</span>';
             $intReturn = 1;
         }
         if ($intReturn == 0) {
-            if ($strDBError == "") {
-                $strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+            if ($strDBError == '') {
+                $strStatusMessage = '<span class="green">' .translate('done'). '</span>';
             } else {
-                $strErrorMessage .= translate("Database errors while converting to utf-8:")."<br>".$strDBError."<br>\n";
-                $strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+                $strErrorMessage .= translate('Database errors while converting to utf-8:'). '<br>' .$strDBError
+                    ."<br>\n";
+                $strStatusMessage = '<span class="red">' .translate('failed'). '</span>';
                 $intReturn        = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1021,7 +1029,7 @@ class NagInstallClass
      * @param string $strErrorMessage           Error string
      * @return int                              Status variable (0=ok,1=failed)
      */
-    public function convQLDBFields(&$strStatusMessage, &$strErrorMessage)
+    public function convQLDBFields(&$strStatusMessage, &$strErrorMessage): int
     {
         $arrDataset1   = array();
         $arrDataset2   = array();
@@ -1029,13 +1037,13 @@ class NagInstallClass
         $intDataCount2 = 0;
         $intReturn     = 0;
         $intError      = 0;
-        $strDBError    = "";
+        $strDBError    = '';
         // Read version string from DB
-        $strSQL1   = "SHOW TABLES FROM `".$this->arrSession['install']['dbname']."`";
+        $strSQL1   = 'SHOW TABLES FROM `' .$this->arrSession['install']['dbname']. '`';
         $booReturn = $this->myDBClass->hasDataArray($strSQL1, $arrDataset1, $intDataCount1);
         if ($booReturn && ($intDataCount1 != 0)) {
             foreach ($arrDataset1 as $elem1) {
-                $strSQL2   = "SHOW FULL FIELDS FROM `".$elem1[0]."` "
+                $strSQL2   = 'SHOW FULL FIELDS FROM `' .$elem1[0]. '` '
                            . "WHERE (`Type` LIKE '%varchar%' OR `Type` LIKE '%enum%' OR `Type` LIKE '%text%') "
                            . "AND Collation <> 'utf8_unicode_ci'";
                 $this->myDBClass->hasDataArray($strSQL2, $arrDataset2, $intDataCount2);
@@ -1049,21 +1057,22 @@ class NagInstallClass
                 }
             }
         } else {
-            $strErrorMessage .= translate("Database type not defined!")." ("
+            $strErrorMessage .= translate('Database type not defined!'). ' ('
                 .$this->arrSession['install']['dbtype'].")<br>\n";
-            $strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+            $strStatusMessage = '<span class="red">' .translate('failed'). '</span>';
             $intReturn = 1;
         }
         if ($intReturn == 0) {
-            if ($strDBError == "") {
-                $strStatusMessage = "<span class=\"green\">".translate("done")."</span>";
+            if ($strDBError == '') {
+                $strStatusMessage = '<span class="green">' .translate('done'). '</span>';
             } else {
-                $strErrorMessage .= translate("Database errors while converting to utf-8:")."<br>".$strDBError."<br>\n";
-                $strStatusMessage = "<span class=\"red\">".translate("failed")."</span>";
+                $strErrorMessage .= translate('Database errors while converting to utf-8:'). '<br>' .$strDBError
+                    ."<br>\n";
+                $strStatusMessage = '<span class="red">' .translate('failed'). '</span>';
                 $intReturn = 1;
             }
         }
-        return($intReturn);
+        return $intReturn;
     }
 
     /**
@@ -1073,24 +1082,24 @@ class NagInstallClass
      * @param int $intError                     Error Counter
      * @param string $strDBError                DB error message string
      */
-    private function convTabFields($strTable, $arrFields, &$intError, &$strDBError)
+    private function convTabFields($strTable, $arrFields, &$intError, &$strDBError): void
     {
         $strDefault = '';
         $strNull    = 'NOT NULL';
         if (($arrFields[5] === null) && ($arrFields[3] === 'YES')) {
-            $strDefault = "DEFAULT NULL";
+            $strDefault = 'DEFAULT NULL';
         } elseif ($arrFields[5] != '') {
             $strDefault = "DEFAULT '".$arrFields[5]."'";
         }
         if ($arrFields[3] == 'YES') {
             $strNull = 'NULL';
         }
-        $strSQL    = /** @lang text */ "ALTER TABLE `".$strTable."` CHANGE `".$arrFields[0]."` `".$arrFields[0]."` "
-            . $arrFields[1]." CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' $strNull $strDefault";
+        $strSQL    = /** @lang text */ 'ALTER TABLE `' .$strTable. '` CHANGE `' .$arrFields[0]. '` `' .$arrFields[0]
+            . '` ' . $arrFields[1]." CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' $strNull $strDefault";
         $booReturn = $this->myDBClass->insertData($strSQL);
         if ($booReturn == false) {
             $intError   = 1;
-            $strDBError = "Table:".$strTable." - Field: ".$arrFields[0]." ".
+            $strDBError = 'Table:' .$strTable. ' - Field: ' .$arrFields[0]. ' ' .
                            $this->myDBClass->strErrorMessage;
         }
     }

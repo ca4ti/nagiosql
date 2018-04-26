@@ -233,10 +233,10 @@ class NagContentClass
                         $strAdd = '';
                     }
                     $objTemplate->setVariable('DATA_FIELD_2', htmlentities(substr(
-                            $arrData[$i][$strField2],
-                            0,
-                            $intLimit
-                        ), ENT_COMPAT, 'UTF-8').$strAdd);
+                        $arrData[$i][$strField2],
+                        0,
+                        $intLimit
+                    ), ENT_COMPAT, 'UTF-8').$strAdd);
                 } else {
                     $objTemplate->setVariable('DATA_FIELD_2', htmlentities(
                         $arrData[$i][$strField2],
@@ -384,7 +384,7 @@ class NagContentClass
     public function showFooter($objTemplate, $setFileVersion): void
     {
         $objTemplate->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' ".
-            "target='_blank'>NagiosQL</a> $setFileVersion");
+                                  "target='_blank'>NagiosQL</a> $setFileVersion");
         $objTemplate->parse('footer');
         $objTemplate->show('footer');
     }

@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 20;
-$preContent       = "admin/hostescalations.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/hostescalations.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'hostescalation';
 $preTableName     = 'tbl_hostescalation';
 $preKeyField      = 'config_name';
@@ -33,8 +33,8 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Data processing
 // ===============
@@ -42,22 +42,22 @@ $strEO = substr($chkChbGr1a.$chkChbGr1b.$chkChbGr1c, 0, -1);
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `host_name`=$intMselValue3, "
         . "`hostgroup_name`=$intMselValue4, `contacts`=$intMselValue1, `contact_groups`=$intMselValue2, "
         . "`first_notification`=$chkTfNullVal1, `last_notification`=$chkTfNullVal2, "
         . "`notification_interval`=$chkTfNullVal3, `escalation_period`='$chkSelValue1', "
         . "`escalation_options`='$strEO', $preSQLCommon1";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
         if ((($intMselValue3 != 0) || ($chkMselValue4 != 0)) && (($intMselValue1 != 0) || ($intMselValue2 != 0)) &&
-            ($chkTfNullVal1 != "NULL") && ($chkTfNullVal2 != "NULL") && ($chkTfNullVal3 != "NULL")) {
+            ($chkTfNullVal1 != 'NULL') && ($chkTfNullVal2 != 'NULL') && ($chkTfNullVal3 != 'NULL')) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -65,19 +65,19 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus == "insert") {
-                    $myDataClass->writeLog(translate('New host escalation inserted:')." ".$chkTfValue1);
+                if ($chkModus == 'insert') {
+                    $myDataClass->writeLog(translate('New host escalation inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus == "modify") {
-                    $myDataClass->writeLog(translate('Host escalation modified:')." ".$chkTfValue1);
+                if ($chkModus == 'modify') {
+                    $myDataClass->writeLog(translate('Host escalation modified:'). ' ' .$chkTfValue1);
                 }
                 //
                 // Insert/update relations
                 // =======================
-                if ($chkModus == "insert") {
+                if ($chkModus == 'insert') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHostescalationToContact",
+                            'tbl_lnkHostescalationToContact',
                             $chkDataId,
                             $chkMselValue1
                         );
@@ -87,7 +87,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHostescalationToContactgroup",
+                            'tbl_lnkHostescalationToContactgroup',
                             $chkDataId,
                             $chkMselValue2
                         );
@@ -97,7 +97,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue3 != 0) {
                         $intRet3 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHostescalationToHost",
+                            'tbl_lnkHostescalationToHost',
                             $chkDataId,
                             $chkMselValue3
                         );
@@ -107,7 +107,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue4 != 0) {
                         $intRet4 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkHostescalationToHostgroup",
+                            'tbl_lnkHostescalationToHostgroup',
                             $chkDataId,
                             $chkMselValue4
                         );
@@ -115,58 +115,58 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet4) && ($intRet4 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
-                } elseif ($chkModus == "modify") {
+                } elseif ($chkModus == 'modify') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHostescalationToContact",
+                            'tbl_lnkHostescalationToContact',
                             $chkDataId,
                             $chkMselValue1
                         );
                     } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkHostescalationToContact", $chkDataId);
+                        $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkHostescalationToContact', $chkDataId);
                     }
                     if ($intRet1 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHostescalationToContactgroup",
+                            'tbl_lnkHostescalationToContactgroup',
                             $chkDataId,
                             $chkMselValue2
                         );
                     } else {
-                        $intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkHostescalationToContactgroup", $chkDataId);
+                        $intRet2 = $myDataClass->dataDeleteRelation('tbl_lnkHostescalationToContactgroup', $chkDataId);
                     }
                     if ($intRet2 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue3 != 0) {
                         $intRet3 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHostescalationToHost",
+                            'tbl_lnkHostescalationToHost',
                             $chkDataId,
                             $chkMselValue3
                         );
                     } else {
-                        $intRet3 = $myDataClass->dataDeleteRelation("tbl_lnkHostescalationToHost", $chkDataId);
+                        $intRet3 = $myDataClass->dataDeleteRelation('tbl_lnkHostescalationToHost', $chkDataId);
                     }
                     if ($intRet3 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue4 != 0) {
                         $intRet4 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkHostescalationToHostgroup",
+                            'tbl_lnkHostescalationToHostgroup',
                             $chkDataId,
                             $chkMselValue4
                         );
                     } else {
-                        $intRet4 = $myDataClass->dataDeleteRelation("tbl_lnkHostescalationToHostgroup", $chkDataId);
+                        $intRet4 = $myDataClass->dataDeleteRelation('tbl_lnkHostescalationToHostgroup', $chkDataId);
                     }
                     if ($intRet4 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
                 if (($intRet1 + $intRet2 + $intRet3 + $intRet4) != 0) {
-                    $strInfoMessage = "";
+                    $strInfoMessage = '';
                 }
                 //
                 // Update Import HASH
@@ -185,10 +185,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus    = "display";
+if ($chkModus != 'add') {
+    $chkModus    = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -200,8 +200,8 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if ($chkModus == "add") {
-    $conttp->setVariable("TITLE", translate('Define host escalation (hostescalations.cfg)'));
+if ($chkModus == 'add') {
+    $conttp->setVariable('TITLE', translate('Define host escalation (hostescalations.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     // Process host and host group selection field
@@ -301,36 +301,36 @@ if ($chkModus == "add") {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo);
-        foreach (explode(",", $arrModifyData['escalation_options']) as $elem) {
-            $conttp->setVariable("DAT_EO".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['escalation_options']) as $elem) {
+            $conttp->setVariable('DAT_EO' .strtoupper($elem). '_CHECKED', 'checked');
         }
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Define host escalation (hostescalations.cfg)'));
-    $mastertp->setVariable("FIELD_1", translate('Config name'));
-    $mastertp->setVariable("FIELD_2", translate('Hosts')." / ".translate('Host groups'));
+    $mastertp->setVariable('TITLE', translate('Define host escalation (hostescalations.cfg)'));
+    $mastertp->setVariable('FIELD_1', translate('Config name'));
+    $mastertp->setVariable('FIELD_2', translate('Hosts'). ' / ' .translate('Host groups'));
     // Process search string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%')";
     }
@@ -339,7 +339,7 @@ if ($chkModus == "display") {
     if ($hidSortBy == 2) {
         $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
     }
-    $mastertp->setVariable("DISABLE_SORT_2", "disable");
+    $mastertp->setVariable('DISABLE_SORT_2', 'disable');
     // Count datasets
     $strSQL    = "SELECT count(*) AS `number` FROM `$preTableName` "
         . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";

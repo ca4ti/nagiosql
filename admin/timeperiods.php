@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 16;
-$preContent       = "admin/timeperiods.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/timeperiods.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'timeperiod';
 $preTableName     = 'tbl_timeperiod';
 $preKeyField      = 'timeperiod_name';
@@ -33,23 +33,23 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `exclude`=$intMselValue1, "
              . "`use_template`=$intMselValue2, `name`='$chkTfValue3', $preSQLCommon1";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != "") && ($chkTfValue2 != "")) {
+        if (($chkTfValue1 != '') && ($chkTfValue2 != '')) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -57,19 +57,19 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus  == "insert") {
-                    $myDataClass->writeLog(translate('New time period inserted:')." ".$chkTfValue1);
+                if ($chkModus  == 'insert') {
+                    $myDataClass->writeLog(translate('New time period inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus  == "modify") {
-                    $myDataClass->writeLog(translate('Time period modified:')." ".$chkTfValue1);
+                if ($chkModus  == 'modify') {
+                    $myDataClass->writeLog(translate('Time period modified:'). ' ' .$chkTfValue1);
                 }
                 //
                 // Insert/update relations
                 // =======================
-                if ($chkModus == "insert") {
+                if ($chkModus == 'insert') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkTimeperiodToTimeperiod",
+                            'tbl_lnkTimeperiodToTimeperiod',
                             $chkDataId,
                             $chkMselValue1
                         );
@@ -79,7 +79,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkTimeperiodToTimeperiodUse",
+                            'tbl_lnkTimeperiodToTimeperiodUse',
                             $chkDataId,
                             $chkMselValue2
                         );
@@ -87,39 +87,39 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet2) && ($intRet2 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
-                } elseif ($chkModus == "modify") {
+                } elseif ($chkModus == 'modify') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkTimeperiodToTimeperiod",
+                            'tbl_lnkTimeperiodToTimeperiod',
                             $chkDataId,
                             $chkMselValue1
                         );
                     } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkTimeperiodToTimeperiod", $chkDataId);
+                        $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkTimeperiodToTimeperiod', $chkDataId);
                     }
                     if ($intRet1 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkTimeperiodToTimeperiodUse",
+                            'tbl_lnkTimeperiodToTimeperiodUse',
                             $chkDataId,
                             $chkMselValue2
                         );
                     } else {
-                        $intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkTimeperiodToTimeperiodUse", $chkDataId);
+                        $intRet2 = $myDataClass->dataDeleteRelation('tbl_lnkTimeperiodToTimeperiodUse', $chkDataId);
                     }
                     if ($intRet2 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 }
                 if (($intRet1 + $intRet2) != 0) {
-                    $strInfoMessage = "";
+                    $strInfoMessage = '';
                 }
                 //
                 // Insert/update time defintions
                 // =============================
-                if ($chkModus == "modify") {
+                if ($chkModus == 'modify') {
                     $strSQL    = "DELETE FROM `tbl_timedefinition` WHERE `tipId`=$chkDataId";
                     $booReturn  = $myDataClass->dataInsert($strSQL, $intInsertId);
                     if ($booReturn == false) {
@@ -130,10 +130,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     (count($_SESSION['timedefinition']) != 0)) {
                     foreach ($_SESSION['timedefinition'] as $elem) {
                         if ($elem['status'] == 0) {
-                            if ($elem['definition'] != "use") {
-                                $elem['range'] = str_replace(" ", "", $elem['range']);
+                            if ($elem['definition'] != 'use') {
+                                $elem['range'] = str_replace(' ', '', $elem['range']);
                             }
-                            $strSQL    = "INSERT INTO `tbl_timedefinition` (`tipId`,`definition`,`range`, "
+                            $strSQL    = 'INSERT INTO `tbl_timedefinition` (`tipId`,`definition`,`range`, '
                                        . "`last_modified`) VALUES ($chkDataId,'".$elem['definition']."',"
                                        . "'".$elem['range']."',now())";
                             $booReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
@@ -153,10 +153,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if ($chkModus != "add") {
-    $chkModus    = "display";
+if ($chkModus != 'add') {
+    $chkModus    = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -168,8 +168,8 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if ($chkModus == "add") {
-    $conttp->setVariable("TITLE", translate('Time period definitions (timeperiods.cfg)'));
+if ($chkModus == 'add') {
+    $conttp->setVariable('TITLE', translate('Time period definitions (timeperiods.cfg)'));
     // Do not show modified time list
     $intNoTime = 1;
     // Process exclude selection fields
@@ -221,38 +221,38 @@ if ($chkModus == "add") {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     if ($intVersion != 3) {
-        $conttp->setVariable("VERSION_20_VALUE_MUST", "mselValue1,");
+        $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
-    $conttp->setVariable("LANG_INSERT_ALL_TIMERANGE", translate('Please insert a time definition and a time range'));
+    $conttp->setVariable('LANG_INSERT_ALL_TIMERANGE', translate('Please insert a time definition and a time range'));
     // Insert data from database in "modify" mode
-    if (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    if (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo);
-        $conttp->setVariable("TIP_ID", $arrModifyData['id']);
+        $conttp->setVariable('TIP_ID', $arrModifyData['id']);
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Time period definitions (timeperiods.cfg)'));
-    $mastertp->setVariable("FIELD_1", translate('Time period'));
-    $mastertp->setVariable("FIELD_2", translate('Description'));
+    $mastertp->setVariable('TITLE', translate('Time period definitions (timeperiods.cfg)'));
+    $mastertp->setVariable('FIELD_1', translate('Time period'));
+    $mastertp->setVariable('FIELD_2', translate('Description'));
     // Process filter string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%' "
                         . "OR `name` LIKE '%".$strSearchTxt."%')";

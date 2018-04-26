@@ -293,7 +293,7 @@ class MysqliDbClass
         if ($booReturn == true) {
             $this->dbinit();
             //if ($this->booSSLuse == true) {
-            // TO BE DEFINED
+                // TO BE DEFINED
             //}
             $intErrorReporting = error_reporting();
             error_reporting(0);
@@ -306,7 +306,7 @@ class MysqliDbClass
             // Connection fails
             if ($booReturn == false) {
                 $this->strErrorMessage  = '[' .$dbserver. '] ' .gettext('Connection to the database server has failed '
-                        . 'by reason:'). ' ::';
+                                        . 'by reason:'). ' ::';
                 $strError = mysqli_connect_error();
                 $this->strErrorMessage .= $strError. '::';
                 $this->error            = true;
@@ -342,7 +342,7 @@ class MysqliDbClass
             // Session cannot be etablished
             if (!$bolConnect) {
                 $this->strErrorMessage .= '[' .$database. '] ' .
-                    gettext('Connection to the database has failed by reason:'). ' ::';
+                                          gettext('Connection to the database has failed by reason:'). ' ::';
                 $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
                 $this->error            = true;
                 $booReturn              = false;

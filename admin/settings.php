@@ -184,7 +184,7 @@ if (filter_input(INPUT_POST, 'selValue1')) {
             );
             if (!isset($loc)) {
                 $myVisClass->processMessage(translate('Error setting the correct locale. Please report this error '
-                    . "with the associated output of 'locale -a'"), $strErrorMessage);
+                        . "with the associated output of 'locale -a'"), $strErrorMessage);
             }
             putenv('LC_ALL=' .$strLocale. '.utf-8');
             putenv('LANG=' .$strLocale. '.utf-8');
@@ -194,7 +194,7 @@ if (filter_input(INPUT_POST, 'selValue1')) {
             $myVisClass->processMessage(translate('Settings were changed'), $strInfoMessage);
         } else {
             $myVisClass->processMessage(translate('An error occured while writing settings.php. Please '
-                . 'check permissions!'), $strErrorMessage);
+                    . 'check permissions!'), $strErrorMessage);
         }
     } else {
         $myVisClass->processMessage($preBasePath. 'config/settings.php ' .translate('is not writeable, please '
@@ -210,7 +210,7 @@ foreach ($arrDescription as $elem) {
 }
 $conttp->setVariable('ACTION_INSERT', filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
 $conttp->setVariable('LANG_DESCRIPTION', translate('Change your current NagiosQL settings (e.g. Database user, '
-    . 'Language).'));
+        . 'Language).'));
 //
 // Path settings
 // =============
@@ -323,6 +323,6 @@ $conttp->show('settingssite');
 // Footer ausgeben
 // ===============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

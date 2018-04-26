@@ -64,7 +64,7 @@ if (isset($_FILES['datValue1']) && ($_FILES['datValue1']['name'] != '') && ($chk
         } else {
             $myVisClass->processMessage($myImportClass->strInfoMessage, $strInfoMessage);
             $myDataClass->writeLog(translate('File imported - File [overwrite flag]:'). ' ' .
-                $_FILES['datValue1']['name']. ' [' .$chkChbValue1. ']');
+                    $_FILES['datValue1']['name']. ' [' .$chkChbValue1. ']');
         }
     }
 }
@@ -106,9 +106,9 @@ $conttp->setVariable('IMAGE_PATH', $_SESSION['SETS']['path']['base_url']. 'image
 $conttp->setVariable('ACTION_INSERT', filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
 $conttp->setVariable('DAT_IMPORTFILE_1', '');
 $conttp->setVariable('IMPORT_INFO_1', translate('To prevent errors or misconfigurations, you should import your '
-    . 'configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> '
-    . 'timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> '
-    . 'hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br>'));
+        . 'configurations in an useful order. We recommend to do it like this:<br><br><b><i>commands -> '
+        . 'timeperiods -> contacttemplates -> contacts -> contactgroups -> hosttemplates -> hosts -> '
+        . 'hostgroups -> servicetemplates -> services -> servicegroups</i></b><br><br>'));
 $conttp->setVariable('IMPORT_INFO_2', '<span style="color:#FF0000">' .translate('<b>Check your configuration after '
         . 'import!</b><br>In cause of an error or an uncomplete configuration, re-importing the wrong configuration '
         . 'can solve the problem.'). '</span>');
@@ -292,6 +292,6 @@ $conttp->show('main');
 // Process footer
 // ==============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

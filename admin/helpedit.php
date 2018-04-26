@@ -54,14 +54,14 @@ $chkHidVersion = $myVisClass->tfSecure($chkHidVersion);
 // ==================
 if (($chkTaFileTextRaw != '') && ($chkTfValue3 == '1')) {
     $strSQL    = "SELECT `infotext` FROM `tbl_info` WHERE `key1`='$chkTfValue1' AND `key2`='$chkTfValue2' "
-        . "AND `version`='$chkHidVersion' AND `language`='$setSaveLangId'";
+               . "AND `version`='$chkHidVersion' AND `language`='$setSaveLangId'";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
     if ($intDataCount == 0) {
         $strSQL = 'INSERT INTO `tbl_info` (`key1`,`key2`,`version`,`language`,`infotext`) '
-            . "VALUES ('$chkTfValue1','$chkTfValue2','$chkHidVersion','$setSaveLangId','$chkTaFileTextRaw')";
+                . "VALUES ('$chkTfValue1','$chkTfValue2','$chkHidVersion','$setSaveLangId','$chkTaFileTextRaw')";
     } else {
         $strSQL = "UPDATE `tbl_info` SET `infotext` = '$chkTaFileTextRaw' WHERE `key1` = '$chkTfValue1' "
-            . "AND `key2` = '$chkTfValue2' AND `version` = '$chkHidVersion' AND `language` = '$setSaveLangId'";
+                . "AND `key2` = '$chkTfValue2' AND `version` = '$chkHidVersion' AND `language` = '$setSaveLangId'";
     }
     $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
     if ($intReturn != 0) {
@@ -119,7 +119,7 @@ if ($chkKey1 != '') {
 }
 if (($chkKey1 != '') && ($chkKey2 != '')) {
     $strSQL    = 'SELECT DISTINCT `version` FROM `tbl_info` '
-        . "WHERE `key1` = '$chkKey1' AND `key2` = '$chkKey2' ORDER BY `version`";
+               . "WHERE `key1` = '$chkKey1' AND `key2` = '$chkKey2' ORDER BY `version`";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
     if ($intDataCount != 0) {
         if (($intDataCount == 1) && ($chkVersion == '')) {
@@ -140,11 +140,11 @@ if (($chkKey1 != '') && ($chkKey2 != '')) {
 // ==============
 if (($chkKey1 != '') && ($chkKey2 != '') && ($chkVersion != '')) {
     $strSQL       = "SELECT `infotext` FROM `tbl_info` WHERE `key1`='$chkKey1' AND `key2`='$chkKey2' "
-        . "AND `version`='$chkVersion' AND `language`='$setSaveLangId'";
+                  . "AND `version`='$chkVersion' AND `language`='$setSaveLangId'";
     $strContentDB = $myDBClass->getFieldData($strSQL);
     if (($chkChbValue1 == 1) || ($strContentDB == '')) {
         $strSQL       = "SELECT `infotext` FROM `tbl_info` WHERE `key1`='$chkKey1' AND `key2`='$chkKey2' "
-            . "AND `version`='$chkVersion' AND `language`='default'";
+                      . "AND `version`='$chkVersion' AND `language`='default'";
         $strContentDB = $myDBClass->getFieldData($strSQL);
     }
     $conttp->setVariable('DAT_HELPTEXT', $strContentDB);
@@ -166,6 +166,6 @@ $conttp->show('helpedit');
 // Process footer
 // ==============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+        . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');

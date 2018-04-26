@@ -15,6 +15,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
+// Path settings
+// ===================
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
+//
 // Define common variables
 // =======================
 $preAccess = 1;
@@ -22,7 +27,7 @@ $preNoMain = 1;
 //
 // Include preprocessing file
 // ==========================
-require("../functions/prepend_adm.php");
+require $preBasePath.'functions/prepend_adm.php';
 //
 // Process post parameters
 // =======================
@@ -38,14 +43,14 @@ if (get_magic_quotes_gpc() == 0) {
 //
 // Get data
 // ========
-if ($chkLinkTab != "") {
-    $strSQL    = "SELECT * FROM `tbl_variabledefinition` LEFT JOIN `".$chkLinkTab."` ON `id`=`idSlave` ".
+if ($chkLinkTab != '') {
+    $strSQL    = 'SELECT * FROM `tbl_variabledefinition` LEFT JOIN `' .$chkLinkTab. '` ON `id`=`idSlave` ' .
                  "WHERE `idMaster`=$chkDataId ORDER BY `name`";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     //
     // Store data to session
     // ============================
-    if ($chkMode == "") {
+    if ($chkMode == '') {
         $arrTemp                        = array();
         $_SESSION['variabledefinition'] = array();
         if ($booReturn && ($intDataCount != 0)) {
@@ -62,7 +67,7 @@ if ($chkLinkTab != "") {
 //
 // Add mode
 // ========
-if ($chkMode == "add") {
+if ($chkMode == 'add') {
     $arrTemp = array();
     if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition'])) {
         $intCheck = 0;
@@ -91,12 +96,10 @@ if ($chkMode == "add") {
 //
 // Deletion mode
 // =============
-if ($chkMode == "del") {
-    if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition'])) {
-        foreach ($_SESSION['variabledefinition'] as $key => $elem) {
-            if (($elem['definition'] == $chkDef) && ($elem['status'] == 0)) {
-                $_SESSION['variabledefinition'][$key]['status'] = 1;
-            }
+if ($chkMode == 'del' && isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefinition'])) {
+    foreach ($_SESSION['variabledefinition'] as $key => $elem) {
+        if (($elem['definition'] == $chkDef) && ($elem['status'] == 0)) {
+            $_SESSION['variabledefinition'][$key]['status'] = 1;
         }
     }
 }

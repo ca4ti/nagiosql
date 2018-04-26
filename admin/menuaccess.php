@@ -17,13 +17,13 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId      = 34;
-$preContent     = "admin/menuaccess.htm.tpl";
+$preContent     = 'admin/menuaccess.htm.tpl';
 $preAccess      = 1;
 $preFieldvars   = 1;
 $preNoAccessGrp = 1;
@@ -31,8 +31,8 @@ $intFieldId     = 0;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Process data
 // ============
@@ -44,64 +44,64 @@ if (filter_input(INPUT_POST, 'subSave') && ($chkSelValue1 != 0)) {
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     } else {
         $myVisClass->processMessage(translate('Data were successfully inserted to the data base!'), $strInfoMessage);
-        $myDataClass->writeLog(translate('Access group set for menu item:')." ".
+        $myDataClass->writeLog(translate('Access group set for menu item:'). ' ' .
                 $myDBClass->getFieldData("SELECT `mnuName` FROM `tbl_menu` WHERE `mnuId`=$chkSelValue1"));
     }
 }
 //
 // Include content
 // ===============
-$conttp->setVariable("TITLE", translate('Define Menu Access Rights'));
+$conttp->setVariable('TITLE', translate('Define Menu Access Rights'));
 foreach ($arrDescription as $elem) {
     $conttp->setVariable($elem['name'], $elem['string']);
 }
-$conttp->setVariable("LANG_ACCESSDESCRIPTION", translate('In order for a user to get access, he needs to be member '
+$conttp->setVariable('LANG_ACCESSDESCRIPTION', translate('In order for a user to get access, he needs to be member '
         . 'of the group selected here.'));
 //
 // Auswahlfeld einlesen
 // ====================
-$strSQL    = "SELECT A.`mnuId` , B.`mnuName` AS `mainitem`, A.`mnuName` AS `subitem`, A.`mnuGrpId` "
-           . "FROM `tbl_menu` AS A LEFT JOIN `tbl_menu` AS B ON A.`mnuTopId` = B.`mnuId` "
-           . "ORDER BY A.`mnuTopId`, A.`mnuOrderId`";
+$strSQL    = 'SELECT A.`mnuId` , B.`mnuName` AS `mainitem`, A.`mnuName` AS `subitem`, A.`mnuGrpId` '
+           . 'FROM `tbl_menu` AS A LEFT JOIN `tbl_menu` AS B ON A.`mnuTopId` = B.`mnuId` '
+           . 'ORDER BY A.`mnuTopId`, A.`mnuOrderId`';
 $booReturn  = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
 if ($booReturn == false) {
     $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
     $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
 } else {
-    $conttp->setVariable("SUBMENU_VALUE", "0");
-    $conttp->setVariable("SUBMENU_NAME", "&nbsp;");
-    $conttp->parse("submenu");
+    $conttp->setVariable('SUBMENU_VALUE', '0');
+    $conttp->setVariable('SUBMENU_NAME', '&nbsp;');
+    $conttp->parse('submenu');
     foreach ($arrDataLines as $elem) {
-        $conttp->setVariable("SUBMENU_VALUE", $elem['mnuId']);
+        $conttp->setVariable('SUBMENU_VALUE', $elem['mnuId']);
         if ($elem['mainitem'] != '') {
-            $conttp->setVariable("SUBMENU_NAME", translate($elem['mainitem'])." - ".translate($elem['subitem']));
+            $conttp->setVariable('SUBMENU_NAME', translate($elem['mainitem']). ' - ' .translate($elem['subitem']));
         } else {
-            $conttp->setVariable("SUBMENU_NAME", translate($elem['subitem']));
+            $conttp->setVariable('SUBMENU_NAME', translate($elem['subitem']));
         }
         if ($chkSelValue1 == $elem['mnuId']) {
-            $conttp->setVariable("SUBMENU_SELECTED", "selected");
+            $conttp->setVariable('SUBMENU_SELECTED', 'selected');
             $intFieldId = $elem['mnuGrpId'];
         }
         // Bypass main site
         if ($elem['mnuId'] != 1) {
-            $conttp->parse("submenu");
+            $conttp->parse('submenu');
         }
     }
     // Process access group selection field
     $intReturn = $myVisClass->parseSelectSimple('tbl_group', 'groupname', 'acc_group', 0, $intFieldId);
 }
-$conttp->setVariable("ERRORMESSAGE", $strErrorMessage);
-$conttp->setVariable("INFOMESSAGE", $strInfoMessage);
+$conttp->setVariable('ERRORMESSAGE', $strErrorMessage);
+$conttp->setVariable('INFOMESSAGE', $strInfoMessage);
 // Check access rights for adding new objects
 if ($intGlobalWriteAccess == 1) {
-    $conttp->setVariable("DISABLE_SAVE", "disabled=\"disabled\"");
+    $conttp->setVariable('DISABLE_SAVE', 'disabled="disabled"');
 }
-$conttp->parse("menuaccesssite");
-$conttp->show("menuaccesssite");
+$conttp->parse('menuaccesssite');
+$conttp->show('menuaccesssite');
 //
 // Process footer
 // ==============
-$maintp->setVariable("VERSION_INFO", "<a href='https://sourceforge.net/projects/nagiosql/' "
+$maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
         . "target='_blank'>NagiosQL</a> $setFileVersion");
-$maintp->parse("footer");
-$maintp->show("footer");
+$maintp->parse('footer');
+$maintp->show('footer');

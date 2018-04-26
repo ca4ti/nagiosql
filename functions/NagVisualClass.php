@@ -130,8 +130,8 @@ class NagVisualClass
         $strPosition  = '';
         // Read database values
         $strSQL    = 'SELECT B.`mnuName` AS `mainitem`, B.`mnuLink` AS `mainlink`, A.`mnuName` AS `subitem`, '
-            . 'A.`mnuLink` AS `sublink` FROM `tbl_menu` AS A '
-            . 'LEFT JOIN `tbl_menu` AS B ON A.`mnuTopId` = B.`mnuId` WHERE A.`mnuId`=' .$intPageId;
+                   . 'A.`mnuLink` AS `sublink` FROM `tbl_menu` AS A '
+                   . 'LEFT JOIN `tbl_menu` AS B ON A.`mnuTopId` = B.`mnuId` WHERE A.`mnuId`=' .$intPageId;
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn == false) {
             $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -273,7 +273,7 @@ class NagVisualClass
         for ($i=0; $i<$intDataCount; $i += $intMaxLines) {
             $strLink1 = "<a href=\"$strSite?limit=$i&amp;orderby=$strOrderBy&amp;orderdir=$strOrderDir\">";
             $strLink2 = "onclick=\"location.href='$strSite?limit=$i&amp;orderby=$strOrderBy&amp;orderdir=".
-                "$strOrderDir'\"";
+                        "$strOrderDir'\"";
             if ((!(($chkLimit >= ($i+($intMaxLines*5))) || ($chkLimit <= ($i-($intMaxLines*5))))) || ($i==0) ||
                 ($i>=($intDataCount-$intMaxLines))) {
                 if ($chkLimit == $i) {
@@ -370,16 +370,16 @@ class NagVisualClass
                 }
                 if (isset($elem['config_id']) && $elem['config_id'] == 0) {
                     $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), htmlspecialchars(
-                            $elem['value'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        ).' [common]'.$strActive);
+                        $elem['value'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ).' [common]'.$strActive);
                 } else {
                     $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), htmlspecialchars(
-                            $elem['value'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        ).$strActive);
+                        $elem['value'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ).$strActive);
                 }
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey). '_ID', $elem['key']);
                 if ($intVersion != 3) {
@@ -530,16 +530,16 @@ class NagVisualClass
                 }
                 if (isset($elem['config_id']) && $elem['config_id'] == 0) {
                     $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), htmlspecialchars(
-                            $elem['value'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        ).' [common]'.$strActive);
+                        $elem['value'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ).' [common]'.$strActive);
                 } else {
                     $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), htmlspecialchars(
-                            $elem['value'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        ).$strActive);
+                        $elem['value'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ).$strActive);
                 }
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey). '_ID', $elem['key']);
                 $this->myContentTpl->setVariable('CLASS_SEL', '');
@@ -663,7 +663,7 @@ class NagVisualClass
         $arrData   = array();
         // Define SQL
         $strSQL = 'SELECT mnuId, mnuName, mnuTopId, mnuLink FROM tbl_menu ' .
-            "WHERE mnuTopId=$intTopId AND mnuCntId=$intCntId AND mnuActive <> 0 AND ".
+                  "WHERE mnuTopId=$intTopId AND mnuCntId=$intCntId AND mnuActive <> 0 AND ".
             'mnuGrpId IN (' .$this->getAccessGroups('read'). ') ORDER BY mnuOrderId';
         $booRet = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if (($booRet != false) && ($intDataCount != 0)) {
@@ -755,7 +755,7 @@ class NagVisualClass
         if ($strTable == 'tbl_group') {
             $strSQL = $this->getRawDataSQLGroup($strTabField);
         } elseif (($strTable == 'tbl_configtarget') || ($strTable == 'tbl_datadomain') ||
-            ($strTable == 'tbl_language')) {
+                  ($strTable == 'tbl_language')) {
             $strSQL = $this->getRawDataSQLDomain($strTable, $strTabField);
         } elseif ($strTable == 'tbl_command') {
             $strSQL = $this->getRawDataSQLCommand($strTabField, $strDomainWhere1, $strAccess, $intOption);
@@ -773,7 +773,7 @@ class NagVisualClass
                 $strSQL = '';
             }
         } elseif ((($strTable == 'tbl_service') || ($strTable == 'tbl_servicetemplate')) &&
-            (($intOption == 8) || ($intOption == 9))) {
+                  (($intOption == 8) || ($intOption == 9))) {
             // Service selection inside Host definition
             $strSQL = $this->getRawDataSQLService89($strDomainWhere1, $strAccess);
         } else {
@@ -885,7 +885,7 @@ class NagVisualClass
     private function getRawDataSQLGroup($strTabField): string
     {
         $strSQL = 'SELECT `id` AS `key`, `' . $strTabField . '` AS `value`, `active` ' .
-            "FROM `tbl_group` WHERE `active`='1' AND `" . $strTabField . "` <> '' ".
+                  "FROM `tbl_group` WHERE `active`='1' AND `" . $strTabField . "` <> '' ".
             'AND `' . $strTabField . '` IS NOT NULL ORDER BY `' . $strTabField . '`';
         return $strSQL;
     }
@@ -915,8 +915,8 @@ class NagVisualClass
     private function getRawDataSQLCommand($strTabField, $strDomainWhere1, $strAccess, $intOption): string
     {
         $strSQL = 'SELECT `id` AS `key`, `' . $strTabField . '` AS `value`, `config_id`, `active` ' .
-            "FROM `tbl_command` WHERE $strDomainWhere1 AND `" . $strTabField . "` <> '' AND `" .
-            $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) AND (`command_type` = 0 ".
+                  "FROM `tbl_command` WHERE $strDomainWhere1 AND `" . $strTabField . "` <> '' AND `" .
+                  $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) AND (`command_type` = 0 ".
             'OR `command_type` = ' . $intOption . ') ORDER BY `' . $strTabField . '`';
         return $strSQL;
     }
@@ -929,13 +929,9 @@ class NagVisualClass
      */
     private function getRawDataSQLTimeperiod($strDomainWhere1, $strAccess): string
     {
-        $strSQL = 'SELECT `id` AS `key`, `timeperiod_name` AS `value`, `config_id`, `active` ' .
-            "FROM `tbl_timeperiod` WHERE $strDomainWhere1 AND `timeperiod_name` <> '' AND `timeperiod_name` ".
-            "IS NOT NULL AND `access_group` IN ($strAccess) ".
-            'UNION ' .
-            'SELECT `id` AS `key`, `name` AS `value`, `config_id`, `active` ' .
-            "FROM `tbl_timeperiod` WHERE $strDomainWhere1 AND `name` <> '' AND `name` IS NOT NULL ".
-            "AND `name` <> `timeperiod_name` AND `access_group` IN ($strAccess) ORDER BY value";
+        $strSQL = 'SELECT `id` AS `key`, `name` AS `value`, `config_id`, `active` ' .
+                  "FROM `tbl_timeperiod` WHERE $strDomainWhere1 AND `name` <> '' AND `name` IS NOT NULL ".
+                  "AND `access_group` IN ($strAccess) ORDER BY value";
         return $strSQL;
     }
 
@@ -951,36 +947,36 @@ class NagVisualClass
             'AND `tbl_service`.`service_description` IS NOT NULL AND `tbl_service`.`hostgroup_name` <> 0  ' .
             "AND `tbl_service`.`access_group` IN ($strAccess) ";
         $strSQL = "SELECT CONCAT_WS('::',`tbl_host`.`id`,'0',`tbl_service`.`id`) AS `key`, " .
-            "CONCAT('H:',`tbl_host`.`host_name`,',',`tbl_service`.`service_description`) AS `value`, " .
+                      "CONCAT('H:',`tbl_host`.`host_name`,',',`tbl_service`.`service_description`) AS `value`, " .
             '`tbl_service`.`active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHost` ON `tbl_service`.`id` = `tbl_lnkServiceToHost`.`idMaster` ' .
             'LEFT JOIN `tbl_host` ON `tbl_lnkServiceToHost`.`idSlave` = `tbl_host`.`id` ' .
-            str_replace('hostgroup_name', 'host_name', $strSQLPart1) .
+                  str_replace('hostgroup_name', 'host_name', $strSQLPart1) .
             'UNION ' .
-            "SELECT CONCAT_WS('::','0',`tbl_hostgroup`.`id`,`tbl_service`.`id`) AS `key`, " .
-            "CONCAT('HG:',`tbl_hostgroup`.`hostgroup_name`,',',`tbl_service`.`service_description`) " .
+                  "SELECT CONCAT_WS('::','0',`tbl_hostgroup`.`id`,`tbl_service`.`id`) AS `key`, " .
+                      "CONCAT('HG:',`tbl_hostgroup`.`hostgroup_name`,',',`tbl_service`.`service_description`) " .
             'AS `value`, `tbl_service`.`active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster`' .
             'LEFT JOIN `tbl_hostgroup` ON `tbl_lnkServiceToHostgroup`.`idSlave` = `tbl_hostgroup`.`id` ' .
-            $strSQLPart1 .
+                  $strSQLPart1 .
             'UNION ' .
-            "SELECT CONCAT_WS('::',`tbl_host`.`id`,'0',`tbl_service`.`id`) AS `key`, " .
-            "CONCAT('HHG:',`tbl_host`.`host_name`,',',`tbl_service`.`service_description`) AS `value`, " .
+                  "SELECT CONCAT_WS('::',`tbl_host`.`id`,'0',`tbl_service`.`id`) AS `key`, " .
+                      "CONCAT('HHG:',`tbl_host`.`host_name`,',',`tbl_service`.`service_description`) AS `value`, " .
             '`tbl_service`.`active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster`' .
             'LEFT JOIN `tbl_lnkHostgroupToHost` ON `tbl_lnkHostgroupToHost`.`idMaster` = ' .
             '`tbl_lnkServiceToHostgroup`.`idSlave` ' .
             'LEFT JOIN `tbl_host` ON `tbl_lnkHostgroupToHost`.`idSlave` = `tbl_host`.`id` ' .
-            $strSQLPart1 .
+                  $strSQLPart1 .
             'UNION ' .
-            "SELECT CONCAT_WS('::',`tbl_host`.`id`,'0',`tbl_service`.`id`) AS `key`, " .
-            "CONCAT('HGH:',`tbl_host`.`host_name`,',',`tbl_service`.`service_description`) AS `value`, " .
+                  "SELECT CONCAT_WS('::',`tbl_host`.`id`,'0',`tbl_service`.`id`) AS `key`, " .
+                      "CONCAT('HGH:',`tbl_host`.`host_name`,',',`tbl_service`.`service_description`) AS `value`, " .
             '`tbl_service`.`active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster` ' .
             'LEFT JOIN `tbl_lnkHostToHostgroup` ON `tbl_lnkHostToHostgroup`.`idSlave` = ' .
             '`tbl_lnkServiceToHostgroup`.`idSlave` ' .
             'LEFT JOIN `tbl_host` ON `tbl_lnkHostToHostgroup`.`idMaster` = `tbl_host`.`id` ' .
-            $strSQLPart1 .
+                  $strSQLPart1 .
             'ORDER BY value';
         return $strSQL;
     }
@@ -996,22 +992,22 @@ class NagVisualClass
     {
         $strSQL = 'SELECT `id`, `service_description` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHost` ON `tbl_service`.`id` = `tbl_lnkServiceToHost`.`idMaster` ' .
-            "WHERE $strDomainWhere1 AND `tbl_lnkServiceToHost`.`idSlave` = $elem AND `service_description`<>'' ".
-            "AND `service_description` IS NOT NULL AND `access_group` IN ($strAccess) " .
+                  "WHERE $strDomainWhere1 AND `tbl_lnkServiceToHost`.`idSlave` = $elem AND `service_description`<>'' ".
+                      "AND `service_description` IS NOT NULL AND `access_group` IN ($strAccess) " .
             'UNION ' .
             'SELECT `id`, `service_description` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster` ' .
             'LEFT JOIN `tbl_lnkHostToHostgroup` ON `tbl_lnkServiceToHostgroup`.`idSlave` = ' .
             '`tbl_lnkHostToHostgroup`.`idSlave` ' .
-            "WHERE $strDomainWhere1 AND `tbl_lnkHostToHostgroup`.`idMaster`=$elem AND `service_description`<>'' ".
-            " AND `service_description` IS NOT NULL AND `access_group` IN ($strAccess) ".
+                  "WHERE $strDomainWhere1 AND `tbl_lnkHostToHostgroup`.`idMaster`=$elem AND `service_description`<>'' ".
+                      " AND `service_description` IS NOT NULL AND `access_group` IN ($strAccess) ".
             'UNION ' .
             'SELECT `id`, `service_description` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster` ' .
             'LEFT JOIN `tbl_lnkHostgroupToHost` ON `tbl_lnkServiceToHostgroup`.`idSlave` = ' .
             '`tbl_lnkHostgroupToHost`.`idMaster` ' .
-            "WHERE $strDomainWhere1 AND `tbl_lnkHostgroupToHost`.`idSlave`=$elem AND `service_description`<>'' ".
-            "AND `service_description` IS NOT NULL AND `access_group` IN ($strAccess)";
+                  "WHERE $strDomainWhere1 AND `tbl_lnkHostgroupToHost`.`idSlave`=$elem AND `service_description`<>'' ".
+                      "AND `service_description` IS NOT NULL AND `access_group` IN ($strAccess)";
         return $strSQL;
     }
 
@@ -1026,9 +1022,9 @@ class NagVisualClass
     {
         $strSQL = 'SELECT `id`, `service_description` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster` ' .
-            "WHERE $strDomainWhere1 AND `tbl_lnkServiceToHostgroup`.`idSlave` = $elem ".
-            "AND `service_description` <> '' AND `service_description` IS NOT NULL AND `access_group` ".
-            "IN ($strAccess)";
+                  "WHERE $strDomainWhere1 AND `tbl_lnkServiceToHostgroup`.`idSlave` = $elem ".
+                  "AND `service_description` <> '' AND `service_description` IS NOT NULL AND `access_group` ".
+                  "IN ($strAccess)";
         return $strSQL;
     }
 
@@ -1045,18 +1041,18 @@ class NagVisualClass
     {
         $strSQL = 'SELECT `id` AS `key`, `' . $strTabField . '` AS `value`, `active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHost` ON `tbl_service`.`id` = `tbl_lnkServiceToHost`.`idMaster` ' .
-            "WHERE $strWhere AND `tbl_service`.`service_description` IN ($strServices) ".
-            "AND `tbl_service`.`id` IN ($strServicesId) AND `" . $strTabField . "` <> '' AND `" .
-            $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ".
+                  "WHERE $strWhere AND `tbl_service`.`service_description` IN ($strServices) ".
+                      "AND `tbl_service`.`id` IN ($strServicesId) AND `" . $strTabField . "` <> '' AND `" .
+                      $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ".
             'UNION ' .
             'SELECT `id` AS `key`, `' . $strTabField . '` AS `value`, `active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `tbl_service`.`id`=`tbl_lnkServiceToHostgroup`.`idMaster` ' .
-            "WHERE $strWhere AND `tbl_service`.`service_description` IN ($strServices) ".
-            "AND `tbl_service`.`id` IN ($strServicesId) AND `" . $strTabField . "` <> '' AND `" .
-            $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ".
+                  "WHERE $strWhere AND `tbl_service`.`service_description` IN ($strServices) ".
+                      "AND `tbl_service`.`id` IN ($strServicesId) AND `" . $strTabField . "` <> '' AND `" .
+                      $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ".
             'UNION ' .
             'SELECT `id` AS `key`, `' . $strTabField . '` AS `value`, `active` FROM `tbl_service` ' .
-            "WHERE $strWhere AND `host_name`=2 OR  `hostgroup_name`=2 AND `" . $strTabField . "` <> '' ".
+                  "WHERE $strWhere AND `host_name`=2 OR  `hostgroup_name`=2 AND `" . $strTabField . "` <> '' ".
             'AND `' . $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) ".
             'GROUP BY `value` ORDER BY `value`';
         return $strSQL;
@@ -1075,8 +1071,8 @@ class NagVisualClass
         $strSQL = 'SELECT `tbl_service`.`id` AS `key`, `tbl_service`.`' . $strTabField . '` AS `value`, ' .
             '`tbl_service`.`active` FROM `tbl_service` ' .
             'LEFT JOIN `tbl_lnkServiceToHost` ON `tbl_service`.`id` = `tbl_lnkServiceToHost`.`idMaster` ' .
-            "WHERE $strDomainWhere1 AND `tbl_lnkServiceToHost`.`idSlave` = $intHostId AND `" . $strTabField .
-            "` <> '' AND `" . $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) ".
+                  "WHERE $strDomainWhere1 AND `tbl_lnkServiceToHost`.`idSlave` = $intHostId AND `" . $strTabField .
+                      "` <> '' AND `" . $strTabField . "` IS NOT NULL AND `access_group` IN ($strAccess) ".
             'ORDER BY `' . $strTabField . '`';
         return $strSQL;
     }
@@ -1091,9 +1087,9 @@ class NagVisualClass
     {
         $strSQL = "SELECT `tbl_service`.`id` AS `key`, CONCAT(`tbl_service`.`config_name`, ' - ', ".
             '`tbl_service`.`service_description`) AS `value`, `active` ' .
-            "FROM `tbl_service` WHERE $strDomainWhere1 AND `tbl_service`.`config_name` <> '' ".
-            "AND `tbl_service`.`config_name` IS NOT NULL AND `tbl_service`.`service_description` <> '' ".
-            "AND `tbl_service`.`service_description` IS NOT NULL AND `access_group` IN ($strAccess) ".
+                  "FROM `tbl_service` WHERE $strDomainWhere1 AND `tbl_service`.`config_name` <> '' ".
+                      "AND `tbl_service`.`config_name` IS NOT NULL AND `tbl_service`.`service_description` <> '' ".
+                      "AND `tbl_service`.`service_description` IS NOT NULL AND `access_group` IN ($strAccess) ".
             'ORDER BY `value`';
         return $strSQL;
     }
@@ -1229,7 +1225,7 @@ class NagVisualClass
         // * Value in host groups -> disabled in NagiosQL 3.2
         if (\in_array('*', $arrHostgroups, true)) {
             $strSQL = "SELECT id FROM tbl_hostgroup WHERE $strDomainWhere1 AND `access_group` " .
-                "IN ($strAccess)";
+                    "IN ($strAccess)";
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHost, $intDCHost);
             if ($booReturn == false) {
                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -1268,8 +1264,8 @@ class NagVisualClass
         // If no hosts and hostgroups are selected show any service
         if (($strHosts == 0) && ($strHostsGroup == 0)) {
             $strSQL = 'SELECT `id` AS `key`, `' . $strTabField . '` AS `value`, `active` FROM `tbl_service` ' .
-                "WHERE $strDomainWhere1 AND `" . $strTabField . "` <> '' AND `" . $strTabField . '` ' .
-                "IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ORDER BY `value`";
+                    "WHERE $strDomainWhere1 AND `" . $strTabField . "` <> '' AND `" . $strTabField . '` ' .
+                    "IS NOT NULL AND `access_group` IN ($strAccess) GROUP BY `value` ORDER BY `value`";
         } else {
             if ($strHosts != 0) {
                 $intCounter = 0;
@@ -1288,7 +1284,7 @@ class NagVisualClass
                                 $arrTempServ[] = $elem2['service_description'];
                                 $arrTempServId[] = $elem2['id'];
                             } elseif (\in_array($elem2['service_description'], $arrServices, true) &&
-                                !\in_array($elem2['service_description'], $arrTempServ, true)) {
+                                    !\in_array($elem2['service_description'], $arrTempServ, true)) {
                                 $arrTempServ[] = $elem2['service_description'];
                                 $arrTempServId[] = $elem2['id'];
                             }
@@ -1316,7 +1312,7 @@ class NagVisualClass
                                 $arrTempServ[] = $elem2['service_description'];
                                 $arrTempServId[] = $elem2['id'];
                             } elseif (\in_array($elem2['service_description'], $arrServices, true) &&
-                                !\in_array($elem2['service_description'], $arrTempServ, true)) {
+                                    !\in_array($elem2['service_description'], $arrTempServ, true)) {
                                 $arrTempServ[] = $elem2['service_description'];
                                 $arrTempServId[] = $elem2['id'];
                             }

@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $prePageId        = 22;
-$preContent       = "admin/servicedependencies.htm.tpl";
-$preListTpl       = "admin/datalist.htm.tpl";
+$preContent       = 'admin/servicedependencies.htm.tpl';
+$preListTpl       = 'admin/datalist.htm.tpl';
 $preSearchSession = 'servicedependencies';
 $preTableName     = 'tbl_servicedependency';
 $preKeyField      = 'config_name';
@@ -33,8 +33,8 @@ $preFieldvars     = 1;
 //
 // Include preprocessing files
 // ===========================
-require($preBasePath.'functions/prepend_adm.php');
-require($preBasePath.'functions/prepend_content.php');
+require $preBasePath.'functions/prepend_adm.php';
+require $preBasePath.'functions/prepend_content.php';
 //
 // Data processing
 // ===============
@@ -43,23 +43,23 @@ $strNO = substr($chkChbGr2a.$chkChbGr2b.$chkChbGr2c.$chkChbGr2d.$chkChbGr2e.$chk
 //
 // Add or modify data
 // ==================
-if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAccess == 0)) {
+if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `dependent_host_name`=$intMselValue2, `dependent_hostgroup_name`=$intMselValue4, "
         . "`dependent_service_description`=$intMselValue6, `dependent_servicegroup_name`=$intMselValue8, "
         . "`host_name`=$intMselValue1, `hostgroup_name`=$intMselValue3, `service_description`=$intMselValue5, "
         . "`servicegroup_name`=$intMselValue7, `$preKeyField`='$chkTfValue1', `inherits_parent`='$chkChbValue1', "
         . "`execution_failure_criteria`='$strEO', `notification_failure_criteria`='$strNO', "
         . "`dependency_period`=$chkSelValue1, $preSQLCommon1";
-    if ($chkModus == "insert") {
-        $strSQL = "INSERT INTO ".$strSQLx;
+    if ($chkModus == 'insert') {
+        $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {
-        $strSQL = "UPDATE ".$strSQLx." WHERE `id`=".$chkDataId;
+        $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != "") && (($intMselValue5 != 0) || ($intMselValue7 != 0)) &&
+        if (($chkTfValue1 != '') && (($intMselValue5 != 0) || ($intMselValue7 != 0)) &&
             (($intMselValue6 != 0) || ($intMselValue8 != 0))) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
-            if ($chkModus == "insert") {
+            if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
             }
             if ($intReturn == 1) {
@@ -67,19 +67,19 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
             } else {
                 $myVisClass->processMessage($myDataClass->strInfoMessage, $strInfoMessage);
                 $myDataClass->updateStatusTable($preTableName);
-                if ($chkModus == "insert") {
-                    $myDataClass->writeLog(translate('New service dependency inserted:')." ".$chkTfValue1);
+                if ($chkModus == 'insert') {
+                    $myDataClass->writeLog(translate('New service dependency inserted:'). ' ' .$chkTfValue1);
                 }
-                if ($chkModus == "modify") {
-                    $myDataClass->writeLog(translate('Service dependency modified:')." ".$chkTfValue1);
+                if ($chkModus == 'modify') {
+                    $myDataClass->writeLog(translate('Service dependency modified:'). ' ' .$chkTfValue1);
                 }
                 //
                 // Insert/update relations
                 // =======================
-                if ($chkModus == "insert") {
+                if ($chkModus == 'insert') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToHost_H",
+                            'tbl_lnkServicedependencyToHost_H',
                             $chkDataId,
                             $chkMselValue1
                         );
@@ -89,7 +89,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToHost_DH",
+                            'tbl_lnkServicedependencyToHost_DH',
                             $chkDataId,
                             $chkMselValue2
                         );
@@ -99,7 +99,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue3 != 0) {
                         $intRet3 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToHostgroup_H",
+                            'tbl_lnkServicedependencyToHostgroup_H',
                             $chkDataId,
                             $chkMselValue3
                         );
@@ -109,7 +109,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue4 != 0) {
                         $intRet4 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToHostgroup_DH",
+                            'tbl_lnkServicedependencyToHostgroup_DH',
                             $chkDataId,
                             $chkMselValue4
                         );
@@ -119,7 +119,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue5 != 0) {
                         $intRet5 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToService_S",
+                            'tbl_lnkServicedependencyToService_S',
                             $chkDataId,
                             $chkMselValue5
                         );
@@ -129,7 +129,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue6 != 0) {
                         $intRet6 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToService_DS",
+                            'tbl_lnkServicedependencyToService_DS',
                             $chkDataId,
                             $chkMselValue6
                         );
@@ -139,7 +139,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue7 != 0) {
                         $intRet7 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToServicegroup_S",
+                            'tbl_lnkServicedependencyToServicegroup_S',
                             $chkDataId,
                             $chkMselValue7
                         );
@@ -149,7 +149,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue8 != 0) {
                         $intRet8 = $myDataClass->dataInsertRelation(
-                            "tbl_lnkServicedependencyToServicegroup_DS",
+                            'tbl_lnkServicedependencyToServicegroup_DS',
                             $chkDataId,
                             $chkMselValue8
                         );
@@ -157,40 +157,40 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     if (isset($intRet8) && ($intRet8 != 0)) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
-                } elseif ($chkModus == "modify") {
+                } elseif ($chkModus == 'modify') {
                     if ($intMselValue1 != 0) {
                         $intRet1 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToHost_H",
+                            'tbl_lnkServicedependencyToHost_H',
                             $chkDataId,
                             $chkMselValue1
                         );
                     } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHost_H", $chkDataId);
+                        $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkServicedependencyToHost_H', $chkDataId);
                     }
                     if ($intRet1 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToHost_DH",
+                            'tbl_lnkServicedependencyToHost_DH',
                             $chkDataId,
                             $chkMselValue2
                         );
                     } else {
-                        $intRet2 = $myDataClass->dataDeleteRelation("tbl_lnkServicedependencyToHost_DH", $chkDataId);
+                        $intRet2 = $myDataClass->dataDeleteRelation('tbl_lnkServicedependencyToHost_DH', $chkDataId);
                     }
                     if ($intRet2 != 0) {
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                     if ($intMselValue3 != 0) {
                         $intRet3 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToHostgroup_H",
+                            'tbl_lnkServicedependencyToHostgroup_H',
                             $chkDataId,
                             $chkMselValue3
                         );
                     } else {
                         $intRet3 = $myDataClass->dataDeleteRelation(
-                            "tbl_lnkServicedependencyToHostgroup_H",
+                            'tbl_lnkServicedependencyToHostgroup_H',
                             $chkDataId
                         );
                     }
@@ -199,13 +199,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue4 != 0) {
                         $intRet4 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToHostgroup_DH",
+                            'tbl_lnkServicedependencyToHostgroup_DH',
                             $chkDataId,
                             $chkMselValue4
                         );
                     } else {
                         $intRet4 = $myDataClass->dataDeleteRelation(
-                            "tbl_lnkServicedependencyToHostgroup_DH",
+                            'tbl_lnkServicedependencyToHostgroup_DH',
                             $chkDataId
                         );
                     }
@@ -214,13 +214,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue5 != 0) {
                         $intRet5 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToService_S",
+                            'tbl_lnkServicedependencyToService_S',
                             $chkDataId,
                             $chkMselValue5
                         );
                     } else {
                         $intRet5 = $myDataClass->dataDeleteRelation(
-                            "tbl_lnkServicedependencyToService_S",
+                            'tbl_lnkServicedependencyToService_S',
                             $chkDataId
                         );
                     }
@@ -229,13 +229,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue6 != 0) {
                         $intRet6 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToService_DS",
+                            'tbl_lnkServicedependencyToService_DS',
                             $chkDataId,
                             $chkMselValue6
                         );
                     } else {
                         $intRet6 = $myDataClass->dataDeleteRelation(
-                            "tbl_lnkServicedependencyToService_DS",
+                            'tbl_lnkServicedependencyToService_DS',
                             $chkDataId
                         );
                     }
@@ -244,13 +244,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue7 != 0) {
                         $intRet7 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToServicegroup_S",
+                            'tbl_lnkServicedependencyToServicegroup_S',
                             $chkDataId,
                             $chkMselValue7
                         );
                     } else {
                         $intRet7 = $myDataClass->dataDeleteRelation(
-                            "tbl_lnkServicedependencyToServicegroup_S",
+                            'tbl_lnkServicedependencyToServicegroup_S',
                             $chkDataId
                         );
                     }
@@ -259,13 +259,13 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                     if ($intMselValue8 != 0) {
                         $intRet8 = $myDataClass->dataUpdateRelation(
-                            "tbl_lnkServicedependencyToServicegroup_DS",
+                            'tbl_lnkServicedependencyToServicegroup_DS',
                             $chkDataId,
                             $chkMselValue8
                         );
                     } else {
                         $intRet8 = $myDataClass->dataDeleteRelation(
-                            "tbl_lnkServicedependencyToServicegroup_DS",
+                            'tbl_lnkServicedependencyToServicegroup_DS',
                             $chkDataId
                         );
                     }
@@ -274,7 +274,7 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
                     }
                 }
                 if (($intRet1 + $intRet2 + $intRet3 + $intRet4 + $intRet5 + $intRet6 + $intRet7 + $intRet8) != 0) {
-                    $strInfoMessage = "";
+                    $strInfoMessage = '';
                 }
                 //
                 // Update Import HASH
@@ -293,10 +293,10 @@ if ((($chkModus == "insert") || ($chkModus == "modify")) && ($intGlobalWriteAcce
     } else {
         $myVisClass->processMessage(translate('Database entry failed! No write access!'), $strErrorMessage);
     }
-    $chkModus = "display";
+    $chkModus = 'display';
 }
-if (($chkModus != "add") && ($chkModus != "refresh")) {
-    $chkModus    = "display";
+if (($chkModus != 'add') && ($chkModus != 'refresh')) {
+    $chkModus    = 'display';
 }
 //
 // Get date/time of last database and config file manipulation
@@ -308,9 +308,9 @@ if ($intReturn != 0) {
 //
 // Singe data form
 // ===============
-if (($chkModus == "add") || ($chkModus == "refresh")) {
-    $conttp->setVariable("TITLE", translate('Define service dependencies (servicedependencies.cfg)'));
-    if ($chkModus == "refresh") {
+if (($chkModus == 'add') || ($chkModus == 'refresh')) {
+    $conttp->setVariable('TITLE', translate('Define service dependencies (servicedependencies.cfg)'));
+    if ($chkModus == 'refresh') {
         $_SESSION['refresh']['sd_host']                   = $chkMselValue1;
         $_SESSION['refresh']['sd_dependent_host']         = $chkMselValue2;
         $_SESSION['refresh']['sd_hostgroup']              = $chkMselValue3;
@@ -331,8 +331,8 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
         $_SESSION['refresh']['sd_dependent_servicegroup'] = $chkMselValue8;
         if (isset($arrModifyData['dependent_host_name']) && ($arrModifyData['dependent_host_name'] > 0)) {
             $arrTemp = array();
-            $strSQL    = "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHost_DH` "
-                . "WHERE `idMaster` = ".$arrModifyData['id'];
+            $strSQL    = 'SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHost_DH` '
+                . 'WHERE `idMaster` = ' .$arrModifyData['id'];
             $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booReturn == false) {
                 $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -340,7 +340,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
             if ($booReturn && ($intDC != 0)) {
                 foreach ($arrData as $elem) {
                     if ($elem['exclude'] == 1) {
-                        $arrTemp[] = "e".$elem['idSlave'];
+                        $arrTemp[] = 'e' .$elem['idSlave'];
                     } else {
                         $arrTemp[] = $elem['idSlave'];
                     }
@@ -353,8 +353,8 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
         }
         if (isset($arrModifyData['host_name']) && ($arrModifyData['host_name'] > 0)) {
             $arrTemp = array();
-            $strSQL    = "SELECT `idSlave`, `exclude` FROM `tbl_lnkServicedependencyToHost_H` "
-                . "WHERE `idMaster` = ".$arrModifyData['id'];
+            $strSQL    = 'SELECT `idSlave`, `exclude` FROM `tbl_lnkServicedependencyToHost_H` '
+                . 'WHERE `idMaster` = ' .$arrModifyData['id'];
             $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booReturn == false) {
                 $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -362,7 +362,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
             if ($intDC != 0) {
                 foreach ($arrData as $elem) {
                     if ($elem['exclude'] == 1) {
-                        $arrTemp[] = "e".$elem['idSlave'];
+                        $arrTemp[] = 'e' .$elem['idSlave'];
                     } else {
                         $arrTemp[] = $elem['idSlave'];
                     }
@@ -375,8 +375,8 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
         }
         if (isset($arrModifyData['dependent_hostgroup_name']) && ($arrModifyData['dependent_hostgroup_name'] > 0)) {
             $arrTemp = array();
-            $strSQL    = "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_DH` "
-                . "WHERE `idMaster` = ".$arrModifyData['id'];
+            $strSQL    = 'SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_DH` '
+                . 'WHERE `idMaster` = ' .$arrModifyData['id'];
             $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booReturn == false) {
                 $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -384,7 +384,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
             if ($intDC != 0) {
                 foreach ($arrData as $elem) {
                     if ($elem['exclude'] == 1) {
-                        $arrTemp[] = "e".$elem['idSlave'];
+                        $arrTemp[] = 'e' .$elem['idSlave'];
                     } else {
                         $arrTemp[] = $elem['idSlave'];
                     }
@@ -397,8 +397,8 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
         }
         if (isset($arrModifyData['hostgroup_name']) && ($arrModifyData['hostgroup_name'] > 0)) {
             $arrTemp  = array();
-            $strSQL   = "SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_H` "
-                . "WHERE `idMaster` = ".$arrModifyData['id'];
+            $strSQL   = 'SELECT `idSlave`, `exclude`  FROM `tbl_lnkServicedependencyToHostgroup_H` '
+                . 'WHERE `idMaster` = ' .$arrModifyData['id'];
             $booReturn = $myDBClass->hasDataArray($strSQL, $arrData, $intDC);
             if ($booReturn == false) {
                 $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
@@ -406,7 +406,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
             if ($intDC != 0) {
                 foreach ($arrData as $elem) {
                     if ($elem['exclude'] == 1) {
-                        $arrTemp[] = "e".$elem['idSlave'];
+                        $arrTemp[] = 'e' .$elem['idSlave'];
                     } else {
                         $arrTemp[] = $elem['idSlave'];
                     }
@@ -427,7 +427,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue2) && (count($chkMselValue2) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue2) && (count($chkMselValue2) != 0)) {
         $strRefresh = 'sd_dependent_host';
     } else {
         $strRefresh = '';
@@ -450,7 +450,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue1) && (count($chkMselValue1) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue1) && (count($chkMselValue1) != 0)) {
         $strRefresh = 'sd_host';
     } else {
         $strRefresh = '';
@@ -474,7 +474,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if ($chkModus == "refresh") {
+    if ($chkModus == 'refresh') {
         $intFieldId = $chkSelValue1;
     }
     $intReturn = $myVisClass->parseSelectSimple('tbl_timeperiod', 'timeperiod_name', 'timeperiod', 1, $intFieldId);
@@ -487,7 +487,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue4) && (count($chkMselValue4) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue4) && (count($chkMselValue4) != 0)) {
         $strRefresh = 'sd_dependent_hostgroup';
     } else {
         $strRefresh = '';
@@ -510,7 +510,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue3) && (count($chkMselValue3) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue3) && (count($chkMselValue3) != 0)) {
         $strRefresh = 'sd_hostgroup';
     } else {
         $strRefresh = '';
@@ -538,7 +538,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue6) && (count($chkMselValue6) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue6) && (count($chkMselValue6) != 0)) {
         $strRefresh = 'sd_dependent_service';
     } else {
         $strRefresh = '';
@@ -561,7 +561,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue5) && (count($chkMselValue5) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue5) && (count($chkMselValue5) != 0)) {
         $strRefresh = 'sd_service';
     } else {
         $strRefresh = '';
@@ -585,7 +585,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue8) && (count($chkMselValue8) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue8) && (count($chkMselValue8) != 0)) {
         $strRefresh = 'sd_dependent_servicegroup';
     } else {
         $strRefresh = '';
@@ -608,7 +608,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if (($chkModus == "refresh") && is_array($chkMselValue7) && (count($chkMselValue7) != 0)) {
+    if (($chkModus == 'refresh') && is_array($chkMselValue7) && (count($chkMselValue7) != 0)) {
         $strRefresh = 'sd_servicegroup';
     } else {
         $strRefresh = '';
@@ -632,7 +632,7 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     } else {
         $intFieldId = 0;
     }
-    if ($chkModus == "refresh") {
+    if ($chkModus == 'refresh') {
         $intFieldId = $chkSelAccGr;
     }
     $intReturn = $myVisClass->parseSelectSimple('tbl_group', 'groupname', 'acc_group', 0, $intFieldId);
@@ -642,69 +642,69 @@ if (($chkModus == "add") || ($chkModus == "refresh")) {
     // Initial add/modify form definitions
     $myContentClass->addFormInit($conttp);
     if ($intDataWarning == 1) {
-        $conttp->setVariable("WARNING", $strDBWarning."<br>".translate('Saving not possible!'));
+        $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
     if ($intVersion != 3) {
-        $conttp->setVariable("VERSION_20_VALUE_MUST", "mselValue1,");
+        $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
-    if ($chkModus == "refresh") {
-        if ($chkTfValue1 != "") {
-            $conttp->setVariable("DAT_CONFIG_NAME", $chkTfValue1);
+    if ($chkModus == 'refresh') {
+        if ($chkTfValue1 != '') {
+            $conttp->setVariable('DAT_CONFIG_NAME', $chkTfValue1);
         }
-        foreach (explode(",", $strEO) as $elem) {
-            $conttp->setVariable("DAT_EO".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $strEO) as $elem) {
+            $conttp->setVariable('DAT_EO' .strtoupper($elem). '_CHECKED', 'checked');
         }
-        foreach (explode(",", $strNO) as $elem) {
-            $conttp->setVariable("DAT_NO".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $strNO) as $elem) {
+            $conttp->setVariable('DAT_NO' .strtoupper($elem). '_CHECKED', 'checked');
         }
         if ($chkActive   != 1) {
-            $conttp->setVariable("ACT_CHECKED", "");
+            $conttp->setVariable('ACT_CHECKED', '');
         }
         if ($chkRegister != 1) {
-            $conttp->setVariable("REG_CHECKED", "");
+            $conttp->setVariable('REG_CHECKED', '');
         }
         if ($chkChbValue1  == 1) {
-            $conttp->setVariable("ACT_INHERIT", "checked");
+            $conttp->setVariable('ACT_INHERIT', 'checked');
         }
         if ($chkDataId != 0) {
-            $conttp->setVariable("DAT_ID", $chkDataId);
-            $conttp->setVariable("MODUS", "modify");
+            $conttp->setVariable('DAT_ID', $chkDataId);
+            $conttp->setVariable('MODUS', 'modify');
         }
         // Insert data from database in "modify" mode
-    } elseif (isset($arrModifyData) && ($chkSelModify == "modify")) {
+    } elseif (isset($arrModifyData) && ($chkSelModify == 'modify')) {
         // Check relation information to find out locked configuration datasets
         $intLocked = $myDataClass->infoRelation($preTableName, $arrModifyData['id'], $preKeyField);
         $myVisClass->processMessage($myDataClass->strInfoMessage, $strRelMessage);
-        $strInfo  = "<br><span class=\"redmessage\">".translate('Entry cannot be activated because it is used by '
-                . 'another configuration').":</span>";
-        $strInfo .= "<br><span class=\"greenmessage\">".$strRelMessage."</span>";
+        $strInfo  = '<br><span class="redmessage">' .translate('Entry cannot be activated because it is used by '
+                . 'another configuration'). ':</span>';
+        $strInfo .= '<br><span class="greenmessage">' .$strRelMessage. '</span>';
         // Process data
         $myContentClass->addInsertData($conttp, $arrModifyData, $intLocked, $strInfo);
         // Setting special data
         if ($arrModifyData['inherits_parent'] == 1) {
-            $conttp->setVariable("ACT_INHERIT", "checked");
+            $conttp->setVariable('ACT_INHERIT', 'checked');
         }
-        foreach (explode(",", $arrModifyData['execution_failure_criteria']) as $elem) {
-            $conttp->setVariable("DAT_EO".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['execution_failure_criteria']) as $elem) {
+            $conttp->setVariable('DAT_EO' .strtoupper($elem). '_CHECKED', 'checked');
         }
-        foreach (explode(",", $arrModifyData['notification_failure_criteria']) as $elem) {
-            $conttp->setVariable("DAT_NO".strtoupper($elem)."_CHECKED", "checked");
+        foreach (explode(',', $arrModifyData['notification_failure_criteria']) as $elem) {
+            $conttp->setVariable('DAT_NO' .strtoupper($elem). '_CHECKED', 'checked');
         }
     }
-    $conttp->parse("datainsert");
-    $conttp->show("datainsert");
+    $conttp->parse('datainsert');
+    $conttp->show('datainsert');
 }
 //
 // List view
 // ==========
-if ($chkModus == "display") {
+if ($chkModus == 'display') {
     // Initial list view definitions
     $myContentClass->listViewInit($mastertp);
-    $mastertp->setVariable("TITLE", translate('Define service dependencies (servicedependencies.cfg)'));
-    $mastertp->setVariable("FIELD_1", translate('Config name'));
-    $mastertp->setVariable("FIELD_2", translate('Dependent services'));
+    $mastertp->setVariable('TITLE', translate('Define service dependencies (servicedependencies.cfg)'));
+    $mastertp->setVariable('FIELD_1', translate('Config name'));
+    $mastertp->setVariable('FIELD_2', translate('Dependent services'));
     // Process search string
-    if ($_SESSION['search'][$preSearchSession] != "") {
+    if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%')";
     }
@@ -713,7 +713,7 @@ if ($chkModus == "display") {
     if ($hidSortBy == 2) {
         $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";
     }
-    $mastertp->setVariable("DISABLE_SORT_2", "disable");
+    $mastertp->setVariable('DISABLE_SORT_2', 'disable');
     // Count datasets
     $strSQL    = "SELECT count(*) AS `number` FROM `$preTableName` "
         . "WHERE $strDomainWhere $strSearchWhere AND `access_group` IN ($strAccess)";

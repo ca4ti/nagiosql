@@ -17,7 +17,7 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
@@ -27,7 +27,7 @@ $preNoMain = 1;
 //
 // Include preprocessing file
 // ==========================
-require($preBasePath.'functions/prepend_adm.php');
+require $preBasePath.'functions/prepend_adm.php';
 //
 // Process post parameters
 // =======================
@@ -49,7 +49,7 @@ $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
 //
 // Store data to session
 // ============================
-if ($chkMode == "") {
+if ($chkMode == '') {
     $_SESSION['timedefinition'] = array();
     if ($booReturn && ($intDataCount != 0)) {
         foreach ($arrDataLines as $elem) {
@@ -64,7 +64,7 @@ if ($chkMode == "") {
 //
 // Add mode
 // =========
-if ($chkMode == "add") {
+if ($chkMode == 'add') {
     if (isset($_SESSION['timedefinition']) && is_array($_SESSION['timedefinition'])) {
         $intCheck = 0;
         foreach ($_SESSION['timedefinition'] as $key => $elem) {
@@ -92,12 +92,10 @@ if ($chkMode == "add") {
 //
 // Deletion mode
 // =============
-if ($chkMode == "del") {
-    if (isset($_SESSION['timedefinition']) && is_array($_SESSION['timedefinition'])) {
-        foreach ($_SESSION['timedefinition'] as $key => $elem) {
-            if (($elem['definition'] == $chkDef) && ($elem['status'] == 0)) {
-                $_SESSION['timedefinition'][$key]['status'] = 1;
-            }
+if ($chkMode == 'del' && isset($_SESSION['timedefinition']) && is_array($_SESSION['timedefinition'])) {
+    foreach ($_SESSION['timedefinition'] as $key => $elem) {
+        if (($elem['definition'] == $chkDef) && ($elem['status'] == 0)) {
+            $_SESSION['timedefinition'][$key]['status'] = 1;
         }
     }
 }

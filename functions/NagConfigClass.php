@@ -118,16 +118,16 @@ class NagConfigClass
         // Get last change on dataset
         if ($strTableName == 'tbl_host') {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_host` ".
-                "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
+                       "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT `active` FROM `tbl_host`  WHERE `host_name`='$strConfigName' ".
-                'AND `config_id`=' .$this->intDomainId;
+                       'AND `config_id`=' .$this->intDomainId;
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $strActive            = $this->myDBClass->getFieldData($strSQL2);
         } elseif ($strTableName == 'tbl_service') {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_service` ".
-                "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
+                       "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT * FROM `$strTableName` WHERE `config_name`='$strConfigName' ".
-                'AND `config_id`=' .$this->intDomainId." AND `active`='1'";
+                       'AND `config_id`=' .$this->intDomainId." AND `active`='1'";
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $intServiceCount      = $this->myDBClass->countRows($strSQL2);
             if ($intServiceCount != 0) {
@@ -496,7 +496,7 @@ class NagConfigClass
                     $intCount2++;
                     $arrStatus = stream_get_meta_data($resStream);
                 } while ($resStream && !feof($resStream) && ($intCount1 <= 10) && ($intCount2 <= $intLines) &&
-                ($arrStatus['timed_out'] != true) && $booBreak == false);
+                         ($arrStatus['timed_out'] != true) && $booBreak == false);
                 fclose($resStream);
                 // Close SSH connection because of timing problems
                 unset($this->resConnectId);
@@ -627,7 +627,7 @@ class NagConfigClass
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                            .'wrong (remote FTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
+                        .'wrong (remote FTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 3) { // Remote file (SFTP)
@@ -646,13 +646,13 @@ class NagConfigClass
                         }
                     } else {
                         $this->processClassMessage(translate('Cannot backup the old file because the source file is '
-                                .'missing (remote SFTP) - source file: '). $strSourceFile. '::', $this->strErrorMessage);
+                            .'missing (remote SFTP) - source file: '). $strSourceFile. '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                            .'wrong (remote SFTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
+                        .'wrong (remote SFTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
@@ -847,7 +847,7 @@ class NagConfigClass
                                 . 'readable) - remote file: ') .$strFileRemote. '::', $this->strErrorMessage);
                     } else {
                         $this->processClassMessage(translate('Remote file is not readable - remote file: ')
-                            . $strFileRemote. '::', $this->strErrorMessage);
+                                . $strFileRemote. '::', $this->strErrorMessage);
                     }
                     $intReturn = 1;
                 }
@@ -858,14 +858,14 @@ class NagConfigClass
                     error_reporting(0);
                     if (!ssh2_scp_send($this->resConnectId, $strFileLocal, $strFileRemote, 0644)) {
                         $this->processClassMessage(translate('Cannot write a remote file (remote file is not writeable)'
-                                .' - remote file: '). $strFileRemote . '::', $this->strErrorMessage);
+                            .' - remote file: '). $strFileRemote . '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                     error_reporting($intErrorReporting);
                 } else {
                     $this->processClassMessage(translate('Cannot copy a local file to remote because the local file '.
                             'does not exist or is not readable - local file: ').
-                        $strFileLocal . '::', $this->strErrorMessage);
+                            $strFileLocal . '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
@@ -966,8 +966,8 @@ class NagConfigClass
                 $strSQLAdd = 'OR `domainId`=0';
             }
             $strSQL = 'SELECT `updateTime` FROM `tbl_tablestatus` '
-                . 'WHERE (`domainId`=' .$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
-                . 'ORDER BY `updateTime` DESC LIMIT 1';
+                    . 'WHERE (`domainId`=' .$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
+                    . 'ORDER BY `updateTime` DESC LIMIT 1';
             $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
             if ($booReturn && isset($arrDataset['updateTime'])) {
                 $arrTimeData['table'] = $arrDataset['updateTime'];
@@ -1691,7 +1691,7 @@ class NagConfigClass
             if ($key == 'use_template') {
                 $key = 'use';
             }
-            if (($this->intNagVersion != 3) && ($this->intNagVersion != 2)) {
+            if ($this->intNagVersion < 2) {
                 if ($key == 'check_interval') {
                     $key = 'normal_check_interval';
                 }
@@ -1780,7 +1780,7 @@ class NagConfigClass
             if ($key == 'use_template') {
                 $key = 'use';
             }
-            if (($this->intNagVersion != 3) && ($this->intNagVersion != 2)) {
+            if ($this->intNagVersion < 2) {
                 if ($key == 'check_interval') {
                     $key = 'normal_check_interval';
                 }
@@ -1940,7 +1940,7 @@ class NagConfigClass
             }
         }
         if ((($strTableName == 'tbl_hosttemplate') || ($strTableName == 'tbl_servicetemplate') ||
-                ($strTableName == 'tbl_contacttemplate')) && $key == 'register') {
+            ($strTableName == 'tbl_contacttemplate')) && $key == 'register') {
             $value = '0';
         }
         if ($strTableName == 'tbl_timeperiod' && $key == 'use_template') {
@@ -2247,10 +2247,10 @@ class NagConfigClass
             foreach ($arrDataRel as $data) {
                 if ($data['idTable'] == 1) {
                     $strSQLName = 'SELECT `' .$elem['target1']. '` FROM `' .$elem['tableName1']. '`' .
-                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 } else {
                     $strSQLName = 'SELECT `' .$elem['target2']. '` FROM `' .$elem['tableName2']. '`' .
-                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 }
                 $strDataValue .= $this->myDBClass->getFieldData($strSQLName) . ',';
             }
@@ -2279,7 +2279,7 @@ class NagConfigClass
             'FROM `' .$elem['linkTable']. '` ' .
             'LEFT JOIN `tbl_service` ON `' .$elem['linkTable']. '`.`idSlave`=`tbl_service`.`id` ' .
             'WHERE `' .$elem['linkTable']. '`.`idMaster`=' .$arrData['id']." AND `active`='1' AND ".
-            $strDomainWhere1. ' ' .
+                        $strDomainWhere1. ' ' .
             'ORDER BY `' .$elem['linkTable']. '`.`strSlave`';
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {

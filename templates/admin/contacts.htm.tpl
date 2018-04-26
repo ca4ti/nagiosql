@@ -69,9 +69,9 @@
                 form.tfValue11.focus();
                 return false;
             }
-            if (form.tfValue12.value.match(/[^0-9]/)) {
+            if (form.tfNullVal1.value.match(/[^0-9]/)) {
                 msginit(msg2+" {LANG_MINIMUM_IMPORTANCE}",header,1);
-                form.tfValue12.focus();
+                form.tfNullVal1.focus();
                 return false;
             }
             if (bypass === '0') {
@@ -168,7 +168,7 @@
                         </tr>
                         <tr>
                             <td class="{VERSION_40_VISIBLE}">{LANG_MINIMUM_IMPORTANCE}</td>
-                            <td class="{VERSION_40_VISIBLE}"><input title="{LANG_MINIMUM_IMPORTANCE}" name="tfValue12" type="text" id="tfValue12" value="{DAT_MINIMUM_IMPORTANCE}"></td>
+                            <td class="{VERSION_40_VISIBLE}"><input title="{LANG_MINIMUM_IMPORTANCE}" name="tfNullVal1" type="text" id="tfNullVal1" value="{DAT_MINIMUM_IMPORTANCE}"></td>
                             <td class="{VERSION_40_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('contact','minimum_importance','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>

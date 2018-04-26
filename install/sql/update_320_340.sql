@@ -27,11 +27,11 @@ ALTER TABLE `tbl_configtarget` ADD `ftp_secure` TINYINT UNSIGNED NOT NULL DEFAUL
 --
 --  Modify existing tbl_contact
 --
-ALTER TABLE `tbl_contact` ADD `minimum_importance` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `contactgroups_tploptions`;
+ALTER TABLE `tbl_contact` ADD `minimum_importance` INT NULL DEFAULT NULL AFTER `contactgroups_tploptions`;
 --
 --  Modify existing tbl_contacttemplate
 --
-ALTER TABLE `tbl_contacttemplate` ADD `minimum_importance` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `contactgroups_tploptions`;
+ALTER TABLE `tbl_contacttemplate` ADD `minimum_importance` INT NULL DEFAULT NULL AFTER `contactgroups_tploptions`;
 --
 --  Modify existing tbl_hosts
 --

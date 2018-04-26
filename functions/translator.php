@@ -98,7 +98,7 @@ function getLanguageData()
     // Danish
     $supportedLanguages['da_DK']['description'] = translate('Danish');
     $supportedLanguages['da_DK']['nativedescription'] = 'Dansk';
-
+   
     // No longer supported language because of missing translators
     //
     //  // Japanese

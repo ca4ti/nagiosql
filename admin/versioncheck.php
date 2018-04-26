@@ -17,7 +17,7 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
@@ -27,20 +27,20 @@ $chkShow   = filter_input(INPUT_GET, 'show', FILTER_VALIDATE_INT, array('options
 //
 // Include preprocessing file
 // ==========================
-require($preBasePath.'functions/prepend_adm.php');
-$strCommandLine = "&nbsp;";
+require $preBasePath.'functions/prepend_adm.php';
+$strCommandLine = '&nbsp;';
 $intCount       = 0;
 //
 // Get database values
 // ===================
 if ($chkShow == 1) {
-    $versionfeed = "http://api.wizonet.ch/nagiosql/versioncheck.php?myversion=".urlencode($setFileVersion);
-    $strError     = "";
+    $versionfeed = 'http://api.wizonet.ch/nagiosql/versioncheck.php?myversion=' .urlencode($setFileVersion);
+    $strError     = '';
     if ((isset($SETS['network']['proxy']) && ($SETS['network']['proxy'] == '1')) &&
-        (isset($SETS['network']['proxyserver']) && ($SETS['network']['proxyserver'] != ""))) {
-        if ((isset($SETS['network']['proxyuser']) && ($SETS['network']['proxyuser'] != "")) &&
-            (isset($SETS['network']['proxypasswd']) && ($SETS['network']['proxypasswd'] != ""))) {
-            $strProxyAuth = base64_encode($SETS['network']['proxyuser'].":".$SETS['network']['proxypasswd']);
+        (isset($SETS['network']['proxyserver']) && ($SETS['network']['proxyserver'] != ''))) {
+        if ((isset($SETS['network']['proxyuser']) && ($SETS['network']['proxyuser'] != '')) &&
+            (isset($SETS['network']['proxypasswd']) && ($SETS['network']['proxypasswd'] != ''))) {
+            $strProxyAuth = base64_encode($SETS['network']['proxyuser']. ':' .$SETS['network']['proxypasswd']);
             $aContext = array(
                 'http' => array(
                 'proxy' => 'tcp://'.$SETS['network']['proxyserver'],
@@ -64,8 +64,8 @@ if ($chkShow == 1) {
         $arrFile   = file($versionfeed, false, $cxContext);
         $arrError  = error_get_last();
         error_reporting($intErrorReporting);
-        if ($arrError['message'] != "") {
-            $strError .= utf8_encode($arrError['message'])." (".translate("check proxy settings").")";
+        if ($arrError['message'] != '') {
+            $strError .= utf8_encode($arrError['message']). ' (' .translate('check proxy settings'). ')';
         }
     } else {
         $intErrorReporting = error_reporting();
@@ -74,28 +74,28 @@ if ($chkShow == 1) {
         $arrFile   = file($versionfeed, false, $cxContext);
         $arrError  = error_get_last();
         error_reporting($intErrorReporting);
-        if ($arrError['message'] != "") {
-            $strError .= utf8_encode($arrError['message'])." (".translate("check proxy settings").")";
+        if ($arrError['message'] != '') {
+            $strError .= utf8_encode($arrError['message']). ' (' .translate('check proxy settings'). ')';
         }
     }
     $strInstalled   = translate('Installed');
     $strAvailable   = translate('Available');
     $strInformation = translate('Information');
-    $strVersion        = "";
-    $strRelease        = "";
-    $strRelInfo        = "";
-    if (is_array($arrFile) && (count($arrFile)) != 0) {
+    $strVersion        = '';
+    $strRelease        = '';
+    $strRelInfo        = '';
+    if (is_array($arrFile) && count($arrFile) != 0) {
         foreach ($arrFile as $elem) {
-            if (substr_count($elem, "version")       != 0) {
+            if (substr_count($elem, 'version')       != 0) {
                 $strVersion = trim(strip_tags($elem));
             }
-            if (substr_count($elem, "release_date") != 0) {
+            if (substr_count($elem, 'release_date') != 0) {
                 $strRelease = trim(strip_tags($elem));
             }
-            if (substr_count($elem, "error")       != 0) {
+            if (substr_count($elem, 'error')       != 0) {
                 $strError   = trim(strip_tags($elem));
             }
-            if (substr_count($elem, "information")  != 0) {
+            if (substr_count($elem, 'information')  != 0) {
                 $strRelInfo = trim(strip_tags($elem));
             }
         }
@@ -103,18 +103,18 @@ if ($chkShow == 1) {
     $setFileAvailable = $strVersion;
     if (version_compare($strVersion, $setFileVersion, '==')) {
         $setFileInformation = "<span class='greenmessage'>".translate('You already have the latest version installed').
-                "</span>";
+            '</span>';
     } elseif (version_compare($strVersion, $setFileVersion, '>=')) {
         $setFileInformation = "<span class='redmessage'>".translate('You are using an old NagiosQL version. Please '.
-                'update to the latest stable version')."</span>: ";
-        $setFileInformation .= "<a href=\"http://sourceforge.net/projects/nagiosql/files/\" target=\"_blank\">".
-                "NagiosQL on Sourceforge</a>";
+                'update to the latest stable version'). '</span>: ';
+        $setFileInformation .= '<a href="http://sourceforge.net/projects/nagiosql/files/" target="_blank">' .
+            'NagiosQL on Sourceforge</a>';
     } elseif (version_compare($strVersion, $setFileVersion, '<=')) {
         $setFileInformation = "<span class='redmessage'>".translate('You are using a newer development version '.
-                'without official support')."</span>";
+                'without official support'). '</span>';
     }
-    if (($strError != "none") && ($strError != "")) {
-        $setFileInformation = "<span class='redmessage'>".$strError."</span>";
+    if (($strError != 'none') && ($strError != '')) {
+        $setFileInformation = "<span class='redmessage'>".$strError. '</span>';
     } ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -159,7 +159,7 @@ if ($chkShow == 1) {
             parent.document.getElementById('vcheck').className       = 'elementHide';
             parent.document.getElementById('versioncheck').className = 'elementShow';
 <?php
-if (($strError != "none") && ($strError != "")) {
+if (($strError != 'none') && ($strError != '')) {
     echo "            parent.document.getElementById('versioncheck').height = '65';";
 }
 ?>

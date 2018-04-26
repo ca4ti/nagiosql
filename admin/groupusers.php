@@ -17,14 +17,14 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strchr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
+$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
 $preBasePath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING).$preRelPath;
 //
 // Define common variables
 // =======================
 $preAccess  = 1;
 $preNoMain  = 1;
-require($preBasePath.'functions/prepend_adm.php');
+require $preBasePath.'functions/prepend_adm.php';
 //
 // Process get parameters
 // ======================
@@ -35,19 +35,19 @@ $chkUser    = filter_input(INPUT_GET, 'user', FILTER_SANITIZE_STRING);
 $chkRights  = filter_input(INPUT_GET, 'rights', FILTER_SANITIZE_STRING);
 $chkId      = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 $chkLinkTab = filter_input(INPUT_GET, 'linktab', FILTER_SANITIZE_STRING);
-if (substr_count($chkRights, "-")) {
-    $arrRights = explode("-", $chkRights);
-    $strRights = "";
+if (substr_count($chkRights, '-')) {
+    $arrRights = explode('-', $chkRights);
+    $strRights = '';
     if ($arrRights[0] == 1) {
-        $strRights .= "READ,";
+        $strRights .= 'READ,';
     }
     if ($arrRights[1] == 1) {
-        $strRights .= "WRITE,";
+        $strRights .= 'WRITE,';
     }
     if ($arrRights[2] == 1) {
-        $strRights .= "LINK,";
+        $strRights .= 'LINK,';
     }
-    if ($strRights != "") {
+    if ($strRights != '') {
         $strRights = substr($strRights, 0, -1);
     }
     $chkRights = $strRights;
@@ -59,30 +59,30 @@ if (get_magic_quotes_gpc() == 0) {
 //
 // Get datasets
 // ============
-if ($chkLinkTab != "") {
-    $strSQL    = "SELECT * FROM `tbl_user` LEFT JOIN `".$chkLinkTab."` ON `id`=`idSlave` "
+if ($chkLinkTab != '') {
+    $strSQL    = 'SELECT * FROM `tbl_user` LEFT JOIN `' .$chkLinkTab. '` ON `id`=`idSlave` '
                . "WHERE `idMaster`=$chkDataId ORDER BY `username`";
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     //
     // Write data to session
     // =====================
-    if ($chkMode == "") {
+    if ($chkMode == '') {
         $_SESSION['groupuser'] = array();
         if ($intDataCount != 0) {
             foreach ($arrDataLines as $elem) {
                 $arrTemp['id']    = $elem['id'];
                 $arrTemp['user']  = $elem['id'];
-                $strRights = "";
+                $strRights = '';
                 if ($elem['read']  == 1) {
-                    $strRights .= "READ,";
+                    $strRights .= 'READ,';
                 }
                 if ($elem['write'] == 1) {
-                    $strRights .= "WRITE,";
+                    $strRights .= 'WRITE,';
                 }
                 if ($elem['link']  == 1) {
-                    $strRights .= "LINK,";
+                    $strRights .= 'LINK,';
                 }
-                if ($strRights != "") {
+                if ($strRights != '') {
                     $strRights = substr($strRights, 0, -1);
                 }
                 $arrTemp['rights']       =    $strRights;
@@ -95,7 +95,7 @@ if ($chkLinkTab != "") {
 //
 // Add mode
 // ========
-if ($chkMode == "add") {
+if ($chkMode == 'add') {
     if (isset($_SESSION['groupuser']) && is_array($_SESSION['groupuser'])) {
         $intCheck = 0;
         foreach ($_SESSION['groupuser'] as $key => $elem) {
@@ -124,12 +124,10 @@ if ($chkMode == "add") {
 //
 // Deletion mode
 // =============
-if ($chkMode == "del") {
-    if (isset($_SESSION['groupuser']) && is_array($_SESSION['groupuser'])) {
-        foreach ($_SESSION['groupuser'] as $key => $elem) {
-            if (($elem['user'] == $chkUser) && ($elem['status'] == 0)) {
-                $_SESSION['groupuser'][$key]['status'] = 1;
-            }
+if ($chkMode == 'del' && isset($_SESSION['groupuser']) && is_array($_SESSION['groupuser'])) {
+    foreach ($_SESSION['groupuser'] as $key => $elem) {
+        if (($elem['user'] == $chkUser) && ($elem['status'] == 0)) {
+            $_SESSION['groupuser'][$key]['status'] = 1;
         }
     }
 }
@@ -157,7 +155,7 @@ if ($chkMode == "del") {
 if (isset($_SESSION['groupuser']) && is_array($_SESSION['groupuser']) && (count($_SESSION['groupuser']) != 0)) {
     foreach ($_SESSION['groupuser'] as $elem) {
         if ($elem['status'] == 0) {
-            $strUser = $myDBClass->getFieldData("SELECT `username` FROM `tbl_user` WHERE `id`=".$elem['user']); ?>
+            $strUser = $myDBClass->getFieldData('SELECT `username` FROM `tbl_user` WHERE `id`=' .$elem['user']); ?>
             <tr>
                 <td class="tablerow" style="padding-bottom:2px; width:260px"><?php echo $strUser; ?></td>
                 <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
