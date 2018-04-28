@@ -58,6 +58,7 @@ ALTER TABLE `tbl_servicetemplate` ADD `importance` INT NULL DEFAULT NULL AFTER `
 CREATE TABLE `tbl_lnkServiceToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
+  `idHost` int(11) NOT NULL,
   `exclude` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --
@@ -70,6 +71,7 @@ ALTER TABLE `tbl_lnkServiceToService` ADD PRIMARY KEY (`idMaster`,`idSlave`);
 CREATE TABLE `tbl_lnkServicetemplateToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
+  `idHost` int(11) NOT NULL,
   `exclude` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --
@@ -79,8 +81,8 @@ ALTER TABLE `tbl_lnkServicetemplateToService` ADD PRIMARY KEY (`idMaster`,`idSla
 --
 --  Modify table tbl_relationinformation
 --
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '2');
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_servicetemplate', 'tbl_service', '', 'parents', 'tbl_lnkServicetemplateToService', 'service_description', '', '', '0', '', '2');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '7');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_servicetemplate', 'tbl_service', '', 'parents', 'tbl_lnkServicetemplateToService', 'service_description', '', '', '0', '', '7');
 --
 --  Modify existing tbl_info
 --

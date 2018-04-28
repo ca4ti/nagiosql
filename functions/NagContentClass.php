@@ -76,7 +76,7 @@ class NagContentClass
      * Data list view - form initialization
      * @param \HTML_Template_IT $objTemplate    Form template object
      */
-    public function listViewInit($objTemplate): void
+    public function listViewInit($objTemplate)
     {
         // Language text replacements from fieldvars.php file
         foreach ($this->arrDescription as $elem) {
@@ -112,7 +112,7 @@ class NagContentClass
         $strField1,
         $strField2,
         $intLimit = 0
-    ): void {
+    ) {
         // Template block names
         $strTplPart = 'datatable';
         $strTplRow  = 'datarow';
@@ -233,10 +233,10 @@ class NagContentClass
                         $strAdd = '';
                     }
                     $objTemplate->setVariable('DATA_FIELD_2', htmlentities(substr(
-                        $arrData[$i][$strField2],
-                        0,
-                        $intLimit
-                    ), ENT_COMPAT, 'UTF-8').$strAdd);
+                            $arrData[$i][$strField2],
+                            0,
+                            $intLimit
+                        ), ENT_COMPAT, 'UTF-8').$strAdd);
                 } else {
                     $objTemplate->setVariable('DATA_FIELD_2', htmlentities(
                         $arrData[$i][$strField2],
@@ -338,7 +338,7 @@ class NagContentClass
         $arrTimeData,
         $strTimeInfoString,
         $intNoTime = 0
-    ): void {
+    ) {
         // Display info messages
         if ($strInfoMessage != '') {
             $objTemplate->setVariable('INFOMESSAGE', $strInfoMessage);
@@ -381,10 +381,10 @@ class NagContentClass
      * @param \HTML_Template_IT $objTemplate    Form template object
      * @param string $setFileVersion            NagiosQL version
      */
-    public function showFooter($objTemplate, $setFileVersion): void
+    public function showFooter($objTemplate, $setFileVersion)
     {
         $objTemplate->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' ".
-                                  "target='_blank'>NagiosQL</a> $setFileVersion");
+            "target='_blank'>NagiosQL</a> $setFileVersion");
         $objTemplate->parse('footer');
         $objTemplate->show('footer');
     }
@@ -394,7 +394,7 @@ class NagContentClass
      * @param \HTML_Template_IT $objTemplate    Form template object
      * @param string $strChbFields              Comma separated string of checkbox value names
      */
-    public function addFormInit($objTemplate, $strChbFields = ''): void
+    public function addFormInit($objTemplate, $strChbFields = '')
     {
         // Language text replacements from fieldvars.php file
         foreach ($this->arrDescription as $elem) {
@@ -471,7 +471,7 @@ class NagContentClass
      * @param string $strInfo                   Information string
      * @param string $strChbFields              Comma separated string of checkbox value names
      */
-    public function addInsertData($objTemplate, $arrModifyData, $intLocked, $strInfo, $strChbFields = ''): void
+    public function addInsertData($objTemplate, $arrModifyData, $intLocked, $strInfo, $strChbFields = '')
     {
         // Insert text data values
         foreach ($arrModifyData as $key => $value) {
@@ -520,7 +520,7 @@ class NagContentClass
      * @param string $strTableName              Table name
      * @return string                           String includung field data
      */
-    public function processField($arrData, $strTableName): string
+    public function processField($arrData, $strTableName)
     {
         $strField          = '';
         $arrDataHosts      = array();

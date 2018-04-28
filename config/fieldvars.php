@@ -219,16 +219,16 @@ $arrDescription[] = array('name' => 'LANG_IMPORT_DIRECTORY',           'string' 
 $arrDescription[] = array('name' => 'LANG_INSERT_ALL_VARIABLE',
     'string' => translate('Please insert a variable name and a variable definition'));
 $arrDescription[] = array('name' => 'LANG_MUST_BUT_TEMPLATE',
-    'string' => '<b>' .translate('Warning:')."<\/b> ".translate('You have not filled in some required fields!<br><br>' .
-            'If this values are set by a template, you can save anyway - otherwise you will get an invalid ' .
-            'configuration!'));
+    'string' => '<b>' .translate('Warning:'). '</b> ' .translate('You have not filled in some required fields!<br><br>'
+            . 'If this values are set by a template, you can save anyway - otherwise you will get an invalid '
+            . 'configuration!'));
 $arrDescription[] = array('name' => 'LANG_TPLNAME',                    'string' => translate('Template name'));
 $arrDescription[] = array('name' => 'LANG_NAGIOS_BASEDIR',             'string' => translate('Nagios base directory'));
 $arrDescription[] = array('name' => 'LANG_WRITE_CONFIG',               'string' => translate('Write config'));
 $arrDescription[] = array('name' => 'FILL_ARGUMENTS',
-    'string' => '<b>' .translate('Warning:')."<\/b> ".translate('You have not filled in all command arguments (ARGx) ' .
-            'for your selected command!<br><br>If this arguments are optional, you can save anyway - otherwise ' .
-            'you will get an invalid configuration!'));
+    'string' => '<b>' .translate('Warning:'). '</b> ' .translate('You have not filled in all command arguments (ARGx) '
+            . 'for your selected command!<br><br>If this arguments are optional, you can save anyway - otherwise '
+            . 'you will get an invalid configuration!'));
 $arrDescription[] = array('name' => 'LANG_SERVICEGROUP_MEMBERS',       'string' => translate('Service group members'));
 $arrDescription[] = array('name' => 'LANG_SERVICEGROUP_NAME',          'string' => translate('Service group name'));
 $arrDescription[] = array('name' => 'LANG_DEPENDHOSTS',                'string' => translate('Dependent hosts'));

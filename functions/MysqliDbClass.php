@@ -79,7 +79,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasDBConnection($intMode = 0): bool
+    public function hasDBConnection($intMode = 0)
     {
         $booReturn = true;
         $this->dbconnect();
@@ -101,7 +101,7 @@ class MysqliDbClass
      * @return string                           <data> = successful / <empty> = error
      *                                          Status messages are stored in class variable
      */
-    public function getFieldData($strSQL): string
+    public function getFieldData($strSQL)
     {
         // Reset error variables
         $this->strErrorMessage = '';
@@ -128,7 +128,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasSingleDataset($strSQL, &$arrDataset): bool
+    public function hasSingleDataset($strSQL, &$arrDataset)
     {
         //$arrDataset = array();
         $booReturn  = true;
@@ -157,7 +157,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function hasDataArray($strSQL, &$arrDataset, &$intDataCount): bool
+    public function hasDataArray($strSQL, &$arrDataset, &$intDataCount)
     {
         $arrDataset   = array();
         $intDataCount = 0;
@@ -192,7 +192,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    public function insertData($strSQL): bool
+    public function insertData($strSQL)
     {
         // Reset error variables
         $this->strErrorMessage = '';
@@ -218,7 +218,7 @@ class MysqliDbClass
      * @return int                              <number> = successful / 0 = no dataset or error
      *                                          Status messages are stored in class variable
      */
-    public function countRows($strSQL): int
+    public function countRows($strSQL)
     {
         // Reset error variables
         $this->strErrorMessage = '';
@@ -241,7 +241,7 @@ class MysqliDbClass
      * @param string $strInput                  Input String
      * @return string                           Output String
      */
-    public function realEscape($strInput): string
+    public function realEscape($strInput)
     {
         return mysqli_real_escape_string($this->strDBId, $strInput);
     }
@@ -250,7 +250,7 @@ class MysqliDbClass
      * Initialize a mysql database connection
      * @return bool                             true = successful / false = error
      */
-    private function dbinit(): bool
+    private function dbinit()
     {
         $this->strDBId = mysqli_init();
         return true;
@@ -265,7 +265,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    private function dbconnect($dbserver = null, $dbport = null, $dbuser = null, $dbpasswd = null): bool
+    private function dbconnect($dbserver = null, $dbport = null, $dbuser = null, $dbpasswd = null)
     {
         // Reset error variables
         $this->strErrorMessage = '';
@@ -293,7 +293,7 @@ class MysqliDbClass
         if ($booReturn == true) {
             $this->dbinit();
             //if ($this->booSSLuse == true) {
-                // TO BE DEFINED
+            // TO BE DEFINED
             //}
             $intErrorReporting = error_reporting();
             error_reporting(0);
@@ -306,7 +306,7 @@ class MysqliDbClass
             // Connection fails
             if ($booReturn == false) {
                 $this->strErrorMessage  = '[' .$dbserver. '] ' .gettext('Connection to the database server has failed '
-                                        . 'by reason:'). ' ::';
+                        . 'by reason:'). ' ::';
                 $strError = mysqli_connect_error();
                 $this->strErrorMessage .= $strError. '::';
                 $this->error            = true;
@@ -321,7 +321,7 @@ class MysqliDbClass
      * @return bool                             true = successful / false = error
      *                                          Status messages are stored in class variable
      */
-    private function dbselect($database = null): bool
+    private function dbselect($database = null)
     {
         // Reset error variables
         $this->strErrorMessage = '';
@@ -342,7 +342,7 @@ class MysqliDbClass
             // Session cannot be etablished
             if (!$bolConnect) {
                 $this->strErrorMessage .= '[' .$database. '] ' .
-                                          gettext('Connection to the database has failed by reason:'). ' ::';
+                    gettext('Connection to the database has failed by reason:'). ' ::';
                 $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
                 $this->error            = true;
                 $booReturn              = false;
@@ -402,7 +402,7 @@ class MysqliDbClass
      * Close database server connectuon
      * @return bool                             true = successful / false = error
      */
-    private function dbDisconnect(): bool
+    private function dbDisconnect()
     {
         mysqli_close($this->strDBId);
         return true;

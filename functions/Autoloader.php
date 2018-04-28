@@ -31,7 +31,7 @@ class Autoloader
     /**
      * @param string $strBasePath           Base path of project
      */
-    public static function register($strBasePath): void
+    public static function register($strBasePath)
     {
         $object = new Autoloader();
         $object->preBasePath = $strBasePath;
@@ -41,7 +41,7 @@ class Autoloader
      * Load class from path
      * @param string $strClassName          Class name
      */
-    public function loadClass($strClassName): void
+    public function loadClass($strClassName)
     {
         $className = ltrim($strClassName, '\\');
         $fileName  = '';

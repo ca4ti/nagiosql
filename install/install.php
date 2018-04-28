@@ -43,12 +43,18 @@ if (!isset($_SESSION['init_settings'])) {
     header('Location: index.php');
     exit;
 }
-$strInitDBtype   = $_SESSION['SETS']['db']['type']     ?? $_SESSION['init_settings']['db']['type'];
-$strInitDBserver = $_SESSION['SETS']['db']['server']   ?? $_SESSION['init_settings']['db']['server'];
-$strInitDBname   = $_SESSION['SETS']['db']['database'] ?? $_SESSION['init_settings']['db']['database'];
-$strInitDBuser   = $_SESSION['SETS']['db']['username'] ?? $_SESSION['init_settings']['db']['username'];
-$strInitDBpass   = $_SESSION['SETS']['db']['password'] ?? $_SESSION['init_settings']['db']['password'];
-$strInitDBport   = $_SESSION['SETS']['db']['port']     ?? $_SESSION['init_settings']['db']['port'];
+$strInitDBtype   = isset($_SESSION['SETS']['db']['type'])     ? $_SESSION['SETS']['db']['type']
+    : $_SESSION['init_settings']['db']['type'];
+$strInitDBserver = isset($_SESSION['SETS']['db']['server'])   ? $_SESSION['SETS']['db']['server']
+    : $_SESSION['init_settings']['db']['server'];
+$strInitDBname   = isset($_SESSION['SETS']['db']['database']) ? $_SESSION['SETS']['db']['database']
+    : $_SESSION['init_settings']['db']['database'];
+$strInitDBuser   = isset($_SESSION['SETS']['db']['username']) ? $_SESSION['SETS']['db']['username']
+    : $_SESSION['init_settings']['db']['username'];
+$strInitDBpass   = isset($_SESSION['SETS']['db']['password']) ? $_SESSION['SETS']['db']['password']
+    : $_SESSION['init_settings']['db']['password'];
+$strInitDBport   = isset($_SESSION['SETS']['db']['port'])     ? $_SESSION['SETS']['db']['port']
+    : $_SESSION['init_settings']['db']['port'];
 //
 // Init session parameters
 // =======================
@@ -125,35 +131,35 @@ if (($chkStepG != null) && in_array($chkStepG, $arrStep, true)) {
 // Set session values
 // ==================
 $_SESSION['install']['locale']     = (filter_input(INPUT_POST, 'hidLocale') != null) ?
-        filter_input(INPUT_POST, 'hidLocale', FILTER_SANITIZE_STRING)    : $_SESSION['install']['locale'];
+    filter_input(INPUT_POST, 'hidLocale', FILTER_SANITIZE_STRING)    : $_SESSION['install']['locale'];
 $_SESSION['install']['jscript']    = (filter_input(INPUT_POST, 'hidJScript') != null) ?
-        filter_input(INPUT_POST, 'hidJScript', FILTER_SANITIZE_STRING)   : $_SESSION['install']['jscript'];
+    filter_input(INPUT_POST, 'hidJScript', FILTER_SANITIZE_STRING)   : $_SESSION['install']['jscript'];
 $_SESSION['install']['dbtype']     = (filter_input(INPUT_POST, 'selDBtype') != null) ?
-        filter_input(INPUT_POST, 'selDBtype', FILTER_SANITIZE_STRING)    : $_SESSION['install']['dbtype'];
+    filter_input(INPUT_POST, 'selDBtype', FILTER_SANITIZE_STRING)    : $_SESSION['install']['dbtype'];
 $_SESSION['install']['dbserver']   = (filter_input(INPUT_POST, 'tfDBserver') != null) ?
-        filter_input(INPUT_POST, 'tfDBserver', FILTER_SANITIZE_STRING)   : $_SESSION['install']['dbserver'];
+    filter_input(INPUT_POST, 'tfDBserver', FILTER_SANITIZE_STRING)   : $_SESSION['install']['dbserver'];
 $_SESSION['install']['localsrv']   = (filter_input(INPUT_POST, 'tfLocalSrv') != null) ?
-        filter_input(INPUT_POST, 'tfLocalSrv', FILTER_SANITIZE_STRING)   : $_SESSION['install']['localsrv'];
+    filter_input(INPUT_POST, 'tfLocalSrv', FILTER_SANITIZE_STRING)   : $_SESSION['install']['localsrv'];
 $_SESSION['install']['dbname']     = (filter_input(INPUT_POST, 'tfDBname') != null) ?
-        filter_input(INPUT_POST, 'tfDBname', FILTER_SANITIZE_STRING)     : $_SESSION['install']['dbname'];
+    filter_input(INPUT_POST, 'tfDBname', FILTER_SANITIZE_STRING)     : $_SESSION['install']['dbname'];
 $_SESSION['install']['dbuser']     = (filter_input(INPUT_POST, 'tfDBuser') != null) ?
-        filter_input(INPUT_POST, 'tfDBuser', FILTER_SANITIZE_STRING)     : $_SESSION['install']['dbuser'];
+    filter_input(INPUT_POST, 'tfDBuser', FILTER_SANITIZE_STRING)     : $_SESSION['install']['dbuser'];
 $_SESSION['install']['dbpass']     = (filter_input(INPUT_POST, 'tfDBpass') != null) ?
-        filter_input(INPUT_POST, 'tfDBpass', FILTER_SANITIZE_STRING)     : $_SESSION['install']['dbpass'];
+    filter_input(INPUT_POST, 'tfDBpass', FILTER_SANITIZE_STRING)     : $_SESSION['install']['dbpass'];
 $_SESSION['install']['admuser']    = (filter_input(INPUT_POST, 'tfDBprivUser') != null) ?
-        filter_input(INPUT_POST, 'tfDBprivUser', FILTER_SANITIZE_STRING) : $_SESSION['install']['admuser'];
+    filter_input(INPUT_POST, 'tfDBprivUser', FILTER_SANITIZE_STRING) : $_SESSION['install']['admuser'];
 $_SESSION['install']['admpass']    = (filter_input(INPUT_POST, 'tfDBprivPass') != null) ?
-        filter_input(INPUT_POST, 'tfDBprivPass', FILTER_SANITIZE_STRING) : $_SESSION['install']['admpass'];
+    filter_input(INPUT_POST, 'tfDBprivPass', FILTER_SANITIZE_STRING) : $_SESSION['install']['admpass'];
 $_SESSION['install']['qluser']     = (filter_input(INPUT_POST, 'tfQLuser') != null) ?
-        filter_input(INPUT_POST, 'tfQLuser', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qluser'];
+    filter_input(INPUT_POST, 'tfQLuser', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qluser'];
 $_SESSION['install']['qlpass']     = (filter_input(INPUT_POST, 'tfQLpass') != null) ?
-        filter_input(INPUT_POST, 'tfQLpass', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qlpass'];
+    filter_input(INPUT_POST, 'tfQLpass', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qlpass'];
 $_SESSION['install']['qlpath']     = (filter_input(INPUT_POST, 'tfQLpath') != null) ?
-        filter_input(INPUT_POST, 'tfQLpath', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qlpath'];
+    filter_input(INPUT_POST, 'tfQLpath', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qlpath'];
 $_SESSION['install']['qlpath']     = (filter_input(INPUT_POST, 'tfNagiosPath') != null) ?
-        filter_input(INPUT_POST, 'tfNagiosPath', FILTER_SANITIZE_STRING) : $_SESSION['install']['qlpath'];
+    filter_input(INPUT_POST, 'tfNagiosPath', FILTER_SANITIZE_STRING) : $_SESSION['install']['qlpath'];
 $_SESSION['install']['nagpath']    = (filter_input(INPUT_POST, 'tfDBport') != null) ?
-        filter_input(INPUT_POST, 'tfDBport', FILTER_VALIDATE_INT)        : $_SESSION['install']['nagpath'];
+    filter_input(INPUT_POST, 'tfDBport', FILTER_VALIDATE_INT)        : $_SESSION['install']['nagpath'];
 $_SESSION['install']['dbdrop']     = filter_input(
     INPUT_POST,
     'chbDrop',

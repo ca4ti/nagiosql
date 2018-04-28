@@ -1834,6 +1834,7 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToHostgroup` (
 CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
+  `idHost` int(11) NOT NULL,
   `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idMaster`,`idSlave`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1978,6 +1979,7 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToHostgroup` (
 CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
+  `idHost` int(11) NOT NULL,
   `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idMaster`,`idSlave`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -2430,8 +2432,8 @@ INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(242, 'tbl_servicedependency', 'tbl_lnkServicedependencyToServicegroup_S', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (243,'tbl_serviceescalation', 'tbl_servicegroup', '', 'servicegroup_name', 'tbl_lnkServiceescalationToServicegroup', 'servicegroup_name', '', '', '0', '', '2');
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (244,'tbl_serviceescalation', 'tbl_lnkServiceescalationToServicegroup', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', '1', '0,0,0,1', '0');
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '2');
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL,  'tbl_servicetemplate', 'tbl_service', '', 'parents', 'tbl_lnkServicetemplateToService', 'service_description', '', '', '0', '', '2');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '7');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL,  'tbl_servicetemplate', 'tbl_service', '', 'parents', 'tbl_lnkServicetemplateToService', 'service_description', '', '', '0', '', '7');
 
 
 -- --------------------------------------------------------

@@ -75,7 +75,7 @@ class NagConfigClass
      * @param string $strValue                  Configuration value (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getDomainData($strConfigItem, &$strValue): int
+    public function getDomainData($strConfigItem, &$strValue)
     {
         // Variable definition
         $intReturn = 0;
@@ -103,7 +103,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function lastModifiedDir($strTableName, $strConfigName, $intDataId, &$arrTimeData, &$intTimeInfo): int
+    public function lastModifiedDir($strTableName, $strConfigName, $intDataId, &$arrTimeData, &$intTimeInfo)
     {
         // Variable definitions
         $intReturn       = 0;
@@ -118,16 +118,16 @@ class NagConfigClass
         // Get last change on dataset
         if ($strTableName == 'tbl_host') {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_host` ".
-                       "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
+                "WHERE `host_name`='$strConfigName' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT `active` FROM `tbl_host`  WHERE `host_name`='$strConfigName' ".
-                       'AND `config_id`=' .$this->intDomainId;
+                'AND `config_id`=' .$this->intDomainId;
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $strActive            = $this->myDBClass->getFieldData($strSQL2);
         } elseif ($strTableName == 'tbl_service') {
             $strSQL1 = "SELECT DATE_FORMAT(`last_modified`,'%Y-%m-%d %H:%i:%s') FROM `tbl_service` ".
-                       "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
+                "WHERE `id`='$intDataId' AND `config_id`=".$this->intDomainId;
             $strSQL2 = "SELECT * FROM `$strTableName` WHERE `config_name`='$strConfigName' ".
-                       'AND `config_id`=' .$this->intDomainId." AND `active`='1'";
+                'AND `config_id`=' .$this->intDomainId." AND `active`='1'";
             $arrTimeData['table'] = $this->myDBClass->getFieldData($strSQL1);
             $intServiceCount      = $this->myDBClass->countRows($strSQL2);
             if ($intServiceCount != 0) {
@@ -197,7 +197,7 @@ class NagConfigClass
      * @param array $arrConfigId                Configuration target IDs (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigTargets(&$arrConfigId): int
+    public function getConfigTargets(&$arrConfigId)
     {
         // Variable definition
         $arrData      = array();
@@ -223,7 +223,7 @@ class NagConfigClass
      * @param string $strValue                  Configuration value (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigValues($intConfigId, $strConfigKey, &$strValue): int
+    public function getConfigValues($intConfigId, $strConfigKey, &$strValue)
     {
         // Define variables
         $intReturn = 1;
@@ -245,7 +245,7 @@ class NagConfigClass
      * @param string $strTimeData               Human readable string of file time stamp (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getFileDate($intConfigId, $strFile, $strBaseDir, &$intFileStamp, &$strTimeData): int
+    public function getFileDate($intConfigId, $strFile, $strBaseDir, &$intFileStamp, &$strTimeData)
     {
         $strMethod  = 1;
         $intReturn  = 0;
@@ -291,7 +291,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function getFTPConnection($intConfigID): int
+    public function getFTPConnection($intConfigID)
     {
         // Define variables
         $intReturn = 0;
@@ -351,7 +351,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function getSSHConnection($intConfigID): int
+    public function getSSHConnection($intConfigID)
     {
         // Define variables
         $intReturn       = 0;
@@ -467,7 +467,7 @@ class NagConfigClass
      * @param int $intLines                     Maximal length of output to read
      * @return int                              0 = successful / 1 = error
      */
-    public function sendSSHCommand($strCommand, &$arrResult, $intLines = 100): int
+    public function sendSSHCommand($strCommand, &$arrResult, $intLines = 100)
     {
         // Define variables
         $intCount1 = 0; // empty lines
@@ -496,7 +496,7 @@ class NagConfigClass
                     $intCount2++;
                     $arrStatus = stream_get_meta_data($resStream);
                 } while ($resStream && !feof($resStream) && ($intCount1 <= 10) && ($intCount2 <= $intLines) &&
-                         ($arrStatus['timed_out'] != true) && $booBreak == false);
+                ($arrStatus['timed_out'] != true) && $booBreak == false);
                 fclose($resStream);
                 // Close SSH connection because of timing problems
                 unset($this->resConnectId);
@@ -511,7 +511,7 @@ class NagConfigClass
      * @param string $strNewMessage             New message to add
      * @param string $strOldMessage             Modified message string (by reference)
      */
-    public function processClassMessage($strNewMessage, &$strOldMessage): void
+    public function processClassMessage($strNewMessage, &$strOldMessage)
     {
         $strNewMessage = str_replace('::::', '::', $strNewMessage);
         if (($strOldMessage != '') && ($strNewMessage != '') && (substr_count($strOldMessage, $strNewMessage) == 0)) {
@@ -526,7 +526,7 @@ class NagConfigClass
      * @param array $arrConfigId                Configuration target IDs (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigSets(&$arrConfigId): int
+    public function getConfigSets(&$arrConfigId)
     {
         // Variable definition
         $arrData      = array();
@@ -553,7 +553,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function moveFile($strType, $strName, $intConfigID): int
+    public function moveFile($strType, $strName, $intConfigID)
     {
         // Variable definitions
         $strConfigDir = '';
@@ -627,7 +627,7 @@ class NagConfigClass
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                        .'wrong (remote FTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
+                            .'wrong (remote FTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             } elseif ($intMethod == 3) { // Remote file (SFTP)
@@ -646,13 +646,13 @@ class NagConfigClass
                         }
                     } else {
                         $this->processClassMessage(translate('Cannot backup the old file because the source file is '
-                            .'missing (remote SFTP) - source file: '). $strSourceFile. '::', $this->strErrorMessage);
+                                .'missing (remote SFTP) - source file: '). $strSourceFile. '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                 }
                 if (($booRetVal == false) && ($intReturn == 0)) {
                     $this->processClassMessage(translate('Cannot backup the old file because the permissions are '
-                        .'wrong (remote SFTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
+                            .'wrong (remote SFTP) - destination file: ').$strDestinationFile. '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
@@ -667,7 +667,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function removeFile($strFileName, $intConfigID): int
+    public function removeFile($strFileName, $intConfigID)
     {
         // Variable definitions
         $intMethod = 1;
@@ -742,7 +742,7 @@ class NagConfigClass
      * @param string $strValue                  Configuration value (by reference)
      * @return int                              0 = successful / 1 = error
      */
-    public function getConfigData($intConfigId, $strConfigItem, &$strValue): int
+    public function getConfigData($intConfigId, $strConfigItem, &$strValue)
     {
         $intReturn = 1;
         $strSQL   = 'SELECT `' .$strConfigItem. '` FROM `tbl_configtarget` WHERE `id` = ' .$intConfigId;
@@ -758,7 +758,7 @@ class NagConfigClass
      * @param string $strPath                   Physical path
      * @return int                              0 = successful / 1 = error
      */
-    public function isDirWriteable($strPath): int
+    public function isDirWriteable($strPath)
     {
         // Define variables
         $intReturnFile = 1;
@@ -804,7 +804,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function remoteFileCopy($strFileRemote, $intConfigID, $strFileLocal, $intDirection = 0): int
+    public function remoteFileCopy($strFileRemote, $intConfigID, $strFileLocal, $intDirection = 0)
     {
         // Variable definitions
         $intMethod = 3;
@@ -847,7 +847,7 @@ class NagConfigClass
                                 . 'readable) - remote file: ') .$strFileRemote. '::', $this->strErrorMessage);
                     } else {
                         $this->processClassMessage(translate('Remote file is not readable - remote file: ')
-                                . $strFileRemote. '::', $this->strErrorMessage);
+                            . $strFileRemote. '::', $this->strErrorMessage);
                     }
                     $intReturn = 1;
                 }
@@ -858,14 +858,14 @@ class NagConfigClass
                     error_reporting(0);
                     if (!ssh2_scp_send($this->resConnectId, $strFileLocal, $strFileRemote, 0644)) {
                         $this->processClassMessage(translate('Cannot write a remote file (remote file is not writeable)'
-                            .' - remote file: '). $strFileRemote . '::', $this->strErrorMessage);
+                                .' - remote file: '). $strFileRemote . '::', $this->strErrorMessage);
                         $intReturn = 1;
                     }
                     error_reporting($intErrorReporting);
                 } else {
                     $this->processClassMessage(translate('Cannot copy a local file to remote because the local file '.
                             'does not exist or is not readable - local file: ').
-                            $strFileLocal . '::', $this->strErrorMessage);
+                        $strFileLocal . '::', $this->strErrorMessage);
                     $intReturn = 1;
                 }
             }
@@ -881,7 +881,7 @@ class NagConfigClass
      * @param array $arrOutput                  Output array (by reference)
      * @param string $strErrorMessage           Error messages (by reference)
      */
-    public function storeDirToArray($strSourceDir, $strIncPattern, $strExcPattern, &$arrOutput, &$strErrorMessage): void
+    public function storeDirToArray($strSourceDir, $strIncPattern, $strExcPattern, &$arrOutput, &$strErrorMessage)
     {
         // Define variables
         $arrDir = array();
@@ -938,7 +938,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function lastModifiedFile($strTableName, &$arrTimeData, &$strCheckConfig) : int
+    public function lastModifiedFile($strTableName, &$arrTimeData, &$strCheckConfig)
     {
         // Variable definitions
         $intEnableCommon = 0;
@@ -966,8 +966,8 @@ class NagConfigClass
                 $strSQLAdd = 'OR `domainId`=0';
             }
             $strSQL = 'SELECT `updateTime` FROM `tbl_tablestatus` '
-                    . 'WHERE (`domainId`=' .$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
-                    . 'ORDER BY `updateTime` DESC LIMIT 1';
+                . 'WHERE (`domainId`=' .$this->intDomainId." $strSQLAdd) AND `tableName`='".$strTableName."' "
+                . 'ORDER BY `updateTime` DESC LIMIT 1';
             $booReturn = $this->myDBClass->hasSingleDataset($strSQL, $arrDataset);
             if ($booReturn && isset($arrDataset['updateTime'])) {
                 $arrTimeData['table'] = $arrDataset['updateTime'];
@@ -1021,7 +1021,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function createConfig($strTableName, $intMode = 0): int
+    public function createConfig($strTableName, $intMode = 0)
     {
         // Define Variables
         $intReturn     = 0;
@@ -1057,7 +1057,7 @@ class NagConfigClass
      * @return int                              0 = successful / 1 = error
      *                                          Status message is stored in message class variables
      */
-    public function createConfigSingle($strTableName, $intDbId = 0, $intMode = 0): int
+    public function createConfigSingle($strTableName, $intDbId = 0, $intMode = 0)
     {
         // Define Variables
         $arrData            = array();
@@ -1130,7 +1130,7 @@ class NagConfigClass
      * @return array                            filename (configuration file name)
      *                                          order_field (database order field)
      */
-    public function getConfData(): array
+    public function getConfData()
     {
         $arrConfData['tbl_timeperiod']        = array('filename' => 'timeperiods.cfg',
             'order_field' => 'timeperiod_name');
@@ -1178,7 +1178,7 @@ class NagConfigClass
      *                                          Status message is stored in message class variables
      */
     /** @noinspection ArrayTypeOfParameterByDefaultValueInspection */
-    private function writeConfTemplate($intConfigID, $strTableName, $intMode, $arrTableData = array(), $intID = 0): int
+    private function writeConfTemplate($intConfigID, $strTableName, $intMode, $arrTableData = array(), $intID = 0)
     {
         // Variable definitions
         $strSQL         = '';
@@ -1385,7 +1385,7 @@ class NagConfigClass
      * @param int $intConfigID                  Configuration target ID
      * @return string                           Version string
      */
-    private function getVersionString($intConfigID): string
+    private function getVersionString($intConfigID)
     {
         $arrVersion = array(
             'Nagios 2.x config file',
@@ -1410,7 +1410,7 @@ class NagConfigClass
      * @param string $value                     Data value
      * @return int
      */
-    private function skipEntries($strTableName, $intVersionValue, $key, &$value): int
+    private function skipEntries($strTableName, $intVersionValue, $key, &$value)
     {
         // Define variables
         $arrOption = array();
@@ -1558,7 +1558,7 @@ class NagConfigClass
      * @return int                              0 = use data / 1 = skip data
      *                                          Status message is stored in message class variables
      */
-    private function getRelationData($strTableName, $resTemplate, $arrData, $strDataKey, &$strDataValue): int
+    private function getRelationData($strTableName, $resTemplate, $arrData, $strDataKey, &$strDataValue)
     {
         // Define Variables
         $intReturn    = 0;
@@ -1610,6 +1610,9 @@ class NagConfigClass
                         // Process special relations for service groups
                     } elseif (($elem['type'] == 5) && ($strDataValue == 1)) {
                         $intReturn = $this->processRelation6($arrData, $strDataValue, $elem, $strDomainWhere1);
+                        // Process special relations for service parents
+                    } elseif (($elem['type'] == 7) && ($strDataValue == 1)) {
+                        $intReturn = $this->processRelation7($arrData, $strDataValue, $elem);
                         // Process "*"
                     } elseif ($strDataValue == 2) {
                         $strDataValue = '*';
@@ -1631,7 +1634,7 @@ class NagConfigClass
      * @param string $value                     Data value (by reference)
      * @param int $intSkip                      Skip value (by reference) 1 = skip / 0 = pass
      */
-    private function renameFields($strTableName, $intConfigID, $intDataId, &$key, &$value, &$intSkip): void
+    private function renameFields($strTableName, $intConfigID, $intDataId, &$key, &$value, &$intSkip)
     {
         if ($this->intNagVersion == 0) {
             $this->getConfigData($intConfigID, 'version', $this->intNagVersion);
@@ -1894,7 +1897,7 @@ class NagConfigClass
             }
             $strVIValues  = 'host_notifications_enabled,service_notifications_enabled,can_submit_commands,';
             $strVIValues .= 'retain_status_information,retain_nonstatus_information';
-            if (\in_array($key, explode(',', $strVIValues), true)) {
+            if (in_array($key, explode(',', $strVIValues), true)) {
                 if ($value == -1) {
                     $value = 'null';
                 }
@@ -1940,7 +1943,7 @@ class NagConfigClass
             }
         }
         if ((($strTableName == 'tbl_hosttemplate') || ($strTableName == 'tbl_servicetemplate') ||
-            ($strTableName == 'tbl_contacttemplate')) && $key == 'register') {
+                ($strTableName == 'tbl_contacttemplate')) && $key == 'register') {
             $value = '0';
         }
         if ($strTableName == 'tbl_timeperiod' && $key == 'use_template') {
@@ -1955,9 +1958,9 @@ class NagConfigClass
      * @param int $intType                      Type ID
      * @param resource|bool $resConfigFile      Temporary or configuration file ressource (by reference)
      * @param string $strConfigFile             Configuration file name (by reference)
-     * @return int
+     * @return int                              0 = successful / 1 = error
      */
-    private function getConfigFile($strFile, $intConfigID, $intType, &$resConfigFile, &$strConfigFile): int
+    private function getConfigFile($strFile, $intConfigID, $intType, &$resConfigFile, &$strConfigFile)
     {
         // Variable definitions
         $strBaseDir   = '';
@@ -2023,17 +2026,18 @@ class NagConfigClass
         }
         return $intReturn;
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  Help function: Write configuration file
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //  $strData                        -> Data string
-    //  $strFile                        -> File name
-    //  $intType                        -> Type ID
-    //  $intConfigID                -> Configuration target ID
-    //  $resConfigFile                -> Temporary or configuration file ressource
-    //  $strConfigFile                -> Configuration file name
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    private function writeConfigFile($strData, $strFile, $intType, $intConfigID, $resConfigFile, $strConfigFile): int
+
+    /**
+     * Write configuration file
+     * @param string $strData               Data string
+     * @param string $strFile               File name
+     * @param int $intType                  Type ID
+     * @param int $intConfigID              Configuration target ID
+     * @param resource $resConfigFile       Temporary or configuration file ressource
+     * @param string $strConfigFile         Configuration file name
+     * @return int                          0 = successful / 1 = error
+     */
+    private function writeConfigFile($strData, $strFile, $intType, $intConfigID, $resConfigFile, $strConfigFile)
     {
         // Variable definitions
         $intReturn = 0;
@@ -2115,7 +2119,7 @@ class NagConfigClass
      * @param int $intSkip                  Skip value (by reference)
      * @return string                       Manipulated data value
      */
-    public function checkTpl($strValue, $strKeyField, $strTable, $intId, &$intSkip): string
+    public function checkTpl($strValue, $strKeyField, $strTable, $intId, &$intSkip)
     {
         if ($this->intNagVersion < 3) {
             return $strValue;
@@ -2139,7 +2143,7 @@ class NagConfigClass
      * @param string $strDomainWhere1           SQL WHERE add-in
      * @return int                              0 = use data / 1 = skip data
      */
-    private function processRelation1($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    private function processRelation1($arrData, &$strDataValue, $elem, $strDomainWhere1)
     {
         // Define variables
         $arrDataRel      = array();
@@ -2187,7 +2191,7 @@ class NagConfigClass
      * @param string $strDomainWhere1           SQL WHERE add-in
      * @return int                              0 = use data / 1 = skip data
      */
-    private function processRelation2($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    private function processRelation2($arrData, &$strDataValue, $elem, $strDomainWhere1)
     {
         // Define variables
         $arrDataRel      = array();
@@ -2232,7 +2236,7 @@ class NagConfigClass
      * @param string $strDomainWhere1           SQL WHERE add-in
      * @return int                              0 = use data / 1 = skip data
      */
-    private function processRelation3($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    private function processRelation3($arrData, &$strDataValue, $elem, $strDomainWhere1)
     {
         // Define variables
         $arrDataRel      = array();
@@ -2247,10 +2251,10 @@ class NagConfigClass
             foreach ($arrDataRel as $data) {
                 if ($data['idTable'] == 1) {
                     $strSQLName = 'SELECT `' .$elem['target1']. '` FROM `' .$elem['tableName1']. '`' .
-                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 } else {
                     $strSQLName = 'SELECT `' .$elem['target2']. '` FROM `' .$elem['tableName2']. '`' .
-                                  "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
+                        "WHERE `active`='1' AND $strDomainWhere1 AND `id`=".$data['idSlave'];
                 }
                 $strDataValue .= $this->myDBClass->getFieldData($strSQLName) . ',';
             }
@@ -2268,7 +2272,7 @@ class NagConfigClass
      * @param string $strDomainWhere1           SQL WHERE add-in
      * @return int                              0 = use data / 1 = skip data
      */
-    private function processRelation4($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    private function processRelation4($arrData, &$strDataValue, $elem, $strDomainWhere1)
     {
         // Define variables
         $arrDataRel      = array();
@@ -2279,7 +2283,7 @@ class NagConfigClass
             'FROM `' .$elem['linkTable']. '` ' .
             'LEFT JOIN `tbl_service` ON `' .$elem['linkTable']. '`.`idSlave`=`tbl_service`.`id` ' .
             'WHERE `' .$elem['linkTable']. '`.`idMaster`=' .$arrData['id']." AND `active`='1' AND ".
-                        $strDomainWhere1. ' ' .
+            $strDomainWhere1. ' ' .
             'ORDER BY `' .$elem['linkTable']. '`.`strSlave`';
         $booReturn = $this->myDBClass->hasDataArray($strSQLRel, $arrDataRel, $intDataCountRel);
         if ($booReturn && ($intDataCountRel != 0)) {
@@ -2316,7 +2320,7 @@ class NagConfigClass
      * @param array $elem                       Relation data array
      * @return int                              0 = use data / 1 = skip data
      */
-    private function processRelation5($resTemplate, $arrData, $elem): int
+    private function processRelation5($resTemplate, $arrData, $elem)
     {
         // Define variables
         $arrDataRel      = array();
@@ -2347,7 +2351,7 @@ class NagConfigClass
      * @param string $strDomainWhere1           SQL WHERE add-in
      * @return int                              0 = use data / 1 = skip data
      */
-    private function processRelation6($arrData, &$strDataValue, $elem, $strDomainWhere1): int
+    private function processRelation6($arrData, &$strDataValue, $elem, $strDomainWhere1)
     {
         // Define variables
         $arrDataRel = array();
@@ -2409,6 +2413,35 @@ class NagConfigClass
             }
         } else {
             $intReturn = 1;
+        }
+        return $intReturn;
+    }
+
+    /**
+     * @param array $arrData                    Dataset array
+     * @param string $strDataValue              Data value
+     * @param array $elem                       Relation data array
+     * @return int                              0 = use data / 1 = skip data
+     */
+    private function processRelation7($arrData, &$strDataValue, $elem)
+    {
+        $intReturn = 1;
+        // Get relation data
+        $strSQLMaster = 'SELECT * FROM `' . $elem['linkTable'] . '` WHERE `idMaster`=' . $arrData['id'];
+        $booReturn = $this->myDBClass->hasDataArray($strSQLMaster, $arrDataRel, $intDataCountRel);
+        if ($booReturn && ($intDataCountRel != 0)) {
+            // Rewrite $strDataValue with returned relation data
+            $strDataValue = '';
+            /** @var array $arrDataRel */
+            foreach ($arrDataRel as $data) {
+                $strSQL = 'SELECT host_name FROM tbl_host WHERE id=' .$data['idHost'];
+                $strHost = $this->myDBClass->getFieldData($strSQL);
+                $strSQL = 'SELECT service_description FROM tbl_service WHERE id=' .$data['idSlave'];
+                $strService = $this->myDBClass->getFieldData($strSQL);
+                $strDataValue .= $strHost . ',' . $strService . ',';
+                $intReturn = 0;
+            }
+            $strDataValue = substr($strDataValue, 0, -1);
         }
         return $intReturn;
     }

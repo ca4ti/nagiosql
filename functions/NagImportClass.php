@@ -70,7 +70,7 @@ class NagImportClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    public function fileImport($strFileNameRaw, $intConfigId, $intOverwrite = 0): int
+    public function fileImport($strFileNameRaw, $intConfigId, $intOverwrite = 0)
     {
         // Define variables
         $intBlock        = 0;
@@ -184,7 +184,7 @@ class NagImportClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    private function getImportFile($intConfigId, $strFileName, &$strImportFile, &$intRemoveTmp): int
+    private function getImportFile($intConfigId, $strFileName, &$strImportFile, &$intRemoveTmp)
     {
         $intMethod        = 1;
         $intReturn        = 0;
@@ -278,7 +278,7 @@ class NagImportClass
      * @return int                              0 = successful / 1 = error
      *                                          Status messages are stored in class variables
      */
-    private function importTable($strBlockKey, $arrImportData, $intOverwrite): int
+    private function importTable($strBlockKey, $arrImportData, $intOverwrite)
     {
         // Define variables
         $intIsTemplate      = 0;
@@ -292,7 +292,7 @@ class NagImportClass
         $arrRelations       = array();
         // Block data from template or real configuration?
         if (array_key_exists('name', $arrImportData) && (isset($arrImportData['register']) &&
-            ($arrImportData['register']['value'] == 0))) {
+                ($arrImportData['register']['value'] == 0))) {
             $intIsTemplate = 1;
         }
         // Get table name and key for import
@@ -315,7 +315,7 @@ class NagImportClass
                     // Special key field values
                     if ($strBlockKey == 'hostextinfo') {
                         $strSQL  = 'SELECT `id`FROM `tbl_host` ' .
-                                   "WHERE `host_name`='".$arrImportData[$strKeyField]['value']."'";
+                            "WHERE `host_name`='".$arrImportData[$strKeyField]['value']."'";
                         $intHost = (int)$this->myDBClass->getFieldData($strSQL);
                         $strSQL  = 'SELECT `id` FROM `' .$strTable. '` ' .
                             'WHERE `config_id`=' .$this->intDomainId. ' AND `' .$strKeyField."`='".$intHost."'";
@@ -335,7 +335,7 @@ class NagImportClass
             } elseif (($intIsTemplate == 1) && ($strKeyField != '') && isset($arrImportData['name'])) {
                 $strSQL = 'SELECT `id` FROM `' .$strTable. '` ' .
                     'WHERE `config_id`=' .$this->intDomainId. ' AND ' .
-                          "`template_name`='".$arrImportData['name']['value']."'";
+                    "`template_name`='".$arrImportData['name']['value']."'";
                 $intExists = $this->myDBClass->getFieldData($strSQL);
                 if ($intExists == false) {
                     $intExists = 0;
@@ -369,8 +369,10 @@ class NagImportClass
                     $strSQL2
                 );
                 // Read command configurations
-                [$strVCValues, $intWriteConfig, $strVIValues, $strRLValues, $strVWValues]
-                    = $this->getImportValues($arrImportData, $strKeyField, $strSQL1, $strTable);
+                list($strVCValues, $intWriteConfig, $strVIValues, $strRLValues, $strVWValues) =
+                    $this->getImportValues($arrImportData, $strKeyField, $strSQL1, $strTable);
+
+
                 // Build value statemets
                 foreach ($arrImportData as $elem) {
                     // Write text values
@@ -486,8 +488,8 @@ class NagImportClass
                         }
                         foreach ($arrFreeVariables as $elem) {
                             $strSQL    = "INSERT INTO `tbl_timedefinition` SET `tipId` = $intDataId, ".
-                                         "`definition` = '".addslashes($elem['key'])."', ".
-                                         "`range` = '".addslashes($elem['value'])."'";
+                                "`definition` = '".addslashes($elem['key'])."', ".
+                                "`range` = '".addslashes($elem['value'])."'";
                             $booResult = $this->myDBClass->insertData($strSQL);
                             if ($booResult == false) {
                                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -524,7 +526,7 @@ class NagImportClass
      * @param string $strKeyField               Table key name
      * @return int                              0 = successful / 1 = error
      */
-    private function getTableData($strBlockKey, $intIsTemplate, &$strTable, &$strKeyField): int
+    private function getTableData($strBlockKey, $intIsTemplate, &$strTable, &$strKeyField)
     {
         // Define variables
         $intReturn = 0;
@@ -571,7 +573,7 @@ class NagImportClass
      * @param $strHash
      * @param $strConfigName
      */
-    public function createHash($strTable, $arrBlockData, &$strHash, &$strConfigName): void
+    public function createHash($strTable, $arrBlockData, &$strHash, &$strConfigName)
     {
         $strRawString  = '';
         $strConfigName = 'imp_temporary';
@@ -794,7 +796,7 @@ class NagImportClass
         $arrRelations,
         &$strSQL1,
         &$strSQL2
-    ): void {
+    ) {
         // Define variables
         $intActive = 1;
         $arrData   = array();
@@ -807,7 +809,7 @@ class NagImportClass
             // Update database
             $strSQL1 = 'UPDATE `' .$strTable. '` SET ';
             $strSQL2 = ' `config_id`=' .$this->intDomainId.", $strHash `active`='$intActive', ".
-                       "`last_modified`=NOW() WHERE `id`=$intExists";
+                "`last_modified`=NOW() WHERE `id`=$intExists";
             // Keep config name while update
             if (($strKeyField == 'config_name') && !isset($arrImportData['_NAGIOSQL_CONFIG_NAME'])) {
                 $strSQLConfig = 'SELECT `config_name` FROM `' .$strTable. '` WHERE `id`=' . $intExists;
@@ -845,7 +847,7 @@ class NagImportClass
      * @param string $strTable                  Table name
      * @return array                            List of import values
      */
-    private function getImportValues($arrImportData, $strKeyField, &$strSQL1, $strTable): array
+    private function getImportValues($arrImportData, $strKeyField, &$strSQL1, $strTable)
     {
         // Description for the values
         // --------------------------
@@ -1070,7 +1072,7 @@ class NagImportClass
      * @param $strTable
      * @return int
      */
-    private function writeTextValues($elem, $strVCValues, &$strSQL1, $intIsTemplate, $intExists, $strTable): int
+    private function writeTextValues($elem, $strVCValues, &$strSQL1, $intIsTemplate, $intExists, $strTable)
     {
         $intCheck = 0;
         if (\in_array($elem['key'], explode(',', $strVCValues), true)) {
@@ -1104,7 +1106,7 @@ class NagImportClass
      * @param $strSQL1
      * @return int
      */
-    private function writeStatusValues($elem, $strVIValues, &$strSQL1): int
+    private function writeStatusValues($elem, $strVIValues, &$strSQL1)
     {
         $intCheck = 0;
         if (\in_array($elem['key'], explode(',', $strVIValues), true)) {
@@ -1124,7 +1126,7 @@ class NagImportClass
      * @param $strSQL1
      * @return int
      */
-    private function writeIntegerValues($elem, $strVWValues, &$strSQL1): int
+    private function writeIntegerValues($elem, $strVWValues, &$strSQL1)
     {
         $intCheck = 0;
         if (\in_array($elem['key'], explode(',', $strVWValues), true)) {
@@ -1145,7 +1147,7 @@ class NagImportClass
      * @param $intInsertRelations
      * @return int
      */
-    private function writeRelations(&$elem, $strRLValues, &$arrImportRelations, &$intInsertRelations): int
+    private function writeRelations(&$elem, $strRLValues, &$arrImportRelations, &$intInsertRelations)
     {
         $intCheck = 0;
         if (($intCheck == 0) && \in_array($elem['key'], explode(',', $strRLValues), true)) {
@@ -1171,7 +1173,7 @@ class NagImportClass
      * @param array $arrRelData                 Relation data
      * @param array $arrImportData              Import Data
      */
-    public function writeRelation1($strKey, $strValue, $intDataId, $strDataTable, $arrRelData, $arrImportData): void
+    public function writeRelation1($strKey, $strValue, $intDataId, $strDataTable, $arrRelData, $arrImportData)
     {
         // Define variables
         $intSlaveId = 0;
@@ -1213,7 +1215,7 @@ class NagImportClass
                     }
                     $strSQL    = 'INSERT INTO `' .$arrRelData['tableName1']. '` ' .
                         'SET `' .$arrRelData['target1']."` = '".$elem."', ".
-                                               "$strAdd `config_id`=".$this->intDomainId.", `active`='0', ".
+                        "$strAdd `config_id`=".$this->intDomainId.", `active`='0', ".
                         '`last_modified`=NOW()';
                     $booResult  = $this->myDBClass->insertData($strSQL);
                     if ($booResult == false) {
@@ -1224,11 +1226,11 @@ class NagImportClass
                     // Special processing for serviceextinfo
                     if (($strDataTable == 'tbl_serviceextinfo') && ($strKey == 'service_description')) {
                         $strSQL = 'SELECT `id` FROM `tbl_host` ' .
-                                  "WHERE `host_name`='".$arrImportData['host_name']['value']."'";
+                            "WHERE `host_name`='".$arrImportData['host_name']['value']."'";
                         $strId  = $this->myDBClass->getFieldData($strSQL);
                         if ($strId != '') {
                             $strSQL     = 'INSERT INTO `tbl_lnkServiceToHost` ' .
-                                          "SET `idMaster` = '".$intSlaveId."', `idSlave` = '".$strId."'";
+                                "SET `idMaster` = '".$intSlaveId."', `idSlave` = '".$strId."'";
                             $booResult  = $this->myDBClass->insertData($strSQL);
                             if ($booResult == false) {
                                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -1260,7 +1262,7 @@ class NagImportClass
      * @param string $strDataTable              Data table (Master)
      * @param array $arrRelData                 Relation data
      */
-    public function writeRelation2($strKey, $strValue, $intDataId, $strDataTable, $arrRelData): void
+    public function writeRelation2($strKey, $strValue, $intDataId, $strDataTable, $arrRelData)
     {
         // Does a tploption field exist?
         $strSQL = 'SELECT * FROM `' .$strDataTable. '` WHERE `id` = ' .$intDataId;
@@ -1358,9 +1360,9 @@ class NagImportClass
                             $strSQL = 'SELECT DISTINCT `id` FROM `tbl_host` ' .
                                 'LEFT JOIN `tbl_lnkHostToHostgroup` ON `id`=`tbl_lnkHostToHostgroup`.`idMaster` ' .
                                 'LEFT JOIN `tbl_lnkHostgroupToHost` ON `id`=`tbl_lnkHostgroupToHost`.`idSlave` ' .
-                                      "WHERE (`tbl_lnkHostgroupToHost`.`idMaster` = $intSlaveId ".
-                                      "OR `tbl_lnkHostToHostgroup`.`idSlave` = $intSlaveId) ".
-                                      "AND `active`='1' AND `config_id`=".$this->intDomainId;
+                                "WHERE (`tbl_lnkHostgroupToHost`.`idMaster` = $intSlaveId ".
+                                "OR `tbl_lnkHostToHostgroup`.`idSlave` = $intSlaveId) ".
+                                "AND `active`='1' AND `config_id`=".$this->intDomainId;
                             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrDataHostgroups, $intDCHostgroups);
                             if ($booReturn && ($intDCHostgroups != 0)) {
                                 foreach ($arrDataHostgroups as $elem2) {
@@ -1403,7 +1405,7 @@ class NagImportClass
      * @param string $strDataTable              Data table (Master)
      * @param array $arrRelData                 Relation data
      */
-    public function writeRelation3($strValue, $intDataId, $strDataTable, $arrRelData): void
+    public function writeRelation3($strValue, $intDataId, $strDataTable, $arrRelData)
     {
         // Define variables
         $intSlaveId = 0;
@@ -1453,7 +1455,7 @@ class NagImportClass
                     // Insert a temporary value to the target table
                     $strSQL    = 'INSERT INTO `' .$arrRelData['tableName1']. '` ' .
                         'SET `' .$arrRelData['target1']."` = '".$elem."', `config_id`=".$this->intDomainId. ', ' .
-                                 "`active`='0', `last_modified`=NOW()";
+                        "`active`='0', `last_modified`=NOW()";
                     $booResult = $this->myDBClass->insertData($strSQL);
                     if ($booResult == false) {
                         $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -1491,7 +1493,7 @@ class NagImportClass
      * @param array $arrRelData                 Relation data
      * @return int                              0 = successful / 1 = error
      */
-    public function writeRelation4($strKey, $strValue, $intDataId, $strDataTable, $arrRelData): int
+    public function writeRelation4($strKey, $strValue, $intDataId, $strDataTable, $arrRelData)
     {
         // Define variables
         $intReturn = 0;
@@ -1506,7 +1508,7 @@ class NagImportClass
         if ($intReturn == 0) {
             // Insert values to the table
             $strSQL = "INSERT INTO `tbl_variabledefinition` SET `name` = '" . addslashes($strKey) . "', " .
-                      "`value` = '" . addslashes($strValue) . "', `last_modified`=now()";
+                "`value` = '" . addslashes($strValue) . "', `last_modified`=now()";
             $booResult = $this->myDBClass->insertData($strSQL);
             if ($booResult == false) {
                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -1536,7 +1538,7 @@ class NagImportClass
      * @param string $strDataTable              Data table (Master)
      * @param array $arrRelData                 Relation data
      */
-    public function writeRelation5($strValue, $intDataId, $strDataTable, $arrRelData): void
+    public function writeRelation5($strValue, $intDataId, $strDataTable, $arrRelData)
     {
         // Extract data values
         $arrCommand = explode('!', $strValue);
@@ -1567,7 +1569,7 @@ class NagImportClass
                     // Insert a temporary value in target table
                     $strSQL    = 'INSERT INTO `' .$arrRelData['tableName1']. '` ' .
                         'SET `' .$arrRelData['target1']."` = '".$elem."', `config_id`=".$this->intDomainId. ', ' .
-                                 "`active`='0', `last_modified`=NOW()";
+                        "`active`='0', `last_modified`=NOW()";
                     $booResult = $this->myDBClass->insertData($strSQL);
                     if ($booResult == false) {
                         $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -1596,7 +1598,7 @@ class NagImportClass
      * @param string $strDataTable              Data table (Master)
      * @param array $arrRelData                 Relation data
      */
-    public function writeRelation6($strValue, $intDataId, $strDataTable, $arrRelData): void
+    public function writeRelation6($strValue, $intDataId, $strDataTable, $arrRelData)
     {
         // Define variables
         $intSlaveIdH  = 0;
@@ -1629,7 +1631,7 @@ class NagImportClass
                     // Does a hostgroup entry already exist?
                     if ($intSlaveIdH == 0) {
                         $strSQL = "SELECT `id` FROM `tbl_hostgroup` WHERE `hostgroup_name` = '".$strValue."' ".
-                                  "AND `active`='1' AND `config_id`=".$this->intDomainId;
+                            "AND `active`='1' AND `config_id`=".$this->intDomainId;
                         $strId  = $this->myDBClass->getFieldData($strSQL);
                         if ($strId != '') {
                             $intSlaveIdHG = (int)$strId;
@@ -1661,7 +1663,7 @@ class NagImportClass
                                 '`tbl_lnkHostgroupToHost`.`idMaster`=`tbl_lnkServiceToHostgroup`.`idSlave` ' .
                                 'WHERE `' .$arrRelData['target2']."` = '".$elem."' AND ".
                                 '`tbl_lnkHostgroupToHost`.`idSlave` = ' .$intSlaveIdH. ' AND ' .
-                                           "`active`='1' AND `config_id`=".$this->intDomainId;
+                                "`active`='1' AND `config_id`=".$this->intDomainId;
                             $strId  = $this->myDBClass->getFieldData($strSQL);
                         }
                         if ($strId == '') {
@@ -1672,14 +1674,14 @@ class NagImportClass
                                 '`tbl_lnkHostToHostgroup`.`idSlave`=`tbl_lnkServiceToHostgroup`.`idSlave` ' .
                                 'WHERE `' .$arrRelData['target2']."` = '".$elem."' AND ".
                                 '`tbl_lnkHostToHostgroup`.`idMaster` = ' .$intSlaveIdH. ' AND ' .
-                                           "`active`='1' AND `config_id`=".$this->intDomainId;
+                                "`active`='1' AND `config_id`=".$this->intDomainId;
                             $strId  = $this->myDBClass->getFieldData($strSQL);
                         }
                     } elseif ($intSlaveIdHG != 0) {
                         $strSQL = 'SELECT `id` FROM `' .$arrRelData['tableName2']. '` ' .
                             'LEFT JOIN `tbl_lnkServiceToHostgroup` ON `id` = `idMaster` ' .
                             'WHERE `' .$arrRelData['target2']."` = '".$elem."' AND `idSlave`=".$intSlaveIdHG. ' ' .
-                                  "AND `active`='1' AND `config_id`=".$this->intDomainId;
+                            "AND `active`='1' AND `config_id`=".$this->intDomainId;
                         $strId  = $this->myDBClass->getFieldData($strSQL);
                     }
                     if ($strId != '') {
@@ -1697,8 +1699,8 @@ class NagImportClass
                             $intHostgroupName    = 1;
                         }
                         $strSQL    = 'INSERT INTO `' .$arrRelData['tableName2']. '` ' .
-                                     "SET `config_name`='imp_tmp_by_servicegroup', `host_name`=$intHostName, ".
-                                     "`hostgroup_name`=$intHostgroupName, `".$arrRelData['target2']."` = '".$elem."', ".
+                            "SET `config_name`='imp_tmp_by_servicegroup', `host_name`=$intHostName, ".
+                            "`hostgroup_name`=$intHostgroupName, `".$arrRelData['target2']."` = '".$elem."', ".
                             '`config_id`=' .$this->intDomainId.", `active`='0', `last_modified`=NOW()";
                         $booResult = $this->myDBClass->insertData($strSQL);
                         if ($booResult == false) {
@@ -1708,15 +1710,15 @@ class NagImportClass
                         // Make a relation from temp service to host / hostgroup
                         if ($intSlaveIdH != 0) {
                             $strSQL    = 'INSERT INTO `tbl_lnkServiceToHost` ' .
-                                         "SET `idMaster`='".$intSlaveIdS."', `idSlave`=".$intSlaveIdH.", `exclude`='0'";
+                                "SET `idMaster`='".$intSlaveIdS."', `idSlave`=".$intSlaveIdH.", `exclude`='0'";
                             $booResult = $this->myDBClass->insertData($strSQL);
                             if ($booResult == false) {
                                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
                             }
                         } elseif ($intSlaveIdHG != 0) {
                             $strSQL    = 'INSERT INTO `tbl_lnkServiceToHostgroup` ' .
-                                         "SET `idMaster`='".$intSlaveIdS."', `idSlave`=".$intSlaveIdHG. ', ' .
-                                         "`exclude`='0'";
+                                "SET `idMaster`='".$intSlaveIdS."', `idSlave`=".$intSlaveIdHG. ', ' .
+                                "`exclude`='0'";
                             $booResult = $this->myDBClass->insertData($strSQL);
                             if ($booResult == false) {
                                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
@@ -1752,7 +1754,7 @@ class NagImportClass
      * @param string $strDataTable              Data table (Master)
      * @param array $arrRelData                 Relation data
      */
-    public function writeRelation7($strValue, $intDataId, $strDataTable, $arrRelData): void
+    public function writeRelation7($strValue, $intDataId, $strDataTable, $arrRelData)
     {
         // Delete data from link table
         $strSQL    = 'DELETE FROM `' .$arrRelData['linkTable']. '` WHERE `idMaster` = ' .$intDataId;
@@ -1787,8 +1789,8 @@ class NagImportClass
                     // Insert a temporary value to the target table
                     $strSQL    = 'INSERT INTO `' .$arrRelData['tableName1']. '` ' .
                         'SET `' .$arrRelData['target1']."` = '".$elem."', `host_name`=2, `hostgroup_name`=2, ".
-                                 "`config_name`='imp_tmp_by_servicedependency', `config_id`=".$this->intDomainId. ', ' .
-                                 "`active`='0', `last_modified`=NOW()";
+                        "`config_name`='imp_tmp_by_servicedependency', `config_id`=".$this->intDomainId. ', ' .
+                        "`active`='0', `last_modified`=NOW()";
                     $booResult = $this->myDBClass->insertData($strSQL);
                     if ($booResult == false) {
                         $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
