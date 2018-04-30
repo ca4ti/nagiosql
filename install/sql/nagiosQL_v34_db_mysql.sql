@@ -1835,7 +1835,6 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
   `idHost` int(11) NOT NULL,
-  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idMaster`,`idSlave`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -1980,7 +1979,6 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
   `idHost` int(11) NOT NULL,
-  `exclude` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idMaster`,`idSlave`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

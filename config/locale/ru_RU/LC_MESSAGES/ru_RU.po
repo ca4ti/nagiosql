@@ -2,11 +2,9 @@
 # #
 # # Project   : NagiosQL
 # # Component : Translation File English
-# # Website   : http://www.nagiosql.org
-# # Date      : $LastChangedDate: 2012-03-09 22:55:35 +0100 (Fri, 09 Mar 2012) $
-# # Author    : $LastChangedBy: martin $
-# # Version   : 3.1.1
-# # Revision  : $LastChangedRevision: 1284 $
+# # Website   : https://sourceforge.net/projects/nagiosql/
+# # Version   : 3.4.0
+# # GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 # #
 # #############################################################################
 # Translators:
@@ -24,7 +22,6 @@ msgstr ""
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Pootle 2.1.5\n"
-"X-Poedit-Basepath: D:\\$_Daten\\Webentwicklung\\NagiosQL_v3.2_svn\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -3292,8 +3289,8 @@ msgstr "Тестирование чтения файла startsite (admin.php)"
 
 #: install/step1.php:227
 #: install/step1.php:229
-msgid "Read test on a template file (templates/index.htm.tpl)"
-msgstr "Тестирование чтения файла шаблонов (templates/index.htm.tpl)"
+msgid "Read test on a template file (templates/index.tpl.htm)"
+msgstr "Тестирование чтения файла шаблонов (templates/index.tpl.htm)"
 
 #: install/step1.php:234
 #: install/step1.php:236

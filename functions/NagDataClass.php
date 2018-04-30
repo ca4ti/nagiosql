@@ -1226,8 +1226,9 @@ class NagDataClass
         return $this->dataInsert($strSQL, $intDataID);
     }
 
-
-    // PRIVATE Functions
+    /**
+     * PRIVATE functions
+     */
 
     /**
      * Manually set some NULL values based on field names (key)

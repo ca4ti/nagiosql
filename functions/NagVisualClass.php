@@ -444,7 +444,7 @@ class NagVisualClass
         if ($strTemplKey  == 'service_parents') {
             $intOption = 9;
         }
-        if ($strLinkTable == 'tbl_lnkServiceToService') {
+        if (($strLinkTable == 'tbl_lnkServiceToService') || ($strLinkTable == 'tbl_lnkServicetemplateToService')) {
             $intOption = 10;
         }
         // Get version
@@ -1218,7 +1218,7 @@ class NagVisualClass
             $arrHostgroups = $this->arrSession['refresh'][$strHostGroupVar];
         } else {
             if ($intOption == 4) {
-                $strSQL = 'SELECT `idSlave` FROM `tbl_lnkServicedependencyToHostgoup_DH` '
+                $strSQL = 'SELECT `idSlave` FROM `tbl_lnkServicedependencyToHostgroup_DH` '
                     . 'WHERE `idMaster`=' .$this->intDataId;
             } elseif ($intOption == 6) {
                 $strSQL = 'SELECT `idSlave` FROM `tbl_lnkServiceescalationToHostgroup` '

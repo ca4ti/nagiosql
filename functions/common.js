@@ -194,6 +194,7 @@ function calendarinit(lang,start,field,key,cont,obj) {
             const txtDate1 = document.getElementById(field);
             if (month < 10) { month = "0" + month;}
             if (day < 10)   { day = "0" + day;}
+            // noinspection JSUndefinedPropertyAssignment
             txtDate1.value = year + "-" + month + "-" + day;
             dialog.hide();
         }
@@ -306,10 +307,12 @@ function getData(field) {
     for (let i=0; i < targetSelect.length; i++) {
         targetSelect.options[i] = null;
     }
+    // noinspection JSUndefinedPropertyAssignment
     targetSelect.length = 0;
     for (let i=0; i < targetAvail.length; i++) {
         targetAvail.options[i] = null;
     }
+    // noinspection JSUndefinedPropertyAssignment
     targetAvail.length = 0;
     let NeuerEintrag1;
     let NeuerEintrag2;

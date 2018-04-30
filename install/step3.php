@@ -39,7 +39,7 @@ $arrTemplate['STEP1_BOX']       = $myInstClass->translate('Requirements');
 $arrTemplate['STEP2_BOX']       = $myInstClass->translate($_SESSION['install']['mode']);
 $arrTemplate['STEP3_BOX']       = $myInstClass->translate('Finish');
 $arrTemplate['STEP3_TITLE']     = 'NagiosQL ' .$myInstClass->translate($_SESSION['install']['mode']). ': ' .
-                                  $myInstClass->translate('Finishing Setup');
+    $myInstClass->translate('Finishing Setup');
 $arrTemplate['INST_VISIBLE']    = 'showfield';
 $arrTemplate['STEP4_SUB_TITLE'] = $myInstClass->translate('Deploy NagiosQL settings');
 $arrTemplate['STEP3_TEXT_01']   = $myInstClass->translate('Database server connection (privileged user)');
@@ -86,7 +86,7 @@ if ($_SESSION['install']['mode'] == 'Update') {
         $myDBClass = new functions\MysqliDbClass;
     } else {
         $strErrorMessage .= $myInstClass->translate('Database type not defined!'). ' (' .
-                            $_SESSION['install']['dbtype'].")<br>\n";
+            $_SESSION['install']['dbtype'].")<br>\n";
         $strStatusMessage = '<span class="red">' .$myInstClass->translate('failed'). '</span>';
         $intError         = 1;
     }
@@ -136,14 +136,14 @@ if ($_SESSION['install']['mode'] == 'Update') {
         // Converting database tables to UTF8
         if ($intError == 0) {
             $arrTemplate['STEP3_TEXT_09']      = $myInstClass->translate('Converting database tables to utf8 character '
-                                               . 'set');
+                . 'set');
             $arrTemplate['STEP3_TEXT_09_SHOW'] = 'showfield';
             $intError = $myInstClass->convQLDBTables($arrTemplate['STEP3_TEXT_10'], $strErrorMessage);
         }
         // Converting database fields to UTF8
         if ($intError == 0) {
             $arrTemplate['STEP3_TEXT_11']      = $myInstClass->translate('Converting database fields to utf8 '
-                                               . 'character set');
+                . 'character set');
             $arrTemplate['STEP3_TEXT_11_SHOW'] = 'showfield';
             $intError = $myInstClass->convQLDBFields($arrTemplate['STEP3_TEXT_12'], $strErrorMessage);
         }
@@ -175,7 +175,7 @@ if ($_SESSION['install']['mode'] == 'Update') {
         $myDBClass = new functions\MysqliDbClass;
     } else {
         $strErrorMessage .= $myInstClass->translate('Database type not defined!'). ' (' .
-                            $_SESSION['install']['dbtype'].")<br>\n";
+            $_SESSION['install']['dbtype'].")<br>\n";
         $strStatusMessage = '<span class="red">' .$myInstClass->translate('failed'). '</span>';
         $intError         = 1;
     }
@@ -200,7 +200,7 @@ if ($_SESSION['install']['mode'] == 'Update') {
         $myDBClass->strErrorMessage = '';
         if (($intOldDBStatus == 0) && ($_SESSION['install']['dbdrop'] == 0)) {
             $strErrorMessage .= $myInstClass->translate('Database already exists and drop database was not '
-                              . 'selected, please correct or manage manually'). '<br>';
+                    . 'selected, please correct or manage manually'). '<br>';
             $arrTemplate['STEP3_TEXT_02'] = '<span class="red">' .$myInstClass->translate('failed'). '</span>';
             $intError = 1;
         } else {
@@ -229,7 +229,6 @@ if ($_SESSION['install']['mode'] == 'Update') {
     if ($intError == 0) {
         $arrTemplate['STEP3_TEXT_09_SHOW'] = 'showfield';
         $intError = $myInstClass->createDB($arrTemplate['STEP3_TEXT_10'], $strErrorMessage);
-        echo $strErrorMessage;
     }
     // Write initial SQL data to database
     if ($intError == 0) {
@@ -286,12 +285,12 @@ if ($_SESSION['install']['mode'] == 'Update') {
 }
 if ($intError != 0) {
     $arrTemplate['ERRORMESSAGE'] = '<p style="color:#F00;margin-top:0;font-weight:bold;">' .
-                                   $strErrorMessage."</p>\n";
+        $strErrorMessage."</p>\n";
     $arrTemplate['INFO_TEXT']    = '';
     $arrTemplate['BUTTON']       = "<div id=\"install-back\">\n";
     $arrTemplate['BUTTON']      .= "<input type='hidden' name='hidStep' id='hidStep' value='2' />\n";
     $arrTemplate['BUTTON']      .= "<input type='image' src='images/previous.png' value='Submit' alt='Submit' />"
-                                 . '<br />' .$myInstClass->translate('Back')."\n";
+        . '<br />' .$myInstClass->translate('Back')."\n";
     $arrTemplate['BUTTON']      .= "</div>\n";
 } else {
     $arrTemplate['ERRORMESSAGE'] = '';
@@ -299,7 +298,7 @@ if ($intError != 0) {
     $arrTemplate['INFO_TEXT']    = $myInstClass->translate('Please delete the install directory to continue!');
     $arrTemplate['BUTTON']       = "<div id=\"install-next\">\n";
     $arrTemplate['BUTTON']      .= "<a href='../index.php'><img src='images/next.png' alt='finish' title='finish' "
-                                 . "border='0' /></a><br />".$myInstClass->translate('Finish')."\n";
+        . "border='0' /></a><br />".$myInstClass->translate('Finish')."\n";
     $arrTemplate['BUTTON']      .= "</div>\n";
 }
 //

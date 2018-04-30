@@ -8,11 +8,11 @@
 <!-- BEGIN datainsert -->
 <div id="content_main">
     <div id="content_title">{TITLE}</div>
-	<script type="text/JavaScript">
+    <script type="text/JavaScript">
         <!--
         // Initialize change dialog
         openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_MEMBERS}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}","1");
-        openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_SERVICEGROUP_MEMBERS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}");
+        openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_SERVICEGROUP_MEMBERS}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}","1");
         // Interrupt input
         function abort() {
             this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
@@ -51,7 +51,7 @@
             if (check === false) {
                 msginit(msg1,header,1);
                 return false;
-            }	
+            }
             // Check for illegal chars
             if (form.tfValue1.value.match(/[^a-zA-Z0-9.@_-]/)) {
                 msginit(msg2+" {LANG_SERVICEGROUP_NAME}",header,1);
@@ -59,9 +59,9 @@
                 return false;
             }
         }
-		//-->
+        //-->
     </script>
-	<form name="frmDetail" method="post" action="{ACTION_INSERT}">
+    <form name="frmDetail" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">
             <tr>
                 <td class="content_tbl_row1">{LANG_SERVICEGROUP_NAME} *</td>
@@ -73,16 +73,16 @@
                         <tr>
                             <td>
                                 <select title="{LANG_MEMBERS}" name="mselValue1[]" size="5" multiple id="mselValue1" class="selectborder {VERSION_20_MUST}" {MSIE_DISABLED}>
-<!-- BEGIN service_members -->
-									<option value="{DAT_SERVICE_MEMBERS_ID}" class="empty_class {VERSION_20_MUST} {SPECIAL_STYLE} {IE_SERVICE_MEMBERS_SEL}" {DAT_SERVICE_MEMBERS_SEL} {OPTION_DISABLED}>{DAT_SERVICE_MEMBERS}</option>
-<!-- END service_members -->
-                                </select>           
+                                    <!-- BEGIN service_members -->
+                                    <option value="{DAT_SERVICE_MEMBERS_ID}" class="empty_class {VERSION_20_MUST} {SPECIAL_STYLE} {IE_SERVICE_MEMBERS_SEL}" {DAT_SERVICE_MEMBERS_SEL} {OPTION_DISABLED}>{DAT_SERVICE_MEMBERS}</option>
+                                    <!-- END service_members -->
+                                </select>
                             </td>
                         </tr>
-                    </table>      
+                    </table>
                 </td>
                 <td class="content_tbl_row4" rowspan="4" valign="top"><img id="mutvalue1" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('servicegroup','members','all','Info');" class="infobutton_2"></td>
-            </tr> 
+            </tr>
             <tr>
                 <td>{LANG_DESCRIPTION} *</td>
                 <td><input title="{LANG_DESCRIPTION}" name="tfValue2" type="text" id="tfValue2" value="{DAT_ALIAS}" class="inpmust"></td>
@@ -109,35 +109,35 @@
                         <tr>
                             <td>
                                 <select title="{LANG_SERVICEGROUP_MEMBERS}" name="mselValue2[]" size="5" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN servicegroups -->
+                                    <!-- BEGIN servicegroups -->
                                     <option value="{DAT_SERVICEGROUPS_ID}" class="empty_class {SPECIAL_STYLE} {IE_SERVICEGROUPS_SEL}" {DAT_SERVICEGROUPS_SEL} {OPTION_DISABLED}>{DAT_SERVICEGROUPS}</option>
-<!-- END servicegroups -->
-                                </select>            
+                                    <!-- END servicegroups -->
+                                </select>
                             </td>
                         </tr>
-                    </table>      
+                    </table>
                 </td>
                 <td rowspan="5" valign="top"><span class="{VERSION_30_VISIBLE}"><img id="mutvalue2" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('servicegroup','servicegroup_members','all','Info');" class="infobutton_2"></span></td>
-            </tr> 
+            </tr>
             <tr {RESTRICT_GROUP_ADMIN}>
                 <td>{LANG_ACCESS_GROUP}</td>
                 <td>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
-<!-- BEGIN acc_group -->
-                      <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-<!-- END acc_group -->
+                        <!-- BEGIN acc_group -->
+                        <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
+                        <!-- END acc_group -->
                     </select>
                 </td>
-              <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
+                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
                 <td rowspan="3"><small>{LANG_CTRLINFO}</small></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
             </tr>
             <tr>
-              <td>{LANG_REGISTERED}</td>
-              <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
-              <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
+                <td>{LANG_REGISTERED}</td>
+                <td><input title="{LANG_REGISTERED}" name="chbRegister" type="checkbox" class="checkbox" id="chbRegister" value="1" {REG_CHECKED}></td>
+                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td>{LANG_ACTIVE}</td>
@@ -158,7 +158,7 @@
                 <td colspan="6">&nbsp;</td>
             </tr>
         </table>
-	</form>
+    </form>
     {CHECK_MUST_DATA}
 </div>
 <div id="mutdialogvalue1">

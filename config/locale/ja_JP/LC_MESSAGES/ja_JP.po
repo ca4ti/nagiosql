@@ -2,11 +2,9 @@
 # #
 # # Project   : NagiosQL
 # # Component : Translation File English
-# # Website   : http://www.nagiosql.org
-# # Date      : $LastChangedDate: 2012-03-09 22:55:35 +0100 (Fri, 09 Mar 2012) $
-# # Author    : $LastChangedBy: martin $
-# # Version   : 3.1.1
-# # Revision  : $LastChangedRevision: 1284 $
+# # Website   : https://sourceforge.net/projects/nagiosql/
+# # Version   : 3.4.0
+# # GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 # #
 # #############################################################################
 # Translators:
@@ -24,7 +22,6 @@ msgstr ""
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: Pootle 2.1.5\n"
-"X-Poedit-Basepath: D:\\$_Daten\\Webentwicklung\\NagiosQL_v3.2_svn\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -3292,7 +3289,7 @@ msgstr "スタートサイトファイルの読み込みテスト（admin.php)"
 
 #: install/step1.php:227
 #: install/step1.php:229
-msgid "Read test on a template file (templates/index.htm.tpl)"
+msgid "Read test on a template file (templates/index.tpl.htm)"
 msgstr "テンプレート・ファイルの読み込みテスト（templates/index.tpl.html)"
 
 #: install/step1.php:234

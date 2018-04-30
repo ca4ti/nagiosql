@@ -58,8 +58,7 @@ ALTER TABLE `tbl_servicetemplate` ADD `importance` INT NULL DEFAULT NULL AFTER `
 CREATE TABLE `tbl_lnkServiceToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
-  `idHost` int(11) NOT NULL,
-  `exclude` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+  `idHost` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --
 -- Indizes für die Tabelle `tbl_lnkServiceToService`
@@ -71,8 +70,7 @@ ALTER TABLE `tbl_lnkServiceToService` ADD PRIMARY KEY (`idMaster`,`idSlave`);
 CREATE TABLE `tbl_lnkServicetemplateToService` (
   `idMaster` int(11) NOT NULL,
   `idSlave` int(11) NOT NULL,
-  `idHost` int(11) NOT NULL,
-  `exclude` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+  `idHost` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --
 -- Indizes für die Tabelle `tbl_lnkServicetemplateToService`

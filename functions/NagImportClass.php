@@ -472,6 +472,8 @@ class NagImportClass
                                     $this->writeRelation6($strValue, $intDataId, $strTable, $reldata);
                                 } elseif ($reldata['type'] == 6) {
                                     $this->writeRelation7($strValue, $intDataId, $strTable, $reldata);
+                                } elseif ($reldata['type'] == 7) {
+                                    $this->writeRelation8($strValue, $intDataId, $strTable, $reldata);
                                 }
                             }
                         }
@@ -882,6 +884,8 @@ class NagImportClass
             $strVCValues  = 'contact_name,alias,host_notification_options,service_notification_options,email,';
             $strVCValues .= 'pager,address1,address2,address3,address4,address5,address6,name';
 
+            $strVWValues  = 'minimum_importance';
+
             $strVIValues  = 'host_notifications_enabled,service_notifications_enabled,can_submit_commands,';
             $strVIValues .= 'retain_status_information,retain_nonstatus_information';
 
@@ -908,6 +912,8 @@ class NagImportClass
             $strVCValues  = 'contact_name,alias,host_notification_options,service_notification_options,email,';
             $strVCValues .= 'pager,address1,address2,address3,address4,address5,address6,name';
 
+            $strVWValues  = 'minimum_importance';
+
             $strVIValues  = 'host_notifications_enabled,service_notifications_enabled,can_submit_commands,';
             $strVIValues .= 'retain_status_information,retain_nonstatus_information';
 
@@ -922,7 +928,7 @@ class NagImportClass
             $strVCValues .= 'icon_image_alt,vrml_image,statusmap_image,2d_coords,3d_coords,name';
 
             $strVWValues  = 'max_check_attempts,retry_interval,check_interval,freshness_threshold,low_flap_threshold,';
-            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay,';
+            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay,importance';
 
             $strVIValues  = 'active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,';
             $strVIValues .= 'event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,';
@@ -939,7 +945,7 @@ class NagImportClass
             $strVCValues .= 'statusmap_image,2d_coords,3d_coords,name';
 
             $strVWValues  = 'max_check_attempts,retry_interval,check_interval,freshness_threshold,low_flap_threshold,';
-            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay,';
+            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay,importance';
 
             $strVIValues  = 'active_checks_enabled,passive_checks_enabled,check_freshness,obsess_over_host,';
             $strVIValues .= 'event_handler_enabled,flap_detection_enabled,process_perf_data,retain_status_information,';
@@ -963,7 +969,7 @@ class NagImportClass
             $strVCValues .= 'notification_options';
 
             $strVWValues  = 'max_check_attempts,check_interval,retry_interval,freshness_threshold,low_flap_threshold,';
-            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay';
+            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay,importance';
 
             $strVIValues  = 'is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,';
             $strVIValues .= 'obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,';
@@ -971,7 +977,7 @@ class NagImportClass
             $strVIValues .= 'notifications_enabled';
 
             $strRLValues  = 'host_name,hostgroup_name,servicegroups,use,check_command,check_period,event_handler,';
-            $strRLValues .= 'notification_period,contacts,contact_groups';
+            $strRLValues .= 'notification_period,contacts,contact_groups,parents';
             $intWriteConfig = 1;
 
             // Read servicetemplate configurations
@@ -981,7 +987,7 @@ class NagImportClass
             $strVCValues .= 'notification_options';
 
             $strVWValues  = 'max_check_attempts,check_interval,retry_interval,freshness_threshold,low_flap_threshold,';
-            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay';
+            $strVWValues .= 'high_flap_threshold,notification_interval,first_notification_delay,importance';
 
             $strVIValues  = 'is_volatile,active_checks_enabled,passive_checks_enabled,parallelize_check,';
             $strVIValues .= 'obsess_over_service,check_freshness,event_handler_enabled,flap_detection_enabled,';
@@ -989,7 +995,7 @@ class NagImportClass
             $strVIValues .= 'notifications_enabled';
 
             $strRLValues  = 'host_name,hostgroup_name,servicegroups,use,check_command,check_period,event_handler,';
-            $strRLValues .= 'notification_period,contacts,contact_groups';
+            $strRLValues .= 'notification_period,contacts,contact_groups,parents';
             $intWriteConfig = 1;
 
             // Read servicegroup configurations
@@ -1506,6 +1512,24 @@ class NagImportClass
             $intReturn = 1;
         }
         if ($intReturn == 0) {
+            // Remove old variables
+            $strSQL = 'SELECT * FROM '.$arrRelData['linkTable'].' WHERE idMaster='.$intDataId;
+            $booResult = $this->myDBClass->hasDataArray($strSQL, $arrLinkData, $intLinkCount);
+            if ($booResult && ($intLinkCount != 0)) {
+                /** @var array $arrLinkData */
+                foreach ($arrLinkData as $elem) {
+                    $strSQL1 = 'DELETE FROM tbl_variabledefinition WHERE id=' .$elem['idSlave'];
+                    $booResult = $this->myDBClass->insertData($strSQL1);
+                    if ($booResult == false) {
+                        $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+                    }
+                    $strSQL2 = 'DELETE FROM '.$arrRelData['linkTable'].' WHERE idMaster='.$elem['idMaster'];
+                    $booResult = $this->myDBClass->insertData($strSQL2);
+                    if ($booResult == false) {
+                        $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+                    }
+                }
+            }
             // Insert values to the table
             $strSQL = "INSERT INTO `tbl_variabledefinition` SET `name` = '" . addslashes($strKey) . "', " .
                 "`value` = '" . addslashes($strValue) . "', `last_modified`=now()";
@@ -1817,6 +1841,105 @@ class NagImportClass
             $booResult = $this->myDBClass->insertData($strSQL);
             if ($booResult == false) {
                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+            }
+        }
+    }
+
+    /**
+     * Inserts a relation type 6 (service and servicetemplate parents - 1:service:host)
+     * @param string $strValue                  Data value
+     * @param int $intDataId                    Data ID
+     * @param string $strDataTable              Data table (Master)
+     * @param array $arrRelData                 Relation data
+     */
+    public function writeRelation8($strValue, $intDataId, $strDataTable, $arrRelData)
+    {
+        // Decompose data value
+        $arrValues = explode(',', $strValue);
+        // Delete data from link table
+        $strSQL    = 'DELETE FROM `' .$arrRelData['linkTable']. '` WHERE `idMaster` = ' .$intDataId;
+        $booResult  = $this->myDBClass->insertData($strSQL);
+        if ($booResult == false) {
+            $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+        }
+        // Check the sum of elements
+        /** @noinspection ExplodeMissUseInspection */
+        if (count($arrValues) % 2 != 0) {
+            $this->strErrorMessage .= translate('Error: incorrect number of arguments - cannot import service parent ' .
+                    'members'). '::';
+        } else {
+            // Process data values
+            $intCounter  = 1;
+            $strHostName = '';
+            foreach ($arrValues as $elem) {
+                if ($intCounter % 2 == 0) {
+                    $strServiceName = $elem;
+                    if (($strServiceName != '') && ($strHostName != '')) {
+                        $strSQL = 'SELECT tbl_service.id AS id_1, C.id AS id_2, D.id AS id_3, E.id AS id_4 '
+                            . 'FROM tbl_service '
+                            . 'LEFT JOIN tbl_lnkServiceToHost ON tbl_service.id=tbl_lnkServiceToHost.idMaster '
+                            . 'LEFT JOIN tbl_lnkServiceToHostgroup '
+                            . 'ON tbl_service.id=tbl_lnkServiceToHostgroup.idMaster '
+                            . 'LEFT JOIN tbl_lnkHostgroupToHost AS A ON tbl_lnkServiceToHostgroup.idSlave=A.idMaster '
+                            . 'LEFT JOIN tbl_lnkHostToHostgroup AS B ON tbl_lnkServiceToHostgroup.idSlave=B.idSlave '
+                            . 'LEFT JOIN tbl_host AS C ON A.idSlave=C.id '
+                            . 'LEFT JOIN tbl_host AS D ON B.idMaster=D.id '
+                            . 'LEFT JOIN tbl_host AS E ON tbl_lnkServiceToHost.idSlave=E.id '
+                            . "WHERE tbl_service.service_description='".$strServiceName."' "
+                            . "AND (C.host_name='".$strHostName."' OR D.host_name='".$strHostName."' "
+                            . "OR E.host_name='".$strHostName."')";
+                        $booResult = $this->myDBClass->hasDataArray($strSQL, $arrDataset, $intCount);
+                        if ($booResult && ($intCount == 1)) {
+                            $intServiceId = 0;
+                            $intHostId    = 0;
+                            $intId1       = $arrDataset[0]['id_1'];
+                            $intId2       = $arrDataset[0]['id_2'];
+                            $intId3       = $arrDataset[0]['id_3'];
+                            $intId4       = $arrDataset[0]['id_4'];
+                            if (($intId1!= null) && ($intId1 != 0) && ($intServiceId == 0)) {
+                                $intServiceId = (int)$intId1;
+                            }
+                            $intHostSum = 0;
+                            if (($intId2 != null) && ($intId2 != 0) && ($intHostId == 0)) {
+                                $intHostId   = (int)$intId2;
+                                $intHostSum += $intHostId;
+                            }
+                            if (($intId3 != null) && ($intId3 != 0) && ($intHostId == 0)) {
+                                $intHostId   = (int)$intId3;
+                                $intHostSum += $intHostId;
+                            }
+                            if (($intId4 != null) && ($intId4 != 0) && ($intHostId == 0)) {
+                                $intHostId   = (int)$intId4;
+                                $intHostSum += $intHostId;
+                            }
+                            if (($intHostId == $intHostSum) && ($intServiceId != 0) && ($intHostId != 0)) {
+                                $strSQL = 'INSERT INTO ' .$arrRelData['linkTable']. ' '
+                                    . "SET idMaster=$intDataId, idSlave=$intServiceId, idHost=$intHostId";
+                                $booResult = $this->myDBClass->insertData($strSQL);
+                                if ($booResult == false) {
+                                    $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+                                }
+                                $strSQL    = 'UPDATE `' .$strDataTable. '` ' .
+                                    'SET `' .$arrRelData['fieldName']. '` = 1 WHERE `id` = ' .$intDataId;
+                                $booResult = $this->myDBClass->insertData($strSQL);
+                                if ($booResult == false) {
+                                    $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
+                                }
+                            } else {
+                                $this->strErrorMessage .= translate('Error: cannot import the service parent member ')
+                                    . $strServiceName . '-' . $strHostName . '. '
+                                    . translate('This combination is not unique!') . '::';
+                            }
+                        } else {
+                            $this->strErrorMessage .= translate('Error: cannot import the service parent member ')
+                                . $strServiceName. '-' .$strHostName. '. '
+                                . translate('This combination is not unique or does not exist!').'::';
+                        }
+                    }
+                } else {
+                    $strHostName = $elem;
+                }
+                $intCounter++;
             }
         }
     }

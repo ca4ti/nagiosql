@@ -197,17 +197,19 @@ class MysqliDbClass
         // Reset error variables
         $this->strErrorMessage = '';
         $this->error           = false;
-        $booReturn             = true;
+        $booReturn             = false;
         // Send the SQL statement to the server
-        mysqli_query($this->strDBId, $strSQL);
-        // Error processing
-        if (mysqli_error($this->strDBId) == '') {
-            $this->intLastId        = mysqli_insert_id($this->strDBId);
-            $this->intAffectedRows  = mysqli_affected_rows($this->strDBId);
-        } else {
-            $this->strErrorMessage .= mysqli_error($this->strDBId). '::';
-            $this->error            = true;
-            $booReturn              = false;
+        if ($strSQL != '') {
+            mysqli_query($this->strDBId, $strSQL);
+            // Error processing
+            if (mysqli_error($this->strDBId) == '') {
+                $this->intLastId = mysqli_insert_id($this->strDBId);
+                $this->intAffectedRows = mysqli_affected_rows($this->strDBId);
+                $booReturn = true;
+            } else {
+                $this->strErrorMessage .= mysqli_error($this->strDBId) . '::';
+                $this->error = true;
+            }
         }
         return $booReturn;
     }

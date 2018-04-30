@@ -10,14 +10,14 @@
     <div id="content_title">{TITLE}</div>
     <script type="text/JavaScript">
         <!--
-    	// Initialize change dialog
-            openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_EXCLUDE}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}","1");
-            openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_INCLUDE}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}","1");
-            // Interrupt input
-            function abort() {
+        // Initialize change dialog
+        openMutDlgInit("mselValue1","mutdialogvalue1","{LANG_MODIFY_SELECTION}: {LANG_EXCLUDE}","mutvalue1","{LANG_SAVE}","{LANG_ABORT}","1");
+        openMutDlgInit("mselValue2","mutdialogvalue2","{LANG_MODIFY_SELECTION}: {LANG_INCLUDE}","mutvalue2","{LANG_SAVE}","{LANG_ABORT}","1");
+        // Interrupt input
+        function abort() {
             this.location.href = "{ACTION_INSERT}?limit={LIMIT}";
-    	}
-    	// Send form
+        }
+        // Send form
         /**
          * @return {boolean}
          */
@@ -34,12 +34,12 @@
                         document.getElementById(ar_sel[i]).options[y].disabled = false;
                     }
                 }
-            document.frmDetail.submit();
-            document.frmDetail.subForm.disabled = true;
+                document.frmDetail.submit();
+                document.frmDetail.subForm.disabled = true;
             }
-    	}
-    	// Check form entries
-    	function checkForm() {
+        }
+        // Check form entries
+        function checkForm() {
             // Are all required fields filled in?
             const fields1 = "tfValue1,tfValue2";
             const msg1 = "{FILL_ALLFIELDS}";
@@ -63,7 +63,7 @@
         function insertDefintion() {
             let txtDef;
             let txtRange;
-            if (document.frmDetail.hidVersion.value === 3) {
+            if (document.frmDetail.hidVersion.value >= 4) {
                 txtDef   = document.frmDetail.txtTimedefinition.value;
                 txtRange = document.frmDetail.txtTimerange2.value;
             } else {
@@ -77,7 +77,7 @@
             }
             document.getElementById("timeframe").src = "{BASE_PATH}admin/timedefinitions.php?tipId={id}&version={NAGIOS_VERSION}&mode=add&def="+encodeURIComponent(txtDef)+"&range="+encodeURIComponent(txtRange);
         }
-    	//-->
+        //-->
     </script>
     <form name="frmDetail" method="post" action="{ACTION_INSERT}">
         <table border="0" cellpadding="0" class="content_formtable">
@@ -91,9 +91,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_EXCLUDE}" name="mselValue1[]" size="5" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN excludes -->
+                                    <!-- BEGIN excludes -->
                                     <option value="{DAT_EXCLUDES_ID}" class="empty_class {SPECIAL_STYLE} {IE_EXCLUDES_SEL}" {DAT_EXCLUDES_SEL} {OPTION_DISABLED}>{DAT_EXCLUDES}</option>
-<!-- END excludes -->
+                                    <!-- END excludes -->
                                 </select>
                             </td>
                         </tr>
@@ -116,9 +116,9 @@
                 <td>{LANG_ACCESS_GROUP}</td>
                 <td>
                     <select title="{LANG_ACCESS_GROUP}" name="selAccGr" class="selectborder">
-<!-- BEGIN acc_group -->
+                        <!-- BEGIN acc_group -->
                         <option value="{DAT_ACC_GROUP_ID}" class="empty_class {SPECIAL_STYLE}" {DAT_ACC_GROUP_SEL}>{DAT_ACC_GROUP}</option>
-<!-- END acc_group -->
+                        <!-- END acc_group -->
                     </select>
                 </td>
                 <td colspan="2"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','accessgroup','all','Info');" class="infobutton_1"></td>
@@ -142,9 +142,9 @@
                         <tr>
                             <td>
                                 <select title="{LANG_INCLUDE}" name="mselValue2[]" size="5" multiple id="mselValue2" class="selectborder" {MSIE_DISABLED}>
-<!-- BEGIN uses -->
+                                    <!-- BEGIN uses -->
                                     <option value="{DAT_USES_ID}" class="empty_class {SPECIAL_STYLE} {IE_USES_SEL}" {DAT_USES_SEL} {OPTION_DISABLED}>{DAT_USES}</option>
-<!-- END uses -->
+                                    <!-- END uses -->
                                 </select>
                             </td>
                         </tr>

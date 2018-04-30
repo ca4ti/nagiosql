@@ -80,7 +80,6 @@ class NagContentClass
     {
         // Language text replacements from fieldvars.php file
         foreach ($this->arrDescription as $elem) {
-            /** @var \HTML_Template_IT */
             $objTemplate->setVariable($elem['name'], $elem['string']);
         }
         // Some single replacements
