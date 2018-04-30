@@ -19,7 +19,7 @@
 ====================
 
   * Webserver z.B. Apache 2.x
-  * MySQL 5.x oder neuer
+  * MySQL/MariaDB 5.x oder neuer
   * Nagios 2.x/3.x/4.x oder Nagios kompatible Monitoringsoftware
 	* PHP 5.5.0 oder groesser, inklusive:
     * PHP Module: Session
@@ -49,7 +49,7 @@
   2. Aktualisierungen von NagiosQL 3.x
     a. Download und entpacken von NagiosQL 3.4 in ein NEUES Apache zugaenglichen Verzeichnis (DocumentRoot auf neues Verzeichnis
 	   aendern)
-	b. Wird dieselbe Apachekonfiguration verwendet (altes NagiosQL Verzeichnis wegkopiert, neues NagiosQL Verzeichnis bekommt
+	b. Wird dieselbe Apachekonfiguration verwendet (altes NagiosQL Verzeichnis wegkopieren, neues NagiosQL Verzeichnis bekommt
 	   denselben Namen), sollte der Apache Demon vor dem Upgrade neu gestartet werden.
     c. Verschiebe die alte config/settings.php Datei in das neue NagiosQL 3.4 Verzeichnis config/
 	d. Die alte Datenbank manuell sichern (z.Bsp. mit mysqldump)

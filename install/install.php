@@ -156,17 +156,15 @@ $_SESSION['install']['qlpass']     = (filter_input(INPUT_POST, 'tfQLpass') != nu
     filter_input(INPUT_POST, 'tfQLpass', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qlpass'];
 $_SESSION['install']['qlpath']     = (filter_input(INPUT_POST, 'tfQLpath') != null) ?
     filter_input(INPUT_POST, 'tfQLpath', FILTER_SANITIZE_STRING)     : $_SESSION['install']['qlpath'];
-$_SESSION['install']['qlpath']     = (filter_input(INPUT_POST, 'tfNagiosPath') != null) ?
-    filter_input(INPUT_POST, 'tfNagiosPath', FILTER_SANITIZE_STRING) : $_SESSION['install']['qlpath'];
-$_SESSION['install']['nagpath']    = (filter_input(INPUT_POST, 'tfDBport') != null) ?
-    filter_input(INPUT_POST, 'tfDBport', FILTER_VALIDATE_INT)        : $_SESSION['install']['nagpath'];
+$_SESSION['install']['nagpath']     = (filter_input(INPUT_POST, 'tfNagiosPath') != null) ?
+    filter_input(INPUT_POST, 'tfNagiosPath', FILTER_SANITIZE_STRING) : $_SESSION['install']['nagpath'];
 $_SESSION['install']['dbdrop']     = filter_input(
     INPUT_POST,
     'chbDrop',
     FILTER_VALIDATE_INT,
     array('options' => array('default' => 0))
 );
-$_SESSION['install']['sample']     = filter_input(
+$_SESSION['install']['sample'] = filter_input(
     INPUT_POST,
     'chbSample',
     FILTER_VALIDATE_INT,
@@ -200,6 +198,7 @@ if (extension_loaded('gettext')) {
     bind_textdomain_codeset($_SESSION['install']['locale'], $preEncode);
     textdomain($_SESSION['install']['locale']);
 }
+$myInstClass->arrSession = $_SESSION;
 //
 // Content in buffer laden
 // =======================

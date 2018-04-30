@@ -119,7 +119,7 @@ if (file_exists($filConfig) && is_readable($filConfig)) {
                 $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
                 if ($booReturn == false) {
                     $strErrorMessage .= $myInstClass->translate('Settings table not available or wrong. '
-                                                              . 'Upgrade not available!'). '<br>';
+                            . 'Upgrade not available!'). '<br>';
                     $strErrorMessage .= str_replace('::', '<br>', $myDBClass->strErrorMessage) . '<br>';
                 } elseif ($intDataCount != 0) {
                     foreach ($arrDataLines as $elem) {
@@ -130,15 +130,15 @@ if (file_exists($filConfig) && is_readable($filConfig)) {
             }
         } else {
             $strErrorMessage .= $myInstClass->translate('Invalid database type in settings file '
-                                                      . '(config/settings.php). Upgrade not available!');
+                . '(config/settings.php). Upgrade not available!');
         }
     } else {
         $strErrorMessage .= $myInstClass->translate('Database values in settings file are missing '
-                                                  . '(config/settings.php). Upgrade not available!');
+            . '(config/settings.php). Upgrade not available!');
     }
 } else {
     $strErrorMessage .= $myInstClass->translate('Settings file not found or not readable (config/settings.php). '
-                                              . 'Upgrade not available!');
+        . 'Upgrade not available!');
 }
 //
 // Initial settings (new installation)
@@ -149,8 +149,8 @@ if (file_exists($filInit) && is_readable($filInit)) {
     $_SESSION['init_settings'] = $preInit;
 } else {
     $strErrorMessage .= $myInstClass->translate('Default values file is not available or not readable '
-                                              . '(install/functions/initial_settings.php). Installation possible, '
-                                              . 'but without predefined data!');
+        . '(install/functions/initial_settings.php). Installation possible, '
+        . 'but without predefined data!');
 }
 //
 // Build content
@@ -158,21 +158,21 @@ if (file_exists($filInit) && is_readable($filInit)) {
 $arrTemplate['PAGETITLE']       = '[NagiosQL] ' .$myInstClass->translate('Installation wizard');
 $arrTemplate['MAIN_TITLE']      = $myInstClass->translate('Welcome to the NagiosQL installation wizard');
 $arrTemplate['TEXT_PART_1']     = $myInstClass->translate('This wizard will help you to install and configure '
-                                                        . 'NagiosQL.');
+    . 'NagiosQL.');
 $arrTemplate['TEXT_PART_2']     = $myInstClass->translate('For questions please visit'). ': ';
 $arrTemplate['TEXT_PART_3']     = $myInstClass->translate("First let's check your local environment and find out if "
-                                                        . 'everything NagiosQL needs is available.');
+    . 'everything NagiosQL needs is available.');
 $arrTemplate['TEXT_PART_4']     = $myInstClass->translate('The basic requirements are:');
-$arrTemplate['TEXT_PART_5']     = $myInstClass->translate('PHP 5.3.0 or greater including:');
+$arrTemplate['TEXT_PART_5']     = $myInstClass->translate('PHP 5.5.0 or greater including:');
 $arrTemplate['TEXT_PHP_REQ_1']  = $myInstClass->translate('PHP database module:'). ' ' .
-                                  $myInstClass->translate('supported types are'). ' <b>mysqli</b>';
+    $myInstClass->translate('supported types are'). ' <b>mysqli</b>';
 $arrTemplate['TEXT_PHP_REQ_2']  = $myInstClass->translate('PHP module:'). ' <b>session</b>';
 $arrTemplate['TEXT_PHP_REQ_3']  = $myInstClass->translate('PHP module:'). ' <b>gettext</b>';
 $arrTemplate['TEXT_PHP_REQ_6']  = $myInstClass->translate('PHP module:'). ' <b>filter</b>';
 $arrTemplate['TEXT_PHP_REQ_8']  = $myInstClass->translate('PHP module:'). ' <b>FTP</b> ' .
-                                  $myInstClass->translate('(optional)');
+    $myInstClass->translate('(optional)');
 $arrTemplate['TEXT_PHP_REQ_10'] = $myInstClass->translate('PECL extension:'). ' <b>SSH</b> ' .
-                                  $myInstClass->translate('(optional)');
+    $myInstClass->translate('(optional)');
 $arrTemplate['TEXT_PART_6']     = $myInstClass->translate('php.ini options'). ':';
 $arrTemplate['TEXT_INI_REQ_1']  = $myInstClass->translate('file_uploads on (for upload features)');
 $arrTemplate['TEXT_INI_REQ_2']  = $myInstClass->translate('session.auto_start needs to be off');

@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NagiosQL 3.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-30 19:02+0200\n"
-"PO-Revision-Date: 2018-04-30 19:08+0200\n"
+"POT-Creation-Date: 2018-04-30 20:20+0200\n"
+"PO-Revision-Date: 2018-04-30 20:20+0200\n"
 "Last-Translator: \n"
 "Language-Team: German (http://www.transifex.net/projects/p/nagiosql/language/"
 "de/)\n"
@@ -43,7 +43,7 @@ msgid ""
 msgstr ""
 "Einige Konfigurationsdateien wurden nicht geschrieben. Es wurde kein "
 "existierender bzw. kein aktiver Datensatz gefunden oder die Schreibrechte "
-"fehlen."
+"fehlen!"
 
 #: Notizen/prepend_content.php:262 Notizen/prepend_content.php:292
 #: functions/prepend_content.php:262 functions/prepend_content.php:292
@@ -135,7 +135,7 @@ msgstr "Fehler bei der Datenbankabfrage:"
 #: Notizen/prepend_content.php:502 Notizen/prepend_content.php:518
 #: functions/prepend_content.php:502
 msgid "No permission to open configuration!"
-msgstr "Nicht genügend Rechte um die Konfiguration zu öffnen"
+msgstr "Nicht genügend Rechte um die Konfiguration zu öffnen!"
 
 # hosttemplates.php
 #: Notizen/services.php:95 admin/services.php:95
@@ -170,7 +170,7 @@ msgstr "Datenbankeintrag fehlgeschlagen! Nicht alle Pflichtfelder ausgefüllt!"
 #: admin/services.php:391 admin/servicetemplates.php:322
 #: admin/timeperiods.php:154 admin/user.php:86
 msgid "Database entry failed! No write access!"
-msgstr "Datenbankeintrag fehlgeschlagen! Keine Schreibrechte."
+msgstr "Datenbankeintrag fehlgeschlagen! Keine Schreibrechte!"
 
 #: Notizen/services.php:405 Notizen/services.php:706 admin/services.php:402
 #: admin/services.php:703
@@ -1802,7 +1802,7 @@ msgid ""
 "found"
 msgstr ""
 "Schreiben der Konfiguration fehlgeschlagen - es wurde kein existierender "
-"bzw. kein aktiver Datensatz gefunden."
+"bzw. kein aktiver Datensatz gefunden"
 
 #: admin/verify.php:61
 msgid "Write host configurations"
@@ -1889,7 +1889,7 @@ msgstr "Neustart fehlgeschlagen aufgrund von FTP Fehlern"
 
 #: admin/verify.php:416
 msgid "Nagios restart is not possible via FTP remote connection!"
-msgstr "Nagios Neustart ist nicht möglich über eine FTP Verbindung"
+msgstr "Nagios Neustart ist nicht möglich über eine FTP Verbindung!"
 
 #: admin/verify.php:439
 msgid ""
@@ -1997,7 +1997,7 @@ msgstr ""
 msgid "You are using a newer development version without official support"
 msgstr ""
 "Sie verwenden eine neuere Entwicklerversion, welche nicht offiziell "
-"unterstützt wird."
+"unterstützt wird"
 
 # fieldvars.php
 #: config/fieldvars.php:20 functions/prepend_adm.php:538
@@ -2724,7 +2724,7 @@ msgid ""
 msgstr ""
 "Die hier zugefügten Services müssen zusätzlich neu geschrieben werden. Das "
 "Schreiben der Hostkonfiguration alleine genügt nicht, weil die Änderungen in "
-"der Servicekonfiguration eingetragen werden."
+"der Servicekonfiguration eingetragen werden!"
 
 #: config/fieldvars.php:273
 msgid "Monday"
@@ -2898,7 +2898,7 @@ msgid ""
 "file: "
 msgstr ""
 "Kann die alte Datei nicht sichern weil die Dateirechte falsch sind - "
-"Zieldatei:"
+"Zieldatei: "
 
 #: functions/NagConfigClass.php:605
 msgid ""
@@ -3059,7 +3059,7 @@ msgstr "Letzte Datenbankänderung:"
 
 #: functions/NagContentClass.php:359
 msgid "Last file change of the configuration target "
-msgstr "Letzte Dateiänderung beim Konfigurationsziel"
+msgstr "Letzte Dateiänderung beim Konfigurationsziel "
 
 #: functions/NagDataClass.php:267 functions/NagDataClass.php:269
 msgid "Data set copy failed - table [new name]:"
@@ -3203,7 +3203,7 @@ msgstr ""
 
 #: functions/NagDataClass.php:1017
 msgid "Dataset successfully activated. Affected rows:"
-msgstr "Datensätze erfolgreich aktiviert. Betroffenene Datensätze: "
+msgstr "Datensätze erfolgreich aktiviert. Betroffenene Datensätze:"
 
 #: functions/NagDataClass.php:1019
 msgid "Activate dataset from table:"
@@ -3257,7 +3257,7 @@ msgstr "konnten nicht geschrieben werden"
 # contacts.php
 #: functions/NagImportClass.php:421 functions/NagImportClass.php:427
 msgid "could not be inserted:"
-msgstr "konnte nicht eingetragen werden"
+msgstr "konnte nicht eingetragen werden:"
 
 #: functions/NagImportClass.php:434 functions/NagImportClass.php:439
 msgid "successfully inserted"
@@ -3270,7 +3270,7 @@ msgstr "Tabelle für die Importdefinition"
 # mutdialog.php
 #: functions/NagImportClass.php:565
 msgid "is not available!"
-msgstr "ist nicht verfügbar"
+msgstr "ist nicht verfügbar!"
 
 #: functions/NagImportClass.php:1640
 msgid ""
@@ -3362,7 +3362,7 @@ msgid ""
 "permissions! - File: "
 msgstr ""
 "Achtung, das Template konnte nicht gefunden werden oder ist nicht "
-"schreibbar, bitte überprüfe die Rechte! - Datei:"
+"schreibbar, bitte überprüfe die Rechte! - Datei: "
 
 #: functions/translator.php:63 install/functions/NagInstallClass.php:99
 msgid "English"
@@ -3437,7 +3437,7 @@ msgstr "funktioniert"
 # prepend.adm
 #: install/functions/NagInstallClass.php:358
 msgid "Error while connecting to database:"
-msgstr "Fehler beim Verbinden mit der Datenbank: "
+msgstr "Fehler beim Verbinden mit der Datenbank:"
 
 #: install/functions/NagInstallClass.php:399
 #: install/functions/NagInstallClass.php:474
@@ -3491,7 +3491,7 @@ msgstr "Nicht unterstützter Datenbanktyp."
 
 #: install/functions/NagInstallClass.php:611
 msgid "Only added rights to existing user"
-msgstr "Nur Rechte zum bestehenden Benutzer hinzugefügt."
+msgstr "Nur Rechte zum bestehenden Benutzer hinzugefügt"
 
 # mutdialog.php
 #: install/functions/NagInstallClass.php:641
@@ -3521,7 +3521,7 @@ msgstr "Das Einfügen der Verzeichnisdaten in die Datenbank ist fehlgeschlagen:"
 
 #: install/functions/NagInstallClass.php:936
 msgid "Check the permissions of the created paths!"
-msgstr "Überprüfen Sie die Rechte der Verzeichnisse! "
+msgstr "Überprüfen Sie die Rechte der Verzeichnisse!"
 
 #: install/functions/NagInstallClass.php:939
 msgid "NagiosQL config path is not writeable - only database values updated"
@@ -3534,7 +3534,7 @@ msgstr ""
 #: install/functions/NagInstallClass.php:1017
 #: install/functions/NagInstallClass.php:1069
 msgid "Database errors while converting to utf-8:"
-msgstr "Datenbankfehler während dem Konvertieren nach UTF-8"
+msgstr "Datenbankfehler während dem Konvertieren nach UTF-8:"
 
 #: install/functions/NagInstallClass.php:1008
 #: install/functions/NagInstallClass.php:1060 install/step3.php:88
@@ -3619,8 +3619,8 @@ msgid "The basic requirements are:"
 msgstr "Die wichtigsten Voraussetzungen sind:"
 
 #: install/index.php:166
-msgid "PHP 5.3.0 or greater including:"
-msgstr "PHP 5.3.0 oder größer, inklusive:"
+msgid "PHP 5.5.0 or greater including:"
+msgstr "PHP 5.5.0 oder größer, inklusive:"
 
 #: install/index.php:167
 msgid "PHP database module:"
@@ -3674,7 +3674,7 @@ msgstr "STARTE NEUINSTALLTION"
 msgid "START UPDATE"
 msgstr "STARTE AKTUALISIERUNG"
 
-#: install/install.php:214
+#: install/install.php:213
 msgid "Welcome to the NagiosQL Installation Wizard"
 msgstr "Willkommen zum NagiosQL Installations Assistenten"
 
@@ -3730,7 +3730,7 @@ msgid ""
 "is required."
 msgstr ""
 "Überprüfe welche der unterstützten Erweiterungen installiert sind. "
-"Wenigstens eine ist notwendig"
+"Wenigstens eine ist notwendig."
 
 #: install/step1.php:91
 msgid "The following settings are <em>required</em> to run NagiosQL"
@@ -3994,7 +3994,7 @@ msgstr ""
 "Sie sicherstellen, dass das NagiosQL Konfigurationsverzeichnis existiert und "
 "der Webserver Schreibrechte darauf besitzt. Dann wird der Installer die "
 "benötigten Unterverzeichnisse im Dateisystem von \"localhost\" erstellen "
-"(hosts, services, backup etc.) "
+"(hosts, services, backup etc.)"
 
 #: install/step2.php:120
 msgid "Please backup your database before proceeding!"

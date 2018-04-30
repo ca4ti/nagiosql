@@ -1,17 +1,19 @@
 CHANGELOG 3.4.0
 ---------------
-- Support for PHP 7.x (developped and tested with PHP 7.2.2)
+- Support for PHP 7.x (developped and tested with PHP 7.2.4)
 - Support for PHP < 5.5 dropped
 - Code reworked to follow PSR1/PSR2 standards
 - New class autoloader function
-- Minor bugfixes - mostly in SSH/SFTP and FTP variant
+- Several minor bugfixes
+- Moved sourcecode to GitLab
 - FTP now supports encrypted communication (FTPS) - new option in config targets
-- Full support for Nagios 4.x added
+- Full support for Nagios 4.x added (importance and service parents)
 - Nagios cgi.cfg path is now handled by NagiosQL
+- Nagios ressource.cfg path is now handled by NagiosQL
 
 CHANGELOG 3.3.0
 ---------------
-- [OK] Support for PHP version 7.0
+- [OK] Support for PHP version 7.0 (not 7.1 or higher)
 - [OK] Database interface changed from mysql to mysqli
 
 CHANGELOG 3.2.0

@@ -75,7 +75,7 @@ $arrTemplate['STEP1_BOX']       = $myInstClass->translate('Requirements');
 $arrTemplate['STEP2_BOX']       = $myInstClass->translate($_SESSION['install']['mode']);
 $arrTemplate['STEP3_BOX']       = $myInstClass->translate('Finish');
 $arrTemplate['STEP1_TITLE']     = 'NagiosQL ' .$myInstClass->translate($_SESSION['install']['mode']). ': ' .
-                                  $myInstClass->translate('Checking requirements');
+    $myInstClass->translate('Checking requirements');
 $arrTemplate['STEP1_SUBTITLE1'] = $myInstClass->translate('Checking Client');
 $arrTemplate['STEP1_SUBTITLE2'] = $myInstClass->translate('Checking PHP version');
 $arrTemplate['STEP1_SUBTITLE3'] = $myInstClass->translate('Checking PHP extensions');
@@ -83,13 +83,13 @@ $arrTemplate['STEP1_SUBTITLE4'] = $myInstClass->translate('Checking available da
 $arrTemplate['STEP1_SUBTITLE5'] = $myInstClass->translate('Checking php.ini/.htaccess settings');
 $arrTemplate['STEP1_SUBTITLE6'] = $myInstClass->translate('Checking System Permission');
 $arrTemplate['STEP1_TEXT3_1']   = $myInstClass->translate('The following modules/extensions are <em>required</em> '
-                                . 'to run NagiosQL');
+    . 'to run NagiosQL');
 $arrTemplate['STEP1_TEXT3_2']   = $myInstClass->translate('The next couple of extensions are <em>optional</em> but '
-                                . 'recommended');
+    . 'recommended');
 $arrTemplate['STEP1_TEXT4_1']   = $myInstClass->translate('Check which of the supported extensions are installed. At '
-                                . 'least one of them is required.');
+    . 'least one of them is required.');
 $arrTemplate['STEP1_TEXT5_1']   = $myInstClass->translate('The following settings are <em>required</em> to run '
-                                . 'NagiosQL');
+    . 'NagiosQL');
 //
 // Conditional checks
 // =======================
@@ -100,7 +100,7 @@ $strHTMLPart4 = ': <span class="green">';
 $strHTMLPart5 = ': <span class="red">';
 $strHTMLPart6 = ': <span class="yellow">';
 $strHTMLPart7 = '<img src="images/onlinehelp.png" alt="online help" title="online help" class="textmiddle" '
-              . 'style="border:none;">';
+    . 'style="border:none;">';
 
 // Javascript check
 if ($_SESSION['install']['jscript'] == 'yes') {
@@ -113,10 +113,10 @@ if ($_SESSION['install']['jscript'] == 'yes') {
     $arrTemplate['CHECK_1_CLASS'] = 'green';
     $arrTemplate['CHECK_1_VALUE'] = $myInstClass->translate('NOT ENABLED');
     $arrTemplate['CHECK_1_INFO']  = '(' .$myInstClass->translate('After enabling Javascript, the page must be updated '
-                                  . 'twice so that the status changes'). ')';
+            . 'twice so that the status changes'). ')';
 }
 // PHP version check
-$strMinPHPVersion = '5.3.0';
+$strMinPHPVersion = '5.5.0';
 $arrTemplate['CHECK_2_TEXT'] = $myInstClass->translate('Version');
 if (version_compare(PHP_VERSION, $strMinPHPVersion, '>=')) {
     $arrTemplate['CHECK_2_PIC']   = 'valid';
@@ -128,7 +128,7 @@ if (version_compare(PHP_VERSION, $strMinPHPVersion, '>=')) {
     $arrTemplate['CHECK_2_CLASS'] = 'green';
     $arrTemplate['CHECK_2_VALUE'] = 'PHP ' . PHP_VERSION . ' ' .$myInstClass->translate('detected');
     $arrTemplate['CHECK_2_INFO']  = '(PHP ' . $strMinPHPVersion . ' ' .$myInstClass->translate('or greater is '
-                                  . 'required'). ')';
+            . 'required'). ')';
     $intError = 1;
 }
 // PHP modules / extensions
@@ -141,9 +141,9 @@ foreach ($arrRequiredExt as $key => $elem) {
     } else {
         $strPath   = $strExtPath. '/' .$strPrefix.$elem. '.' .PHP_SHLIB_SUFFIX;
         $strMsg    = is_readable($strPath) ? $myInstClass->translate('Could be loaded. Please add in php.ini')
-                                : '<a href="' .$arrSourceURLs[$key]. '" target="_blank">' .$strHTMLPart7. '</a>';
+            : '<a href="' .$arrSourceURLs[$key]. '" target="_blank">' .$strHTMLPart7. '</a>';
         $strHTML1 .= $strHTMLPart2.$key.$strHTMLPart5.$myInstClass->translate('NOT AVAILABLE'). ' (' .$strMsg. ')'
-                  . "</span>\n";
+            . "</span>\n";
         $intError  = 1;
     }
     $strHTML1 .= "<br>\n";
@@ -156,9 +156,9 @@ foreach ($arrOptionalExt as $key => $elem) {
     } else {
         $strPath   = $strExtPath. '/' .$strPrefix.$elem. '.' .PHP_SHLIB_SUFFIX;
         $strMsg    = is_readable($strPath) ? $myInstClass->translate('Could be loaded. Please add in php.ini')
-                                : '<a href="' .$arrSourceURLs[$key]. '" target="_blank">' .$strHTMLPart7. '</a>';
+            : '<a href="' .$arrSourceURLs[$key]. '" target="_blank">' .$strHTMLPart7. '</a>';
         $strHTML2 .= $strHTMLPart3.$key.$strHTMLPart6.$myInstClass->translate('NOT AVAILABLE'). ' (' .$strMsg. ')'
-                   . "</span>\n";
+            . "</span>\n";
         //$intError = 1;
     }
     $strHTML2 .= "<br>\n";
@@ -175,7 +175,7 @@ foreach ($arrSupportedDBs as $key => $elem) {
             ($_SESSION['install']['dbtype'] != $elem) &&
             (0 !== strpos($_SESSION['install']['dbtype'], substr($elem, 0, 5)))) {
             $strNewInstallOnly = ' (' .$myInstClass->translate('New installation only - updates are only supported '
-                               . 'using the same database interface!'). ')';
+                    . 'using the same database interface!'). ')';
         }
         $strHTML3 .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate('OK')."</span>  $strNewInstallOnly\n";
         if ($strNewInstallOnly == '') {
@@ -185,9 +185,9 @@ foreach ($arrSupportedDBs as $key => $elem) {
     } else {
         $strPath   = $strExtPath. '/' .$strPrefix.$elem. '.' .PHP_SHLIB_SUFFIX;
         $strMsg    = is_readable($strPath) ? $myInstClass->translate('Could be loaded. Please add in php.ini')
-                                : '<a href="' .$arrSourceURLs[$key]. '" target="_blank">' .$strHTMLPart7. '</a>';
+            : '<a href="' .$arrSourceURLs[$key]. '" target="_blank">' .$strHTMLPart7. '</a>';
         $strHTML3 .= $strHTMLPart2.$key.$strHTMLPart5.$myInstClass->translate('NOT AVAILABLE'). ' (' .$strMsg. ')'
-                   . "</span>\n";
+            . "</span>\n";
     }
     $strHTML3 .= "<br>\n";
 }
@@ -202,7 +202,7 @@ foreach ($arrIniCheck as $key => $elem) {
     if ($elem === '-NOTEMPTY-') {
         if (empty($strStatus)) {
             $strHTML4 .= $strHTMLPart2.$key.$strHTMLPart5.$myInstClass->translate('NOT AVAILABLE'). ' (' .
-                         $myInstClass->translate('cannot be empty and needs to be set').")</span>\n";
+                $myInstClass->translate('cannot be empty and needs to be set').")</span>\n";
             $intError = 1;
         } else {
             $strHTML4 .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate('OK')."</span>\n";
@@ -212,7 +212,7 @@ foreach ($arrIniCheck as $key => $elem) {
             $strHTML4 .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate('OK')."</span>\n";
         } else {
             $strHTML4 .= $strHTMLPart2.$key.$strHTMLPart5.$strStatus. ' (' .$myInstClass->translate('should be'). ' ' .
-                         $elem.")</span>\n";
+                $elem.")</span>\n";
             $intError = 1;
         }
     }
@@ -304,15 +304,15 @@ if ($intError != 0) {
     $arrTemplate['MESSAGE']     = '<span class="red">' .$myInstClass->translate('There are some errors - please '
             . 'check your system settings and read the requirements of NagiosQL!')."</span><br><br>\n";
     $arrTemplate['MESSAGE']    .= $myInstClass->translate('Read the INSTALLATION file in the NagiosQL doc directory '
-            . 'or the installation PDF file on our');
+        . 'or the installation PDF file on our');
     $arrTemplate['MESSAGE']    .= ' <a href="https://sourceforge.net/projects/nagiosql/documentation.html" '
-            . 'target="_blank">';
+        . 'target="_blank">';
     $arrTemplate['MESSAGE']    .= $myInstClass->translate('online documentation'). '</a><br>' .
-            $myInstClass->translate('site to find out, how to fix them.') ."<br>\n";
+        $myInstClass->translate('site to find out, how to fix them.') ."<br>\n";
     $arrTemplate['MESSAGE']    .= $myInstClass->translate('After that - refresh this page to proceed') ."...<br>\n";
     $arrTemplate['DIV_ID']     = 'install-center';
     $arrTemplate['FORM_CONTENT']  = '<input type="image" src="images/reload.png" title="refresh" '
-            . 'value="Submit" alt="refresh" onClick="window.location.reload()"><br>';
+        . 'value="Submit" alt="refresh" onClick="window.location.reload()"><br>';
     $arrTemplate['FORM_CONTENT'] .= $myInstClass->translate('Refresh')."\n";
 } else {
     $arrTemplate['MESSAGE']  = '<span class="green">' .$myInstClass->translate('Environment test completed '
@@ -320,7 +320,7 @@ if ($intError != 0) {
     $arrTemplate['DIV_ID']   = 'install-next';
     $arrTemplate['FORM_CONTENT']  = "<input type=\"hidden\" name=\"hidStep\" id=\"hidStep\" value=\"2\">\n";
     $arrTemplate['FORM_CONTENT'] .= '<input type="image" src="images/next.png" value="Submit" title="next" '
-            . 'alt="next"><br>' .$myInstClass->translate('Next')."\n";
+        . 'alt="next"><br>' .$myInstClass->translate('Next')."\n";
 }
 //
 // Write content

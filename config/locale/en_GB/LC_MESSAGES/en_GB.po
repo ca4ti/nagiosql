@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NagiosQL 3.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-30 19:08+0200\n"
-"PO-Revision-Date: 2018-04-30 19:09+0200\n"
+"POT-Creation-Date: 2018-04-30 20:16+0200\n"
+"PO-Revision-Date: 2018-04-30 20:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: NagiosQL\n"
 "Language: en_GB\n"
@@ -423,18 +423,15 @@ msgid "Nagios base directory"
 msgstr "Nagios base directory"
 
 #: admin/configtargets.php:92
-#| msgid "Nagios config file"
 msgid "Nagios cgi config file"
 msgstr "Nagios cgi config file"
 
 #: admin/configtargets.php:97
-#| msgid "Nagios config file"
 msgid "Nagios resource config file"
 msgstr "Nagios resource config file"
 
 # mutdialog.php
 #: admin/configtargets.php:98
-#| msgid "is not writeable"
 msgid "is not readable"
 msgstr "is not readable"
 
@@ -1985,7 +1982,6 @@ msgid "Configuration directories"
 msgstr "Configuration directories"
 
 #: config/fieldvars.php:34
-#| msgid "Configuration directories"
 msgid "Nagios configuration files and directories"
 msgstr "Nagios configuration files and directories"
 
@@ -2022,7 +2018,6 @@ msgid "Nagios cgi file"
 msgstr "Nagios cgi file"
 
 #: config/fieldvars.php:48
-#| msgid "Nagios process file"
 msgid "Nagios resource file"
 msgstr "Nagios resource file"
 
@@ -3222,16 +3217,12 @@ msgstr ""
 "Error: incorrect number of arguments - cannot import service group members"
 
 #: functions/NagImportClass.php:1868
-#| msgid ""
-#| "Error: incorrect number of arguments - cannot import service group members"
 msgid ""
 "Error: incorrect number of arguments - cannot import service parent members"
 msgstr ""
 "Error: incorrect number of arguments - cannot import service parent members"
 
 #: functions/NagImportClass.php:1929 functions/NagImportClass.php:1934
-#| msgid ""
-#| "Error: incorrect number of arguments - cannot import service group members"
 msgid "Error: cannot import the service parent member "
 msgstr "Error: cannot import the service parent member "
 
@@ -3552,8 +3543,9 @@ msgid "The basic requirements are:"
 msgstr "The basic requirements are:"
 
 #: install/index.php:166
-msgid "PHP 5.3.0 or greater including:"
-msgstr "PHP 5.3.0 or greater including:"
+#| msgid "PHP 5.3.0 or greater including:"
+msgid "PHP 5.5.0 or greater including:"
+msgstr "PHP 5.5.0 or greater including:"
 
 #: install/index.php:167
 msgid "PHP database module:"
@@ -3607,7 +3599,7 @@ msgstr "START INSTALLATION"
 msgid "START UPDATE"
 msgstr "START UPDATE"
 
-#: install/install.php:214
+#: install/install.php:213
 msgid "Welcome to the NagiosQL Installation Wizard"
 msgstr "Welcome to the NagiosQL Installation Wizard"
 
@@ -3762,9 +3754,6 @@ msgid "Read test on one template file (templates/index.tpl.htm)"
 msgstr "Read test on one template file (templates/index.tpl.htm)"
 
 #: install/step1.php:278 install/step1.php:281
-#| msgid ""
-#| "Read test on one admin template file (templates/admin/admin_master.tpl."
-#| "htm)"
 msgid "Read test on one admin template file (templates/admin/datalist.htm.tpl)"
 msgstr ""
 "Read test on one admin template file (templates/admin/datalist.htm.tpl)"
