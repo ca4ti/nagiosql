@@ -18,7 +18,7 @@
 //
 // To enable scripting functionality - comment out the line below
 // ==============================================================
-//exit;
+exit;
 //
 // Include preprocessing file
 // ==========================
