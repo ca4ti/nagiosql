@@ -17,8 +17,7 @@
 //
 // Path settings
 // ===================
-$preRelPath  = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'admin', true);
-$preBasePath = strstr(filter_input(INPUT_SERVER, 'SCRIPT_FILENAME', FILTER_SANITIZE_STRING), 'admin', true);
+v
 //
 // Define common variables
 // =======================
