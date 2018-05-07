@@ -32,9 +32,9 @@ $intError          = 0;
 $arrTemplate['PASSWD_MESSAGE'] = $myInstClass->translate('The NagiosQL first passwords are not equal!');
 $arrTemplate['FIELDS_MESSAGE'] = $myInstClass->translate('Please fill in all fields marked with an *');
 $arrTemplate['STEP1_BOX']      = $myInstClass->translate('Requirements');
-$arrTemplate['STEP2_BOX']      = $myInstClass->translate($_SESSION['install']['mode']);
+$arrTemplate['STEP2_BOX']      = $myInstClass->translate('Installation');
 $arrTemplate['STEP3_BOX']      = $myInstClass->translate('Finish');
-$arrTemplate['STEP2_TITLE']    = 'NagiosQL ' .$myInstClass->translate($_SESSION['install']['mode']). ': ' .
+$arrTemplate['STEP2_TITLE']    = 'NagiosQL ' .$myInstClass->translate('Installation'). ': ' .
                                  $myInstClass->translate('Setup');
 $arrTemplate['STEP2_TEXT1_1']  = $myInstClass->translate('Please complete the form below. Mandatory fields marked '
                                . '<em>*</em>');

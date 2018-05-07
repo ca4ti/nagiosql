@@ -72,9 +72,9 @@ $arrSourceURLs = array(
 // Build content
 // =============
 $arrTemplate['STEP1_BOX']       = $myInstClass->translate('Requirements');
-$arrTemplate['STEP2_BOX']       = $myInstClass->translate($_SESSION['install']['mode']);
+$arrTemplate['STEP2_BOX']       = $myInstClass->translate('Installation');
 $arrTemplate['STEP3_BOX']       = $myInstClass->translate('Finish');
-$arrTemplate['STEP1_TITLE']     = 'NagiosQL ' .$myInstClass->translate($_SESSION['install']['mode']). ': ' .
+$arrTemplate['STEP1_TITLE']     = 'NagiosQL ' .$myInstClass->translate('Installation'). ': ' .
     $myInstClass->translate('Checking requirements');
 $arrTemplate['STEP1_SUBTITLE1'] = $myInstClass->translate('Checking Client');
 $arrTemplate['STEP1_SUBTITLE2'] = $myInstClass->translate('Checking PHP version');

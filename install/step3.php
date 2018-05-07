@@ -36,9 +36,9 @@ if (function_exists('date_default_timezone_set') and function_exists('date_defau
 // Build content
 // =============
 $arrTemplate['STEP1_BOX']       = $myInstClass->translate('Requirements');
-$arrTemplate['STEP2_BOX']       = $myInstClass->translate($_SESSION['install']['mode']);
+$arrTemplate['STEP2_BOX']       = $myInstClass->translate('Installation');
 $arrTemplate['STEP3_BOX']       = $myInstClass->translate('Finish');
-$arrTemplate['STEP3_TITLE']     = 'NagiosQL ' .$myInstClass->translate($_SESSION['install']['mode']). ': ' .
+$arrTemplate['STEP3_TITLE']     = 'NagiosQL ' .$myInstClass->translate('Installation'). ': ' .
     $myInstClass->translate('Finishing Setup');
 $arrTemplate['INST_VISIBLE']    = 'showfield';
 $arrTemplate['STEP4_SUB_TITLE'] = $myInstClass->translate('Deploy NagiosQL settings');
