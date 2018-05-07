@@ -45,11 +45,17 @@ $chkVersion    = filter_input(INPUT_POST, 'selInfoVersion', FILTER_SANITIZE_STRI
 // ==========================
 if (get_magic_quotes_gpc() == 0) {
     $chkHidVersion = addslashes($chkHidVersion);
+    $chkKey1       = addslashes($chkKey1);
+    $chkKey2       = addslashes($chkKey2);
+    $chkVersion    = addslashes($chkVersion);
 }
 //
 // Security function for text fields
 // =================================
 $chkHidVersion = $myVisClass->tfSecure($chkHidVersion);
+$chkKey1       = $myVisClass->tfSecure($chkKey1);
+$chkKey2       = $myVisClass->tfSecure($chkKey2);
+$chkVersion    = $myVisClass->tfSecure($chkVersion);
 //
 // Add or modify data
 // ==================
