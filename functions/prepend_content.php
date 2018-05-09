@@ -87,9 +87,9 @@ for ($i = 1; $i <= 8; $i++) {
     $tmpVar2 = 'intMselValue'.$i;
     $$tmpVar = filter_input(INPUT_POST, 'mselValue'.$i, FILTER_SANITIZE_STRING, FILTER_FORCE_ARRAY);
     // Multiselect data processing
-    if (($$tmpVar[0] == '') || ($$tmpVar[0] == '0')) {
+    if ((${$tmpVar}[0] == '') || (${$tmpVar}[0] == '0')) {
         $$tmpVar2 = 0;
-    } elseif ($$tmpVar[0] == '*') {
+    } elseif (${$tmpVar}[0] == '*') {
         $$tmpVar2 = 2;
     } else {
         $$tmpVar2 = 1;
