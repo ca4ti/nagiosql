@@ -224,7 +224,7 @@ if ($chkModus == 'add') {
     if ($intDataWarning == 1) {
         $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
-    if ($intVersion != 3) {
+    if ($intVersion < 3) {
         $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
     $conttp->setVariable('LANG_INSERT_ALL_TIMERANGE', translate('Please insert a time definition and a time range'));

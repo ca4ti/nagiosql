@@ -499,7 +499,7 @@ if (($chkModus == 'add') || ($chkModus == 'refresh')) {
     if ($intDataWarning == 1) {
         $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
-    if ($intVersion != 3) {
+    if ($intVersion < 3) {
         $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
     if ($chkModus == 'refresh') {

@@ -49,7 +49,7 @@ if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAcce
         $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != '') && ($chkTfValue2 != '') && (($intMselValue1 != 0) || ($intVersion == 3))) {
+        if (($chkTfValue1 != '') && ($chkTfValue2 != '') && (($intMselValue1 != 0) || ($intVersion >= 3))) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
             if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;
@@ -166,7 +166,7 @@ if ($chkModus == 'add') {
     if ($intReturn1 != 0) {
         $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
     }
-    if (($intReturn1 != 0) && ($intVersion != 3)) {
+    if (($intReturn1 != 0) && ($intVersion < 3)) {
         $myVisClass->processMessage(translate('Attention, no services defined!'), $strDBWarning);
         $intDataWarning = 1;
     }
@@ -203,7 +203,7 @@ if ($chkModus == 'add') {
     if ($intDataWarning == 1) {
         $conttp->setVariable('WARNING', $strDBWarning. '<br>' .translate('Saving not possible!'));
     }
-    if ($intVersion != 3) {
+    if ($intVersion < 3) {
         $conttp->setVariable('VERSION_20_VALUE_MUST', 'mselValue1,');
     }
     // Insert data from database in "modify" mode

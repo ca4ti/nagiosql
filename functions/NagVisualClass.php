@@ -338,7 +338,7 @@ class NagVisualClass
                 $this->myContentTpl->setVariable('SPECIAL_STYLE', '');
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), '&nbsp;');
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey).'_ID', 0);
-                if ($intVersion != 3) {
+                if ($intVersion < 3) {
                     $this->myContentTpl->setVariable('VERSION_20_MUST', 'inpmust');
                 }
                 $this->myContentTpl->parse($strTemplKey);
@@ -348,7 +348,7 @@ class NagVisualClass
                 $this->myContentTpl->setVariable('SPECIAL_STYLE', '');
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), 'null');
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey).'_ID', -1);
-                if ($intVersion != 3) {
+                if ($intVersion < 3) {
                     $this->myContentTpl->setVariable('VERSION_20_MUST', 'inpmust');
                 }
                 if ($intSelId == -1) {
@@ -382,7 +382,7 @@ class NagVisualClass
                         ).$strActive);
                 }
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey). '_ID', $elem['key']);
-                if ($intVersion != 3) {
+                if ($intVersion < 3) {
                     $this->myContentTpl->setVariable('VERSION_20_MUST', 'inpmust');
                 }
                 if ($intSelId == $elem['key']) {
@@ -481,7 +481,7 @@ class NagVisualClass
                 }
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), '&nbsp;');
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey).'_ID', 0);
-                if ($intVersion != 3) {
+                if ($intVersion < 3) {
                     $this->myContentTpl->setVariable('VERSION_20_MUST', 'inpmust');
                 }
                 $this->myContentTpl->parse($strTemplKey);
@@ -496,7 +496,7 @@ class NagVisualClass
                 }
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey), '*');
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey).'_ID', '*');
-                if ($intVersion != 3) {
+                if ($intVersion < 3) {
                     $this->myContentTpl->setVariable('VERSION_20_MUST', 'inpmust');
                 }
                 if ($intTypeId  == 2) {
@@ -549,7 +549,7 @@ class NagVisualClass
                 }
                 $this->myContentTpl->setVariable('DAT_'.strtoupper($strTemplKey). '_ID', $elem['key']);
                 $this->myContentTpl->setVariable('CLASS_SEL', '');
-                if ($intVersion != 3) {
+                if ($intVersion < 3) {
                     $this->myContentTpl->setVariable('VERSION_20_MUST', 'inpmust');
                 }
                 if (($booSel == 0) && \in_array($elem['key'], $arrSelected, true)) {
