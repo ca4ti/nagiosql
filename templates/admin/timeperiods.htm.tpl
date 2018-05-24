@@ -54,7 +54,7 @@
             }
             // Check for illegal chars
             if (form.tfValue1.value.match(/[^a-zA-Z0-9.@_-]/)) {
-                msginit(msg2+" {LANG_COMMAND}",header,1);
+                msginit(msg2+" {LANG_TIME_PERIOD}",header,1);
                 form.tfValue1.focus();
                 return false;
             }
