@@ -235,8 +235,8 @@ if ($chkModus == 'display') {
         $myVisClass->processMessage(translate('Error while selecting data from database:'), $strErrorMessage);
         $myVisClass->processMessage($myDBClass->strErrorMessage, $strErrorMessage);
     } else {
-        $intCount = (int)$arrDataLinesCount['number'];
-        if ($intCount < $chkLimit) {
+        $intLineCount = (int)$arrDataLinesCount['number'];
+        if ($intLineCount < $chkLimit) {
             $chkLimit = 0;
         }
     }
