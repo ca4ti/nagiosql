@@ -596,7 +596,7 @@ if (isset($preContent) && ($preContent != '')) {
 // Process standard get/post parameters
 // ====================================
 $arrSortDir   = array('ASC', 'DESC');
-$arrSortBy    = array('1', '2');
+$arrSortBy    = array(1, 2);
 $chkModus     = 'display';
 $chkModusGet  = filter_input(INPUT_GET, 'modus', 513, array('options' => array('default' => 'display')));
 $chkOrderBy   = filter_input(INPUT_GET, 'orderby', FILTER_SANITIZE_STRING);

@@ -166,6 +166,7 @@ if (!isset($_SESSION['search']) || !isset($_SESSION['search']['config_selection'
 if (($chkModus == 'checkform') || ($chkModus == 'filter')) {
     $_SESSION['search'][$preSearchSession]  = $chkTfSearch;
     $_SESSION['search']['config_selection'] = $chkSelCnfName;
+    $myContentClass->arrSession = $_SESSION;
 }
 //
 // Process additional templates/variables
