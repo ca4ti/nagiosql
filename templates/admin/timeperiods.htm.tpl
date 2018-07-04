@@ -63,7 +63,7 @@
         function insertDefintion() {
             let txtDef;
             let txtRange;
-            if (document.frmDetail.hidVersion.value >= 4) {
+            if (document.frmDetail.hidVersion.value >= 3) {
                 txtDef   = document.frmDetail.txtTimedefinition.value;
                 txtRange = document.frmDetail.txtTimerange2.value;
             } else {
