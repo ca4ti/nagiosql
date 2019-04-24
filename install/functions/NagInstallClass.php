@@ -857,15 +857,15 @@ class NagInstallClass
             fwrite($filSettings, ";\n");
             fwrite($filSettings, ";///////////////////////////////////////////////////////////////////////////////\n");
             fwrite($filSettings, "[db]\n");
-            fwrite($filSettings, 'type         = ' .$this->arrSession['install']['dbtype']."\n");
-            fwrite($filSettings, 'server       = ' .$this->arrSession['install']['dbserver']."\n");
-            fwrite($filSettings, 'port         = ' .$this->arrSession['install']['dbport']."\n");
-            fwrite($filSettings, 'database     = ' .$this->arrSession['install']['dbname']."\n");
-            fwrite($filSettings, 'username     = ' .$this->arrSession['install']['dbuser']."\n");
-            fwrite($filSettings, 'password     = ' .$this->arrSession['install']['dbpass']."\n");
+            fwrite($filSettings, 'type         = \'' .$this->arrSession['install']['dbtype']."'\n");
+            fwrite($filSettings, 'server       = \'' .$this->arrSession['install']['dbserver']."'\n");
+            fwrite($filSettings, 'port         = \'' .$this->arrSession['install']['dbport']."'\n");
+            fwrite($filSettings, 'database     = \'' .$this->arrSession['install']['dbname']."'\n");
+            fwrite($filSettings, 'username     = \'' .$this->arrSession['install']['dbuser']."'\n");
+            fwrite($filSettings, 'password     = \'' .$this->arrSession['install']['dbpass']."'\n");
             fwrite($filSettings, "[path]\n");
-            fwrite($filSettings, 'base_url     = ' .$strBaseURL."\n");
-            fwrite($filSettings, 'base_path    = ' .$strBasePath."\n");
+            fwrite($filSettings, 'base_url     = \'' .$strBaseURL."'\n");
+            fwrite($filSettings, 'base_path    = \'' .$strBasePath."'\n");
             fclose($filSettings);
             $strStatusMessage = '<span class="green">' .$this->translate('done'). '</span>';
         } else {
