@@ -160,15 +160,15 @@ if (filter_input(INPUT_POST, 'selValue1')) {
             fwrite($filSettings, ";\n");
             fwrite($filSettings, ";///////////////////////////////////////////////////////////////////////////////\n");
             fwrite($filSettings, "[db]\n");
-            fwrite($filSettings, "type         = mysqli\n");
-            fwrite($filSettings, 'server       = ' .$chkTfValue3."\n");
-            fwrite($filSettings, 'port         = ' .$chkTfValue4."\n");
-            fwrite($filSettings, 'database     = ' .$chkTfValue5."\n");
-            fwrite($filSettings, 'username     = ' .$chkTfValue6."\n");
-            fwrite($filSettings, 'password     = ' .$chkTfValue7."\n");
+            fwrite($filSettings, "type         = 'mysqli'\n");
+            fwrite($filSettings, 'server       = \'' .$chkTfValue3. "'\n");
+            fwrite($filSettings, 'port         = \'' .$chkTfValue4. "'\n");
+            fwrite($filSettings, 'database     = \'' .$chkTfValue5. "'\n");
+            fwrite($filSettings, 'username     = \'' .$chkTfValue6. "'\n");
+            fwrite($filSettings, 'password     = \'' .$chkTfValue7. "'\n");
             fwrite($filSettings, "[path]\n");
-            fwrite($filSettings, 'base_url     = ' .$preRelPath."\n");
-            fwrite($filSettings, 'base_path    = ' .$preBasePath."\n");
+            fwrite($filSettings, 'base_url     = \'' .$preRelPath. "'\n");
+            fwrite($filSettings, 'base_path    = \'' .$preBasePath. "'\n");
             fclose($filSettings);
             // Activate new language settings
             $arrLocale = explode('.', $strLocale);
