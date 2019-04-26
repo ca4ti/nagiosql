@@ -26,6 +26,14 @@
     <iframe scrolling="no" id="versioncheck" name="fullcommand" src="{VERSION_IF_SRC}" width="100%" height="55" class="elementHide"></iframe>
     <div id="vcheck" class="elementShow" style="height:50px; vertical-align:top; padding-top:5px;"><img src="{LOADER_IMAGE}" alt="Loading..." title="Loading" width="16" height="16"></div>
 <!-- END versioncheck_frame -->
+    <table width="1000" border="0" cellpadding="0" cellspacing="0" class="env_table">
+        <tr>
+            <td style="width:200px;">{GIT_TITLE}</td>
+            <td style="width:150px;" class="checkgreen">{GIT_VERSION}</td>
+            <td style="width:300px;">&nbsp;</td>
+            <td style="width:250px;">&nbsp;</td>
+        </tr>
+    </table>
     <h2 style="padding-top:10px;">{SUBTITLE_5}</h2>
     <table width="1000" border="0" cellpadding="0" cellspacing="0" class="env_table">
     	<tr>

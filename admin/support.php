@@ -92,6 +92,8 @@ if (!isset($SETS['common']['updcheck']) || ($SETS['common']['updcheck'] == '0'))
         'admin/versioncheck.php?show=1');
     $conttp->parse('versioncheck_js');
 }
+$conttp->setVariable('GIT_TITLE', translate('GIT code version'));
+$conttp->setVariable('GIT_VERSION', $setFileVersion.'-'.$setGITVersion);
 //
 // Environment check
 // =================
