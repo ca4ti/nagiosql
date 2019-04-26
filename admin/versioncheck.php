@@ -35,7 +35,8 @@ $intCount       = 0;
 // Get database values
 // ===================
 if ($chkShow == 1) {
-    $versionfeed = 'http://api.wizonet.ch/nagiosql/versioncheck.php?myversion=' .urlencode($setFileVersion);
+    $versionfeed = 'http://api.wizonet.ch/nagiosql/versioncheck.php?myversion=' .urlencode($setFileVersion).'&mygit='
+                    .urlencode($setGITVersion);
     $strError     = '';
     if ((isset($SETS['network']['proxy']) && ($SETS['network']['proxy'] == '1')) &&
         (isset($SETS['network']['proxyserver']) && ($SETS['network']['proxyserver'] != ''))) {
