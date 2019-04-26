@@ -831,7 +831,7 @@ class NagVisualClass
                 if ($this->checkAccountGroup($elem['access_group'], 'read') == 0) {
                     $resTemplate->setVariable('DOMAIN_ID', $elem['id']);
                     $resTemplate->setVariable('DOMAIN_NAME', $elem['domain']);
-                    if ($this->arrSession['domain'] == $elem['id']) {
+                    if ($this->intDomainId == $elem['id']) {
                         $resTemplate->setVariable('DOMAIN_SEL', 'selected');
                     }
                     $resTemplate->parse('domainlist');
