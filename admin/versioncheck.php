@@ -91,6 +91,9 @@ if ($chkShow == 1) {
             if (substr_count($elem, 'version')       != 0) {
                 $strVersion = trim(strip_tags($elem));
             }
+            if (substr_count($elem, 'git')  != 0) {
+                $strGIT = trim(strip_tags($elem));
+            }
             if (substr_count($elem, 'release_date') != 0) {
                 $strRelease = trim(strip_tags($elem));
             }
@@ -104,8 +107,14 @@ if ($chkShow == 1) {
     }
     $setFileAvailable = $strVersion;
     if (version_compare($strVersion, $setFileVersion, '==')) {
-        $setFileInformation = "<span class='greenmessage'>".translate('You already have the latest version installed').
-            '</span>';
+        if ($strGIT == $setGITVersion) {
+            $setFileInformation = "<span class='greenmessage'>".translate('You already have the latest version installed').
+                '</span>';
+        } else {
+            $setFileInformation = "<span class='greenmessage'>".translate('You already have the latest version installed').
+                ' ('.translate('new GIT hotfix version available:').' '.$strVersion.'-'.$strGIT.')</span>';
+        }
+
     } elseif (version_compare($strVersion, $setFileVersion, '>=')) {
         $setFileInformation = "<span class='redmessage'>".translate('You are using an old NagiosQL version. Please '.
                 'update to the latest stable version'). '</span>: ';
