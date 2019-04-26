@@ -42,6 +42,7 @@ $chkGroupAdm       = 0;
 $intError          = 0;
 $setDBVersion      = 'unknown';
 $setFileVersion    = '3.4.0';
+$setGITVersion     = '2019-04-26';
 //
 // Start PHP session
 // =================

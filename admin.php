@@ -46,6 +46,6 @@ $conttp->show('main');
 // Include footer
 // ==============
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-    . "target='_blank'>NagiosQL</a> $setFileVersion");
+    . "target='_blank'>NagiosQL</a> $setFileVersion - GIT Version: $setGITVersion");
 $maintp->parse('footer');
 $maintp->show('footer');
