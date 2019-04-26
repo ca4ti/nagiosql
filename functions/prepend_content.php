@@ -72,7 +72,7 @@ for ($i = 1; $i <= 22; $i++) {
 // Common argument text field value
 for ($i = 1; $i <= 8; $i++) {
     $tmpVar  = 'chkTfArg'.$i;
-    $$tmpVar = filter_input(INPUT_POST, 'tfArg'.$i, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+    $$tmpVar = filter_input(INPUT_POST, 'tfArg'.$i, FILTER_UNSAFE_RAW);
     if (get_magic_quotes_gpc() == 0) {
         $$tmpVar = addslashes($$tmpVar);
     }
@@ -80,7 +80,6 @@ for ($i = 1; $i <= 8; $i++) {
         $$tmpVar = $myVisClass->tfSecure($$tmpVar);
     }
 }
-
 // Common multi select field value
 for ($i = 1; $i <= 8; $i++) {
     $tmpVar  = 'chkMselValue'.$i;
