@@ -498,6 +498,7 @@ class NagImportClass
                             }
                         }
                     } else {
+                        $intRemoveOldVariables = 1;
                         foreach ($arrFreeVariables as $elem) {
                             foreach ($arrRelations as $reldata) {
                                 if ($reldata['type'] == 4) {
@@ -505,9 +506,11 @@ class NagImportClass
                                         $elem['key'],
                                         $elem['value'],
                                         $intDataId,
+                                        $intRemoveOldVariables,
                                         $strTable,
                                         $reldata
                                     );
+                                    $intRemoveOldVariables = 0;
                                 }
                             }
                         }
@@ -1495,11 +1498,12 @@ class NagImportClass
      * @param string $strKey                    Data field name
      * @param string $strValue                  Data value
      * @param int $intDataId                    Data ID
+     * @param int $intRemoveData                0 = do not remove data / 1 = do remove data
      * @param string $strDataTable              Data table (Master)
      * @param array $arrRelData                 Relation data
      * @return int                              0 = successful / 1 = error
      */
-    public function writeRelation4($strKey, $strValue, $intDataId, $strDataTable, $arrRelData)
+    public function writeRelation4($strKey, $strValue, $intDataId, $intRemoveData, $strDataTable, $arrRelData)
     {
         // Define variables
         $intReturn = 0;
@@ -1511,8 +1515,8 @@ class NagImportClass
         if ($strKey == '_NAGIOSQL_CONFIG_NAME') {
             $intReturn = 1;
         }
-        if ($intReturn == 0) {
-            // Remove old variables
+        // Remove old variables
+        if ($intRemoveData == 1) {
             $strSQL = 'SELECT * FROM '.$arrRelData['linkTable'].' WHERE idMaster='.$intDataId;
             $booResult = $this->myDBClass->hasDataArray($strSQL, $arrLinkData, $intLinkCount);
             if ($booResult && ($intLinkCount != 0)) {
@@ -1530,6 +1534,9 @@ class NagImportClass
                     }
                 }
             }
+        }
+        // Insert free Variables
+        if ($intReturn == 0) {
             // Insert values to the table
             $strSQL = "INSERT INTO `tbl_variabledefinition` SET `name` = '" . addslashes($strKey) . "', " .
                 "`value` = '" . addslashes($strValue) . "', `last_modified`=now()";
