@@ -5,12 +5,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2018 by Martin Willisegger
+// (c) 2005-2020 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Installer script - step 2
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.0
+// Version   : 3.4.1
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ if ($_SESSION['install']['mode'] == 'Update') {
         $arrTemplate['STEP3_TEXT_05_SHOW'] = 'showfield';
         $intError = $myInstClass->updateQLDB($arrTemplate['STEP3_TEXT_06'], $strErrorMessage, $arrUpdate);
     }
-    if (($_SESSION['install']['dbtype'] == 'mysql') && (version_compare($setQLVersion, '3.4.0') == -1)) {
+    if (($_SESSION['install']['dbtype'] == 'mysql') && (version_compare($setQLVersion, '3.4.1') == -1)) {
         // Converting database to UTF8
         if ($intError == 0) {
             $arrTemplate['STEP3_TEXT_07']      = $myInstClass->translate('Converting database to utf8 character set');

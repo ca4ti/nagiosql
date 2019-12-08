@@ -2337,7 +2337,7 @@ class NagConfigClass
                     $strSpace .= ' ';
                 }
                 $resTemplate->setVariable('ITEM_TITLE', $vardata['name'] . $strSpace);
-                $resTemplate->setVariable('ITEM_VALUE', $vardata['value']);
+                $resTemplate->setVariable('ITEM_VALUE', html_entity_decode($vardata['value'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
                 $resTemplate->parse('configline');
             }
         }

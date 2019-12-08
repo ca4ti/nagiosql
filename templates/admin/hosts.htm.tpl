@@ -3,7 +3,7 @@
 <!-- Project   : NagiosQL -->
 <!-- Component : host template -->
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
-<!-- Version   : 3.4.0 -->
+<!-- Version   : 3.4.1 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
 <!-- BEGIN datainsert -->
 <div id="content_main">

@@ -3,7 +3,7 @@
 <!-- Project    : NagiosQL -->
 <!-- Component  : NagiosQL support page template -->
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
-<!-- Version   : 3.4.0 -->
+<!-- Version   : 3.4.1 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
 <!-- BEGIN support -->
 <div id="content_main">

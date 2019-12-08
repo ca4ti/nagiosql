@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `tbl_command` (
 -- Structure for table `tbl_configtarget`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_configtarget` (
+CREATE TABLE `tbl_configtarget` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `target` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `tbl_configtarget` (
   `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ssh_key_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ftp_secure` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `basedir` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hostconfig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `serviceconfig` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -69,33 +70,33 @@ CREATE TABLE IF NOT EXISTS `tbl_configtarget` (
   `binaryfile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `pidfile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `conffile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `version` tinyint(3) unsigned NOT NULL DEFAULT '3',
-  `access_group` int(10) unsigned NOT NULL DEFAULT '0',
+  `cgifile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `resourcefile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `version` tinyint(3) UNSIGNED NOT NULL DEFAULT '3',
+  `access_group` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   `nodelete` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `last_modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `target` (`target`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 --
 -- Datasets for table `tbl_configtarget`
 --
-
-INSERT INTO `tbl_configtarget` (`id`, `target`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `version`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES(1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagiosql/', '/opt/nagios/etc/objects/', '', '/var/nagios/rw/nagios.cmd', '/opt/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagiosql/nagios.cfg', 3, 0, '1', '1', NOW());
+INSERT INTO `tbl_configtarget` (`id`, `target`, `alias`, `server`, `method`, `user`, `password`, `ssh_key_path`, `ftp_secure`, `basedir`, `hostconfig`, `serviceconfig`, `backupdir`, `hostbackup`, `servicebackup`, `nagiosbasedir`, `importdir`, `picturedir`, `commandfile`, `binaryfile`, `pidfile`, `conffile`, `cgifile`, `resourcefile`, `version`, `access_group`, `active`, `nodelete`, `last_modified`) VALUES (1, 'localhost', 'Local installation', 'localhost', '1', '', '', '', 0, '/etc/nagiosql/', '/etc/nagiosql/hosts/', '/etc/nagiosql/services/', '/etc/nagiosql/backup/', '/etc/nagiosql/backup/hosts/', '/etc/nagiosql/backup/services/', '/etc/nagios/', '/opt/nagios/etc/objects/', '', '/var/nagios/rw/nagios.cmd', '/opt/nagios/bin/nagios', '/var/nagios/nagios.lock', '/etc/nagios/nagios.cfg', '/etc/nagios/cgi.cfg', '/etc/nagios/resource.cfg', 3, 0, '1', '1', NOW());
 
 -- --------------------------------------------------------
 
 --
 -- Structure for table `tbl_contact`
 --
-
 CREATE TABLE IF NOT EXISTS `tbl_contact` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `contact_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `contactgroups` int(10) unsigned NOT NULL DEFAULT '0',
   `contactgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `minimum_importance` int(11) DEFAULT NULL,
   `host_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `host_notification_period` int(10) unsigned NOT NULL DEFAULT '0',
@@ -173,6 +174,7 @@ CREATE TABLE IF NOT EXISTS `tbl_contacttemplate` (
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `contactgroups` int(10) unsigned NOT NULL DEFAULT '0',
   `contactgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `minimum_importance` int(11) DEFAULT NULL,
   `host_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_notifications_enabled` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `host_notification_period` int(11) NOT NULL DEFAULT '0',
@@ -280,6 +282,7 @@ CREATE TABLE IF NOT EXISTS `tbl_host` (
   `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `hostgroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `hostgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `check_command` text COLLATE utf8_unicode_ci NOT NULL,
@@ -478,6 +481,7 @@ CREATE TABLE IF NOT EXISTS `tbl_hosttemplate` (
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `hostgroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `hostgroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `check_command` text COLLATE utf8_unicode_ci NOT NULL,
@@ -571,7 +575,7 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(12, 'domain', 'importdir', 'all', 'default', '<p>Absolute path to your configuration import directory.<br><br>Examples:<br>/etc/nagiosql/import/ <br>/usr/local/nagios/etc/import/</p>\r\n<p>You can use this directory to store old or example configuration files in it which should be accessable by the importer of NagiosQL.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(13, 'domain', 'binary', 'all', 'default', '<p>Absolute path to your Nagios binary file.<br><br>Examples:<br>/usr/bin/nagios<br>/usr/local/nagios/bin/nagios<br><br> This is used to verify your configuration.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(14, 'domain', 'pidfile', 'all', 'default', '<p>Absolute path to your Nagios process file.<br><br>Examples:<br>/var/run/nagios/nagios.pid<br>/var/run/nagios/nagios.lock<br><br> This is used to check if nagios is running before sending a reload command to the nagios command file.</p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(15, 'domain', 'version', 'all', 'default', '<p>The nagios version which is running in this domain.</p>\r\n<p>Be sure you select the correct version here - otherwise not all configuration options are available or not supported options are shown.</p>\r\n<p>You can change this with a running configuration - NagiosQL will then upgrade or downgrade your configuration. Don''t forget to write your complete configuration after a version change!</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(15, 'domain', 'version', 'all', 'default', '<p>The nagios version which is running in this domain.</p>\r\n<p>Be sure you select the correct version here - otherwise not all configuration options are available or not supported options are shown.</p>\r\n<p>You can change this with a running configuration - NagiosQL will then upgrade or downgrade your configuration. Don\'t forget to write your complete configuration after a version change!</p>\r\n<p>Difference between version in data domain and configuration domain:</p>\r\n<ul>\r\n<li>The version information of the data domain is used to define the options offered in the web forms in NagiosQL.</li>\r\n<li>The version information of the configuration domain is used to define the options offered in the written configuration files.</li>\r\n</ul>\r\n<p>This way you can create your data in a newer Nagios version and still write in an older version to keep the configuration compatible to the running Nagios version.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(16, 'host', 'hostname', 'all', 'default', '<p><strong>Host - host name</strong><br><br>This directive is used to define a short name used to identify the host. It is used in host group and service definitions to reference this particular host. Hosts can have multiple services (which are monitored) associated with them. When used properly, the $HOSTNAME$ macro will contain this short name.</p>\r\n<p><em>Parameter name:</em> host_name<br><em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(17, 'host', 'alias', 'all', 'default', '<p><strong>Host - alias</strong><br><br>This directive is used to define a longer name or description used to identify the host. It is provided in order to allow you to more easily identify a particular host. When used properly, the $HOSTALIAS$ macro will contain this alias/description.</p>\r\n<p><em>Parameter name:</em> alias<br><em>Required:</em> yes</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(18, 'host', 'address', 'all', 'default', '<p><strong>Host - address</strong></p>\r\n<p>This directive is used to define the address of the host. Normally, this is an IP address, although it could really be anything you want (so long as it can be used to check the status of the host). You can use a FQDN to identify the host instead of an IP address, but if DNS services are not availble this could cause problems. When used properly, the $HOSTADDRESS$ macro will contain this address.</p>\r\n<p><strong>Note:</strong> If you do not specify an address directive in a host definition, the name of the host will be used as its address. A word of caution about doing this, however - if DNS fails, most of your service checks will fail because the plugins will be unable to resolve the host name.</p>\r\n<p><em>Parameter name:</em> address<br><em>Required:</em> yes</p>');
@@ -620,7 +624,7 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(64, 'host', '3d_coords', '3', 'default', '<p><strong>Host - 3D coords<br> </strong></p>\r\n<p>This variable is used to define coordinates to use when drawing the host in the statuswrl CGI. Coordinates can be positive or negative real numbers. The origin for drawing is (0.0,0.0,0.0). For reference, the size of the host cubes drawn is 0.5 units on each side (text takes a little more space). The coordinates you specify here are used as the center of the host cube.</p>\r\n<p><em>Parameter name:</em> 3d_coords<br> <em>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(65, 'common', 'free_variables_name', 'all', 'default', '<p><strong>Free variables (custom object variables)<br></strong></p>\r\n<p>NagiosQL supports custom object variables.</p>\r\n<p>There are a few important things that you should note about custom variables:</p>\r\n<ul>\r\n<li>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables </li>\r\n<li>Custom variable names are case-insensitive </li>\r\n<li>Custom variables are inherited from object templates like normal variables </li>\r\n<li>Scripts can reference custom variable values with macros and environment variables </li>\r\n</ul>\r\n<p><em>Examples</em></p>\r\n<p><span style="font-family: courier new,courier;">define host{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name	linuxserver<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _mac_address	00:06:5B:A6:AD:AA	; &lt;-- Custom MAC_ADDRESS variable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _rack_number	R32		; &lt;-- Custom RACK_NUMBER variable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>}</span></p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(66, 'common', 'free_variables_value', 'all', 'default', '<p><strong>Free variables (custom object variables)<br></strong></p>\r\n<p>NagiosQL supports custom object variables.</p>\r\n<p>There are a few important things that you should note about custom variables:</p>\r\n<ul>\r\n<li>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables </li>\r\n<li>Custom variable names are case-insensitive </li>\r\n<li>Custom variables are inherited from object templates like normal variables </li>\r\n<li>Scripts can reference custom variable values with macros and environment variables </li>\r\n</ul>\r\n<p><em>Examples</em></p>\r\n<p><span style="font-family: courier new,courier;">define host{<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name	linuxserver<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _mac_address	00:06:5B:A6:AD:AA	; &lt;-- Custom MAC_ADDRESS variable<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _rack_number	R32		; &lt;-- Custom RACK_NUMBER variable<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br> }</span></p>');
-INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(67, 'host', 'genericname', 'all', 'default', '<p><strong>Host - generic name</strong></p>\r\n<p>It is possible to use a host definition as a template for other host configurations. If this definition should be used as template, a generic template name must be defined.</p>\r\n<p>We do not recommend to do this - it is more open to define a separate host template than to use this option.</p>\r\n<p><em>Parameter name:</em> name<em><br>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(67, 'host', 'genericname', 'all', 'default', '<p><strong>Host or Service - generic name</strong></p>\r\n<p>It is possible to use a host definition as a template for other host configurations. If this definition should be used as template, a generic template name must be defined.</p>\r\n<p>We do not recommend to do this - it is more open to define a separate host template than to use this option.</p>\r\n<p><em>Parameter name:</em> name<em><br>Required:</em> no</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(68, 'service', 'config_name', 'all', 'default', '<p><strong>Service - config name</strong></p>\r\n<p>This directive is used to specify a common config name for a group of service definitions. This is a NagiosQL parameter and it will not be written to the configuration file. Every service definitions with the same configuration name will stored in one file. The configuration name is also the file name of this configuration set.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(69, 'service', 'hosts', 'all', 'default', '<p><strong>Service - host name<br> </strong></p>\r\n<p>This directive is used to specify the <em>short name(s)</em> of the host(s) that the service "runs" on or is associated with.</p>\r\n<p><em>Parameter name:</em> host_name<br> <em>Required:</em> yes (no, if a hostgroup is defined)</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(70, 'service', 'hostgroups', 'all', 'default', '<p><strong>Service</strong><strong> - hostgroup name<br> </strong></p>\r\n<p>This directive is used to specify the <em>short name(s)</em> of the hostgroup(s) that the service "runs" on or is associated with. The hostgroup_name may be used instead of, or in addition to, the host_name directive.</p>\r\n<p><em>Parameter name:</em> hostgroup_name<br> <em>Required:</em> no (yes, if no host is defined)</p>');
@@ -793,6 +797,13 @@ INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`)
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(238, 'user', 'standarddomain', 'all', 'default', '<p><strong>User - standard domain<br /></strong></p>\r\n<p>Defines a standard domain for the user. After the user has logged in, the defined domain is pre-selected.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(239, 'domain', 'targets', 'all', 'default', '<p>Select a configuration domain which is assigned to this data domain</p>\r\n<p>The settings where to store the configuration files are defined in a configuration domain. Select here the desired target for your configuration files.</p>');
 INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(240, 'domain', 'ssh_host_key', 'all', 'default', 'Absolute path to the ssh key directory for the defined ssh user.<br><br>Examples:<br>/etc/nagiosql/ssh/ <br>/usr/local/nagios/etc/.ssh/<br><br>This directory includes the key file (id_rsa) for the user to connect to the remote system. Note, that the file name is set to id_rsa!');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(241, 'contact', 'minimum_importance', 'all', 'default', '<p><strong>Contact - </strong><strong>minimum importance<br /></strong></p>\r\n<p>This directive is used as the value that the host or service importance value must equal before notification is sent to this contact. The importance values are intended to represent the value of a host or service to an organization. For example, you could set this value and the importance value of a host such that a system administrator would be notified when a development server goes down, but the CIO would only be notified when the company\'s production ecommerce database server was down. The minimum_importance value defaults to zero.</p>\r\n<p>In Nagios Core 4.0.0 to 4.0.3 this was known as minimum_value but has been replaced with minimum_importance.</p>\r\n<p>Parameter name: minimum_importance<br /> <em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(242, 'domain', 'ftps_option', 'all', 'default', 'Use encrypted FTP (FTPS) to connect to the remote server. ');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(243, 'domain', 'cgifile', 'all', 'default', '<p>Absolute path to your Nagios CGI config file.<br /><br />Examples:<br />/etc/nagios/cgi.cfg<br />/usr/local/nagios/etc/cgi.cfg<br /><br />This is used to edit Nagios website options directly from NagiosQL.</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(244, 'domain', 'resourcefile', 'all', 'default', '<p>Absolute path to your Nagios resource config file.<br /><br />Examples:<br />/etc/nagios/resource.cfg<br />/usr/local/nagios/etc/resource.cfg<br /><br />This file is used to verify your configuration in Nagios 4.x. Be sure this file is readably by your webserver\'s user!</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(245, 'host', 'importance', 'all', 'default', '<p><strong>Host - importance</strong></p> <p>This directive is used to represent the importance of the host to your organization. The importance is used when determining whether to send notifications to a contact. If the host\'s importance value plus the importance values of all of the host\'s services is greater than or equal to the contact\'s minimum_importance, the contact will be notified. For example, you could set this value and the minimum_importance of contacts such that a system administrator would be notified when a development server goes down, but the CIO would only be notified when the company\'s production ecommerce database server was down. The importance could also be used as a sort criteria when generating reports or for calculating a good system administrator\'s bonus. The importance value defaults to zero. In Nagios Core 4.0.0 to 4.0.3 this was known as <em>hourly_value</em> but has been replaced with <em>importance</em>.</p> <p><em>Parameter name:</em> importance<br /><em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(246, 'service', 'importance', 'all', 'default', '<p><strong>Service - importance</strong></p>\r\n<p>This directive is used to represent the importance of the service to your organization. The importance is used when determining whether to send notifications to a contact. If the service\'s importance value is greater than or equal to the contact\'s minimum_importance, the contact will be notified. For example, you could set this value and the minimum_importance of contacts such that a system administrator would be notified of a disk full event on a development server, but the CIO would only be notified when the company\'s production ecommerce database was down. The importance could also be used as a sort criteria when generating reports or for calculating a good system administrator\'s bonus. The importance value defaults to zero. In Nagios Core 4.0.0 to 4.0.3 this was known as <em>hourly_value</em> but has been replaced with <em>importance</em>.</p>\r\n<p><em>Parameter name:</em> importance<br /><em>Required:</em> no</p>');
+INSERT INTO `tbl_info` (`id`, `key1`, `key2`, `version`, `language`, `infotext`) VALUES(247, 'service', 'parents', 'all', 'default', '<p><strong>Service - parents</strong></p>\r\n<p>This directive is used to define a comma-delimited list of short names of the \"parent\" services for this particular service. Parent services are typically other services that need to be available in order for a check of this service to occur. For example, if a service checks the status of a disk using SSH, the disk check service would have the SSH service as a parent. If the service has no parent services, simply omit the \"parents\" directive. More complex service dependencies may be specified with service dependency objects.</p>\r\n<p><em>Parameter name:</em> parents<br /><em>Required:</em> no</p>');
 
 
 -- --------------------------------------------------------
@@ -1820,6 +1831,23 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToHostgroup` (
 -- Datasets for table `tbl_lnkServicetemplateToHostgroup`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Structure for table `tbl_lnkServicetemplateToService`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_lnkServicetemplateToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idHost` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Datasets for table `tbl_lnkServicetemplateToService`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1944,6 +1972,24 @@ CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToHostgroup` (
 
 --
 -- Datasets for table `tbl_lnkServiceToHostgroup`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure for table `tbl_lnkServiceToService`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_lnkServiceToService` (
+  `idMaster` int(11) NOT NULL,
+  `idSlave` int(11) NOT NULL,
+  `idHost` int(11) NOT NULL,
+  PRIMARY KEY (`idMaster`,`idSlave`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Datasets for table `tbl_lnkServiceToService`
 --
 
 
@@ -2379,9 +2425,9 @@ INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(231, 'tbl_timeperiod', 'tbl_servicedependency', '', 'dependency_period', '', '', '', 'config_name', 1, '0,2,2,0', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(232, 'tbl_timeperiod', 'tbl_serviceescalation', '', 'escalation_period', '', '', '', 'config_name', 1, '0,2,2,0', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(233, 'tbl_timeperiod', 'tbl_timedefinition', '', 'tipId', '', '', '', 'id', 1, '0,0,0,3', 0);
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(234, 'tbl_timeperiod', 'tbl_timeperiod', '', 'use_template', 'tbl_lnkTimeperiodToTimeperiodUse', 'timeperiod_name', '', '', 0, '', 2);
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(235, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiodUse', '', 'idMaster', '', 'tbl_timeperiod', '', 'timeperiod_name', 1, '0,0,0,1', 0);
-INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(236, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiodUse', '', 'idSlave', '', 'tbl_timeperiod', '', 'timeperiod_name', 1, '0,0,0,1', 0);
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(234, 'tbl_timeperiod', 'tbl_timeperiod', '', 'use_template', 'tbl_lnkTimeperiodToTimeperiodUse', 'name', '', '', 0, '', 2);
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(235, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiodUse', '', 'idMaster', '', 'tbl_timeperiod', '', 'name', 1, '0,0,0,1', 0);
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(236, 'tbl_timeperiod', 'tbl_lnkTimeperiodToTimeperiodUse', '', 'idSlave', '', 'tbl_timeperiod', '', 'name', 1, '0,0,0,1', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(237, 'tbl_group', 'tbl_user', '', 'users', 'tbl_lnkGroupToUser', 'username', '', '', 0, '', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(238, 'tbl_group', 'tbl_lnkGroupToUser', '', 'idMaster', '', 'tbl_user', '', 'username', 1, '0,0,0,1', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(239, 'tbl_servicedependency', 'tbl_servicegroup', '', 'dependent_servicegroup_name', 'tbl_lnkServicedependencyToServicegroup_DS', 'servicegroup_name', '', '', 0, '', 2);
@@ -2390,6 +2436,8 @@ INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES(242, 'tbl_servicedependency', 'tbl_lnkServicedependencyToServicegroup_S', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', 1, '0,0,0,1', 0);
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (243,'tbl_serviceescalation', 'tbl_servicegroup', '', 'servicegroup_name', 'tbl_lnkServiceescalationToServicegroup', 'servicegroup_name', '', '', '0', '', '2');
 INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (244,'tbl_serviceescalation', 'tbl_lnkServiceescalationToServicegroup', '', 'idMaster', '', 'tbl_servicegroup', '', 'servicegroup_name', '1', '0,0,0,1', '0');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL, 'tbl_service', 'tbl_service', '', 'parents', 'tbl_lnkServiceToService', 'service_description', '', '', '0', '', '7');
+INSERT INTO `tbl_relationinformation` (`id`, `master`, `tableName1`, `tableName2`, `fieldName`, `linkTable`, `target1`, `target2`, `targetKey`, `fullRelation`, `flags`, `type`) VALUES (NULL,  'tbl_servicetemplate', 'tbl_service', '', 'parents', 'tbl_lnkServicetemplateToService', 'service_description', '', '', '0', '', '7');
 
 
 -- --------------------------------------------------------
@@ -2407,6 +2455,9 @@ CREATE TABLE IF NOT EXISTS `tbl_service` (
   `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `servicegroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `servicegroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -2611,6 +2662,9 @@ CREATE TABLE IF NOT EXISTS `tbl_servicetemplate` (
   `hostgroup_name_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `service_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `parents` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `parents_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
+  `importance` int(11) DEFAULT NULL,
   `servicegroups` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `servicegroups_tploptions` tinyint(3) unsigned NOT NULL DEFAULT '2',
   `use_template` tinyint(3) unsigned NOT NULL DEFAULT '0',

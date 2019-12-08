@@ -1,9 +1,9 @@
-<!-- (c) 2005-2018 by Martin Willisegger -->
+<!-- (c) 2005-2020 by Martin Willisegger -->
 <!-- -->
 <!-- Project   : NagiosQL -->
 <!-- Component : main template -->
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
-<!-- Version   : 3.4.0 -->
+<!-- Version   : 3.4.1 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
 <!-- BEGIN header -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

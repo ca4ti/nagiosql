@@ -5,14 +5,14 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2018 by Martin Willisegger
+// (c) 2005-2020 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Admin timeperiod definitions
 // Website   : https://sourceforge.net/projects/nagiosql/
 // Date      : $LastChangedDate: 2018-04-10 10:48:30 +0200 (Tue, 10 Apr 2018) $
 // Author    : $LastChangedBy: martin $
-// Version   : 3.4.0
+// Version   : 3.4.1
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////

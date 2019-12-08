@@ -5,12 +5,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2018 by Martin Willisegger
+// (c) 2005-2020 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Variable definition list
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.0
+// Version   : 3.4.1
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -113,9 +113,19 @@ if ($chkMode == 'del' && isset($_SESSION['variabledefinition']) && is_array($_SE
     <link href="<?php echo $_SESSION['SETS']['path']['base_url']; ?>config/main.css" rel="stylesheet" type="text/css">
     <!--suppress JSUnresolvedVariable -->
     <script type="text/javascript">
+          function b64DecodeUnicode(str){
+              return decodeURIComponent(atob(str).split('').map(function(c) {
+                  return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+              }).join(''));
+          }
+          function decodeHtml(html) {
+              let txt = document.createElement("textarea");
+              txt.innerHTML = html;
+              return txt.value;
+          }
           function doEdit(key,range) {
               parent.document.frmDetail.txtVariablename.value = decodeURIComponent(key);
-              parent.document.frmDetail.txtVariablevalue.value = decodeURIComponent(range);
+              parent.document.frmDetail.txtVariablevalue.value = decodeHtml(b64DecodeUnicode(range));
           }
           function doDel(key) {
                 let link;
@@ -137,12 +147,12 @@ if (isset($_SESSION['variabledefinition']) && is_array($_SESSION['variabledefini
             <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
                 echo htmlentities(stripslashes($elem['definition']), ENT_COMPAT, 'UTF-8'); ?></td>
             <td class="tablerow" style="padding-bottom:2px; width:260px"><?php
-                echo htmlentities(stripslashes($elem['range']), ENT_COMPAT, 'UTF-8'); ?></td>
+                echo $elem['range']; ?></td>
             <td class="tablerow" style="width:50px" align="right"><img src="<?php
                 echo $_SESSION['SETS']['path']['base_url']; ?>images/edit.gif" width="18" height="18" alt="<?php
                 echo translate('Modify'); ?>" title="<?php echo translate('Modify'); ?>" onClick="doEdit('<?php
                 echo rawurlencode(stripslashes($elem['definition'])); ?>','<?php
-                echo rawurlencode(stripslashes($elem['range'])); ?>')" style="cursor:pointer">&nbsp;<img src="<?php
+                echo base64_encode($elem['range']); ?>')" style="cursor:pointer">&nbsp;<img src="<?php
                 echo $_SESSION['SETS']['path']['base_url']; ?>images/delete.gif" width="18" height="18" alt="<?php
                 echo translate('Delete'); ?>" title="<?php echo translate('Delete'); ?>" onClick="doDel('<?php
                 echo rawurlencode(stripslashes($elem['definition'])); ?>')" style="cursor:pointer"></td>

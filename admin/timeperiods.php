@@ -5,12 +5,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2018 by Martin Willisegger
+// (c) 2005-2020 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Timeperiod definitions
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.0
+// Version   : 3.4.1
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -181,7 +181,7 @@ if ($chkModus == 'add') {
     }
     $intReturn1 = $myVisClass->parseSelectMulti(
         $preTableName,
-        'name',
+        'timeperiod_name',
         'excludes',
         'tbl_lnkTimeperiodToTimeperiod',
         0,

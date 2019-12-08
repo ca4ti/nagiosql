@@ -1388,14 +1388,15 @@ class NagDataClass
         $arrRelData      = array();
         $intRelDataCount = 0;
         if ($arrData[$intID][$elem['fieldName']] != 0) {
-            $strSQL = 'SELECT `idSlaveH`,`idSlaveHG`,`idSlaveS` ' .
+            $strSQL = 'SELECT `idSlaveH`,`idSlaveHG`,`idSlaveS`,`exclude` ' .
                 'FROM `' . $elem['linkTable'] . '` WHERE `idMaster`=' . $arrData[$intID]['id'];
             $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrRelData, $intRelDataCount);
             if ($booReturn && ($intRelDataCount != 0)) {
                 foreach ($arrRelData as $elem2) {
                     $strSQLRel = 'INSERT INTO `' . $elem['linkTable'] . '` ' .
                         "SET `idMaster`=$intMasterId, `idSlaveH`=" . $elem2['idSlaveH'] . ', ' .
-                        '`idSlaveHG`=' . $elem2['idSlaveHG'] . ', `idSlaveS`=' . $elem2['idSlaveS'];
+                        '`idSlaveHG`=' . $elem2['idSlaveHG'] . ', `idSlaveS`=' . $elem2['idSlaveS'] . ', `exclude`=' .
+                        $elem2['exclude'];
                     $booReturn = $this->myDBClass->insertData($strSQLRel);
                     if ($booReturn == false) {
                         $intCheck++;

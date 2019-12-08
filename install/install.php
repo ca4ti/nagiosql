@@ -5,12 +5,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2018 by Martin Willisegger
+// (c) 2005-2020 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Installer script - check page
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.0
+// Version   : 3.4.1
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -34,9 +34,9 @@ require $preBasePath.'install/functions/prepend_install.php';
 //
 // Actual database files
 // =====================
-$preSqlNewInstall = $preBasePath.'install/sql/nagiosQL_v34_db_mysql.sql';
-$preSqlUpdateLast = $preBasePath.'install/sql/update_320_340.sql';
-$preNagiosQL_ver  = '3.4.0';
+$preSqlNewInstall = $preBasePath.'install/sql/nagiosQL_v341_db_mysql.sql';
+$preSqlUpdateLast = $preBasePath.'install/sql/update_340_341.sql';
+$preNagiosQL_ver  = '3.4.1';
 //
 // Process initial value
 // =====================

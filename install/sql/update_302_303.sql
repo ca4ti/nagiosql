@@ -5,7 +5,7 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
---  (c) 2005-2018 by Martin Willisegger
+--  (c) 2005-2020 by Martin Willisegger
 --
 --  Project   : NagiosQL
 --  Component : Update from NagiosQL 3.0.2 to NagiosQL 3.0.3

@@ -10,7 +10,7 @@
 --  Project   : NagiosQL
 --  Component : Import samples build from Nagios 3.0.5 configuration samples
 --  Website   : https://sourceforge.net/projects/nagiosql/
---  Version   : 3.4.0
+--  Version   : 3.4.1
 --  GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
