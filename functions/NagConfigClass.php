@@ -2369,6 +2369,7 @@ class NagConfigClass
             $strDataValue = '';
             foreach ($arrDataRel as $data) {
                 if ($data['idSlaveHG'] != 0) {
+                    // -> EXCLUDE PROCESSING IS MISSING
                     $strSQLSrv = 'SELECT `' . $elem['target2'] . '` FROM `' . $elem['tableName2'] .
                         '` WHERE `id`=' . $data['idSlaveS'];
                     $strService = $this->myDBClass->getFieldData($strSQLSrv);

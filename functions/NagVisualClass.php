@@ -746,6 +746,7 @@ class NagVisualClass
         $arrDataRaw   = array();
         $intDataCount = 0;
         $intReturn    = 0;
+        $intDouble    = 0;
         // Get link rights
         $strAccess = $this->getAccessGroups('link');
         // Common domain is enabled?
@@ -769,6 +770,7 @@ class NagVisualClass
             $strSQL = $this->getRawDataSQLTimeperiod($strDomainWhere1, $strAccess);
         } elseif (($strTable == 'tbl_service') && ($intOption == 3)) {
             $strSQL = $this->getRawDataSQLService3($strDomainWhere2, $strAccess);
+            $intDouble = 1;
         } elseif (($strTable == 'tbl_service') && (($intOption == 4) || ($intOption == 5) || ($intOption == 6))) {
             $strSQL = $this->getRawDataSQLService456($strTabField, $intOption, $strDomainWhere1, $strAccess);
         } elseif (($strTable == 'tbl_service') && ($intOption == 7)) {
@@ -783,7 +785,6 @@ class NagVisualClass
             // Service selection inside Host definition
             $strSQL = $this->getRawDataSQLService89($strDomainWhere1, $strAccess);
         } elseif ((($strTable == 'tbl_service') || ($strTable == 'tbl_servicetemplate')) &&
-
             ($intOption == 10)) {
             // Service selection inside Host definition
             $strSQL = $this->getRawDataSQLService10($strDomainWhere2, $strAccess);
@@ -797,6 +798,17 @@ class NagVisualClass
             if ($booReturn == false) {
                 $this->strErrorMessage .= $this->myDBClass->strErrorMessage;
                 $intReturn = 1;
+            }
+            if ($intDouble == 1) {
+                $arrDataRawTemp = array();
+                $arrKey = array();
+                foreach ($arrDataRaw AS $elem) {
+                    if (!isset($arrKey[$elem['key']])) {
+                        $arrKey[$elem['key']] = 1;
+                        $arrDataRawTemp[] = $elem;
+                    }
+                }
+                $arrDataRaw = $arrDataRawTemp;
             }
         }
         if ($strTable == 'tbl_group') {
