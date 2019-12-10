@@ -2368,29 +2368,43 @@ class NagConfigClass
             // Rewrite $strDataValue with returned relation data
             $strDataValue = '';
             foreach ($arrDataRel as $data) {
+                // Get excluded hosts
+                $arrExclude = array();
+                $strSQLEx   = 'SELECT `idSlave` FROM `tbl_lnkServiceToHost` WHERE `exclude`=1 AND `idMaster`=' .
+                    $data['idSlaveS'];
+                $booReturn = $this->myDBClass->hasDataArray($strSQLEx, $arrEx, $intEx);
+                if ($booReturn && ($intEx != 0)) {
+                    foreach ($arrEx as $elemEx) {
+                        $arrExclude[] = $elemEx['idSlave'];
+                    }
+                }
                 if ($data['idSlaveHG'] != 0) {
-                    // -> EXCLUDE PROCESSING IS MISSING
+                    // Get Sevices
                     $strSQLSrv = 'SELECT `' . $elem['target2'] . '` FROM `' . $elem['tableName2'] .
                         '` WHERE `id`=' . $data['idSlaveS'];
                     $strService = $this->myDBClass->getFieldData($strSQLSrv);
-                    $strSQLHG1 = 'SELECT `host_name` FROM `tbl_host` ' .
+                    $strSQLHG1 = 'SELECT `host_name`, `idSlave` FROM `tbl_host` ' .
                         'LEFT JOIN `tbl_lnkHostgroupToHost` ON `id`=`idSlave` ' .
-                        'WHERE `idMaster`=' . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
+                        'WHERE `idMaster`=' . $data['idSlaveHG'] . "  AND `active`='1' AND `exclude`=0 " .
+                        "AND $strDomainWhere1";
                     $booReturn = $this->myDBClass->hasDataArray($strSQLHG1, $arrHG1, $intHG1);
                     if ($booReturn && ($intHG1 != 0)) {
                         foreach ($arrHG1 as $elemHG1) {
-                            if (substr_count($strDataValue, $elemHG1['host_name'] . ',' . $strService) == 0) {
+                            if (!in_array($elemHG1['idSlave'], $arrExclude, true) &&
+                                substr_count($strDataValue, $elemHG1['host_name'] . ',' . $strService) == 0) {
                                 $strDataValue .= $elemHG1['host_name'] . ',' . $strService . ',';
                             }
                         }
                     }
-                    $strSQLHG2 = 'SELECT `host_name` FROM `tbl_host` ' .
+                    $strSQLHG2 = 'SELECT `host_name`, `idMaster` FROM `tbl_host` ' .
                         'LEFT JOIN `tbl_lnkHostToHostgroup` ON `id`=`idMaster` ' .
-                        'WHERE `idSlave`=' . $data['idSlaveHG'] . "  AND `active`='1' AND $strDomainWhere1";
+                        'WHERE `idSlave`=' . $data['idSlaveHG'] . " AND `active`='1' AND  `exclude`=0 " .
+                        "AND $strDomainWhere1";
                     $booReturn = $this->myDBClass->hasDataArray($strSQLHG2, $arrHG2, $intHG2);
                     if ($booReturn && ($intHG2 != 0)) {
                         foreach ($arrHG2 as $elemHG2) {
-                            if (substr_count($strDataValue, $elemHG2['host_name'] . ',' . $strService) == 0) {
+                            if (!in_array($elemHG2['idMaster'], $arrExclude, true) &&
+                                substr_count($strDataValue, $elemHG2['host_name'] . ',' . $strService) == 0) {
                                 $strDataValue .= $elemHG2['host_name'] . ',' . $strService . ',';
                             }
                         }
@@ -2403,7 +2417,8 @@ class NagConfigClass
                         'WHERE `id`=' . $data['idSlaveS'] . "  AND `active`='1' AND $strDomainWhere1";
                     $strService = $this->myDBClass->getFieldData($strSQLSrv);
                     if (($strHost != '') && ($strService != '') &&
-                        substr_count($strDataValue, $strHost . ',' . $strService) == 0) {
+                        substr_count($strDataValue, $strHost . ',' . $strService) == 0 &&
+                        !in_array($data['idSlaveH'], $arrExclude, true)) {
                         $strDataValue .= $strHost . ',' . $strService . ',';
                     }
                 }
