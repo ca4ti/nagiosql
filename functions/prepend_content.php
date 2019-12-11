@@ -139,6 +139,8 @@ $chkDatValue1 = filter_input(INPUT_POST, 'datValue1', FILTER_SANITIZE_STRING);
 $chkTaValue1Raw = filter_input(INPUT_POST, 'taValue1', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 // Common text area value for file import (not SQL)
 $chkTaFileTextRaw = filter_input(INPUT_POST, 'taFileText', FILTER_UNSAFE_RAW);
+// Common text field with special chars
+$chkTfSpValue1 = filter_input(INPUT_POST, 'tfSpValue1', FILTER_UNSAFE_RAW);
 //
 // Quote special characters
 // ==========================
@@ -146,12 +148,14 @@ if (get_magic_quotes_gpc() == 0) {
     $chkTfSearchRaw    = addslashes($chkTfSearchRaw);
     $chkTaValue1Raw    = addslashes($chkTaValue1Raw);
     $chkTaFileTextRaw  = addslashes($chkTaFileTextRaw);
+    $chkTfSpValue1     = addslashes($chkTfSpValue1);
 }
 //
 // Security function for text fields
 // =================================
 $chkTfSearch    = $myVisClass->tfSecure($chkTfSearchRaw);
 $chkTaValue1    = $myVisClass->tfSecure($chkTaValue1Raw);
+$chkTfSpValue1  = $myVisClass->tfSecure($chkTfSpValue1);
 $chkTaFileText  = stripslashes($chkTaFileTextRaw);
 //
 // Search/sort/filter - session data

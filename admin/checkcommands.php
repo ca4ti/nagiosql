@@ -40,7 +40,7 @@ require $preBasePath.'functions/prepend_content.php';
 // Add or modify data
 // ==================
 if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
-    $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `command_line`='$chkTfValue2', "
+    $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `command_line`='$chkTfSpValue1', "
              . "`command_type`=$chkSelValue1, $preSQLCommon1";
     if ($chkModus == 'insert') {
         $strSQL = 'INSERT INTO ' .$strSQLx;
@@ -48,7 +48,7 @@ if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAcce
         $strSQL = 'UPDATE ' .$strSQLx. ' WHERE `id`=' .$chkDataId;
     }
     if ($intWriteAccessId == 0) {
-        if (($chkTfValue1 != '') && ($chkTfValue2 != '')) {
+        if (($chkTfValue1 != '') && ($chkTfSpValue1 != '')) {
             $intReturn = $myDataClass->dataInsert($strSQL, $intInsertId);
             if ($chkModus == 'insert') {
                 $chkDataId = $intInsertId;

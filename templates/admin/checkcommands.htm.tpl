@@ -29,7 +29,7 @@
     	// Check form entries
     	function checkForm() {
             // Are all required fields filled in?
-            const fields1 = "tfValue1,tfValue2";
+            const fields1 = "tfValue1,tfSpValue1";
             const msg1 = "{FILL_ALLFIELDS}";
             const msg2 = "{FILL_ILLEGALCHARS}";
             const header = "{LANG_FORMCHECK}";
@@ -61,7 +61,7 @@
             </tr>
             <tr>
                 <td>{LANG_COMMAND_LINE} *</td>
-                <td colspan="4"><input title="{LANG_COMMAND_LINE}" name="tfValue2" type="text" id="tfValue2" value="{DAT_COMMAND_LINE}" style="width:650px;" class="inpmust"></td>
+                <td colspan="4"><input title="{LANG_COMMAND_LINE}" name="tfSpValue1" type="text" id="tfSpValue1" value="{DAT_COMMAND_LINE}" style="width:650px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('command','command_line','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
