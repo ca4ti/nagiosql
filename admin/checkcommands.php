@@ -17,6 +17,7 @@
 //
 // Path settings
 // ===================
+/** @noinspection PhpUndefinedVariableInspection */
 $strPattern = '(admin/[^/]*.php)';
 $preRelPath  = preg_replace($strPattern, '', filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
 $preBasePath = preg_replace($strPattern, '', filter_input(INPUT_SERVER, 'SCRIPT_FILENAME', FILTER_SANITIZE_STRING));
@@ -41,7 +42,10 @@ require $preBasePath.'functions/prepend_content.php';
 // ==================
 if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `command_line`='$chkTfSpValue1', "
-             . "`command_type`=$chkSelValue1, $preSQLCommon1";
+             . "`command_type`=$chkSelValue1, $preSQLCommon1, `arg1_info`='$chkTaArg1Info', "
+             . "`arg2_info`='$chkTaArg2Info', `arg3_info`='$chkTaArg3Info', `arg4_info`='$chkTaArg4Info', "
+             . "`arg5_info`='$chkTaArg5Info', `arg6_info`='$chkTaArg6Info', `arg7_info`='$chkTaArg7Info', "
+             . "`arg8_info`='$chkTaArg8Info'";
     if ($chkModus == 'insert') {
         $strSQL = 'INSERT INTO ' .$strSQLx;
     } else {

@@ -1,4 +1,4 @@
-<!-- (c) 2005-2018 by Martin Willisegger -->
+<!-- (c) 2005-2020 by Martin Willisegger -->
 <!-- -->
 <!-- Project   : NagiosQL -->
 <!-- Component : host template -->
@@ -157,6 +157,11 @@
                 form.chbGr2b.checked = false;
             }
         }
+        // Get ID from command selection
+        function getCommandValue() {
+            let element = document.getElementById('selValue1');
+            return element.options[element.selectedIndex].value;
+        }
         //-->
     </script>
     <form name="frmDetail" method="post" action="{ACTION_INSERT}">  
@@ -268,28 +273,28 @@
                             <td valign="top" colspan="5"><iframe scrolling="no" id="fullcommand" name="fullcommand" src="{IFRAME_SRC}" width="100%" height="36"></iframe></td>
                         </tr>
                         <tr>
-                            <td>$ARG1$</td>
-                            <td><input title="$ARG1$" name="tfArg1" type="text" id="tfArg1" value="{DAT_ARG1}" tabindex="8"></td>
+                            <td>$ARG1$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'1','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
+                            <td><input title="$ARG1$" name="tfArg1" type="text" id="tfArg1" value="{DAT_ARG1}" tabindex="8")"></td>
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','arguments','all','Info');" class="infobutton_1"></td>
-                            <td>$ARG5$</td>
+                            <td>$ARG5$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'5','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG5$" name="tfArg5" type="text" id="tfArg5" value="{DAT_ARG5}" tabindex="12"></td>
                         </tr>
                         <tr>
-                            <td>$ARG2$</td>
+                            <td>$ARG2$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'2','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG2$" name="tfArg2" type="text" id="tfArg2" value="{DAT_ARG2}" tabindex="9"></td>
-                            <td>$ARG6$</td>
+                            <td>$ARG6$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'6','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG6$" name="tfArg6" type="text" id="tfArg6" value="{DAT_ARG6}" tabindex="13"></td>
                         </tr>
                         <tr>
-                            <td>$ARG3$</td>
+                            <td>$ARG3$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'3','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG3$" name="tfArg3" type="text" id="tfArg3" value="{DAT_ARG3}" tabindex="10"></td>
-                            <td>$ARG7$</td>
+                            <td>$ARG7$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'7','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG7$" name="tfArg7" type="text" id="tfArg7" value="{DAT_ARG7}" tabindex="14"></td>
                         </tr>
                         <tr>
-                            <td>$ARG4$</td>
+                            <td>$ARG4$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'4','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG4$" name="tfArg4" type="text" id="tfArg4" value="{DAT_ARG4}" tabindex="11"></td>
-                            <td>$ARG8$</td>
+                            <td>$ARG8$&nbsp;<img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('cmd_arguments',getCommandValue(),'8','Argument Info');" class="infobutton_1"  style="vertical-align: middle;margin-bottom: 2px;"></td>
                             <td colspan="2"><input title="$ARG8$" name="tfArg8" type="text" id="tfArg8" value="{DAT_ARG8}" tabindex="15"></td>
                         </tr>
                         <tr>

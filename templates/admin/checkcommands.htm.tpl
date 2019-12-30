@@ -93,6 +93,34 @@
                 <td colspan="4"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','registered','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG1$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG1$" name="taArg1Info" id="taArg1Info" class="arginfo">{DAT_ARG1_INFO}</textarea></td>
+                <td>&nbsp;</td>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG2$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG2$" name="taArg2Info" id="taArg2Info" class="arginfo">{DAT_ARG2_INFO}</textarea></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG3$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG3$" name="taArg3Info" id="taArg3Info" class="arginfo">{DAT_ARG3_INFO}</textarea></td>
+                <td>&nbsp;</td>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG4$/td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG4$" name="taArg4Info" id="taArg4Info" class="arginfo">{DAT_ARG4_INFO}</textarea></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG5$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG5$" name="taArg5Info" id="taArg5Info" class="arginfo">{DAT_ARG5_INFO}</textarea></td>
+                <td>&nbsp;</td>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG6$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG6$" name="taArg6Info" id="taArg6Info" class="arginfo">{DAT_ARG6_INFO}</textarea></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG7$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG7$" name="taArg7Info" id="taArg7Info" class="arginfo">{DAT_ARG7_INFO}</textarea></td>
+                <td>&nbsp;</td>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG8$</td>
+                <td><textarea title="{LANG_HELP_TEXT} $ARG8$" name="taArg8Info" id="taArg8Info" class="arginfo">{DAT_ARG8_INFO}</textarea></td>
+            </tr>
+            <tr>
                 <td>{LANG_ACTIVE}</td>
                 <td colspan="5"><input title="{LANG_ACTIVE}" name="chbActive" type="checkbox" class="checkbox" id="chbActive" value="1" {ACT_CHECKED} {ACT_DISABLED}>
                     <input name="hidActive" type="hidden" id="hidActive" value="{ACTIVE}">

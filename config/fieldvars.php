@@ -89,6 +89,7 @@ $arrDescription[] = array('name' => 'LANG_DUPLICATE',                  'string' 
 $arrDescription[] = array('name' => 'LANG_COMMAND',                    'string' => translate('Command'));
 $arrDescription[] = array('name' => 'LANG_COMMAND_LINE',               'string' => translate('Command line'));
 $arrDescription[] = array('name' => 'LANG_COMMAND_TYPE',               'string' => translate('Command type'));
+$arrDescription[] = array('name' => 'LANG_HELP_TEXT',                  'string' => translate('Help text'));
 $arrDescription[] = array('name' => 'LANG_TIME_PERIOD',                'string' => translate('Time period'));
 $arrDescription[] = array('name' => 'LANG_EXCLUDE',                    'string' => translate('Exclude'));
 $arrDescription[] = array('name' => 'LANG_INCLUDE',                    'string' => translate('Include'));

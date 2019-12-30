@@ -70,6 +70,10 @@ if ($chkKey1 == 'admin' and isset($_SESSION['updInfo'])) {
         'txtProxyPasswd' => translate('Password to connect through your proxy (optional)'),
     );
     $strContentDB = $arrTrans[$chkKey2];
+} elseif ($chkKey1 == 'cmd_arguments') {
+    // Get information from tbl_command
+    $strSQL       = 'SELECT `arg' .$chkVersion. '_info` FROM `tbl_command` WHERE `id`='.$chkKey2;
+    $strContentDB = nl2br($myDBClass->getFieldData($strSQL));
 } else {
     // Get information from tbl_info
     $strSQL       = 'SELECT `infotext` FROM `tbl_info` ' .
@@ -99,7 +103,7 @@ if ($chkKey1 == 'admin' and isset($_SESSION['updInfo'])) {
     </head>
     <body class="infobody">
 <?php
-if ($strContentDB != '') {
+if (trim($strContentDB) != '') {
     echo $strContentDB;
 } else {
     echo translate('No information available');

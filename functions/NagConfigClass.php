@@ -5,12 +5,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// (c) 2005-2018 by Martin Willisegger
+// (c) 2005-2020 by Martin Willisegger
 //
 // Project   : NagiosQL
 // Component : Configuration Class
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.0
+// Version   : 3.4.1
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1444,6 +1444,9 @@ class NagConfigClass
             $strSpecial .= ',host_name_tploptions,hostgroup_name_tploptions,parents_tploptions';
             $strSpecial .= ',servicegroups_tploptions,contacts_tploptions,contact_groups_tploptions';
             $strSpecial .= ',use_template_tploptions';
+        }
+        if ($strTableName == 'tbl_command') {
+            $strSpecial .= ',arg1_info,arg2_info,arg3_info,arg4_info,arg5_info,arg6_info,arg7_info,arg8_info';
         }
 
         // Pass fields based on nagios version lower than 3.x

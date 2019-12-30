@@ -24,3 +24,14 @@ UPDATE `tbl_settings` SET `value` = '3.4.1' WHERE `tbl_settings`.`name` = 'versi
 UPDATE `tbl_relationinformation` SET `target1`='name' WHERE `master`='tbl_timeperiod' AND `fieldName`='use_template';
 UPDATE `tbl_relationinformation` SET `targetKey`='name' WHERE `master`='tbl_timeperiod' AND `tableName1`='tbl_lnkTimeperiodToTimeperiodUse' AND `fieldName`='idMaster';
 UPDATE `tbl_relationinformation` SET `targetKey`='name' WHERE `master`='tbl_timeperiod' AND `tableName1`='tbl_lnkTimeperiodToTimeperiodUse' AND `fieldName`='idSlave';
+--
+--  Modify table tbl_command
+--
+ALTER TABLE `tbl_command` ADD `arg1_info` text NULL DEFAULT NULL AFTER `command_type`;
+ALTER TABLE `tbl_command` ADD `arg2_info` text NULL DEFAULT NULL AFTER `arg1_info`;
+ALTER TABLE `tbl_command` ADD `arg3_info` text NULL DEFAULT NULL AFTER `arg2_info`;
+ALTER TABLE `tbl_command` ADD `arg4_info` text NULL DEFAULT NULL AFTER `arg3_info`;
+ALTER TABLE `tbl_command` ADD `arg5_info` text NULL DEFAULT NULL AFTER `arg4_info`;
+ALTER TABLE `tbl_command` ADD `arg6_info` text NULL DEFAULT NULL AFTER `arg5_info`;
+ALTER TABLE `tbl_command` ADD `arg7_info` text NULL DEFAULT NULL AFTER `arg6_info`;
+ALTER TABLE `tbl_command` ADD `arg8_info` text NULL DEFAULT NULL AFTER `arg7_info`;
