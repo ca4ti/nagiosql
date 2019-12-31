@@ -60,6 +60,7 @@ CREATE TABLE `tbl_configtarget` (
   `target` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `server` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `port` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `method` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

@@ -35,3 +35,7 @@ ALTER TABLE `tbl_command` ADD `arg5_info` text NULL DEFAULT NULL AFTER `arg4_inf
 ALTER TABLE `tbl_command` ADD `arg6_info` text NULL DEFAULT NULL AFTER `arg5_info`;
 ALTER TABLE `tbl_command` ADD `arg7_info` text NULL DEFAULT NULL AFTER `arg6_info`;
 ALTER TABLE `tbl_command` ADD `arg8_info` text NULL DEFAULT NULL AFTER `arg7_info`;
+--
+--  Modify table tbl_configtarget
+--
+ALTER TABLE `tbl_configtarget` ADD `port` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `server`;
