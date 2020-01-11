@@ -50,6 +50,14 @@ $chkTfValue14 = $myVisClass->addSlash($chkTfValue14);
 $chkTfValue15 = $myVisClass->addSlash($chkTfValue15);
 $chkTfValue16 = $myVisClass->addSlash($chkTfValue16);
 //
+// Check Port Value
+// ================
+/** @noinspection UnnecessaryCastingInspection */
+$chkTfValue23 = (int)$chkTfValue23;
+if ($chkTfValue23 == 0) {
+    $chkTfValue23 = 22;
+}
+//
 // Check if the permissions and other parameters
 // =============================================
 if (($chkModus == 'modify' || $chkModus == 'insert') && $chkDataId != 0) {
@@ -120,7 +128,7 @@ if (($chkModus == 'modify' || $chkModus == 'insert') && $chkDataId != 0) {
 // ==================
 if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', `server`='$chkTfValue4', "
-             . "`method`='$chkSelValue1', `user`='$chkTfValue5', `password`='$chkTfValue6', "
+             . "`port`='$chkTfValue23', `method`='$chkSelValue1', `user`='$chkTfValue5', `password`='$chkTfValue6', "
              . "`ssh_key_path`='$chkTfValue7', `ftp_secure`=$chkChbValue1, `basedir`='$chkTfValue8', "
              . "`hostconfig`='$chkTfValue9', `serviceconfig`='$chkTfValue10', `backupdir`='$chkTfValue11', "
              . "`hostbackup`='$chkTfValue12', `servicebackup`='$chkTfValue13', `nagiosbasedir`='$chkTfValue14', "

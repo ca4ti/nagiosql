@@ -15,10 +15,6 @@
 --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 --
---  Modify existing tbl_settings
---
-UPDATE `tbl_settings` SET `value` = '3.4.1' WHERE `tbl_settings`.`name` = 'version' LIMIT 1;
---
 --  Modify table tbl_relationinformation
 --
 UPDATE `tbl_relationinformation` SET `target1`='name' WHERE `master`='tbl_timeperiod' AND `fieldName`='use_template';
@@ -39,3 +35,7 @@ ALTER TABLE `tbl_command` ADD `arg8_info` text NULL DEFAULT NULL AFTER `arg7_inf
 --  Modify table tbl_configtarget
 --
 ALTER TABLE `tbl_configtarget` ADD `port` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `server`;
+--
+--  Modify existing tbl_settings
+--
+UPDATE `tbl_settings` SET `value` = '3.4.1' WHERE `tbl_settings`.`name` = 'version' LIMIT 1;

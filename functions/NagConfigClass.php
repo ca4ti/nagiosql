@@ -366,11 +366,16 @@ class NagConfigClass
             // Define variables
             $booLogin = false;
             $this->getConfigValues($intConfigID, 'server', $strServer);
+            $this->getConfigValues($intConfigID, 'port', $intPort);
             $this->resConnectServer = $strServer;
             $this->resConnectType   = 'SSH';
+            $intPort = (int)$intPort;
+            if ($intPort == 0) {
+                $intPort = 22;
+            }
             $intErrorReporting  = error_reporting();
             error_reporting(0);
-            $this->resConnectId = ssh2_connect($strServer);
+            $this->resConnectId = ssh2_connect($strServer, $intPort);
             $arrError = error_get_last();
             error_reporting($intErrorReporting);
             // Check connection
@@ -428,9 +433,9 @@ class NagConfigClass
                 }
             } else {
                 $this->myDataClass->writeLog(translate('Connection to remote system failed (SSH2 connection):').
-                    ' ' .$strServer);
+                    ' ' .$strServer. ' / ' . translate('port') . ' : ' .$intPort);
                 $this->processClassMessage(translate('Connection to remote system failed (SSH2 connection):').
-                    ' <b>' .$strServer. '</b>::', $this->strErrorMessage);
+                    ' <b>' .$strServer. ' / ' . translate('port') . ' : ' .$intPort. '</b>::', $this->strErrorMessage);
                 if ($arrError['message'] != '') {
                     $this->processClassMessage($arrError['message']. '::', $this->strErrorMessage);
                 }
@@ -439,9 +444,9 @@ class NagConfigClass
             // Check connection
             if ((!$this->resConnectId) || (!$booLogin)) {
                 $this->myDataClass->writeLog(translate('Connection to remote system failed (SSH2 connection):').
-                    ' ' .$strServer);
+                    ' ' .$strServer. ' / ' . translate('port') . ' : ' .$intPort);
                 $this->processClassMessage(translate('Connection to remote system failed (SSH2 connection):')
-                    . ' ' .$strServer. '::', $this->strErrorMessage);
+                    . ' ' .$strServer. ' / ' . translate('port') . ' : ' .$intPort. '::', $this->strErrorMessage);
                 if ($arrError['message'] != '') {
                     $this->processClassMessage($arrError['message']. '::', $this->strErrorMessage);
                 }

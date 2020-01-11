@@ -59,7 +59,7 @@ $chkSelAccGr    = filter_input(INPUT_POST, 'selAccGr', FILTER_VALIDATE_INT, arra
 $chkSelCnfName  = filter_input(INPUT_POST, 'selCnfName', FILTER_SANITIZE_STRING);
 //
 // Common text field value
-for ($i = 1; $i <= 22; $i++) {
+for ($i = 1; $i <= 23; $i++) {
     $tmpVar  = 'chkTfValue'.$i;
     $$tmpVar = filter_input(INPUT_POST, 'tfValue'.$i, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
     if (get_magic_quotes_gpc() == 0) {

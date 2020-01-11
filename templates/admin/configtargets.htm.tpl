@@ -85,7 +85,7 @@
                     (document.frmDomainInsert.tfValue7.value === "")) {
                     document.frmDomainInsert.tfValue5.className = "inpmust";
                     document.frmDomainInsert.tfValue6.className = "inpmust";
-                    document.frmDomainInsert.tfValue7.className   = "inpmust";
+                    document.frmDomainInsert.tfValue7.className = "inpmust";
                 } else if (((document.frmDomainInsert.tfValue5.value !== "") ||
                     (document.frmDomainInsert.tfValue6.value !== "")) &&
                     (document.frmDomainInsert.tfValue7.value === "")) {
@@ -110,11 +110,13 @@
                 document.getElementById('passwd').className  = "elementHide";
                 document.getElementById('keypath').className = "elementHide";
                 document.getElementById('ftps').className    = "elementHide";
+                document.getElementById('port').className    = "elementHide";
             } else if (key === '2') {
                 document.getElementById('user').className    = "elementShow";
                 document.getElementById('passwd').className  = "elementShow";
                 document.getElementById('keypath').className = "elementHide";
                 document.getElementById('ftps').className    = "elementShow";
+                document.getElementById('port').className    = "elementHide";
                 document.frmDomainInsert.tfValue6.className  = "inpmust";
                 document.frmDomainInsert.tfValue5.className  = "inpmust";
             } else {
@@ -122,6 +124,7 @@
                 document.getElementById('passwd').className  = "elementShow";
                 document.getElementById('keypath').className = "elementShow";
                 document.getElementById('ftps').className    = "elementHide";
+                document.getElementById('port').className    = "elementShow";
                 document.frmDomainInsert.tfValue5.className  = "inpmust";
                 document.frmDomainInsert.tfValue6.className  = "inpmust";
                 document.frmDomainInsert.tfValue7.className  = "inpmust";
@@ -167,9 +170,13 @@
                 <td>{LANG_PASSWORD} *</td>
                 <td colspan="2"><input title="{LANG_PASSWORD}" name="tfValue6" type="password" id="tfValue6" tabindex="6" value="{DAT_PASSWORD}" style="width:350px;" class="inpmust" onchange="checkMust();"></td>
             </tr>
+            <tr id="port" class="{CLASS_NAME_1}">
+                <td>{LANG_SSH_PORT}</td>
+                <td colspan="2"><input title="{LANG_SSH_PORT}" name="tfValue23" type="text" id="tfValue23" tabindex="7" value="{DAT_PORT}" style="width:350px;"></td>
+            </tr>
             <tr id="keypath" class="{CLASS_NAME_2}">
                 <td>{LANG_SSH_KEY} *</td>
-                <td><input title="{LANG_SSH_KEY}" name="tfValue7" type="text" id="tfValue7" tabindex="7" value="{DAT_SSH_KEY_PATH}" style="width:350px;" class="inpmust" onchange="checkMust();"></td>
+                <td><input title="{LANG_SSH_KEY}" name="tfValue7" type="text" id="tfValue7" tabindex="8" value="{DAT_SSH_KEY_PATH}" style="width:350px;" class="inpmust" onchange="checkMust();"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','ssh_host_key','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr id="ftps" class="{CLASS_NAME_3}">
@@ -185,32 +192,32 @@
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_BASE_DIRECTORY} *</td>
-                <td><input title="{LANG_BASE_DIRECTORY}" name="tfValue8" type="text" id="tfValue8" tabindex="8" value="{DAT_BASEDIR}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_BASE_DIRECTORY}" name="tfValue8" type="text" id="tfValue8" tabindex="9" value="{DAT_BASEDIR}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','basedir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_HOST_DIRECTORY} *</td>
-                <td><input title="{LANG_HOST_DIRECTORY}" name="tfValue9" type="text" id="tfValue9" tabindex="9" value="{DAT_HOSTCONFIG}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_HOST_DIRECTORY}" name="tfValue9" type="text" id="tfValue9" tabindex="10" value="{DAT_HOSTCONFIG}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','hostdir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_SERVICE_DIRECTORY} *</td>
-                <td><input title="{LANG_SERVICE_DIRECTORY}" name="tfValue10" type="text" id="tfValue10" tabindex="10" value="{DAT_SERVICECONFIG}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_SERVICE_DIRECTORY}" name="tfValue10" type="text" id="tfValue10" tabindex="11" value="{DAT_SERVICECONFIG}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','servicedir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_BACKUP_DIRECTORY} *</td>
-                <td><input title="{LANG_BACKUP_DIRECTORY}" name="tfValue11" type="text" id="tfValue11" tabindex="11" value="{DAT_BACKUPDIR}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_BACKUP_DIRECTORY}" name="tfValue11" type="text" id="tfValue11" tabindex="12" value="{DAT_BACKUPDIR}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','backupdir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_HOST_BACKUP_DIRECTORY} *</td>
-                <td><input title="{LANG_HOST_BACKUP_DIRECTORY}" name="tfValue12" type="text" id="tfValue12" tabindex="12" value="{DAT_HOSTBACKUP}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_HOST_BACKUP_DIRECTORY}" name="tfValue12" type="text" id="tfValue12" tabindex="13" value="{DAT_HOSTBACKUP}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','backuphostdir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_SERVICE_BACKUP_DIRECTORY} *</td>
-                <td><input title="{LANG_SERVICE_BACKUP_DIRECTORY}" name="tfValue13" type="text" id="tfValue13" tabindex="13" value="{DAT_SERVICEBACKUP}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_SERVICE_BACKUP_DIRECTORY}" name="tfValue13" type="text" id="tfValue13" tabindex="14" value="{DAT_SERVICEBACKUP}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','backupservicedir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
@@ -221,47 +228,47 @@
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_BASEDIR} *</td>
-                <td><input title="{LANG_NAGIOS_BASEDIR}" name="tfValue14" type="text" id="tfValue14" tabindex="14" value="{DAT_NAGIOSBASEDIR}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_NAGIOS_BASEDIR}" name="tfValue14" type="text" id="tfValue14" tabindex="15" value="{DAT_NAGIOSBASEDIR}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','nagiosbasedir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_IMPORT_DIRECTORY}</td>
-                <td><input title="{LANG_IMPORT_DIRECTORY}" name="tfValue15" type="text" id="tfValue15" tabindex="15" value="{DAT_IMPORTDIR}"  style="width:350px;"></td>
+                <td><input title="{LANG_IMPORT_DIRECTORY}" name="tfValue15" type="text" id="tfValue15" tabindex="16" value="{DAT_IMPORTDIR}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','importdir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_PICTURE_DIRECTORY}</td>
-                <td><input title="{LANG_PICTURE_DIRECTORY}" name="tfValue16" type="text" id="tfValue16" tabindex="16" value="{DAT_PICTUREDIR}"  style="width:350px;"></td>
+                <td><input title="{LANG_PICTURE_DIRECTORY}" name="tfValue16" type="text" id="tfValue16" tabindex="17" value="{DAT_PICTUREDIR}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','picturedir','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_COMMAND_FILE}</td>
-                <td><input title="{LANG_NAGIOS_COMMAND_FILE}" name="tfValue17" type="text" id="tfValue17" tabindex="17" value="{DAT_COMMANDFILE}"  style="width:350px;"></td>
+                <td><input title="{LANG_NAGIOS_COMMAND_FILE}" name="tfValue17" type="text" id="tfValue17" tabindex="18" value="{DAT_COMMANDFILE}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','commandfile','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_BINARY_FILE}</td>
-                <td><input title="{LANG_NAGIOS_BINARY_FILE}" name="tfValue18" type="text" id="tfValue18" tabindex="18" value="{DAT_BINARYFILE}"  style="width:350px;"></td>
+                <td><input title="{LANG_NAGIOS_BINARY_FILE}" name="tfValue18" type="text" id="tfValue18" tabindex="19" value="{DAT_BINARYFILE}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','binary','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_PROCESS_FILE}</td>
-                <td><input title="{LANG_NAGIOS_PROCESS_FILE}" name="tfValue19" type="text" id="tfValue19" tabindex="19" value="{DAT_PIDFILE}"  style="width:350px;"></td>
+                <td><input title="{LANG_NAGIOS_PROCESS_FILE}" name="tfValue19" type="text" id="tfValue19" tabindex="20" value="{DAT_PIDFILE}"  style="width:350px;"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','pidfile','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_CONFIG_FILE} *</td>
-                <td><input title="{LANG_NAGIOS_CONFIG_FILE}" name="tfValue20" type="text" id="tfValue20" tabindex="20" value="{DAT_CONFFILE}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_NAGIOS_CONFIG_FILE}" name="tfValue20" type="text" id="tfValue20" tabindex="21" value="{DAT_CONFFILE}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','conffile','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_CGI_FILE} *</td>
-                <td><input title="{LANG_NAGIOS_CGI_FILE}" name="tfValue21" type="text" id="tfValue21" tabindex="21" value="{DAT_CGIFILE}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_NAGIOS_CGI_FILE}" name="tfValue21" type="text" id="tfValue21" tabindex="22" value="{DAT_CGIFILE}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','cgifile','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr {COMMON_INVISIBLE}>
                 <td>{LANG_NAGIOS_RESOURCE_FILE} *</td>
-                <td><input title="{LANG_NAGIOS_RESOURCE_FILE}" name="tfValue22" type="text" id="tfValue22" tabindex="22" value="{DAT_RESOURCEFILE}"  style="width:350px;" class="inpmust"></td>
+                <td><input title="{LANG_NAGIOS_RESOURCE_FILE}" name="tfValue22" type="text" id="tfValue22" tabindex="23" value="{DAT_RESOURCEFILE}"  style="width:350px;" class="inpmust"></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('domain','resourcefile','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>

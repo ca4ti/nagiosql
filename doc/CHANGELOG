@@ -1,8 +1,28 @@
 CHANGELOG 3.4.1
 ---------------
-- Include all 3.4.0 hotfixes from GIT up to 2019-12-04
+- New option for SSH portnumber in configuration domain
+- New optional help text for command arguments ARG1 - ARG8
+- A config target now supports different port numbers for SSH/SFTP
 - [Bugfix] timeperiod exclude and include function
 - [Bugfix] free variables supports special chars
+- [Bugfix] misc- and check commands now support special chars
+- Include all 3.4.0 hotfixes from GIT up to 2019-12-04
+  o Add GIT version number on support page and version check
+  o Nagios 4.0 update for mandatory fields
+  o [Bugfix] Missing PEAR path in scripting interface
+  o [Bugfix] Allowing special characters in ARG fields
+  o [Bugfix] Object copy after changing domain (config_id not set correctly)
+  o [Bugfix] Quote settings data für special chars in database password
+  o [Bugfix] Inserting time definitions when Nagios 3.x is selected in data domain
+  o [Bugfix] Object search and row sorting
+  o [Bugfix] Page numbers in service extinfo
+  o [Bugfix] Fixed some ancient bug in an error message of time periods
+  o [Bugfix] Nagios 4.0 update for mandatory fields
+  o [Bugfix] PHP5 compatibility update
+  o [Bugfix] Allowing quotes in arguments
+  o [Bugfix] Variable bug in downloads.php
+  o [Bugfix] Host copy bug fixed
+  o [Bugfix] Additional security hardening
 
 CHANGELOG 3.4.0
 ---------------
@@ -19,22 +39,22 @@ CHANGELOG 3.4.0
 
 CHANGELOG 3.3.0
 ---------------
-- [OK] Support for PHP version 7.0 (not 7.1 or higher)
-- [OK] Database interface changed from mysql to mysqli
+- Support for PHP version 7.0 (not 7.1 or higher)
+- Database interface changed from mysql to mysqli
 
 CHANGELOG 3.2.0
 ---------------
 
-- [OK] Enable/Disable regardless of register
-- [OK] HTML reworking
-- [OK] Domain separation (Data / Configuration)
-- [OK] Additional user settings
+- Enable/Disable regardless of register
+- HTML reworking
+- Domain separation (Data / Configuration)
+- Additional user settings
   o Language
   o Standard domain
-- [OK] Better HTML/CSS implementation for IE (scroll fields)
-- [OK] Configuration name is stored as free variable inside the configuration file
-- [OK] New support page with additional checks
-- [OK] New/reworked installer
-- [OK] Servicegroup support for servicedependencies and serviceescalations
-- [OK][BUG] Reworked service selection in servicedependencies and serviceescalations
-- [OK][BUG] Reworked right management (menu access / read rights)
+- Better HTML/CSS implementation for IE (scroll fields)
+- Configuration name is stored as free variable inside the configuration file
+- New support page with additional checks
+- New/reworked installer
+- Servicegroup support for servicedependencies and serviceescalations
+- [Bugfix] Reworked service selection in servicedependencies and serviceescalations
+- [Bugfix] Reworked right management (menu access / read rights)

@@ -23,6 +23,7 @@ $arrDescription[] = array('name' => 'LANG_SERVER_NAMEe',               'string' 
 $arrDescription[] = array('name' => 'LANG_METHOD',                     'string' => translate('Method'));
 $arrDescription[] = array('name' => 'LANG_USERNAME',                   'string' => translate('Username'));
 $arrDescription[] = array('name' => 'LANG_PASSWORD',                   'string' => translate('Password'));
+$arrDescription[] = array('name' => 'LANG_SSH_PORT',                   'string' => translate('SSH Port number'));
 $arrDescription[] = array('name' => 'LANG_SSH_KEY',
     'string' => translate('Directory with SSH key pair'));
 $arrDescription[] = array('name' => 'LANG_FTPS',

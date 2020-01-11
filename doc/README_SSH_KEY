@@ -8,7 +8,7 @@ Local system
 2. Create a path for the ssh keys
 # mkdir /etc/nagiosql/ssh
 2. Create a key pair (only rsa is supported!)
-# ssh-keygen -t rsa -b 4096
+# ssh-keygen -t rsa -m PEM -b 4096
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): /etc/nagiosql/ssh/id_rsa
 -> empty passphrase!
@@ -27,6 +27,15 @@ Enter file in which to save the key (/root/.ssh/id_rsa): /etc/nagiosql/ssh/id_rs
 6.1. Select SSH/SFTP as Method
 6.2. Fill in nagiosql_usr as User
 6.3. Fill in /etc/nagiosql/ssh/ as Directory of the key pair (without id_rsa)!
+
+
+Callback Error
+==============
+
+If you get a callback error when connecting to the remote system (variant SSH public key), the file
+id_rsa may not be in PEM format. Try a conversion with:
+# ssh-keygen -p -m PEM -f /etc/nagiosql/ssh/id_rsa
+-> empty passphrase!
 
 
 Using passwort authentication (not recommended)
