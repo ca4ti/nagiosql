@@ -110,11 +110,26 @@
         //-->
     </script>
     <form name="frmDatalist" method="post" action="{ACTION_MODIFY}">
-        <table border="0" cellpadding="0" class="content_formtable">
+        <table style="border: 0; border-spacing: 1px; border-collapse: separate;" class="content_formtable">
             <tr>
-                <td class="content_tbl_row1">{LANG_SEARCH_STRING}:</td>
+                <td style="width: 120px;">{LANG_SEARCH_STRING}:</td>
                 <td class="content_tbl_row2"><input title="{LANG_SEARCH_STRING}" type="text" name="txtSearch" value="{DAT_SEARCH}" class="selectborder"></td>
                 <td style="width:100px;"><img src="{IMAGE_PATH_HEAD}lupe.gif" width="18" height="18" alt="{LANG_SEARCH}" title="{LANG_SEARCH}" style="cursor:pointer;" onClick="document.frmDatalist.submit();">&nbsp;<img src="{IMAGE_PATH_HEAD}del.png" width="18" height="18" alt="{LANG_DELETE_SEARCH}" title="{LANG_DELETE_SEARCH}" onClick="del('search');" style="cursor:pointer;"></td>
+                <td style="width: 180px;">&nbsp;</td>
+                <td style="width: 70px;">{LANG_FILTER}:</td>
+                <td style="width: 70px;">{LANG_REGISTERED}:</td>
+                <td><select name="selRegFilter" id="selRegFilter" title="{LANG_REGISTERED}" class="selectborder" style="width: 50px;" onchange="document.frmDatalist.submit();">
+                        <option value="0" {SEL_REGFILTER_0_SELECTED}>{LANG_ALL}</option>
+                        <option value="1" {SEL_REGFILTER_1_SELECTED}>{LANG_YES}</option>
+                        <option value="2" {SEL_REGFILTER_2_SELECTED}>{LANG_NO}</option>
+                    </select></td>
+                <td style="width: 20px;">&nbsp;</td>
+                <td style="width: 40px;">{LANG_ACTIVE}:</td>
+                <td><select name="selActiveFilter" id="selActiveFilter" title="{LANG_ACTIVE}" class="selectborder" style="width: 50px;" onchange="document.frmDatalist.submit();">
+                        <option value="0" {SEL_ACTIVEFILTER_0_SELECTED}>{LANG_ALL}</option>
+                        <option value="1" {SEL_ACTIVEFILTER_1_SELECTED}>{LANG_YES}</option>
+                        <option value="2" {SEL_ACTIVEFILTER_2_SELECTED}>{LANG_NO}</option>
+                    </select></td>
             </tr>
         </table>
         <table border="0" cellpadding="0" class="content_listtable" width="100%">

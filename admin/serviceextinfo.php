@@ -214,6 +214,7 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Define service extended information (serviceextinfo.cfg)'));
     $mastertp->setVariable('FIELD_1', translate('Hostname'));
     $mastertp->setVariable('FIELD_2', translate('Service'));
+    $mastertp->setVariable('FILTER_VISIBLE', 'visibility: hidden');
     // Process search string
     if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];

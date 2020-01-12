@@ -19,7 +19,7 @@
 // ====================
 $arrDescription[] = array('name' => 'LANG_DOMAIN',                     'string' => translate('Domain'));
 $arrDescription[] = array('name' => 'LANG_DESCRIPTION',                'string' => translate('Description'));
-$arrDescription[] = array('name' => 'LANG_SERVER_NAMEe',               'string' => translate('Server name'));
+$arrDescription[] = array('name' => 'LANG_SERVER_NAME',                'string' => translate('Server name'));
 $arrDescription[] = array('name' => 'LANG_METHOD',                     'string' => translate('Method'));
 $arrDescription[] = array('name' => 'LANG_USERNAME',                   'string' => translate('Username'));
 $arrDescription[] = array('name' => 'LANG_PASSWORD',                   'string' => translate('Password'));
@@ -66,6 +66,7 @@ $arrDescription[] = array('name' => 'LANG_FORMCHECK',                  'string' 
 $arrDescription[] = array('name' => 'LANG_SECURE_QUESTION',            'string' => translate('Secure question'));
 $arrDescription[] = array('name' => 'LANG_YES',                        'string' => translate('Yes'));
 $arrDescription[] = array('name' => 'LANG_NO',                         'string' => translate('No'));
+$arrDescription[] = array('name' => 'LANG_ALL',                        'string' => translate('Alle'));
 $arrDescription[] = array('name' => 'LANG_TIME',                       'string' => translate('Time'));
 $arrDescription[] = array('name' => 'LANG_USER',                       'string' => translate('User'));
 $arrDescription[] = array('name' => 'LANG_IP',                         'string' => translate('IP Address'));
@@ -216,6 +217,8 @@ $arrDescription[] = array('name' => 'LANG_SERVICEGROUPS',              'string' 
 $arrDescription[] = array('name' => 'LANG_IS_VOLATILE',                'string' => translate('Is volatile'));
 $arrDescription[] = array('name' => 'LANG_PARALLELIZE_CHECK',          'string' => translate('Parallelize checks'));
 $arrDescription[] = array('name' => 'LANG_CONFIGFILTER',               'string' => translate('Config name filter'));
+$arrDescription[] = array('name' => 'LANG_FILTER',                     'string' => translate('Filter'));
+$arrDescription[] = array('name' => 'LANG_SERVICE_NAME',                     'string' => translate('Service name'));
 $arrDescription[] = array('name' => 'LANG_CONFIG_NAME',                'string' => translate('Config name'));
 $arrDescription[] = array('name' => 'LANG_IMPORT_DIRECTORY',           'string' => translate('Import directory'));
 $arrDescription[] = array('name' => 'LANG_INSERT_ALL_VARIABLE',

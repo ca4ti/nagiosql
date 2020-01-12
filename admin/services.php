@@ -721,17 +721,38 @@ if ($chkModus == 'display') {
             $mastertp->parse('configlist');
         }
     }
-    // Process filter string
+    // Process search string and filter
+    $strSearchWhere = '';
     if ($_SESSION['search'][$preSearchSession] != '') {
-        $strSearchTxt   = $_SESSION['search'][$preSearchSession];
-        $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `service_description` "
-            . "LIKE '%".$strSearchTxt."%' OR `display_name` LIKE '%".$strSearchTxt."%')";
+        $strSearchTxt    = $_SESSION['search'][$preSearchSession];
+        $strSearchWhere .= "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `service_description` "
+            . "LIKE '%".$strSearchTxt."%' OR `display_name` LIKE '%".$strSearchTxt."%') ";
     }
     if ($_SESSION['search']['config_selection'] != '') {
         $strSearchTxt2   = $_SESSION['search']['config_selection'];
         if ($strSearchTxt2 != translate('All configs')) {
             $strSearchWhere2 = " AND `$preKeyField` = '".$strSearchTxt2."' ";
         }
+    }
+    if ($_SESSION['filter'][$preSearchSession]['registered'] != '') {
+        $intRegistered = (int)$_SESSION['filter'][$preSearchSession]['registered'];
+        if ($intRegistered == 1) {
+            $strSearchWhere .= "AND `register` = '1' ";
+        }
+        if ($intRegistered == 2) {
+            $strSearchWhere .= "AND `register` = '0' ";
+        }
+        $mastertp->setVariable('SEL_REGFILTER_'.$intRegistered.'_SELECTED', 'selected');
+    }
+    if ($_SESSION['filter'][$preSearchSession]['active'] != '') {
+        $intActivated = (int)$_SESSION['filter'][$preSearchSession]['active'];
+        if ($intActivated == 1) {
+            $strSearchWhere .= "AND `active` = '1' ";
+        }
+        if ($intActivated == 2) {
+            $strSearchWhere .= "AND `active` = '0' ";
+        }
+        $mastertp->setVariable('SEL_ACTIVEFILTER_'.$intActivated.'_SELECTED', 'selected');
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`,`$preKeyField` $hidSortDir";

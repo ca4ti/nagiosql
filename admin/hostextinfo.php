@@ -147,6 +147,7 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Define host extended information (hostextinfo.cfg)'));
     $mastertp->setVariable('FIELD_1', translate('Host name'));
     $mastertp->setVariable('FIELD_2', translate('Notes'));
+    $mastertp->setVariable('FILTER_VISIBLE', 'visibility: hidden');
     // Process search string
     if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];

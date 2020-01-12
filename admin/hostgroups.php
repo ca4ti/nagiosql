@@ -227,11 +227,32 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Define host groups (hostgroups.cfg)'));
     $mastertp->setVariable('FIELD_1', translate('Host group'));
     $mastertp->setVariable('FIELD_2', translate('Description'));
-    // Process search string
+    // Process search string and filter
+    $strSearchWhere = '';
     if ($_SESSION['search'][$preSearchSession] != '') {
-        $strSearchTxt   = $_SESSION['search'][$preSearchSession];
-        $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%' "
-                        . "OR `notes` LIKE '%".$strSearchTxt."%')";
+        $strSearchTxt    = $_SESSION['search'][$preSearchSession];
+        $strSearchWhere .= "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `alias` LIKE '%".$strSearchTxt."%' "
+                        . "OR `notes` LIKE '%".$strSearchTxt."%') ";
+    }
+    if ($_SESSION['filter'][$preSearchSession]['registered'] != '') {
+        $intRegistered = (int)$_SESSION['filter'][$preSearchSession]['registered'];
+        if ($intRegistered == 1) {
+            $strSearchWhere .= "AND `register` = '1' ";
+        }
+        if ($intRegistered == 2) {
+            $strSearchWhere .= "AND `register` = '0' ";
+        }
+        $mastertp->setVariable('SEL_REGFILTER_'.$intRegistered.'_SELECTED', 'selected');
+    }
+    if ($_SESSION['filter'][$preSearchSession]['active'] != '') {
+        $intActivated = (int)$_SESSION['filter'][$preSearchSession]['active'];
+        if ($intActivated == 1) {
+            $strSearchWhere .= "AND `active` = '1' ";
+        }
+        if ($intActivated == 2) {
+            $strSearchWhere .= "AND `active` = '0' ";
+        }
+        $mastertp->setVariable('SEL_ACTIVEFILTER_'.$intActivated.'_SELECTED', 'selected');
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";

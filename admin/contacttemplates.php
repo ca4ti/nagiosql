@@ -453,6 +453,7 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Define contact templates (contacttemplates.cfg)'));
     $mastertp->setVariable('FIELD_1', translate('Contact name'));
     $mastertp->setVariable('FIELD_2', translate('Description'));
+    $mastertp->setVariable('FILTER_VISIBLE', 'visibility: hidden');
     // Process filter string
     if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];

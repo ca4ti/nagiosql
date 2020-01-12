@@ -54,9 +54,11 @@ $chkFromLine = filter_input(INPUT_GET, 'from_line', FILTER_VALIDATE_INT, array('
 //
 // Process post parameters
 // =======================
-$chkTfSearchRaw = filter_input(INPUT_POST, 'txtSearch', FILTER_SANITIZE_STRING);
-$chkSelAccGr    = filter_input(INPUT_POST, 'selAccGr', FILTER_VALIDATE_INT, array('options' => array('default' => 0)));
-$chkSelCnfName  = filter_input(INPUT_POST, 'selCnfName', FILTER_SANITIZE_STRING);
+$chkTfSearchRaw     = filter_input(INPUT_POST, 'txtSearch', FILTER_SANITIZE_STRING);
+$chkSelAccGr        = filter_input(INPUT_POST, 'selAccGr', FILTER_VALIDATE_INT, array('options' => array('default' => 0)));
+$chkSelCnfName      = filter_input(INPUT_POST, 'selCnfName', FILTER_SANITIZE_STRING);
+$chkSelRegFilter    = filter_input(INPUT_POST, 'selRegFilter', FILTER_VALIDATE_INT, array('options' => array('default' => 0)));
+$chkSelActiveFilter = filter_input(INPUT_POST, 'selActiveFilter', FILTER_VALIDATE_INT, array('options' => array('default' => 0)));
 //
 // Common text field value
 for ($i = 1; $i <= 23; $i++) {
@@ -171,15 +173,23 @@ $chkTaFileText  = stripslashes($chkTaFileTextRaw);
 //
 // Search/sort/filter - session data
 // =================================
-if (!isset($_SESSION['search']) || !isset($_SESSION['search'][$preSearchSession])) {
-    $_SESSION['search'][$preSearchSession]  = '';
+if (!isset($_SESSION['search'][$preSearchSession])) {
+    $_SESSION['search'][$preSearchSession] = '';
 }
-if (!isset($_SESSION['search']) || !isset($_SESSION['search']['config_selection'])) {
+if (!isset($_SESSION['filter'][$preSearchSession]['registered'])) {
+    $_SESSION['filter'][$preSearchSession]['registered'] = '';
+}
+if (!isset($_SESSION['filter'][$preSearchSession]['active'])) {
+    $_SESSION['filter'][$preSearchSession]['active'] = '';
+}
+if (!isset($_SESSION['search']['config_selection'])) {
     $_SESSION['search']['config_selection'] = '';
 }
 if (($chkModus == 'checkform') || ($chkModus == 'filter')) {
     $_SESSION['search'][$preSearchSession]  = $chkTfSearch;
     $_SESSION['search']['config_selection'] = $chkSelCnfName;
+    $_SESSION['filter'][$preSearchSession]['registered'] = $chkSelRegFilter;
+    $_SESSION['filter'][$preSearchSession]['active'] = $chkSelActiveFilter;
     $myContentClass->arrSession = $_SESSION;
 }
 //

@@ -148,6 +148,7 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Command definitions'));
     $mastertp->setVariable('FIELD_1', translate('Command name'));
     $mastertp->setVariable('FIELD_2', translate('Command line'));
+    $mastertp->setVariable('FILTER_VISIBLE', 'visibility: hidden');
     // Process search string
     if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];

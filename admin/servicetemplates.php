@@ -623,11 +623,23 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Define service templates (servicetemplates.cfg)'));
     $mastertp->setVariable('FIELD_1', translate('Template name'));
     $mastertp->setVariable('FIELD_2', translate('Service description'));
+    $mastertp->setVariable('FILTER_REG_VISIBLE', 'visibility: hidden');
     // Process filter string
+    $strSearchWhere = '';
     if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
         $strSearchWhere = "AND (`$preKeyField` LIKE '%".$strSearchTxt."%' OR `service_description` "
-                        . "LIKE '%".$strSearchTxt."%' OR `display_name` LIKE '%".$strSearchTxt."%')";
+                        . "LIKE '%".$strSearchTxt."%' OR `display_name` LIKE '%".$strSearchTxt."%') ";
+    }
+    if ($_SESSION['filter'][$preSearchSession]['active'] != '') {
+        $intActivated = (int)$_SESSION['filter'][$preSearchSession]['active'];
+        if ($intActivated == 1) {
+            $strSearchWhere .= "AND `active` = '1' ";
+        }
+        if ($intActivated == 2) {
+            $strSearchWhere .= "AND `active` = '0' ";
+        }
+        $mastertp->setVariable('SEL_ACTIVEFILTER_'.$intActivated.'_SELECTED', 'selected');
     }
     // Row sorting
     $strOrderString = "ORDER BY `config_id`, `$preKeyField` $hidSortDir";

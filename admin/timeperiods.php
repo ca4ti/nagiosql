@@ -252,6 +252,7 @@ if ($chkModus == 'display') {
     $mastertp->setVariable('TITLE', translate('Time period definitions (timeperiods.cfg)'));
     $mastertp->setVariable('FIELD_1', translate('Time period'));
     $mastertp->setVariable('FIELD_2', translate('Description'));
+    $mastertp->setVariable('FILTER_VISIBLE', 'visibility: hidden');
     // Process filter string
     if ($_SESSION['search'][$preSearchSession] != '') {
         $strSearchTxt   = $_SESSION['search'][$preSearchSession];
