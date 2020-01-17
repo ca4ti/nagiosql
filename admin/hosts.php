@@ -31,6 +31,7 @@ $preTableName     = 'tbl_host';
 $preKeyField      = 'host_name';
 $preAccess        = 1;
 $preFieldvars     = 1;
+$strSqlParents    = '';
 //
 // Include preprocessing files
 // ===========================
@@ -56,10 +57,12 @@ if ($chkSelValue1 != '') {
 // Add or modify data
 // ==================
 if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAccess == 0)) {
+    if ($SETS['performance']['parents'] == 1) {
+        $strSqlParents = "`parents`=$intMselValue1, `parents_tploptions`=$chkRadValue1,";
+    }
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue3', "
              . "`display_name`='$chkTfValue4', `address`='$chkTfValue5', `name`='$chkTfValue6', "
-             . "`parents`=$intMselValue1, `importance`=$chkTfNullVal9, `parents_tploptions`=$chkRadValue1, "
-             . "`hostgroups`=$intMselValue2, "
+             . "$strSqlParents `importance`=$chkTfNullVal9, `hostgroups`=$intMselValue2, "
              . "`hostgroups_tploptions`=$chkRadValue2, `check_command`='$chkSelValue1', `use_template`=$intTemplates, "
              . "`initial_state`='$strIS', `max_check_attempts`=$chkTfNullVal2, `check_interval`=$chkTfNullVal3, "
              . "`retry_interval`=$chkTfNullVal1, `active_checks_enabled`=$chkRadValue5, "
@@ -103,11 +106,13 @@ if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAcce
                 // Insert/update relations
                 // =======================
                 if ($chkModus == 'insert') {
-                    if ($intMselValue1 != 0) {
-                        $intRet1 = $myDataClass->dataInsertRelation('tbl_lnkHostToHost', $chkDataId, $chkMselValue1);
-                    }
-                    if (isset($intRet1) && ($intRet1 != 0)) {
-                        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                    if ($SETS['performance']['parents'] == 1) {
+                        if ($intMselValue1 != 0) {
+                            $intRet1 = $myDataClass->dataInsertRelation('tbl_lnkHostToHost', $chkDataId, $chkMselValue1);
+                        }
+                        if (isset($intRet1) && ($intRet1 != 0)) {
+                            $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                        }
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataInsertRelation(
@@ -136,13 +141,15 @@ if ((($chkModus == 'insert') || ($chkModus == 'modify')) && ($intGlobalWriteAcce
                         $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
                     }
                 } elseif ($chkModus == 'modify') {
-                    if ($intMselValue1 != 0) {
-                        $intRet1 = $myDataClass->dataUpdateRelation('tbl_lnkHostToHost', $chkDataId, $chkMselValue1);
-                    } else {
-                        $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkHostToHost', $chkDataId);
-                    }
-                    if ($intRet1 != 0) {
-                        $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                    if ($SETS['performance']['parents'] == 1) {
+                        if ($intMselValue1 != 0) {
+                            $intRet1 = $myDataClass->dataUpdateRelation('tbl_lnkHostToHost', $chkDataId, $chkMselValue1);
+                        } else {
+                            $intRet1 = $myDataClass->dataDeleteRelation('tbl_lnkHostToHost', $chkDataId);
+                        }
+                        if ($intRet1 != 0) {
+                            $myVisClass->processMessage($myDataClass->strErrorMessage, $strErrorMessage);
+                        }
                     }
                     if ($intMselValue2 != 0) {
                         $intRet2 = $myDataClass->dataUpdateRelation(
@@ -446,28 +453,33 @@ if ($chkModus == 'add') {
             $conttp->parse('template');
         }
     }
-    // Process host selection field
-    if (isset($arrModifyData['parents'])) {
-        $intFieldId = $arrModifyData['parents'];
+    if ($SETS['performance']['parents'] == 1) {
+        // Process host selection field
+        if (isset($arrModifyData['parents'])) {
+            $intFieldId = $arrModifyData['parents'];
+        } else {
+            $intFieldId = 0;
+        }
+        if (isset($arrModifyData['id'])) {
+            $intKeyId = $arrModifyData['id'];
+        } else {
+            $intKeyId = 0;
+        }
+        $intReturn3 = $myVisClass->parseSelectMulti(
+            $preTableName,
+            $preKeyField,
+            'host_parents',
+            'tbl_lnkHostToHost',
+            0,
+            $intFieldId,
+            $intKeyId
+        );
+        if ($intReturn3 != 0) {
+            $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
+        }
+        $conttp->setVariable('PARENTS_VISIBLE', 'elementShow');
     } else {
-        $intFieldId = 0;
-    }
-    if (isset($arrModifyData['id'])) {
-        $intKeyId   = $arrModifyData['id'];
-    } else {
-        $intKeyId   = 0;
-    }
-    $intReturn3 = $myVisClass->parseSelectMulti(
-        $preTableName,
-        $preKeyField,
-        'host_parents',
-        'tbl_lnkHostToHost',
-        0,
-        $intFieldId,
-        $intKeyId
-    );
-    if ($intReturn3 != 0) {
-        $myVisClass->processMessage($myVisClass->strErrorMessage, $strErrorMessage);
+        $conttp->setVariable('PARENTS_VISIBLE', 'elementHide');
     }
     // Process hostgroup selection field
     if (isset($arrModifyData['hostgroups'])) {

@@ -196,9 +196,9 @@
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('host','display_name','all','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
-                            <td valign="top">{LANG_PARENTS}<br><br><small>{LANG_CTRLINFO}</small></td>
+                            <td valign="top"><span class="{PARENTS_VISIBLE}">{LANG_PARENTS}<br><br><small>{LANG_CTRLINFO}</small></span></td>
                             <td valign="top">
-                                <table cellpadding="0" cellspacing="0" border="0">
+                                <table cellpadding="0" cellspacing="0" border="0" class="{PARENTS_VISIBLE}">
                                     <tr>
                                         <td>
                                             <select title="{LANG_PARENTS}" name="mselValue1[]" size="4" multiple id="mselValue1" class="selectborder" {MSIE_DISABLED}>
@@ -210,7 +210,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td valign="top"><img id="mutvalue1" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('host','parents','all','Info');" class="infobutton_2"></td>
+                            <td valign="top"><span class="{PARENTS_VISIBLE}"><img id="mutvalue1" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('host','parents','all','Info');" class="infobutton_2"></span></td>
                             <td valign="top">{LANG_HOST_GROUPS}<br><br><small>{LANG_CTRLINFO}</small></td>
                             <td valign="top">
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -230,7 +230,7 @@
                         <tr class="{VERSION_30_VISIBLE}">
                             <td>&nbsp;</td>
                             <td>
-                                <table cellpadding="0" cellspacing="0" border="0">
+                                <table cellpadding="0" cellspacing="0" border="0" class="{PARENTS_VISIBLE}">
                                     <tr>
                                         <td class="radio_cell_1"><input title="+" name="radValue1" type="radio" class="checkbox" id="radValue10" value="0" {DAT_PAR0_CHECKED} tabindex="5"></td>
                                         <td class="radio_cell_2">+</td>
@@ -241,7 +241,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
+                            <td><span class="{PARENTS_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></span></td>
                             <td>&nbsp;</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0" class="template_tab">

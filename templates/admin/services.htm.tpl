@@ -276,9 +276,9 @@
                             <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></td>
                         </tr>
                         <tr>
-                            <td valign="top"><span class="{VERSION_40_VISIBLE}">{LANG_PARENT_SERVICES}<br><br><small>{LANG_CTRLINFO}</small></span></td>
+                            <td valign="top"><span class="{VERSION_40_VISIBLE} {PARENTS_VISIBLE}">{LANG_PARENT_SERVICES}<br><br><small>{LANG_CTRLINFO}</small></span></td>
                             <td valign="top">
-                                <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_40_VISIBLE}">
+                                <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_40_VISIBLE} {PARENTS_VISIBLE}">
                                     <tr>
                                         <td>
                                             <select title="{LANG_PARENT_SERVICES}" name="mselValue6[]" size="4" multiple id="mselValue6" class="selectborder" {MSIE_DISABLED}>
@@ -290,7 +290,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td valign="top"><span class="{VERSION_40_VISIBLE}"><img id="mutvalue6" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('service','parents','all','Info');" class="infobutton_1"></span></td>
+                            <td valign="top"><span class="{VERSION_40_VISIBLE} {PARENTS_VISIBLE}"><img id="mutvalue6" src="{IMAGE_PATH}mut.gif" width="24" height="24" alt="{LANG_MODIFY}" title="{LANG_MODIFY}" style="cursor:pointer"><br><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onClick="dialoginit('service','parents','all','Info');" class="infobutton_1"></span></td>
                             <td valign="top">{LANG_SERVICEGROUPS}<br><br><small>{LANG_CTRLINFO}</small></td>
                             <td valign="top">
                                 <table cellpadding="0" cellspacing="0" border="0">
@@ -310,18 +310,18 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_40_VISIBLE}">
+                                <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_40_VISIBLE} {PARENTS_VISIBLE}">
                                     <tr>
-                                        <td class="radio_cell_1"><input title="+" name="radValue18" type="radio" class="checkbox" id="radValue180" value="0" tabindex="8" {DAT_SEG0_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="+" name="radValue18" type="radio" class="checkbox" id="radValue180" value="0" tabindex="8" {DAT_PAR0_CHECKED}></td>
                                         <td class="radio_cell_2">+</td>
-                                        <td class="radio_cell_1"><input title="null" name="radValue18" type="radio" class="checkbox" id="radValue181" value="1" tabindex="8" {DAT_SEG1_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="null" name="radValue18" type="radio" class="checkbox" id="radValue181" value="1" tabindex="8" {DAT_PAR1_CHECKED}></td>
                                         <td class="radio_cell_2">null</td>
-                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue18" type="radio" class="checkbox" id="radValue182" value="2" tabindex="8" {DAT_SEG2_CHECKED}></td>
+                                        <td class="radio_cell_1"><input title="{LANG_STANDARD}" name="radValue18" type="radio" class="checkbox" id="radValue182" value="2" tabindex="8" {DAT_PAR2_CHECKED}></td>
                                         <td class="radio_cell_2">{LANG_STANDARD}</td>
                                     </tr>
                                 </table>
                             </td>
-                            <td><span class="{VERSION_40_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></span></td>
+                            <td><span class="{VERSION_40_VISIBLE} {PARENTS_VISIBLE}"><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('common','tploptions','3','Info');" class="infobutton_1"></span></td>
                             <td>&nbsp;</td>
                             <td>
                                 <table cellpadding="0" cellspacing="0" border="0" class="{VERSION_30_VISIBLE}">

@@ -68,8 +68,8 @@
         }
         // Enable hidden fields
         function showFields(name,key) {
-            if (name === "radValue2") {
-                if (key === 0) {
+            if (name === 'radValue2') {
+                if (key === '0') {
                     document.getElementById('Proxy').className 	     = "elementHide";
                     document.getElementById('ProxyServer').className = "elementHide";
                     document.getElementById('ProxyUser').className   = "elementHide";
@@ -81,23 +81,23 @@
                         if(boxes[i].checked){
                             checkedBox = i;
                             break; // No need to check the rest since only one can be checked.
-                        }  
+                        }
                     }
                     if (checkedBox === 0) {
                         document.getElementById('Proxy').className       = "elementShow";
-                        document.getElementById('ProxyServer').className = "elementShow";	
+                        document.getElementById('ProxyServer').className = "elementShow";
                         document.getElementById('ProxyUser').className   = "elementShow";
                         document.getElementById('ProxyPasswd').className = "elementShow";
                     } else {
-                        document.getElementById('Proxy').className       = "elementShow";
+                        document.getElementById('Proxy').className       = "elementHide";
                         document.getElementById('ProxyServer').className = "elementHide";
                         document.getElementById('ProxyUser').className   = "elementHide";
                         document.getElementById('ProxyPasswd').className = "elementHide";
                     }
                 }
-            } else if (name === "radValue3") {
-                if (key === 0) {
-                    document.getElementById('Proxy').className       = "elementShow";					
+            } else if (name === 'radValue3') {
+                if (key === '0') {
+                    document.getElementById('Proxy').className       = "elementShow";
                     document.getElementById('ProxyServer').className = "elementHide";
                     document.getElementById('ProxyUser').className   = "elementHide";
                     document.getElementById('ProxyPasswd').className = "elementHide";
@@ -237,8 +237,8 @@
             <tr>
                 <td>{UPDATE_CHECK}</td>
                 <td>
-                	<input title="{UPDATE_CHECK} {LANG_ENABLE}" type="radio" name="radValue2" value="1" {UPD_CHECK_1_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left;padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
-                  	<input title="{UPDATE_CHECK} {LANG_DISABLE}" type="radio" name="radValue2" value="0" {UPD_CHECK_0_CHECKED} onClick="showFields(this.name,this.value);"><div style="float:left;padding:3px;">{LANG_DISABLE}</div>
+                	<input title="{UPDATE_CHECK} {LANG_ENABLE}" type="radio" name="radValue2" value="1" {UPD_CHECK_1_CHECKED}><div style="float:left;padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
+                  	<input title="{UPDATE_CHECK} {LANG_DISABLE}" type="radio" name="radValue2" value="0" {UPD_CHECK_0_CHECKED}><div style="float:left;padding:3px;">{LANG_DISABLE}</div>
                 </td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','updatecheck','all','Info');" class="infobutton_1"></td>
             </tr>
@@ -264,6 +264,20 @@
                 <td>{UPD_PROXY_PASSWORD}</td>
                 <td><input title="{UPD_PROXY_PASSWORD}" name='tfValue12' type='password' id='tfValue12' value='{UPD_PROXY_PASSWORD_VALUE}'></td>
                 <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','txtProxyPasswd','all','Info');" class="infobutton_1"></td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="3"><b>{PERFORMANCE}</b></td>
+            </tr>
+            <tr>
+                <td>{SHOW_PARENTS}</td>
+                <td>
+                    <input title="{SHOW_PARENTS} {LANG_ENABLE}" type="radio" name="radValue4" value="1" {PAR_CHECK_1_CHECKED}><div style="float:left; padding: 3px 8px 3px 3px;">{LANG_ENABLE}</div>
+                    <input title="{SHOW_PARENTS} {LANG_DISABLE}" type="radio" name="radValue4" value="0" {PAR_CHECK_0_CHECKED}><div style="float:left; padding:3px;">{LANG_DISABLE}</div>
+                </td>
+                <td><img src="{IMAGE_PATH}tip.gif" alt="{LANG_HELP}" title="{LANG_HELP}" width="18" height="18" onclick="dialoginit('settings','show_parents','all','Info');" class="infobutton_1"></td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>

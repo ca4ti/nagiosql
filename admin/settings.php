@@ -87,7 +87,9 @@ if (filter_input(INPUT_POST, 'radValue2') == null) {
 if (filter_input(INPUT_POST, 'radValue3') == null) {
     $chkRadValue3 = $SETS['network']['proxy'];
 }
-
+if (filter_input(INPUT_POST, 'radValue4') == null) {
+    $chkRadValue4 = $SETS['performance']['parents'];
+}
 //
 // Save changes
 // ============
@@ -129,6 +131,7 @@ if (filter_input(INPUT_POST, 'selValue1')) {
     $arrSQL[]   = sprintf($strSQLBase, $chkTfValue10, 'network', 'proxyserver');
     $arrSQL[]   = sprintf($strSQLBase, $chkTfValue11, 'network', 'proxyuser');
     $arrSQL[]   = sprintf($strSQLBase, $chkTfValue12, 'network', 'proxypasswd');
+    $arrSQL[]   = sprintf($strSQLBase, $chkRadValue4, 'performance', 'parents');
     foreach ($arrSQL as $elem) {
         $booReturn = $myDBClass->insertData($elem);
         if ($booReturn == false) {
@@ -304,6 +307,12 @@ $conttp->setVariable('UPD_PROXY_USERNAME', translate('Proxy Username (optional)'
 $conttp->setVariable('UPD_PROXY_USERNAME_VALUE', htmlspecialchars($chkTfValue11, ENT_QUOTES, 'utf-8'));
 $conttp->setVariable('UPD_PROXY_PASSWORD', translate('Proxy Password (optional)'));
 $conttp->setVariable('UPD_PROXY_PASSWORD_VALUE', htmlspecialchars($chkTfValue12, ENT_QUOTES, 'utf-8'));
+//
+// Performance options
+// ===================
+$conttp->setVariable('PERFORMANCE', translate('Performance options'));
+$conttp->setVariable('SHOW_PARENTS', translate('Show object parents'));
+$conttp->setVariable('PAR_CHECK_' .$chkRadValue4. '_CHECKED', 'checked');
 //
 // Requirements of form
 // ====================

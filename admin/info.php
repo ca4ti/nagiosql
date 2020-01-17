@@ -68,6 +68,7 @@ if ($chkKey1 == 'admin' and isset($_SESSION['updInfo'])) {
         'txtProxyServer' => translate('Address of your Proxyserver e.g. proxy.yourdomain.com:3128'),
         'txtProxyUser' => translate('Username to connect through your proxy (optional)'),
         'txtProxyPasswd' => translate('Password to connect through your proxy (optional)'),
+        'show_parents' => translate('In environments with a high number of host and service objects, the display of the parent objects can be disabled to improve performance. Existing assignments are preserved during modification.')
     );
     $strContentDB = $arrTrans[$chkKey2];
 } elseif ($chkKey1 == 'cmd_arguments') {

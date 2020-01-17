@@ -38,4 +38,5 @@ ALTER TABLE `tbl_configtarget` ADD `port` INT UNSIGNED NOT NULL DEFAULT '0' AFTE
 --
 --  Modify existing tbl_settings
 --
+INSERT INTO `tbl_settings` (`id`, `category`, `name`, `value`) VALUES (NULL,'performance', 'parents', '1');
 UPDATE `tbl_settings` SET `value` = '3.4.1' WHERE `tbl_settings`.`name` = 'version' LIMIT 1;

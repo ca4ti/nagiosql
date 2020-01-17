@@ -45,3 +45,5 @@ proxyserver     = ''
 proxyuser       = ''
 proxypasswd     = ''
 onlineupdate    = 0
+[performance]
+parents         = 1
