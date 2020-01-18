@@ -2,7 +2,6 @@ CHANGELOG 3.4.1
 ---------------
 - New setting to disable parent objects to optimize performance
 - New filter function for active and registered in supervision objects
-- New option for SSH portnumber in configuration domain
 - New optional help text for command arguments ARG1 - ARG8
 - A config target now supports different port numbers for SSH/SFTP
 - [Bugfix] timeperiod exclude and include function

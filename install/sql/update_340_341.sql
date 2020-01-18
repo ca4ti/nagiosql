@@ -34,7 +34,7 @@ ALTER TABLE `tbl_command` ADD `arg8_info` text NULL DEFAULT NULL AFTER `arg7_inf
 --
 --  Modify table tbl_configtarget
 --
-ALTER TABLE `tbl_configtarget` ADD `port` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `server`;
+ALTER TABLE `tbl_configtarget` ADD `port` INT UNSIGNED NOT NULL DEFAULT '22' AFTER `server`;
 --
 --  Modify existing tbl_settings
 --

@@ -103,7 +103,7 @@
                 <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG3$</td>
                 <td><textarea title="{LANG_HELP_TEXT} $ARG3$" name="taArg3Info" id="taArg3Info" class="arginfo">{DAT_ARG3_INFO}</textarea></td>
                 <td>&nbsp;</td>
-                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG4$/td>
+                <td style="vertical-align: top; padding-top: 2px;">{LANG_HELP_TEXT} $ARG4$</td>
                 <td><textarea title="{LANG_HELP_TEXT} $ARG4$" name="taArg4Info" id="taArg4Info" class="arginfo">{DAT_ARG4_INFO}</textarea></td>
             </tr>
             <tr>

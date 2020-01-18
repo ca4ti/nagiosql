@@ -133,14 +133,14 @@
                         <option value="{DAT_CONFIGNAME}" {DAT_CONFIGNAME_SEL}>{DAT_CONFIGNAME}</option>
 <!-- END configlist -->
                     </select></td>
-                <td style="width: 70px;">{LANG_REGISTERED}:</td>
+                <td style="width: 85px;">{LANG_REGISTERED}:</td>
                 <td><select name="selRegFilter" id="selRegFilter" title="{LANG_REGISTERED}" class="selectborder" style="width: 50px;" onchange="document.frmDatalist.submit();">
                         <option value="0" {SEL_REGFILTER_0_SELECTED}>{LANG_ALL}</option>
                         <option value="1" {SEL_REGFILTER_1_SELECTED}>{LANG_YES}</option>
                         <option value="2" {SEL_REGFILTER_2_SELECTED}>{LANG_NO}</option>
                     </select></td>
                 <td style="width: 20px;">&nbsp;</td>
-                <td style="width: 40px;">{LANG_ACTIVE}:</td>
+                <td style="width: 50px;">{LANG_ACTIVE}:</td>
                 <td><select name="selActiveFilter" id="selActiveFilter" title="{LANG_ACTIVE}" class="selectborder" style="width: 50px;" onchange="document.frmDatalist.submit();">
                         <option value="0" {SEL_ACTIVEFILTER_0_SELECTED}>{LANG_ALL}</option>
                         <option value="1" {SEL_ACTIVEFILTER_1_SELECTED}>{LANG_YES}</option>
