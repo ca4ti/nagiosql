@@ -66,7 +66,7 @@ $arrDescription[] = array('name' => 'LANG_FORMCHECK',                  'string' 
 $arrDescription[] = array('name' => 'LANG_SECURE_QUESTION',            'string' => translate('Secure question'));
 $arrDescription[] = array('name' => 'LANG_YES',                        'string' => translate('Yes'));
 $arrDescription[] = array('name' => 'LANG_NO',                         'string' => translate('No'));
-$arrDescription[] = array('name' => 'LANG_ALL',                        'string' => translate('Alle'));
+$arrDescription[] = array('name' => 'LANG_ALL',                        'string' => translate('All'));
 $arrDescription[] = array('name' => 'LANG_TIME',                       'string' => translate('Time'));
 $arrDescription[] = array('name' => 'LANG_USER',                       'string' => translate('User'));
 $arrDescription[] = array('name' => 'LANG_IP',                         'string' => translate('IP Address'));
