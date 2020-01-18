@@ -797,7 +797,7 @@ class NagInstallClass
             // Update some values
             $arrSettings[]     = array('category'=>'db','name'=>'version',
                 'value'=>$this->arrSession['install']['version']);
-            if (substr_count(filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_STRING), 'HTTPS') != 0) {
+            if (filter_input(INPUT_SERVER, 'REQUEST_SCHEME', FILTER_SANITIZE_STRING) == 'https') {
                 $arrSettings[] = array('category'=>'path','name'=>'protocol','value'=>'https');
             } else {
                 $arrSettings[] = array('category'=>'path','name'=>'protocol','value'=>'http');

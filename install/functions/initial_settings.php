@@ -20,7 +20,7 @@ exit;
 type            = mysqli
 server          = localhost
 port            = 3306
-database        = db_nagiosql_v34
+database        = db_nagiosql_v341
 username        = nagiosql_user
 password        = nagiosql_pass
 [path]
