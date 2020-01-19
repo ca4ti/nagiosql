@@ -144,7 +144,7 @@
                 <td><select name="selActiveFilter" id="selActiveFilter" title="{LANG_ACTIVE}" class="selectborder" style="width: 50px;" onchange="document.frmDatalist.submit();">
                         <option value="0" {SEL_ACTIVEFILTER_0_SELECTED}>{LANG_ALL}</option>
                         <option value="1" {SEL_ACTIVEFILTER_1_SELECTED}>{LANG_YES}</option>
-                        <option value="2" {SEL_ACTIVEFILTERTER_2_SELECTED}>{LANG_NO}</option>
+                        <option value="2" {SEL_ACTIVEFILTER_2_SELECTED}>{LANG_NO}</option>
                     </select></td>
             </tr>
         </table>
