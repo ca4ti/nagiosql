@@ -4,6 +4,7 @@ CHANGELOG 3.4.1
 - New filter function for active and registered in supervision objects
 - New optional help text for command arguments ARG1 - ARG8
 - A config target now supports different port numbers for SSH/SFTP
+- [Bugfix] error page after installation and login when using https protocol
 - [Bugfix] timeperiod exclude and include function
 - [Bugfix] free variables supports special chars
 - [Bugfix] misc- and check commands now support special chars

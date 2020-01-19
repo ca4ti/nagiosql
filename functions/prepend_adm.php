@@ -42,7 +42,7 @@ $chkGroupAdm       = 0;
 $intError          = 0;
 $setDBVersion      = 'unknown';
 $setFileVersion    = '3.4.1';
-$setGITVersion     = '2020-01-18';
+$setGITVersion     = '2020-01-19';
 //
 // Start PHP session
 // =================

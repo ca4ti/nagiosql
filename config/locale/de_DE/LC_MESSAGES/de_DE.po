@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: NagiosQL 3.4.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-18 22:19+0100\n"
-"PO-Revision-Date: 2020-01-18 22:24+0100\n"
+"PO-Revision-Date: 2020-01-18 22:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: German (http://www.transifex.net/projects/p/nagiosql/language/"
 "de/)\n"
@@ -1731,7 +1731,7 @@ msgstr "Bitte eine Zeitdefinition und einen Zeitbereich eintragen"
 # timeperiod.php
 #: admin/timeperiods.php:253 config/fieldvars.php:95
 msgid "Time period"
-msgstr "Zeitperioden (timeperiods.cfg)"
+msgstr "Zeitperiode"
 
 # tools.php
 #: admin/tools.php:35
