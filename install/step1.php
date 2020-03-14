@@ -135,6 +135,25 @@ if (version_compare(PHP_VERSION, $strMinPHPVersion, '>=')) {
 $strExtPath = ini_get('extension_dir');
 $strPrefix  = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
 $strHTML1   = '';
+// Check for pear
+$intErrorReporting = error_reporting();
+error_reporting(0);
+/** @noinspection PhpIncludeInspection */
+include_once 'System.php';
+error_reporting($intErrorReporting);
+$intPearResult = 0;
+if (class_exists('System')) {
+    $intPearResult = 1;
+}
+if ($intPearResult === 1) {
+    $strHTML1 .= $strHTMLPart1.'PEAR'.$strHTMLPart4.$myInstClass->translate('OK')."</span>\n";
+} else {
+    $strMsg    = '<a href="' .$arrSourceURLs['PEAR']. '" target="_blank">' .$strHTMLPart7. '</a>';
+    $strHTML1 .= $strHTMLPart2.'PEAR'.$strHTMLPart5.$myInstClass->translate('NOT AVAILABLE'). ' (' .$strMsg. ')'
+        . "</span>\n";
+    $intError  = 1;
+}
+$strHTML1 .= "<br>\n";
 foreach ($arrRequiredExt as $key => $elem) {
     if (extension_loaded($elem)) {
         $strHTML1 .= $strHTMLPart1.$key.$strHTMLPart4.$myInstClass->translate('OK')."</span>\n";
