@@ -1513,7 +1513,7 @@ class NagConfigClass
             if (($strTableName == 'tbl_contact') || ($strTableName == 'tbl_contacttemplate')) {
                 $strSpecial .= ',minimum_importance';
             }
-            if ($strTableName == 'tbl_host') {
+            if (($strTableName == 'tbl_host') || ($strTableName == 'tbl_hosttemplate')) {
                 $strSpecial .= ',importance';
             }
             if (($strTableName == 'tbl_service') || ($strTableName == 'tbl_servicetemplate')) {
