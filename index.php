@@ -10,7 +10,7 @@
 // Project   : NagiosQL
 // Component : Start script
 // Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.1
+// Version   : 3.5.0
 // GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 //
 ///////////////////////////////////////////////////////////////////////////////
