@@ -1,18 +1,16 @@
 <?php
-///////////////////////////////////////////////////////////////////////////////
-//
-// NagiosQL
-///////////////////////////////////////////////////////////////////////////////
-//
-// (c) 2005-2020 by Martin Willisegger
-//
-// Project   : NagiosQL
-// Component : Autoloader Class
-// Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.1
-// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
-//
-///////////////////////////////////////////////////////////////////////////////
+/* ----------------------------------------------------------------------------
+ NagiosQL
+-------------------------------------------------------------------------------
+ (c) 2005-2022 by Martin Willisegger
+
+ Project   : NagiosQL
+ Component : Autoloader Class
+ Website   : https://sourceforge.net/projects/nagiosql/
+ Version   : 3.5.0
+ GIT Repo  : https://gitlab.com/wizonet/NagiosQL
+-----------------------------------------------------------------------------*/
+
 namespace functions;
 
 class Autoloader
@@ -29,9 +27,10 @@ class Autoloader
     }
 
     /**
-     * @param string $strBasePath           Base path of project
+     * @param string $strBasePath Base path of project
+     * @noinspection PhpObjectFieldsAreOnlyWrittenInspection
      */
-    public static function register($strBasePath)
+    public static function register(string $strBasePath): void
     {
         $object = new Autoloader();
         $object->preBasePath = $strBasePath;
@@ -39,21 +38,21 @@ class Autoloader
 
     /**
      * Load class from path
-     * @param string $strClassName          Class name
+     * @param string $strClassName Class name
      */
-    public function loadClass($strClassName)
+    public function loadClass(string $strClassName): void
     {
         $className = ltrim($strClassName, '\\');
-        $fileName  = '';
+        $fileName = '';
         $lastNsPos = strrpos($className, '\\');
-        if ($lastNsPos != 0) {
-            $namespace  = substr($className, 0, $lastNsPos);
-            $className  = substr($className, $lastNsPos + 1);
-            $fileName   = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        if ($lastNsPos !== 0) {
+            $namespace = substr($className, 0, $lastNsPos);
+            $className = substr($className, $lastNsPos + 1);
+            $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
-        $fileName     .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-        $strFilePath1  = $this->preBasePath.$fileName;
-        $strFilePath2  = $this->preBasePath.'install/'.$fileName;
+        $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        $strFilePath1 = $this->preBasePath . $fileName;
+        $strFilePath2 = $this->preBasePath . 'install/' . $fileName;
         if (file_exists($strFilePath1) && is_readable($strFilePath1)) {
             require_once $strFilePath1;
         }
