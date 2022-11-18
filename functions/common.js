@@ -1,14 +1,15 @@
-/*
-(c) 2005-2020 by Martin Willisegger
-Project   : NagiosQL
-Component : common JavaScript functions
-Website   : https://sourceforge.net/projects/nagiosql/
-Version   : 3.4.1
-GIT Repo  : https://gitlab.com/wizonet/NagiosQL
+/**
+ * (c) 2005-2022 by Martin Willisegger
+ * Project   : NagiosQL
+ * Component : common JavaScript functions
+ * Website   : https://sourceforge.net/projects/nagiosql/
+ * Version   : 3.5.0
+ * GIT Repo  : https://gitlab.com/wizonet/NagiosQL
  */
 let popup = false;
-function info(key1,key2,ver) {
-    if(popup && popup.closed === false) popup.close();
+
+function info(key1, key2, ver) {
+    if (popup && popup.closed === false) popup.close();
     const top = (screen.availHeight - 240) / 2;
     const left = (screen.availWidth - 320) / 2;
     popup = window.open("info.php?key1=" + key1 + "&key2=" + key2 + "&version=" + ver,
@@ -19,9 +20,9 @@ function info(key1,key2,ver) {
 
 const myFocusObject = {};
 
-function checkfields(fields,frm,object) {
+function checkfields(fields, frm, object) {
     const ar_field = fields.split(",");
-    for (let i=0;i<ar_field.length;i++){
+    for (let i = 0; i < ar_field.length; i++) {
         if (frm[ar_field[i]].value === "") {
             //frm[ar_field[i]].focus();
             object.myValue = frm[ar_field[i]];
@@ -30,9 +31,10 @@ function checkfields(fields,frm,object) {
     }
     return true;
 }
-function checkfields2(fields,frm,object) {
+
+function checkfields2(fields, frm, object) {
     const ar_field = fields.split(",");
-    for (let i=0;i<ar_field.length;i++){
+    for (let i = 0; i < ar_field.length; i++) {
         if ((frm[ar_field[i]].value === "") || (frm[ar_field[i]].value === "0")) {
             //frm[ar_field[i]].focus();
             object.myValue = frm[ar_field[i]];
@@ -41,10 +43,11 @@ function checkfields2(fields,frm,object) {
     }
     return true;
 }
-function checkboxes(fields,frm) {
+
+function checkboxes(fields, frm) {
     let retval = false;
     const ar_field = fields.split(",");
-    for (let i=0;i<ar_field.length;i++){
+    for (let i = 0; i < ar_field.length; i++) {
         if (frm[ar_field[i]].checked === true) {
             retval = true;
         }
@@ -53,7 +56,7 @@ function checkboxes(fields,frm) {
 }
 
 <!-- YUI message box -->
-function msginit(msg,header,type) {
+function msginit(msg, header, type) {
     let iconobj;
     YAHOO.namespace("msg.container");
     const handleOK = function () {
@@ -67,7 +70,8 @@ function msginit(msg,header,type) {
         iconobj = YAHOO.widget.SimpleDialog.ICON_HELP;
     }
     YAHOO.msg.container.domainmsg = new YAHOO.widget.SimpleDialog("domainmsg",
-        { width: "300px",
+        {
+            width: "300px",
             fixedcenter: true,
             visible: false,
             draggable: false,
@@ -76,15 +80,15 @@ function msginit(msg,header,type) {
             modal: true,
             icon: iconobj,
             constraintoviewport: true,
-            buttons: [ { text:"Ok", handler:handleOK, isDefault:true } ]
-        } );
+            buttons: [{text: "Ok", handler: handleOK, isDefault: true}]
+        });
     YAHOO.msg.container.domainmsg.setHeader(header);
     YAHOO.msg.container.domainmsg.render("msgcontainer");
     YAHOO.msg.container.domainmsg.show();
 }
 
 <!-- YUI confirm box -->
-function confirminit(msg,header,type,yes,no,key) {
+function confirminit(msg, header, type, yes, no, key) {
     let iconobj;
     YAHOO.namespace("question.container");
     const handleYes = function () {
@@ -99,7 +103,8 @@ function confirminit(msg,header,type,yes,no,key) {
         iconobj = YAHOO.widget.SimpleDialog.ICON_WARN;
     }
     YAHOO.question.container.domainmsg = new YAHOO.widget.SimpleDialog("confirm1",
-        { width: "400px",
+        {
+            width: "400px",
             fixedcenter: true,
             visible: false,
             draggable: false,
@@ -108,9 +113,9 @@ function confirminit(msg,header,type,yes,no,key) {
             modal: true,
             icon: iconobj,
             constraintoviewport: true,
-            buttons: [ { text:yes, handler:handleYes, isDefault:true },
-                { text:no, handler:handleNo }]
-        } );
+            buttons: [{text: yes, handler: handleYes, isDefault: true},
+                {text: no, handler: handleNo}]
+        });
     YAHOO.question.container.domainmsg.setHeader(header);
     YAHOO.question.container.domainmsg.render("confirmcontainer");
     YAHOO.question.container.domainmsg.show();
@@ -118,7 +123,7 @@ function confirminit(msg,header,type,yes,no,key) {
 
 
 <!-- YUI dialog box -->
-function dialoginit(key1,key2,ver,header) {
+function dialoginit(key1, key2, ver, header) {
     YAHOO.namespace("dialog.container");
 
     const handleCancel = function () {
@@ -149,12 +154,13 @@ function dialoginit(key1,key2,ver,header) {
 
     if (typeof YAHOO.dialog.container.infodialog === "undefined") {
         YAHOO.dialog.container.infodialog = new YAHOO.widget.Dialog("infodialog",
-            { width : "50em",
-                visible : false,
+            {
+                width: "50em",
+                visible: false,
                 draggable: true,
                 fixedcenter: true,
-                constraintoviewport : true,
-                buttons : [ { text:"Ok", handler:handleCancel, isDefault:true } ]
+                constraintoviewport: true,
+                buttons: [{text: "Ok", handler: handleCancel, isDefault: true}]
             });
 
     }
@@ -165,18 +171,18 @@ function dialoginit(key1,key2,ver,header) {
 }
 
 <!-- YUI calendar -->
-function calendarinit(lang,start,field,key,cont,obj) {
-    YAHOO.util.Event.onDOMReady(function(){
+function calendarinit(lang, start, field, key, cont, obj) {
+    YAHOO.util.Event.onDOMReady(function () {
 
         let dialog, calendar;
 
         calendar = new YAHOO.widget.Calendar(obj, {
-            iframe:false,
-            hide_blank_weeks:true,
-            START_WEEKDAY:start
+            iframe: false,
+            hide_blank_weeks: true,
+            START_WEEKDAY: start
         });
         if (lang === "de_DE") {
-            calendar.cfg.setProperty("MONTHS_LONG",    ["Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]);
+            calendar.cfg.setProperty("MONTHS_LONG", ["Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]);
             calendar.cfg.setProperty("WEEKDAYS_SHORT", ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]);
         }
 
@@ -185,31 +191,35 @@ function calendarinit(lang,start,field,key,cont,obj) {
         //}
 
         //function handleSelect(type,args,obj) {
-        function handleSelect(type,args) {
+        function handleSelect(type, args) {
             const dates = args[0];
             const date = dates[0];
             const year = date[0];
             let month = date[1], day = date[2];
 
             const txtDate1 = document.getElementById(field);
-            if (month < 10) { month = "0" + month;}
-            if (day < 10)   { day = "0" + day;}
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (day < 10) {
+                day = "0" + day;
+            }
             // noinspection JSUndefinedPropertyAssignment
             txtDate1.value = year + "-" + month + "-" + day;
             dialog.hide();
         }
 
         dialog = new YAHOO.widget.Dialog(cont, {
-            context:[field, "tl", "bl"],
-            width:"16em",
-            draggable:true,
-            close:true
+            context: [field, "tl", "bl"],
+            width: "16em",
+            draggable: true,
+            close: true
         });
         calendar.render();
         dialog.render();
         dialog.hide();
 
-        calendar.renderEvent.subscribe(function() {
+        calendar.renderEvent.subscribe(function () {
             dialog.fireEvent("changeContent");
         });
         // noinspection JSUnresolvedVariable
@@ -220,9 +230,9 @@ function calendarinit(lang,start,field,key,cont,obj) {
 }
 
 // Open edit dialog for list boxes
-function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
+function openMutDlgInit(field, divbox, header, key, langkey1, langkey2, exclude) {
 
-    YAHOO.util.Event.onDOMReady(function(){
+    YAHOO.util.Event.onDOMReady(function () {
 
         let mutdialog;
 
@@ -269,7 +279,7 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
             }
             this.cancel();
             // noinspection JSUnresolvedVariable
-            if ((typeof(update) === 'number') && (update === 1)) {
+            if ((typeof (update) === 'number') && (update === 1)) {
                 // noinspection JSUnresolvedFunction
                 updateForm(field);
             }
@@ -278,20 +288,21 @@ function openMutDlgInit(field,divbox,header,key,langkey1,langkey2,exclude) {
             this.cancel();
         };
         mutdialog = new YAHOO.widget.Dialog(divbox,
-            { width : "60em",
-                fixedcenter : true,
-                visible : false,
+            {
+                width: "60em",
+                fixedcenter: true,
+                visible: false,
                 draggable: true,
                 modal: true,
-                constraintoviewport : true,
-                buttons : [ { text:langkey1, handler:handleSave, isDefault:true },
-                    { text:langkey2, handler:handleCancel } ]
+                constraintoviewport: true,
+                buttons: [{text: langkey1, handler: handleSave, isDefault: true},
+                    {text: langkey2, handler: handleCancel}]
             });
 
         mutdialog.setHeader(header);
         mutdialog.render();
         mutdialog.hide();
-        mutdialog.beforeShowEvent.subscribe(function() {
+        mutdialog.beforeShowEvent.subscribe(function () {
             getData(field);
         });
 
@@ -304,12 +315,12 @@ function getData(field) {
     const source = document.getElementById(field);
     const targetSelect = document.getElementById(field + 'Selected');
     const targetAvail = document.getElementById(field + 'Avail');
-    for (let i=0; i < targetSelect.length; i++) {
+    for (let i = 0; i < targetSelect.length; i++) {
         targetSelect.options[i] = null;
     }
     // noinspection JSUndefinedPropertyAssignment
     targetSelect.length = 0;
-    for (let i=0; i < targetAvail.length; i++) {
+    for (let i = 0; i < targetAvail.length; i++) {
         targetAvail.options[i] = null;
     }
     // noinspection JSUndefinedPropertyAssignment
@@ -333,6 +344,7 @@ function getData(field) {
         }
     }
 }
+
 // Insert selection
 function selValue(field) {
     const targetSelect = document.getElementById(field + 'Selected');
@@ -350,11 +362,12 @@ function selValue(field) {
         }
         sort(targetSelect);
         DelOptions.reverse();
-        for (let i=0; i<DelOptions.length; ++i) {
+        for (let i = 0; i < DelOptions.length; ++i) {
             targetAvail.options[DelOptions[i]] = null;
         }
     }
 }
+
 // Insert selection (exclude variant)
 function selValueEx(field) {
     const targetSelect = document.getElementById(field + 'Selected');
@@ -381,6 +394,7 @@ function selValueEx(field) {
         }
     }
 }
+
 // Remove selection
 function desValue(field) {
     const targetSelect = document.getElementById(field + 'Selected');
@@ -405,14 +419,15 @@ function desValue(field) {
         }
     }
 }
+
 // Sort entries
-function sort(obj){
+function sort(obj) {
     const sortieren = [];
     const list = [];
     let i;
 
     // Insert list to array
-    for (i=0; i < obj.options.length; i++) {
+    for (i = 0; i < obj.options.length; i++) {
         list[i] = [];
         list[i]["text"] = obj.options[i].text;
         list[i]["value"] = obj.options[i].value;
@@ -420,15 +435,15 @@ function sort(obj){
     }
 
     // Sort into a single dimension array
-    for (i=0; i < obj.length; i++){
-        sortieren[i]=list[i]["text"]+";"+list[i]["value"]+";"+list[i]["className"];
+    for (i = 0; i < obj.length; i++) {
+        sortieren[i] = list[i]["text"] + ";" + list[i]["value"] + ";" + list[i]["className"];
     }
 
     // Real sort
     sortieren.sort();
 
     // Make array to list
-    for (i=0; i < sortieren.length; i++) {
+    for (i = 0; i < sortieren.length; i++) {
         const felder = sortieren[i].split(";");
         list[i]["text"] = felder[0];
         list[i]["value"] = felder[1];
@@ -436,7 +451,7 @@ function sort(obj){
     }
 
     // Remove list field
-    for (i=0; i < obj.options.length; i++) {
+    for (i = 0; i < obj.options.length; i++) {
         obj.options[i] = null;
     }
 
@@ -448,6 +463,7 @@ function sort(obj){
         obj.options[i] = NeuerEintrag;
     }
 }
+
 // Show relation data
 function showRelationData(option) {
     if (option === 1) {
