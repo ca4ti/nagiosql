@@ -1,19 +1,15 @@
 @charset "utf-8";
-/*/////////////////////////////////////////////////////////////////////////////
-//
-// NagiosQL
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-// (c) 2005-2020 by Martin Willisegger
-//
-// Project   : NagiosQL
-// Component : CSS Main definition
-// Website   : https://sourceforge.net/projects/nagiosql/
-// Version   : 3.4.1
-// GIT Repo  : https://gitlab.com/wizonet/NagiosQL
-//
-/////////////////////////////////////////////////////////////////////////////*/
+/* ----------------------------------------------------------------------------
+ NagiosQL
+-------------------------------------------------------------------------------
+ (c) 2005-2022 by Martin Willisegger
+
+ Project   : NagiosQL
+ Component : CSS Main definition
+ Website   : https://sourceforge.net/projects/nagiosql/
+ Version   : 3.5.0
+ GIT Repo  : https://gitlab.com/wizonet/NagiosQL
+-----------------------------------------------------------------------------*/
 body {
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #FFFFFF;
