@@ -20,17 +20,17 @@
 Path settings
 */
 $strPattern = '(admin/[^/]*.php)';
-$preRelPath  = preg_replace($strPattern, '', filter_input(INPUT_SERVER, 'PHP_SELF'));
+$preRelPath = preg_replace($strPattern, '', filter_input(INPUT_SERVER, 'PHP_SELF'));
 $preBasePath = preg_replace($strPattern, '', filter_input(INPUT_SERVER, 'SCRIPT_FILENAME'));
 /*
 Define common variables
 */
-$prePageId  = 7;
+$prePageId = 7;
 $preContent = 'admin/mainpages.htm.tpl';
 /*
 Include preprocessing file
 */
-require $preBasePath. 'functions/prepend_adm.php';
+require $preBasePath . 'functions/prepend_adm.php';
 /*
 Include content
 */
@@ -44,6 +44,6 @@ $conttp->show('main');
 Include Footer
 */
 $maintp->setVariable('VERSION_INFO', "<a href='https://sourceforge.net/projects/nagiosql/' "
-        . "target='_blank'>NagiosQL</a> $setFileVersion");
+    . "target='_blank'>NagiosQL</a> $setFileVersion");
 $maintp->parse('footer');
 $maintp->show('footer');
