@@ -10,7 +10,7 @@ exit;
 ; Project   : NagiosQL
 ; Component : Initial configuration settings
 ; Website   : https://sourceforge.net/projects/nagiosql/
-; Version   : 3.4.1
+; Version   : 3.5.0
 ; GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 ;
 ; DO NOT USE THIS FILE AS NAGIOSQL SETTINGS FILE!
@@ -20,7 +20,7 @@ exit;
 type            = mysqli
 server          = localhost
 port            = 3306
-database        = db_nagiosql_v341
+database        = db_nagiosql_v35
 username        = nagiosql_user
 password        = nagiosql_pass
 [path]
