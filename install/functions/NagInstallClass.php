@@ -526,7 +526,7 @@ class NagInstallClass
                     continue;
                 }   /* skip if an error was found */
                 $intLineCount++;
-                if (($strLine === '') || (str_starts_with($strLine, '--'))) {
+                if (($strLine === '') || (0 === strpos($strLine, '--'))) {
                     continue;
                 }   /* skip empty and comment lines */
                 $strSqlCommand .= $strLine;
