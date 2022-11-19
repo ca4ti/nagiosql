@@ -1,12 +1,12 @@
-<!-- (c) 2005-2020 by Martin Willisegger -->
+<!-- (c) 2005-2022 by Martin Willisegger -->
 <!-- -->
 <!-- Project   : NagiosQL -->
 <!-- Component : Installer main template -->
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
-<!-- Version   : 3.4.1 -->
+<!-- Version   : 3.5.0 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{PAGETITLE}</title>
