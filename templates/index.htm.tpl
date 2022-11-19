@@ -1,9 +1,9 @@
-<!-- (c) 2005-2020 by Martin Willisegger -->
+<!-- (c) 2005-2022 by Martin Willisegger -->
 <!-- -->
 <!-- Project    : NagiosQL -->
 <!-- Component  : index template -->
 <!-- Website   : https://sourceforge.net/projects/nagiosql/ -->
-<!-- Version   : 3.4.1 -->
+<!-- Version   : 3.5.0 -->
 <!-- GIT Repo  : https://gitlab.com/wizonet/NagiosQL -->
 <!-- BEGIN main -->
     <div id="login">
