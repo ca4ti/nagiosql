@@ -65,11 +65,11 @@ Define missing variables used in this prepend file
 if (!isset($preTableName)) {
     /* Predefined variable table name */
     $preTableName = '';
-} 
+}
 if (!isset($preSearchSession)) {
     /* Predefined variable search session */
     $preSearchSession = '';
-} 
+}
 /*
 Store some variables to content class
 */
@@ -117,7 +117,7 @@ for ($i = 1; $i <= 8; $i++) {
     $tmpVar2 = 'intMselValue' . $i;
     $$tmpVar = filter_input(INPUT_POST, 'mselValue' . $i, FILTER_DEFAULT, FILTER_FORCE_ARRAY);
     /* Multiselect-data processing */
-    if (isset(${$tmpVar}[0] )) {
+    if (isset(${$tmpVar}[0])) {
         if ((${$tmpVar}[0] === '') || (${$tmpVar}[0] === '0')) {
             $$tmpVar2 = 0;
         } elseif (${$tmpVar}[0] === '*') {
