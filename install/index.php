@@ -58,7 +58,7 @@ Language settings
 */
 if (extension_loaded('gettext')) {
     if ($chkLocale === 'no') {
-        if (str_starts_with(filter_input(INPUT_SERVER, 'HTTP_ACCEPT_LANGUAGE'), 'de')) {
+        if (0 === strpos(filter_input(INPUT_SERVER, 'HTTP_ACCEPT_LANGUAGE'), 'de')) {
             $chkLocale = 'de_DE';
         } else {
             $chkLocale = 'en_GB';

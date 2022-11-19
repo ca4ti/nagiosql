@@ -1259,7 +1259,7 @@ class NagDataClass
                 continue;
             }
             /* Process exclude values */
-            if (str_starts_with($elem, 'e')) {
+            if (0 === strpos($elem, 'e')) {
                 $elem = str_replace('e', '', $elem);
                 $intExclude = 1;
             } else {

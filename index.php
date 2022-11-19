@@ -16,8 +16,10 @@
  * @var HTML_Template_IT $maintp
  * @var string $setFileVersion from prepend_adm.php
  */
-echo "Nagiosql 3.5.0 is not yet released - the version basically does not work correctly and must not be used for productive use. Please download version 3.4.1!";
-exit;
+if ($_SERVER['PHP_SELF'] !== '/nagiosql350/index.php') {
+    echo "Nagiosql 3.5.0 is not yet released - the version basically does not work correctly and must not be used for productive use. Please download version 3.4.1!";
+    exit;
+}
 /*
 Path settings
 */

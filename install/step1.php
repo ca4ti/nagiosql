@@ -191,7 +191,7 @@ foreach ($arrSupportedDBs as $key => $elem) {
         $strNewInstallOnly = '';
         if (isset($_SESSION['install']['dbtype']) && ($_SESSION['install']['mode'] === 'Update') &&
             ($_SESSION['install']['dbtype'] !== $elem) &&
-            (!str_starts_with($_SESSION['install']['dbtype'], substr($elem, 0, 5)))) {
+            (0 !== strpos($_SESSION['install']['dbtype'], substr($elem, 0, 5)))) {
             $strNewInstallOnly = ' (' . $myInstClass->translate('New installation only - updates are only supported '
                     . 'using the same database interface!') . ')';
         }

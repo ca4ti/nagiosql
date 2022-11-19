@@ -26,7 +26,7 @@ Process post/get parameters
 */
 $chkInsName = filter_input(INPUT_POST, 'tfUsername');
 $chkInsPasswd = filter_input(INPUT_POST, 'tfPassword');
-$chkLogout = filter_input(INPUT_GET, 'logout', array('options' => array('default' => 'rr')));
+$chkLogout = filter_input(INPUT_GET, 'logout', FILTER_DEFAULT, array('options' => array('default' => 'rr')));
 /*
 Define common variables
 */

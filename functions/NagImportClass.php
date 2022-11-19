@@ -104,7 +104,7 @@ class NagImportClass
                     $strConfLine = str_replace('#NAGIOSQL_CONFIG_NAME', '_NAGIOSQL_CONFIG_NAME', $strConfLine);
                 }
                 /* Pass comments and empty lines */
-                if (str_starts_with($strConfLine, '#')) {
+                if (0 === strpos($strConfLine, '#')) {
                     continue;
                 }
                 if ($strConfLine === '') {
@@ -174,12 +174,12 @@ class NagImportClass
     /**
      * @param int $intConfigId Configuration set id
      * @param string $strFileName Configuration file name
-     * @param bool|string $strImportFile Temporary file for data import (by reference)
+     * @param string $strImportFile Temporary file for data import (by reference)
      * @param int $intRemoveTmp Remove temporary file (1 = yes / 0 = no) (by reference)
      * @return int  0 = successful / 1 = error
      * Status messages are stored in class variables
      */
-    private function getImportFile(int $intConfigId, string $strFileName, bool|string &$strImportFile, int &$intRemoveTmp): int
+    private function getImportFile(int $intConfigId, string $strFileName, string &$strImportFile, int &$intRemoveTmp): int
     {
         $intMethod = 1;
         $intReturn = 0;
@@ -1313,7 +1313,7 @@ class NagImportClass
             }
             $this->myDBClass->insertData($strSQL);
         } else {
-            if (str_starts_with(trim($strValue), '+')) {
+            if (0 === strpos(trim($strValue), '+')) {
                 $intOption = 0;
                 $strValue = str_replace('+', '', $strValue);
             } else {
@@ -1332,7 +1332,7 @@ class NagImportClass
                     $strWhere = '';
                     $strLink = '';
                     /* Exclude values */
-                    if (str_starts_with($elem, '!')) {
+                    if (0 === strpos($elem, '!')) {
                         $intExclude = 1;
                         $elem = substr($elem, 1);
                     } else {
@@ -1441,7 +1441,7 @@ class NagImportClass
                 '`' . $arrRelData['fieldName'] . '_tploptions` = 1  WHERE `id` = ' . $intDataId;
             $this->myDBClass->insertData($strSQL);
         } else {
-            if (str_starts_with(trim($strValue), '+')) {
+            if (0 === strpos(trim($strValue), '+')) {
                 $intOption = 0;
                 $strValue = str_replace('+', '', $strValue);
             } else {
@@ -1839,7 +1839,7 @@ class NagImportClass
             if ($elem !== '*') {
                 $strWhere = '';
                 /* Exclude values */
-                if (str_starts_with($elem, '!')) {
+                if (0 === strpos($elem, '!')) {
                     $intExclude = 1;
                     $elem = substr($elem, 1);
                 } else {
