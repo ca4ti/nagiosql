@@ -21,8 +21,9 @@ exit;
 /*
 Path settings
 */
-$preRelPath = strstr(filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING), 'index.php', true);
-$preBasePath = strstr(filter_input(INPUT_SERVER, 'SCRIPT_FILENAME', FILTER_SANITIZE_STRING), 'index.php', true);
+/** @noinspection PhpUnreachableStatementInspection */
+$preRelPath = strstr(filter_input(INPUT_SERVER, 'PHP_SELF'), 'index.php', true);
+$preBasePath = strstr(filter_input(INPUT_SERVER, 'SCRIPT_FILENAME'), 'index.php', true);
 /*
 Destroy old session data
 */
@@ -36,7 +37,7 @@ $preContent = 'index.htm.tpl';
 /*
 Redirect to installation wizard
 */
-if (PHP_VERSION_ID < 50300) {
+if (PHP_VERSION_ID < 70200) {
     header('Location: install/index.php');
 }
 /*
@@ -60,7 +61,7 @@ if (isset($_SESSION['strLoginMessage']) && ($_SESSION['strLoginMessage'] !== '')
 } else {
     $conttp->setVariable('MESSAGE', '&nbsp;');
 }
-$conttp->setVariable('ACTION_INSERT', filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_STRING));
+$conttp->setVariable('ACTION_INSERT', filter_input(INPUT_SERVER, 'PHP_SELF'));
 $conttp->setVariable('IMAGE_PATH', 'images/');
 $conttp->parse('main');
 $conttp->show('main');
