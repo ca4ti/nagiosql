@@ -2226,7 +2226,7 @@ class NagConfigClass
             $strDestinationFile = $strBackupDir . '/' . $strName . '_old_' . $strDate;
             $booRetVal = false;
             /* Get connection method */
-            if ($this->getConfigData($intConfigID, 'method', $strMethod) === 0) {
+            if ($this->getConfigValues($intConfigID, 'method', $strMethod) === 0) {
                 $intMethod = (int)$strMethod;
             }
             /* Local file system */
