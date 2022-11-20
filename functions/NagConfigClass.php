@@ -63,7 +63,7 @@ class NagConfigClass
             $this->arrSettings = $arrSession['SETS'];
         }
         if (isset($arrSession['domain'])) {
-            $this->intDomainId = $arrSession['domain'];
+            $this->intDomainId = (int)$arrSession['domain'];
         }
         $this->arrSession = $arrSession;
     }
@@ -931,7 +931,7 @@ class NagConfigClass
         $booReturn = $this->myDBClass->hasDataArray($strSQL, $arrData, $intDataCount);
         if ($booReturn && ($intDataCount !== 0)) {
             foreach ($arrData as $elem) {
-                $arrConfigId[] = $elem['targets'];
+                $arrConfigId[] = (int)$elem['targets'];
             }
             $intReturn = 0;
         }
@@ -960,7 +960,7 @@ class NagConfigClass
         if ($intReturn === 0) {
             /* Get configuration targets */
             $this->getConfigSets($arrConfigID);
-            if (((int)$arrConfigID !== 1) && is_array($arrConfigID)) {
+            if (is_array($arrConfigID)) {
                 foreach ($arrConfigID as $intConfigID) {
                     $intReturn = $this->writeConfTemplate($intConfigID, $strTableName, $intMode);
                 }
@@ -995,17 +995,27 @@ class NagConfigClass
         $strDomainWhere = ' (`config_id`=' . $this->intDomainId . ') ';
         $intType = 0;
         $intReturn = 0;
+        $setUTF8Decode = 0;
+        $intNagiosVersion = 0;
+        $setEnableCommon = 0;
+        $strConfigValue = '';
         /* Read some settings and information */
-        $this->getConfigData($intConfigID, 'utf8_decode', $setUTF8Decode);
-        $this->getDomainData('enable_common', $setEnableCommon);
-        $this->getConfigData($intConfigID, 'version', $intNagiosVersion);
+        if ($this->getConfigData($intConfigID, 'utf8_decode', $strConfigValue) === 0) {
+            $setUTF8Decode = (int)$strConfigValue;
+        }
+        if ($this->getConfigData($intConfigID, 'version', $strConfigValue) === 0) {
+            $intNagiosVersion = (int)$strConfigValue;
+        }
+        if ($this->getDomainData('enable_common', $strConfigValue) === 0) {
+            $setEnableCommon = (int)$strConfigValue;
+        }
         $arrConfigData = $this->getConfData();
         if (isset($arrConfigData[$strTableName])) {
             $strFileString = str_replace('.cfg', '', $arrConfigData[$strTableName]['filename']);
             $strOrderField = $arrConfigData[$strTableName]['order_field'];
         }
         /* Variable rewritting */
-        if ((int)$setEnableCommon !== 0) {
+        if ($setEnableCommon !== 0) {
             $strDomainWhere = str_replace(')', ' OR `config_id`=0)', $strDomainWhere);
         }
         /* Special processing for table host and service */
@@ -1059,10 +1069,13 @@ class NagConfigClass
                         $key = '#NAGIOSQL_CONFIG_NAME';
                     }
                     /* UTF8 decoded vaules */
-                    if ((int)$setUTF8Decode === 1) {
+                    if ($setUTF8Decode === 1) {
                         $value = utf8_decode($value);
                     }
                     /* Pass special fields (NagiosQL data fields not used by Nagios itselves) */
+                    if ($value === null) {
+                        $value = '';
+                    }
                     if ($this->skipEntries($strTableName, $intNagiosVersion, $key, $value) === 1) {
                         continue;
                     }
@@ -1160,8 +1173,7 @@ class NagConfigClass
             $intReturn = 1;
         }
         if ($intMode === 0) {
-            /** @var resource $resCfgFile */
-            $resCfgFile = null;
+            $strCfgFile = '';
             $intReturn = $this->getConfigFile($strFile, $intConfigID, $intType, $resCfgFile, $strCfgFile);
             if ($intReturn === 0) {
                 $tplConf->parse();
@@ -1188,13 +1200,17 @@ class NagConfigClass
      */
     private function getVersionString(int $intConfigID): string
     {
+        $strConfigValue = '';
+        $intVersion = 0;
         $arrVersion = array(
             'Nagios 2.x config file',
             'Nagios 2.9 config file',
             'Nagios 3.x config file',
             'Nagios 4.x config file'
         );
-        $this->getConfigData($intConfigID, 'version', $intVersion);
+        if ($this->getConfigData($intConfigID, 'version', $strConfigValue) === 0) {
+            $intVersion = (int)$strConfigValue;
+        }
         if (($intVersion >= 1) && ($intVersion <= count($arrVersion))) {
             $strVersion = $arrVersion[$intVersion - 1];
         } else {
@@ -2110,16 +2126,17 @@ class NagConfigClass
      * @param string $strFile File name
      * @param int $intConfigID Configuration ID
      * @param int $intType Type ID
-     * @param object $resConfigFile Temporary or configuration file ressource (by reference)
+     * @param resource $resConfigFile Temporary or configuration file ressource (by reference)
      * @param string $strConfigFile Configuration file name (by reference)
      * @return int 0 = successful / 1 = error
      */
-    private function getConfigFile(string $strFile, int $intConfigID, int $intType, object &$resConfigFile, string &$strConfigFile): int
+    private function getConfigFile(string $strFile, int $intConfigID, int $intType, &$resConfigFile, string &$strConfigFile): int
     {
         /* Variable definitions */
         $strBaseDir = '';
         $intMethod = 1;
         $intReturn = 0;
+        $strConfigValue = '';
         /* Get config data */
         if ($intType === 1) {
             $this->getConfigData($intConfigID, 'hostconfig', $strBaseDir);
@@ -2131,8 +2148,8 @@ class NagConfigClass
             $this->getConfigData($intConfigID, 'basedir', $strBaseDir);
             $strType = 'basic';
         }
-        if ($this->getConfigData($intConfigID, 'method', $strMethod) === 0) {
-            $intMethod = (int)$strMethod;
+        if ($this->getConfigData($intConfigID, 'method', $strConfigValue) === 0) {
+            $intMethod = (int)$strConfigValue;
         }
         /* Backup config file */
         $this->moveFile($strType, $strFile, $intConfigID);
@@ -2333,6 +2350,8 @@ class NagConfigClass
         /* Variable definitions */
         $intReturn = 0;
         $intMethod = 1;
+        $strBaseDir = '';
+        $strConfigValue = '';
         /* Get config data */
         if ($intType === 1) {
             $this->getConfigData($intConfigID, 'hostconfig', $strBaseDir);
@@ -2341,8 +2360,8 @@ class NagConfigClass
         } else {
             $this->getConfigData($intConfigID, 'basedir', $strBaseDir);
         }
-        if ($this->getConfigData($intConfigID, 'method', $strMethod) === 0) {
-            $intMethod = (int)$strMethod;
+        if ($this->getConfigData($intConfigID, 'method', $strConfigValue) === 0) {
+            $intMethod = (int)$strConfigValue;
         }
         $strData = str_replace("\r\n", "\n", $strData);
         fwrite($resConfigFile, $strData);

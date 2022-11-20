@@ -48,7 +48,7 @@ class NagDataClass
     public function __construct(array $arrSession)
     {
         if (isset($arrSession['domain'])) {
-            $this->intDomainId = $arrSession['domain'];
+            $this->intDomainId = (int)$arrSession['domain'];
         }
         if (isset($arrSession['username'])) {
             $this->strUserName = $arrSession['username'];

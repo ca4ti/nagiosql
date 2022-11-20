@@ -40,6 +40,7 @@ $tplHeaderVar = '';
 $chkDomainId = 0;
 $chkGroupAdm = 0;
 $intError = 0;
+$setEnableCommon = 0;
 $setDBVersion = 'unknown';
 $setFileVersion = '3.5.0';
 $setGITVersion = '2022-12-01';
@@ -644,10 +645,14 @@ if (isset($_SESSION['groupadm'])) {
 if (isset($_SESSION['strLoginMessage'])) {
     $_SESSION['strLoginMessage'] .= str_replace('::', '<br>', $strErrorMessage);
 }
-$myConfigClass->getDomainData('version', $intVersion);
-$myConfigClass->getDomainData('enable_common', $setEnableCommon);
+if ($myConfigClass->getDomainData('version', $strVersion) === 0) {
+    $intVersion = (int)$strVersion;
+}
+if ($myConfigClass->getDomainData('enable_common', $strEnableCommon) === 0) {
+    $setEnableCommon = (int)$strEnableCommon;
+}
 if (isset($preTableName)) {
-    if ((int)$setEnableCommon !== 0) {
+    if ($setEnableCommon !== 0) {
         $strDomainWhere = " (`$preTableName`.`config_id`=$chkDomainId OR `$preTableName`.`config_id`=0) ";
         $strDomainWhere2 = " (`config_id`=$chkDomainId OR `config_id`=0) ";
     } else {

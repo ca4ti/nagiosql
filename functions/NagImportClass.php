@@ -53,7 +53,7 @@ class NagImportClass
             $this->arrSettings = $arrSession['SETS'];
         }
         if (isset($arrSession['domain'])) {
-            $this->intDomainId = $arrSession['domain'];
+            $this->intDomainId = (int)$arrSession['domain'];
         }
     }
 
