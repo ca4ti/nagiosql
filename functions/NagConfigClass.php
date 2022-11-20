@@ -2159,6 +2159,7 @@ class NagConfigClass
         if ($intMethod === 1) {
             /* Save configuration file */
             if (is_writable($strConfigFile) || (!file_exists($strConfigFile) && is_writable($strBaseDir))) {
+                /** @noinspection CallableParameterUseCaseInTypeContextInspection */
                 $resConfigFile = fopen($strConfigFile, 'wb');
                 chmod($strConfigFile, 0644);
             } else {
@@ -2180,6 +2181,7 @@ class NagConfigClass
                 } else {
                     $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
                 }
+                /** @noinspection CallableParameterUseCaseInTypeContextInspection */
                 $resConfigFile = fopen($strConfigFile, 'wb');
             }
         } elseif ($intMethod === 3) { /* Remote file (SFTP) */
@@ -2194,6 +2196,7 @@ class NagConfigClass
                 } else {
                     $strConfigFile = tempnam(sys_get_temp_dir(), 'nagiosql');
                 }
+                /** @noinspection CallableParameterUseCaseInTypeContextInspection */
                 $resConfigFile = fopen($strConfigFile, 'wb');
             }
         }

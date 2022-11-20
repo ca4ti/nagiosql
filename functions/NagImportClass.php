@@ -186,16 +186,19 @@ class NagImportClass
         $intRemoveTmp = 0;
         $strImportFile = '';
         $strImportFileTmp = '';
+        $strConfigValue = '';
         /* File transfer method */
         if (substr_count($strFileName, 'nagiosql_local_imp') === 1) {
             $intMethod = 1;
             $intRetVal = 0;
         } else {
-            $intRetVal = $this->myConfigClass->getConfigData($intConfigId, 'method', $intMethod);
+            $intRetVal = $this->myConfigClass->getConfigData($intConfigId, 'method', $strConfigValue);
         }
         if ($intRetVal !== 0) {
             $this->strErrorMessage .= translate('Unable to get configuration data:') . ' method::';
             $intReturn = 1;
+        } else {
+            $intMethod = (int)$strConfigValue;
         }
         if ($intReturn === 0) {
             /* Read import file */
@@ -255,7 +258,7 @@ class NagImportClass
             }
             /* Open and read config file */
             if (file_exists($strImportFileTmp) && is_readable($strImportFileTmp)) {
-                $strImportFile = $strImportFileTmp;
+                $strImportFile = (string)$strImportFileTmp;
             } else {
                 $intReturn = 1;
                 $intRemoveTmp = 0;
