@@ -816,11 +816,11 @@ class NagConfigClass
         /* Get table times */
         $arrTimeData = array();
         $arrTimeData['table'] = 'unknown';
+        $strConfigValue = '';
         /* Clear status cache */
         clearstatcache();
-        $intRetVal1 = $this->getDomainData('enable_common', $intEnableCommon);
-        /* Get last change of date table */
-        if ($intRetVal1 === 0) {
+        if ($this->getDomainData('enable_common', $strConfigValue) === 0) {
+            $intEnableCommon = (int)$strConfigValue;
             $strSQLAdd = '';
             if ($intEnableCommon === 1) {
                 $strSQLAdd = 'OR `domainId`=0';
