@@ -353,9 +353,9 @@ class NagVisualClass
         string $strTable,
         string $strTabField,
         string $strTemplKey,
-        int $intModeId = 0,
-        int $intSelId = -9,
-        int $intExclId = -9
+        int    $intModeId = 0,
+        int    $intSelId = -9,
+        int    $intExclId = -9
     ): int
     {
         /* Define variables */
@@ -1036,9 +1036,9 @@ class NagVisualClass
         string $strTabField,
         string $strTemplKey,
         string $strLinkTable,
-        int $intModeId = 0,
-        int $intTypeId = -9,
-        int $intExclId = -9,
+        int    $intModeId = 0,
+        int    $intTypeId = -9,
+        int    $intExclId = -9,
         string $strRefresh = ''
     ): int
     {

@@ -930,21 +930,21 @@ class NagDataClass
                         $strHost = $this->myDBClass->getFieldData($strSQL);
                         $this->myConfigClass->getConfigSets($arrConfigId);
                         if ((int)$arrConfigId !== 1) {
-                           $intReturn = 0;
+                            $intReturn = 0;
                             foreach ($arrConfigId as $intConfigId) {
                                 $intReturn += $this->myConfigClass->moveFile(
                                     'host',
                                     $strHost . '.cfg',
                                     $intConfigId
                                 );
-                             }
+                            }
                             if ($intReturn === 0) {
-                                 $this->processClassMessage(translate('The assigned, no longer used configuration ' .
-                                         'files were deleted successfully!') . '::', $strInfoMessage);
-                                 $this->writeLog(translate('Host file deleted:') . ' ' . $strHost . '.cfg');
+                                $this->processClassMessage(translate('The assigned, no longer used configuration ' .
+                                        'files were deleted successfully!') . '::', $strInfoMessage);
+                                $this->writeLog(translate('Host file deleted:') . ' ' . $strHost . '.cfg');
                             } else {
-                                 $strErrorMessage .= translate('Errors while deleting the old configuration file - ' .
-                                         'please check!:') . ' ::' . $this->myConfigClass->strErrorMessage . '::';
+                                $strErrorMessage .= translate('Errors while deleting the old configuration file - ' .
+                                        'please check!:') . ' ::' . $this->myConfigClass->strErrorMessage . '::';
                             }
                         }
                     }

@@ -596,6 +596,24 @@ class NagConfigClass
     }
 
     /**
+     * Get configuration domain parameters
+     * @param int $intConfigId Configuration ID
+     * @param string $strConfigItem Configuration key
+     * @param string $strValue Configuration value (by reference)
+     * @return int 0 = successful / 1 = error
+     */
+    public function getConfigData(int $intConfigId, string $strConfigItem, string &$strValue): int
+    {
+        $intReturn = 1;
+        $strSQL = 'SELECT `' . $strConfigItem . '` FROM `tbl_configtarget` WHERE `id` = ' . $intConfigId;
+        $strValue = $this->myDBClass->getFieldData($strSQL);
+        if ($strValue !== '') {
+            $intReturn = 0;
+        }
+        return $intReturn;
+    }
+
+    /**
      * Check a directory for write access
      * @param string $strPath Physical path
      * @return int 0 = successful / 1 = error
@@ -1193,6 +1211,8 @@ class NagConfigClass
         return $intReturn;
     }
 
+    /* PRIVATE functions */
+
     /**
      * Get Nagios version string
      * @param int $intConfigID Configuration target ID
@@ -1219,7 +1239,6 @@ class NagConfigClass
         return $strVersion;
     }
 
-    /* PRIVATE functions */
     /**
      * Skip database values based on Nagios version
      * @param string $strTableName Table name
@@ -2316,24 +2335,6 @@ class NagConfigClass
                     $intReturn = 1;
                 }
             }
-        }
-        return $intReturn;
-    }
-
-    /**
-     * Get configuration domain parameters
-     * @param int $intConfigId Configuration ID
-     * @param string $strConfigItem Configuration key
-     * @param string $strValue Configuration value (by reference)
-     * @return int 0 = successful / 1 = error
-     */
-    public function getConfigData(int $intConfigId, string $strConfigItem, string &$strValue): int
-    {
-        $intReturn = 1;
-        $strSQL = 'SELECT `' . $strConfigItem . '` FROM `tbl_configtarget` WHERE `id` = ' . $intConfigId;
-        $strValue = $this->myDBClass->getFieldData($strSQL);
-        if ($strValue !== '') {
-            $intReturn = 0;
         }
         return $intReturn;
     }

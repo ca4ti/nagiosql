@@ -35,7 +35,7 @@ $intError = 0;
 Read settings file
 */
 $preBasePath = str_replace('functions', '', __DIR__);
-$preIniFile  = $preBasePath.'config/settings.php';
+$preIniFile = $preBasePath . 'config/settings.php';
 
 /*
 Read file settings
@@ -45,14 +45,14 @@ $SETS = parse_ini_file($preIniFile, true);
 /*
 Include external function/class files - part 1
 */
-require_once $preBasePath.'libraries/pear/HTML/Template/IT.php';
-require $preBasePath.'functions/Autoloader.php';
+require_once $preBasePath . 'libraries/pear/HTML/Template/IT.php';
+require $preBasePath . 'functions/Autoloader.php';
 functions\Autoloader::register($preBasePath);
 
 /*
 Initialize classes - part 1
 */
-$myDBClass  = new functions\MysqliDbClass();
+$myDBClass = new functions\MysqliDbClass();
 $myDBClass->arrParams = $SETS['db'];
 $myDBClass->hasDBConnection();
 if ($myDBClass->error === true) {
@@ -67,10 +67,10 @@ if ($intError === 0) {
     $strSQL = 'SELECT `category`,`name`,`value` FROM `tbl_settings`';
     $booReturn = $myDBClass->hasDataArray($strSQL, $arrDataLines, $intDataCount);
     if ($booReturn === false) {
-        echo str_replace('::', "\n", 'Error while selecting data from database: ' .$myDBClass->strErrorMessage);
+        echo str_replace('::', "\n", 'Error while selecting data from database: ' . $myDBClass->strErrorMessage);
         $intError = 1;
     } elseif ($intDataCount !== 0) {
-        for ($i=0; $i<$intDataCount; $i++) {
+        for ($i = 0; $i < $intDataCount; $i++) {
             $SETS[$arrDataLines[$i]['category']][$arrDataLines[$i]['name']] = $arrDataLines[$i]['value'];
         }
     }
@@ -97,10 +97,10 @@ $myImportClass = new functions\NagImportClass($arrSession);
 /*
 Propagating the classes themselves
 */
-$myDataClass->myDBClass       =& $myDBClass;
-$myDataClass->myConfigClass   =& $myConfigClass;
-$myConfigClass->myDBClass     =& $myDBClass;
-$myConfigClass->myDataClass   =& $myDataClass;
-$myImportClass->myDataClass   =& $myDataClass;
-$myImportClass->myDBClass     =& $myDBClass;
+$myDataClass->myDBClass =& $myDBClass;
+$myDataClass->myConfigClass =& $myConfigClass;
+$myConfigClass->myDBClass =& $myDBClass;
+$myConfigClass->myDataClass =& $myDataClass;
+$myImportClass->myDataClass =& $myDataClass;
+$myImportClass->myDBClass =& $myDBClass;
 $myImportClass->myConfigClass =& $myConfigClass;
