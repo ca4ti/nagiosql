@@ -138,11 +138,9 @@ if (($intVersion === 3) || ($intVersion === 4)) {
     $strHO = substr($chkChbGr1a . $chkChbGr1b . $chkChbGr1c . $chkChbGr1d . $chkChbGr1f, 0, -1);
     $strSO = substr($chkChbGr2a . $chkChbGr2b . $chkChbGr2c . $chkChbGr2d . $chkChbGr2e . $chkChbGr2g, 0, -1);
 }
-echo $strHO;
-
-//
-// Add or modify data
-// ==================
+/*
+Add or modify data
+*/
 if ((($chkModus === 'insert') || ($chkModus === 'modify')) && ($intGlobalWriteAccess === 0)) {
     $strSQLx = "`$preTableName` SET `$preKeyField`='$chkTfValue1', `alias`='$chkTfValue2', "
         . "`contactgroups`=$intMselValue1, `contactgroups_tploptions`=$chkRadValue1, "
