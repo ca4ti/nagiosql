@@ -278,6 +278,9 @@ class NagDataClass
         /** @noinspection SqlResolve */
         $strSQLInsert = 'INSERT INTO `' . $strTableName . '` SET `' . $strKeyField . "`='" . $strNewName . "'";
         foreach ($arrData[$intID] as $key => $value) {
+            if ($value === null) {
+                $value = '';
+            }
             if (($key !== $strKeyField) && ($key !== 'active') && ($key !== 'last_modified') &&
                 ($key !== 'id') && ($key !== 'config_id')) {
                 /* Manually set some NULL values based on field names */
