@@ -10,6 +10,7 @@
  Version   : 3.5.0
  GIT Repo  : https://gitlab.com/wizonet/NagiosQL
 -----------------------------------------------------------------------------*/
+
 use functions\MysqliDbClass;
 use functions\NagConfigClass;
 use functions\NagContentClass;
@@ -48,8 +49,6 @@ use functions\NagVisualClass;
  * @var int $intMselValue2 from prepend_content.php
  * @var array $chkMselValue1 from prepend_content.php
  * @var array $chkMselValue2 from prepend_content.php
- *
- *
  */
 /*
 Path settings
