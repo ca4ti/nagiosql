@@ -143,7 +143,7 @@ for ($i = 1; $i <= 4; $i++) {
     foreach ($arrChar as $elem) {
         $tmpVar = 'chkChbGr' . $i . $elem;
         $$tmpVar = filter_input(INPUT_POST, 'chbGr' . $i . $elem);
-        if ($$tmpVar !== '') {
+        if (isset($$tmpVar) && ($$tmpVar !== '')) {
             $$tmpVar .= ',';
         }
     }
